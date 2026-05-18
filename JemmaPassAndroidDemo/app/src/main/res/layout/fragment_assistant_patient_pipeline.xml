@@ -132,6 +132,54 @@
                 android:textColor="@color/jemma_text_muted"
                 android:textSize="12sp" />
 
+            <!-- 🆕 Active AI Engine Info Badge (Modèle + Accélérateur) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/assistant_ai_engine_badge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                app:cardBackgroundColor="#0AFFFFFF"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#1F00E5FF"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/ai_engine_model_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/assistant_ai_engine_model"
+                        android:textColor="@color/jemma_electric_cyan"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/ai_engine_hardware_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#1A00E5FF"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="@string/assistant_ai_engine_hardware"
+                        android:textColor="@color/jemma_electric_cyan"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- 4 steps card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"

@@ -103,7 +103,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:visibility="gone"
-                app:singleLine="true"
+                app:singleLine="false"
                 app:singleSelection="true"
                 tools:visibility="visible">
 
@@ -249,6 +249,46 @@
                     android:text="@string/qr_btn_share"
                     app:icon="@android:drawable/ic_menu_share" />
             </LinearLayout>
+
+            <!-- 🆕 Lot 14.5c22 — QR Payload Viewer Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/jemma_surface"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/jemma_primary_25"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔍 CONTENU ENCODÉ / ENCODED PAYLOAD"
+                        android:textColor="@color/jemma_primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:id="@+id/qr_payload_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="#0F172A"
+                        android:fontFamily="monospace"
+                        android:padding="10dp"
+                        android:textColor="@color/jemma_text"
+                        android:textSize="11sp"
+                        tools:text="{'resourceType':'Bundle',...}" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

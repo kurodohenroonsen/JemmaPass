@@ -262,12 +262,14 @@ object JemmaPayloadCodec {
         val bytes: ByteArray = try {
             android.util.Base64.decode(b64, android.util.Base64.DEFAULT)
         } catch (e: IllegalArgumentException) {
+            Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ base64 decode failed for text length ${text.length}", e)
             return DecodeResult.Failure("base64 decode failed: ${e.message}", e)
         }
 
         val inflated: ByteArray = try {
             inflateRaw(bytes)
         } catch (e: Exception) {
+            Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ deflate-raw inflate failed", e)
             return DecodeResult.Failure("deflate-raw inflate failed: ${e.message}", e)
         }
 
@@ -290,6 +292,7 @@ object JemmaPayloadCodec {
             profileAdapter.fromJson(rehydratedJson)
                 ?: return DecodeResult.Failure("Moshi returned null profile (malformed JSON?)")
         } catch (e: Exception) {
+            Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ JSON parse failed (raw JSON len=${rehydratedJson.length})", e)
             return DecodeResult.Failure("JSON parse failed: ${e.message}", e)
         }
 

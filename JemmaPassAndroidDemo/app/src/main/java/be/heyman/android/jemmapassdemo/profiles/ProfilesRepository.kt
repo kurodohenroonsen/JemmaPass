@@ -246,7 +246,7 @@ class ProfilesRepository @Inject constructor(
         val parsed = try {
             profileAdapter.fromJson(file.readText())
         } catch (e: Exception) {
-            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ loadProfile($id) parse failed : ${e.message}")
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ loadProfile($id) parse failed : ${e.message}", e)
             null
         } ?: return@withContext null
         // 🔧 BUGFIX — Inject sid if missing in JSON (file-name authoritative)
@@ -350,7 +350,8 @@ class ProfilesRepository @Inject constructor(
                 } catch (e: Exception) {
                     Log.w(
                         TAG,
-                        "[t=${System.currentTimeMillis()}] ⚠️ skipping corrupt file ${f.name} : ${e.message}"
+                        "[t=${System.currentTimeMillis()}] ⚠️ skipping corrupt file ${f.name} : ${e.message}",
+                        e
                     )
                 }
             }

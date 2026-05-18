@@ -238,7 +238,7 @@ class QrImportScanFragment : Fragment() {
 
         when (val result = JemmaPayloadCodec.decode(rawText)) {
             is JemmaPayloadCodec.DecodeResult.Failure -> {
-                Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ decode failed : ${result.reason}")
+                Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ decode failed : ${result.reason}", result.cause)
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(getString(R.string.qr_import_error_title))
                     .setMessage(getString(R.string.qr_import_error_message_template, result.reason))

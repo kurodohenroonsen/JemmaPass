@@ -276,35 +276,56 @@ class QrViewerFragment : Fragment() {
         }
     }
 
-    private fun setupLangChips() {
-        binding.qrLangFr.isChecked = currentLang == JemmaTextPayloadBuilder.Lang.FR
-        binding.qrLangEn.isChecked = currentLang == JemmaTextPayloadBuilder.Lang.EN
-        binding.qrLangJa.isChecked = currentLang == JemmaTextPayloadBuilder.Lang.JA
+    private fun dp(value: Float): Int {
+        val density = resources.displayMetrics.density
+        return (value * density).toInt()
+    }
 
-        // ChipGroup avec singleSelection=true → un seul check à la fois,
-        // mais on doit aussi forcer qu'il y en ait toujours UN coché. Sinon
-        // un tap retire la sélection sans la remettre. On gère via guard.
-        val chipListener = { newLang: JemmaTextPayloadBuilder.Lang ->
-            if (newLang != currentLang) {
-                currentLang = newLang
-                Log.d(
-                    TAG,
-                    "[t=${System.currentTimeMillis()}] 🌐 lang switch → $newLang",
-                )
-                if (currentChannel == Channel.TEXT) renderActiveChannel()
+    private fun setupLangChips() {
+        val chipGroup = binding.qrLangChips
+        chipGroup.removeAllViews()
+
+        for (lang in JemmaTextPayloadBuilder.Lang.values()) {
+            val chip = com.google.android.material.chip.Chip(requireContext()).apply {
+                id = View.generateViewId()
+                isCheckable = true
+                isChecked = (lang == currentLang)
+                
+                // Show flag + language code (e.g. 🇫🇷 FR)
+                text = "${lang.flag} ${lang.name}"
+                
+                // Style EN, FR, JA much larger and premium!
+                if (lang == JemmaTextPayloadBuilder.Lang.EN ||
+                    lang == JemmaTextPayloadBuilder.Lang.FR ||
+                    lang == JemmaTextPayloadBuilder.Lang.JA) {
+                    textSize = 19f
+                    setChipStrokeColorResource(R.color.jemma_electric_blue)
+                    chipStrokeWidth = dp(1.5f).toFloat()
+                } else {
+                    textSize = 12f
+                }
+
+                setOnClickListener {
+                    if (!isChecked) isChecked = true // force keep checked
+                    if (lang != currentLang) {
+                        currentLang = lang
+                        Log.d(TAG, "[t=${System.currentTimeMillis()}] 🌐 lang switch → $lang")
+                        if (currentChannel == Channel.TEXT) renderActiveChannel()
+
+                        // Dynamically update checked state of all other chips
+                        for (i in 0 until chipGroup.childCount) {
+                            val child = chipGroup.getChildAt(i) as? com.google.android.material.chip.Chip
+                            if (child != null) {
+                                val childLang = child.tag as? JemmaTextPayloadBuilder.Lang
+                                child.isChecked = (childLang == currentLang)
+                            }
+                        }
+                    }
+                }
+
+                tag = lang
             }
-        }
-        binding.qrLangFr.setOnClickListener {
-            if (!binding.qrLangFr.isChecked) binding.qrLangFr.isChecked = true
-            chipListener(JemmaTextPayloadBuilder.Lang.FR)
-        }
-        binding.qrLangEn.setOnClickListener {
-            if (!binding.qrLangEn.isChecked) binding.qrLangEn.isChecked = true
-            chipListener(JemmaTextPayloadBuilder.Lang.EN)
-        }
-        binding.qrLangJa.setOnClickListener {
-            if (!binding.qrLangJa.isChecked) binding.qrLangJa.isChecked = true
-            chipListener(JemmaTextPayloadBuilder.Lang.JA)
+            chipGroup.addView(chip)
         }
     }
 
@@ -585,6 +606,7 @@ class QrViewerFragment : Fragment() {
                 return@launch
             }
             binding.qrImage.setImageBitmap(bmp)
+            binding.qrPayloadText.text = frame
             Log.d(
                 TAG,
                 "[t=${System.currentTimeMillis()}] 🖼️ rendered frame ${clamped + 1}/${frames.size} (${frame.length}b)",

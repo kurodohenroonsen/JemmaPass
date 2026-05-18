@@ -62,8 +62,22 @@ class SettingsViewModel @Inject constructor(
     /** KB lifecycle state (NotPresent / Validating / Ready / Failed). */
     val kbState: StateFlow<KbState> = kbManager.state
 
+    private val prefs = appContext.getSharedPreferences("jemma_settings", Context.MODE_PRIVATE)
+
     /** Currently active Gemma model (E2B or E4B). User picks via "Activate". */
-    private val _activeModelId = MutableStateFlow<String?>(null)
+    private val _activeModelId = MutableStateFlow<String?>(
+        prefs.getString("gemma_active_model", null) ?: run {
+            val modelId = when {
+                storage.isFullyDownloaded(JemmaModelCatalog.gemmaE4B) -> JemmaModelCatalog.Id.GEMMA_E4B
+                storage.isFullyDownloaded(JemmaModelCatalog.gemmaE2B) -> JemmaModelCatalog.Id.GEMMA_E2B
+                else -> null
+            }
+            if (modelId != null) {
+                prefs.edit().putString("gemma_active_model", modelId).apply()
+            }
+            modelId
+        }
+    )
     val activeModelId: StateFlow<String?> = _activeModelId.asStateFlow()
 
     /** Preflight state, recomputed whenever any source flow changes. */
@@ -123,6 +137,7 @@ class SettingsViewModel @Inject constructor(
                                         "[t=${System.currentTimeMillis()}] ➡️ auto-activate $modelId (no active model)"
                                     )
                                     _activeModelId.value = modelId
+                                    prefs.edit().putString("gemma_active_model", modelId).apply()
                                 }
                             }
                         }
@@ -169,6 +184,7 @@ class SettingsViewModel @Inject constructor(
         }
         if (_activeModelId.value == modelId) {
             _activeModelId.value = null
+            prefs.edit().remove("gemma_active_model").apply()
         }
         // 🆕 v2.6.2 — Force le coordinator à re-scanner le disque et
         // émettre un nouveau statuses → réveille les collectors UI
@@ -185,6 +201,7 @@ class SettingsViewModel @Inject constructor(
             modelId == JemmaModelCatalog.Id.GEMMA_E4B
         ) {
             _activeModelId.value = modelId
+            prefs.edit().putString("gemma_active_model", modelId).apply()
             refreshPreflight()
         }
     }

@@ -406,7 +406,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Jemma · Analyse en direct"
+                        android:text="@string/assistant_voice_notif_title"
                         android:textColor="@color/jemma_primary"
                         android:textSize="14sp" />
 
@@ -416,7 +416,7 @@
                         android:layout_height="wrap_content"
                         android:alpha="0.6"
                         android:fontFamily="sans-serif"
-                        android:text="À l'instant"
+                        android:text="@string/assistant_voice_notif_time"
                         android:textColor="@color/jemma_text_muted"
                         android:textSize="11sp" />
                 </LinearLayout>

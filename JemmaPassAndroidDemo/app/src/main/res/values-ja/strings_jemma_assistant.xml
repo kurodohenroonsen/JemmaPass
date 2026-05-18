@@ -175,4 +175,12 @@
 
     <!-- 🆕 Lot 14.5c15 — アレルギー専用のサブテキスト「書類をスキャン」-->
     <string name="assistant_mode_livescan_sub_allergies">アレルギーカード、検査報告書、IgE 結果…</string>
+
+    <!-- 🆕 Localization fixes for Live Voice notification and engine badge -->
+    <string name="assistant_voice_notif_title">Jemma · ライブ解析中</string>
+    <string name="assistant_voice_notif_time">今</string>
+    <string name="assistant_ai_engine_model">🧠 モデル: %1$s</string>
+    <string name="assistant_ai_engine_hardware">⚡ エンジン: %1$s</string>
+    <string name="model_name_e2b">Gemma E2B（軽量版）</string>
+    <string name="model_name_e4b">Gemma E4B（高性能版）</string>
 </resources>

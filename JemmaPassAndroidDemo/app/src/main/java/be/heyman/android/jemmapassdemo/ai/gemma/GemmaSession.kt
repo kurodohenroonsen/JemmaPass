@@ -50,6 +50,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -68,7 +69,7 @@ class GemmaSession @Inject constructor(
     @ApplicationContext private val appContext: Context,
 ) {
     /** Which Gemma to use. E4B is the premium 3.4 GB multimodal; E2B is lighter (2.4 GB). */
-    private val model: Model = JemmaModelCatalog.gemmaE4B
+    private var model: Model = JemmaModelCatalog.gemmaE4B
 
     /** Serializes calls — engine isn't thread-safe. */
     private val mutex = Mutex()
@@ -139,6 +140,11 @@ class GemmaSession @Inject constructor(
         val prefs = appContext.getSharedPreferences("jemma_settings", Context.MODE_PRIVATE)
         val acceleratorPref = prefs.getString("gemma_accelerator", "GPU") ?: "GPU"
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🔧 accelerator preference: $acceleratorPref")
+
+        // 🆕 Lot 14.5c33 — Read active model ID preference from settings
+        val activeModelName = prefs.getString("gemma_active_model", JemmaModelCatalog.Id.GEMMA_E4B) ?: JemmaModelCatalog.Id.GEMMA_E4B
+        model = JemmaModelCatalog.byId(activeModelName) ?: JemmaModelCatalog.gemmaE4B
+        Log.i(TAG, "[t=${System.currentTimeMillis()}] 🧠 resolved active model: ${model.name} (${model.sizeInBytes / 1_048_576} MB)")
 
         // 1. Add a real LabelConfig to model.configs so preProcess() picks
         //    it up. Edge Gallery's convertValueToTargetType handles String
@@ -298,9 +304,9 @@ class GemmaSession @Inject constructor(
          * en cours.
          */
         onPartial: ((String) -> Unit)? = null,
-    ): String {
+    ): String = withContext(Dispatchers.IO) {
         ensureInit()
-        return mutex.withLock {
+        mutex.withLock {
             val tStart = System.currentTimeMillis()
             // Per-call args take precedence over task-level config.
             val effectiveSystem = systemInstruction ?: taskSystemPrompt
@@ -410,14 +416,14 @@ class GemmaSession @Inject constructor(
      * the same init Job — only one actual `LlmChatModelHelper.initialize`
      * call happens.
      */
-    private suspend fun ensureInit() {
-        if (_status.value is InitStatus.Ready) return
+    private suspend fun ensureInit(): Unit = withContext(Dispatchers.IO) {
+        if (_status.value is InitStatus.Ready) return@withContext
         // If init is already in flight, wait for it.
         initJob?.let { existing ->
             if (existing.isActive) {
                 Log.d(TAG, "[t=${System.currentTimeMillis()}] 📡 ensureInit · waiting on in-flight init job")
                 existing.join()
-                if (_status.value is InitStatus.Ready) return
+                if (_status.value is InitStatus.Ready) return@withContext
                 if (_status.value is InitStatus.Failed) {
                     throw RuntimeException("Gemma init previously failed: ${(_status.value as InitStatus.Failed).reason}")
                 }
@@ -428,6 +434,7 @@ class GemmaSession @Inject constructor(
             if (_status.value is InitStatus.Ready) return@withLock
             val tStart = System.currentTimeMillis()
             _status.value = InitStatus.Loading
+            configureMaxTokensForDevice()
             Log.i(TAG, "[t=$tStart] 🚀 init starting · model=${model.name} · " +
                 "supportImage=true · taskId=jemma-med-scan")
             logReadBackMaxTokens("just-before-initialize") // 🆕 2.6.2a.3 diagnostic
@@ -489,7 +496,7 @@ class GemmaSession @Inject constructor(
      *
      * Thread-safe via mutex partagé avec ensureInit.
      */
-    suspend fun forceReload() {
+    suspend fun forceReload(): Unit = withContext(Dispatchers.IO) {
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🔄 forceReload requested")
         mutex.withLock {
             try {

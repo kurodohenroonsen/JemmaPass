@@ -375,6 +375,16 @@ class SettingsFragment : Fragment() {
                         getString(R.string.toast_model_activated_template, displayName),
                         Toast.LENGTH_SHORT,
                     ).show()
+
+                    // Force reload of GemmaSession to swap the model in memory immediately
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        try {
+                            gemmaSession.forceReload()
+                            Log.i(TAG, "[t=${System.currentTimeMillis()}] ✓ forceReload done · next inference will use $modelId")
+                        } catch (e: Exception) {
+                            Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ forceReload threw", e)
+                        }
+                    }
                 }
             }
         }

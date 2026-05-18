@@ -102,6 +102,19 @@ class AssistantPipelineFragment : Fragment(R.layout.fragment_assistant_pipeline)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 🆕 Programmatic update of AI Engine and Hardware accelerator labels
+        val prefs = requireContext().getSharedPreferences("jemma_settings", android.content.Context.MODE_PRIVATE)
+        val activeModelId = prefs.getString("gemma_active_model", "gemma-4-E4B-it") ?: "gemma-4-E4B-it"
+        val activeModelDisplayName = when (activeModelId) {
+            "gemma-4-E2B-it" -> getString(R.string.model_name_e2b)
+            "gemma-4-E4B-it" -> getString(R.string.model_name_e4b)
+            else -> activeModelId
+        }
+        val accelerator = prefs.getString("gemma_accelerator", "GPU") ?: "GPU"
+
+        view.findViewById<TextView>(R.id.ai_engine_model_label)?.text = getString(R.string.assistant_ai_engine_model, activeModelDisplayName)
+        view.findViewById<TextView>(R.id.ai_engine_hardware_label)?.text = getString(R.string.assistant_ai_engine_hardware, accelerator)
+
         // Warm up TTS engine
         tts.init()
 

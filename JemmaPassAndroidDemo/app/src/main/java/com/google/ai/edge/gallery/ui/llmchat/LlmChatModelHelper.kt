@@ -86,7 +86,7 @@ object LlmChatModelHelper : LlmModelHelper {
       )
     val visionBackend =
       when (visionAccelerator) {
-        Accelerator.CPU.label -> Backend.CPU()
+        Accelerator.CPU.label -> Backend.CPU(numOfThreads = 4)
         Accelerator.GPU.label -> Backend.GPU()
         Accelerator.NPU.label ->
           Backend.NPU(nativeLibraryDir = context.applicationInfo.nativeLibraryDir)
@@ -98,13 +98,13 @@ object LlmChatModelHelper : LlmModelHelper {
     val shouldEnableAudio = supportAudio
     val preferredBackend =
       when (accelerator) {
-        Accelerator.CPU.label -> Backend.CPU()
+        Accelerator.CPU.label -> Backend.CPU(numOfThreads = 4)
         Accelerator.GPU.label -> Backend.GPU()
         Accelerator.NPU.label ->
           Backend.NPU(nativeLibraryDir = context.applicationInfo.nativeLibraryDir)
         Accelerator.TPU.label ->
           Backend.NPU(nativeLibraryDir = context.applicationInfo.nativeLibraryDir)
-        else -> Backend.CPU()
+        else -> Backend.CPU(numOfThreads = 4)
       }
     Log.d(TAG, "Preferred backend: $preferredBackend")
 
@@ -114,12 +114,9 @@ object LlmChatModelHelper : LlmModelHelper {
         modelPath = modelPath,
         backend = preferredBackend,
         visionBackend = if (shouldEnableImage) visionBackend else null, // must be GPU for Gemma 3n
-        audioBackend = if (shouldEnableAudio) Backend.CPU() else null, // must be CPU for Gemma 3n
+        audioBackend = if (shouldEnableAudio) Backend.CPU(numOfThreads = 4) else null, // must be CPU for Gemma 3n
         maxNumTokens = maxTokens,
-        cacheDir =
-          if (modelPath.startsWith("/data/local/tmp"))
-            context.getExternalFilesDir(null)?.absolutePath
-          else null,
+        cacheDir = context.cacheDir.absolutePath,
       )
 
     // Check if the model file supports speculative decoding.

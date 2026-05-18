@@ -84,10 +84,13 @@ class AssistantMedicationsExtractor @Inject constructor(
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 📥 Gemma reply full :\n$gemmaReply")
 
         val parsedBoxes = parseGemmaBoxes(gemmaReply)
-        if (parsedBoxes == null || parsedBoxes.isEmpty()) {
-            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ Gemma reply unusable")
+        if (parsedBoxes == null) {
+            Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ Gemma reply unusable: JSON parsing failed completely. Raw reply:\n$gemmaReply")
             onStep(2, "error", "Gemma JSON unparseable")
             return emptyList()
+        }
+        if (parsedBoxes.isEmpty()) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ Gemma parsed successfully but found 0 candidate drugs across all pages. Raw reply:\n$gemmaReply")
         }
 
         val totalCandidates = parsedBoxes.values.sumOf { it.size }
@@ -212,16 +215,16 @@ class AssistantMedicationsExtractor @Inject constructor(
             onStep(4, "running", runningMsg)
 
             for ((idx, item) in extracted.withIndex()) {
-                if (item.gemmaSkipped || item.gemmaCandidates.isEmpty() || idx >= imageUris.size) {
+                if (item.gemmaSkipped || item.gemmaCandidates.isEmpty() || item.pageIndex < 0 || item.pageIndex >= imageUris.size) {
                     finalExtracted.add(item)
                     continue
                 }
 
-                val uri = imageUris[idx]
-                Log.i(TAG, "[t=${System.currentTimeMillis()}] 👁️ [JEMMA-ASSISTANT-VISION] [Page ${idx+1}/${extracted.size}] Loading image: $uri")
+                val uri = imageUris[item.pageIndex]
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] 👁️ [JEMMA-ASSISTANT-VISION] [Page ${item.pageIndex+1}/${extracted.size}] Loading image: $uri")
                 val bitmap = loadScaledBitmap(context, uri)
                 if (bitmap == null) {
-                    Log.w(TAG, "[t=${System.currentTimeMillis()}] 👁️ [JEMMA-ASSISTANT-VISION] [Page ${idx+1}] Could not load bitmap, skipping Vision")
+                    Log.w(TAG, "[t=${System.currentTimeMillis()}] 👁️ [JEMMA-ASSISTANT-VISION] [Page ${item.pageIndex+1}] Could not load bitmap, skipping Vision")
                     finalExtracted.add(item)
                     continue
                 }
@@ -470,9 +473,9 @@ class AssistantMedicationsExtractor @Inject constructor(
                 .filter { it.isNotBlank() }
             if (candidates.isNotEmpty()) result[idx] = candidates
         }
-        result.takeIf { it.isNotEmpty() }
+        result
     } catch (e: JSONException) {
-        Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ JSON parse failed: ${e.message}")
+        Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ JSON parse failed! Raw string: '$jsonStr'", e)
         null
     }
 
