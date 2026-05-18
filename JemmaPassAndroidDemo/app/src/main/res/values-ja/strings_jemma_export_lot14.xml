@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_export_lot14.xml — Lot 14.1 (PHASE 14) · JA -->
+<resources>
+
+    <!-- ProfileDetailFragment ツールバーのメニュー項目 -->
+    <string name="profile_detail_action_export">エクスポート</string>
+
+    <!-- QrViewerFragment のエラートースト -->
+    <string name="qr_error_no_profile">エクスポートするプロファイルがありません。</string>
+    <string name="qr_error_load_failed">プロファイルの読み込みに失敗しました。</string>
+    <string name="qr_error_encode_failed">QR エンコード失敗: %1$s</string>
+    <string name="qr_error_bitmap_failed">QR の描画に失敗しました。</string>
+
+    <!-- Save / Share アクションのスタブ — Lot 14.2 で実装 -->
+    <string name="qr_action_stub_save_lot14">ギャラリーに保存 — Lot 14.2 で対応予定 🐢</string>
+    <string name="qr_action_stub_share_lot14">共有 — Lot 14.2 で対応予定 🐢</string>
+
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · RO · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Profiluri</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Setări</string>
+    <string name="bottom_nav_sos_rescue">SOS/Salvare</string>
+
+    <string name="sos_rescue_hub_title">SOS / Salvare</string>
+    <string name="sos_rescue_hub_subtitle">Alegeți un mod pentru a continua: trimiteți un SOS ca victimă sau căutați victime ca salvator.</string>
+    <string name="sos_rescue_hub_open_button">Alegeți modul</string>
+
+    <string name="mode_select_title">Alegeți rolul</string>
+    <string name="mode_select_sos_title">SOS · Am nevoie de ajutor</string>
+    <string name="mode_select_sos_subtitle">Transmite profilul meu medical către salvatorii din apropiere prin rețeaua Bluetooth.</string>
+    <string name="mode_select_rescuer_title">Salvare · Vreau să ajut</string>
+    <string name="mode_select_rescuer_subtitle">Scanați transmisiunile SOS și triați victimele pe un radar live.</string>
+
+    <string name="radar_btn_hide">Ascunde</string>
+    <string name="radar_btn_scan_qr">Scanează QR</string>
+    <string name="radar_btn_start">📡 PORNIRE RADAR</string>
+    <string name="radar_btn_stop">Oprește</string>
+    <string name="l3_radar_btn_stop">🛑 OPRIRE RADAR</string>
+
+    <string name="sos_broadcast_title">🆘 Transmisiune SOS</string>
+    <string name="sos_broadcast_subtitle">Serviciul de prim-plan menține pictograma ecranului blocat și rotește fragmentele BLE.</string>
+    <string name="sos_btn_start">PORNIRE\nSOS</string>
+    <string name="sos_btn_stop">OPRIRE\nSOS</string>
+    <string name="sos_btn_toggle">🔄 COMUTĂ TRANSMISIUNEA</string>
+    <string name="sos_btn_pause_broadcast">🔇 Pauză transmisiune BLE</string>
+    <string name="sos_btn_resume_broadcast">🔊 Reluare transmisiune BLE</string>
+    <string name="l3_sos_btn_start">🆘 ACTIVARE SOS</string>
+    <string name="l3_sos_btn_stop">🛑 DEZACTIVARE SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Generarea bitmap-ului a eșuat</string>
+    <string name="qr_save_file_failed">Crearea fișierului imagine a eșuat</string>
+    <string name="qr_save_success">Cod QR salvat în galerie</string>
+    <string name="qr_save_write_failed">Eroare la salvare: %1$s</string>
+    <string name="pdf_export_in_progress">Se generează PDF-ul Eco-Cerneală…</string>
+    <string name="pdf_export_failed">Generarea PDF-ului a eșuat</string>
+    <string name="share_jemma_pass_title">Distribuie Jemma Pass</string>
+    <string name="scanner_unavailable">Scaner indisponibil: %1$s</string>
+</resources>

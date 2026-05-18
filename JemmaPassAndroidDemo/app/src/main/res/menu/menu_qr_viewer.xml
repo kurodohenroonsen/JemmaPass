@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    menu_qr_viewer.xml — Lot 14.2 (PHASE 14)
+    Toolbar menu of fragment_qr_viewer.xml.
+
+    Items :
+      • menu_qr_copy — 📋 copy to clipboard (raw payload du tab actif)
+      • menu_qr_pdf  — 📄 export to printable A4 pocket PDF brochure
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_qr_copy"
+        android:icon="@android:drawable/ic_menu_set_as"
+        android:title="@string/qr_action_copy"
+        app:showAsAction="always"
+        app:iconTint="@color/jemma_primary" />
+
+</menu>

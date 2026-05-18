@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_rescuer_badge.xml — JEMMA Pass · v2.5.5
+    Compact row for a rescuer detected by a broadcasting victim.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_marginVertical="3dp"
+    android:padding="10dp"
+    android:background="@drawable/bg_card_neutral">
+
+    <TextView
+        android:id="@+id/rescuer_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/jemma_text"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        tools:text="⛑ Akira Tanaka" />
+
+    <TextView
+        android:id="@+id/rescuer_sid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:textColor="@color/jemma_text_muted"
+        android:textSize="11sp"
+        android:paddingHorizontal="8dp"
+        tools:text="#b71e" />
+
+    <TextView
+        android:id="@+id/rescuer_lang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textColor="@color/jemma_paper"
+        android:textStyle="bold"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="3dp"
+        android:background="@drawable/bg_chip_lang"
+        android:fontFamily="monospace"
+        tools:text="JA" />
+
+    <TextView
+        android:id="@+id/rescuer_seen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:textColor="@color/jemma_text_muted"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        tools:text="3s" />
+
+</LinearLayout>

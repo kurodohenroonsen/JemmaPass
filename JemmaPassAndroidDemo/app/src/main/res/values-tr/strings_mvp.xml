@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · TR · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Profiller</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Ayarlar</string>
+    <string name="bottom_nav_sos_rescue">SOS/Kurtarma</string>
+
+    <string name="sos_rescue_hub_title">SOS / Kurtarma</string>
+    <string name="sos_rescue_hub_subtitle">Devam etmek için bir mod seçin: kurban olarak SOS gönderin veya kurtarıcı olarak kurbanları tarayın.</string>
+    <string name="sos_rescue_hub_open_button">Mod seçin</string>
+
+    <string name="mode_select_title">Rolünüzü seçin</string>
+    <string name="mode_select_sos_title">SOS · Yardıma ihtiyacım var</string>
+    <string name="mode_select_sos_subtitle">Tıbbi profilimi Bluetooth ağı üzerinden yakındaki kurtarıcılara yayınlar.</string>
+    <string name="mode_select_rescuer_title">Kurtarma · Yardım etmek istiyorum</string>
+    <string name="mode_select_rescuer_subtitle">SOS yayınlarını tarayın ve canlı radarda kurbanları triaj edin.</string>
+
+    <string name="radar_btn_hide">Gizle</string>
+    <string name="radar_btn_scan_qr">QR tara</string>
+    <string name="radar_btn_start">📡 RADAR BAŞLAT</string>
+    <string name="radar_btn_stop">Durdur</string>
+    <string name="l3_radar_btn_stop">🛑 RADARI DURDUR</string>
+
+    <string name="sos_broadcast_title">🆘 SOS Yayını</string>
+    <string name="sos_broadcast_subtitle">Ön plan hizmeti kilit ekranı simgesini tutar ve BLE parçalarını döndürür.</string>
+    <string name="sos_btn_start">SOS\nBAŞLAT</string>
+    <string name="sos_btn_stop">SOS\nDURDUR</string>
+    <string name="sos_btn_toggle">🔄 YAYINI DEĞİŞTİR</string>
+    <string name="sos_btn_pause_broadcast">🔇 BLE yayınını duraklat</string>
+    <string name="sos_btn_resume_broadcast">🔊 BLE yayınını sürdür</string>
+    <string name="l3_sos_btn_start">🆘 SOS\'u ETKİNLEŞTİR</string>
+    <string name="l3_sos_btn_stop">🛑 SOS\'u DEVRE DIŞI BIRAK</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Bitmap oluşturulamadı</string>
+    <string name="qr_save_file_failed">Görüntü dosyası oluşturulamadı</string>
+    <string name="qr_save_success">QR kodu galeriye kaydedildi</string>
+    <string name="qr_save_write_failed">Kaydetme hatası: %1$s</string>
+    <string name="pdf_export_in_progress">Eko-Mürekkep PDF oluşturuluyor…</string>
+    <string name="pdf_export_failed">PDF oluşturulamadı</string>
+    <string name="share_jemma_pass_title">Jemma Pass\'ı paylaş</string>
+    <string name="scanner_unavailable">Tarayıcı kullanılamıyor: %1$s</string>
+</resources>

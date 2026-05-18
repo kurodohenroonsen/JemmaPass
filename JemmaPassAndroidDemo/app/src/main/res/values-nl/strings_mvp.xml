@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · NL · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Profielen</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Instellingen</string>
+    <string name="bottom_nav_sos_rescue">SOS/Redding</string>
+
+    <string name="sos_rescue_hub_title">SOS / Redding</string>
+    <string name="sos_rescue_hub_subtitle">Kies een modus om door te gaan: verstuur een SOS als slachtoffer, of zoek slachtoffers als redder.</string>
+    <string name="sos_rescue_hub_open_button">Kies modus</string>
+
+    <string name="mode_select_title">Kies je rol</string>
+    <string name="mode_select_sos_title">SOS · Ik heb hulp nodig</string>
+    <string name="mode_select_sos_subtitle">Mijn medisch profiel uitzenden naar redders in de buurt via Bluetooth-mesh.</string>
+    <string name="mode_select_rescuer_title">Redding · Ik wil helpen</string>
+    <string name="mode_select_rescuer_subtitle">Scan op SOS-uitzendingen en triage slachtoffers op een live radar.</string>
+
+    <string name="radar_btn_hide">Verbergen</string>
+    <string name="radar_btn_scan_qr">QR scannen</string>
+    <string name="radar_btn_start">📡 RADAR STARTEN</string>
+    <string name="radar_btn_stop">Stop</string>
+    <string name="l3_radar_btn_stop">🛑 RADAR STOPPEN</string>
+
+    <string name="sos_broadcast_title">🆘 SOS-uitzending</string>
+    <string name="sos_broadcast_subtitle">Voorgrond-service houdt het vergrendelscherm-pictogram en wisselt BLE-chunks af.</string>
+    <string name="sos_btn_start">SOS\nSTARTEN</string>
+    <string name="sos_btn_stop">SOS\nSTOPPEN</string>
+    <string name="sos_btn_toggle">🔄 UITZENDING SCHAKELEN</string>
+    <string name="sos_btn_pause_broadcast">🔇 BLE-uitzending pauzeren</string>
+    <string name="sos_btn_resume_broadcast">🔊 BLE-uitzending hervatten</string>
+    <string name="l3_sos_btn_start">🆘 SOS ACTIVEREN</string>
+    <string name="l3_sos_btn_stop">🛑 SOS DEACTIVEREN</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Bitmap genereren mislukt</string>
+    <string name="qr_save_file_failed">Afbeeldingsbestand maken mislukt</string>
+    <string name="qr_save_success">QR-code opgeslagen in galerij</string>
+    <string name="qr_save_write_failed">Opslaan mislukt: %1$s</string>
+    <string name="pdf_export_in_progress">Eco-inkt PDF wordt gegenereerd…</string>
+    <string name="pdf_export_failed">PDF genereren mislukt</string>
+    <string name="share_jemma_pass_title">Jemma Pass delen</string>
+    <string name="scanner_unavailable">Scanner niet beschikbaar: %1$s</string>
+</resources>

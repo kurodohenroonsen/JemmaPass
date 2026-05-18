@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/radar_toolbar_back"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@android:drawable/ic_menu_revert"
+            app:titleTextColor="@color/jemma_primary"
+            tools:title="⛑️ Kamekichi · 👤 2 · ⛑️ 1" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <be.heyman.android.jemmapassdemo.ui.radar.RadarOverlayView
+                android:id="@+id/radar_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="320dp" />
+
+            <TextView
+                android:id="@+id/radar_empty_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/radar_empty_state"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:padding="20dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/radar_list_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="4dp"
+            android:text="@string/radar_list_header"
+            android:textColor="@color/jemma_text_muted"
+            android:textSize="11sp"
+            android:textAllCaps="true"
+            android:letterSpacing="0.08"
+            android:fontFamily="sans-serif-medium" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/radar_victim_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingHorizontal="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="88dp"
+            tools:listitem="@layout/item_victim_card" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/radar_btn_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/l3_radar_btn_stop"
+        android:text="@string/l3_radar_btn_stop"
+        android:textColor="@color/jemma_paper"
+        app:backgroundTint="@color/jemma_crit_red"
+        app:icon="@android:drawable/ic_menu_close_clear_cancel"
+        app:iconTint="@color/jemma_paper" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/radar_btn_scan_qr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/radar_btn_scan_qr"
+        android:text="@string/radar_btn_scan_qr"
+        android:textColor="@color/jemma_paper"
+        app:backgroundTint="@color/jemma_primary"
+        app:icon="@android:drawable/ic_menu_camera"
+        app:iconTint="@color/jemma_paper" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

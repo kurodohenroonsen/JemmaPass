@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    🆕 L1 v2.5.0 — JEMMA SOS notification strings (日本語).
+-->
+<resources>
+
+    <!-- 通知チャンネル -->
+    <string name="jemma_sos_notif_channel_name">JEMMA SOSビーコン</string>
+    <string name="jemma_sos_notif_channel_description">JEMMA SOSビーコン — 緊急安全サービス</string>
+
+    <!-- 配信中 -->
+    <string name="jemma_sos_notif_title_broadcasting">🆘 SOSビーコン 配信中</string>
+    <string name="jemma_sos_notif_text_broadcasting">医療プロフィールを近くの救助者へ配信中</string>
+    <string name="jemma_sos_notif_bigtext_broadcasting">あなたの医療プロフィールがBluetoothで近くの救助者に配信されています。「⏸ 停止」をタップで配信を中止します。</string>
+    <string name="jemma_sos_notif_action_stop_broadcast">⏸ 配信停止</string>
+
+    <!-- 待機中 (サービス起動中・未配信) -->
+    <string name="jemma_sos_notif_title_idle">🐢 JEMMA 準備完了</string>
+    <string name="jemma_sos_notif_text_idle">SOSモード有効 — 配信準備完了</string>
+    <string name="jemma_sos_notif_bigtext_idle">SOSモードが有効です。「🆘 配信」をタップで、JEMMAを使用している近くの救助者へ緊急医療プロフィールを共有します。</string>
+    <string name="jemma_sos_notif_action_start_broadcast">🆘 配信</string>
+
+    <!-- 常時表示 -->
+    <string name="jemma_sos_notif_action_disable">無効化</string>
+
+</resources>

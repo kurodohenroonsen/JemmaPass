@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L6 cleanup · 2026-05-17 · refactored hardcoded UI strings from
+         QrViewerFragment, JemmaPdfExporter, ProfileDetailFragment,
+         PatientDetailFragment. -->
+
+    <!-- QrViewerFragment · save-to-gallery flow -->
+    <string name="qr_save_bitmap_failed">Failed to generate bitmap</string>
+    <string name="qr_save_file_failed">Failed to create image file</string>
+    <string name="qr_save_success">QR code saved to gallery</string>
+    <string name="qr_save_write_failed">Save error: %1$s</string>
+
+    <!-- JemmaPdfExporter · Pocket Pass PDF generation -->
+    <string name="pdf_export_in_progress">Generating Eco-Ink PDF…</string>
+    <string name="pdf_export_failed">PDF generation failed</string>
+
+    <!-- ProfileDetailFragment · share dialog -->
+    <string name="share_jemma_pass_title">Share Jemma Pass</string>
+
+    <!-- PatientDetailFragment · scan flow error -->
+    <string name="scanner_unavailable">Scanner unavailable: %1$s</string>
+</resources>

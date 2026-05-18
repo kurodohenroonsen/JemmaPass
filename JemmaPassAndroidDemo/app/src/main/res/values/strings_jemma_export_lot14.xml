@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_export_lot14.xml — Lot 14.1 (PHASE 14)
+
+    Strings added for:
+      • the 📤 button in the ProfileDetailFragment title bar
+      • QrViewerFragment errors / Toasts
+      • Save / Share stubs (waiting for Lot 14.2)
+-->
+<resources>
+
+    <!-- Menu item in the ProfileDetailFragment toolbar. -->
+    <string name="profile_detail_action_export">Export</string>
+
+    <!-- QrViewerFragment error toasts. -->
+    <string name="qr_error_no_profile">No profile to export.</string>
+    <string name="qr_error_load_failed">Profile load failed.</string>
+    <string name="qr_error_encode_failed">QR encoding failed: %1$s</string>
+    <string name="qr_error_bitmap_failed">QR rendering failed.</string>
+
+    <!-- Save / Share action stubs — implemented in Lot 14.2. -->
+    <string name="qr_action_stub_save_lot14">Save to gallery — coming in Lot 14.2 🐢</string>
+    <string name="qr_action_stub_share_lot14">Share — coming in Lot 14.2 🐢</string>
+
+</resources>

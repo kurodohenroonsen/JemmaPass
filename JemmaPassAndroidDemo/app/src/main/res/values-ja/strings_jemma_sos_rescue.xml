@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_sos_rescue.xml (JA) — JEMMA Pass · v2.5.6
+-->
+<resources>
+
+    <!-- v2.5.2.1 baseline -->
+    <string name="bottom_nav_sos_rescue">SOS/救助</string>
+    <string name="sos_rescue_hub_title">SOS / 救助</string>
+    <string name="sos_rescue_hub_subtitle">続行するモードを選択：被災者としてSOSを送信、または救助者として被災者を捜索。</string>
+    <string name="sos_rescue_hub_open_button">モードを選択</string>
+    <string name="mode_select_title">役割を選択</string>
+    <string name="mode_select_sos_title">SOS · 助けが必要</string>
+    <string name="mode_select_sos_subtitle">Bluetoothメッシュで近くの救助者へ医療プロフィールを配信。</string>
+    <string name="mode_select_rescuer_title">救助 · 助けたい</string>
+    <string name="mode_select_rescuer_subtitle">SOS配信を捜索し、ライブレーダーで被災者をトリアージ。</string>
+
+    <string name="radar_rescuer_title">📡 救助者レーダー</string>
+    <string name="radar_rescuer_subtitle">Google Nearby Connections (P2P_CLUSTER) によるディスカバリーと配信。</string>
+    <string name="radar_btn_start">📡 レーダー開始</string>
+    <string name="l3_radar_btn_stop">🛑 レーダー停止</string>
+    <string name="radar_l3_disclaimer">L3 v2.5.2 プレースホルダー (v2.5.6 では非推奨)。</string>
+
+    <string name="sos_broadcast_title">🆘 SOS配信</string>
+    <string name="sos_broadcast_subtitle">フォアグラウンドサービスがロック画面アイコンを保持し、BLEチャンクをローテーション。</string>
+    <string name="l3_sos_btn_start">🆘 SOS開始</string>
+    <string name="sos_btn_toggle">🔄 配信切替</string>
+    <string name="l3_sos_btn_stop">🛑 SOS停止</string>
+    <string name="sos_l3_disclaimer">L3 v2.5.2 プレースホルダー (v2.5.6 では非推奨)。</string>
+
+    <!-- v2.5.5 + v2.5.5.2 -->
+    <string name="sos_badge_idle">◉ 非アクティブ</string>
+    <string name="sos_badge_paused">◉ 一時停止中</string>
+    <string name="sos_badge_active_unknown">◉ アクティブ</string>
+    <string name="sos_badge_active_green">◉ アクティブ · 緑</string>
+    <string name="sos_badge_active_yellow">◉ アクティブ · 黄</string>
+    <string name="sos_badge_active_red">◉ アクティブ · 重症</string>
+
+    <string name="sos_elapsed">%1$02d:%2$02d</string>
+
+    <string name="sos_profile_label">配信中のプロフィール</string>
+    <string name="sos_no_profile_selected">プロフィール未選択</string>
+
+    <string name="sos_criticality_label">トリアージレベル</string>
+    <string name="crit_unknown">不明</string>
+    <string name="crit_green">緑</string>
+    <string name="crit_yellow">黄</string>
+    <string name="crit_red">重症</string>
+    <string name="crit_unknown_short">⚪ 不明</string>
+    <string name="crit_green_short">🟢 緑</string>
+    <string name="crit_yellow_short">🟡 黄</string>
+    <string name="crit_red_short">🔴 重症</string>
+
+    <string name="sos_btn_pause_broadcast">🔇 BLE配信を一時停止</string>
+    <string name="sos_btn_resume_broadcast">🔊 BLE配信を再開</string>
+
+    <string name="sos_err_no_profile">⚠ プロフィール未選択。プロフィールタブで先に選択してください。</string>
+    <string name="sos_err_start_failed">⚠ SOSを開始できませんでした：%1$s</string>
+
+    <string name="sos_rescuers_label">検出された救助者</string>
+    <string name="sos_rescuers_count">%d 人検出</string>
+    <string name="sos_rescuers_empty">まだ近くに救助者がいません。配信を続けてください。</string>
+    <string name="rescuer_anon">救助者</string>
+
+    <string name="radar_header_count">被災者 %d 人を検出</string>
+    <string name="radar_gps_locked">GPS · %1$.5f, %2$.5f</string>
+    <string name="radar_gps_pending">GPS取得中…</string>
+    <string name="radar_empty_state">付近にSOSビーコンなし。\nレーダーは受信待機中。</string>
+    <string name="radar_victims_section_title">被災者</string>
+    <string name="victim_anon">匿名被災者</string>
+    <string name="victim_no_gps_rssi">GPSなし · RSSI %d dBm</string>
+    <string name="victim_counts_format">⚠️ アレルギー %1$d · 💊 薬 %2$d</string>
+    <string name="victim_seen_now">たった今</string>
+    <string name="victim_seen_secs">%d 秒前</string>
+    <string name="victim_seen_mins">%d 分前</string>
+
+    <string name="sos_radar_label">周辺</string>
+    <string name="sos_radar_empty">レーダーにまだ何も検出されていません。</string>
+
+    <!-- v2.5.6 -->
+    <string name="sos_state_broadcasting">◉ 配信中</string>
+
+    <string name="sos_my_salt_section">私のトリアージ状態</string>
+    <string name="sos_my_salt_format">状態：%1$s</string>
+    <string name="sos_my_salt_none">まだトリアージされていない</string>
+    <string name="sos_my_salt_none_desc">救助者がまだ評価していません。落ち着いて待ってください。</string>
+
+    <string name="sos_victims_label">周辺の他の被災者</string>
+    <string name="sos_victims_count">%d 人検出</string>
+    <string name="sos_victims_empty">他の被災者は検出されていません。</string>
+
+    <string name="salt_wait_label">WAIT</string>
+    <string name="salt_wait_desc">評価待ち（優先度低）</string>
+    <string name="salt_eval_label">EVAL</string>
+    <string name="salt_eval_desc">評価中</string>
+    <string name="salt_stab_label">STAB</string>
+    <string name="salt_stab_desc">安定 — 即時処置不要</string>
+    <string name="salt_help_label">HELP</string>
+    <string name="salt_help_desc">至急、援助必要</string>
+    <string name="salt_evac_label">EVAC</string>
+    <string name="salt_evac_desc">搬送準備完了</string>
+    <string name="salt_dcd_label">DCD</string>
+    <string name="salt_dcd_desc">死亡</string>
+
+    <string name="triage_sheet_title">SALT トリアージ</string>
+    <string name="triage_current_status">%1$s 現在：%2$s</string>
+    <string name="triage_btn_cancel">キャンセル</string>
+    <string name="triage_btn_cancel_deceased">↺ 死亡判定取消（復活）</string>
+    <string name="triage_confirm_title">遷移確認</string>
+    <string name="triage_confirm_msg">%3$s を %1$s %2$s としますか？\n\nこの遷移は半不可逆です。</string>
+    <string name="triage_confirm_yes">確認</string>
+    <string name="triage_confirm_no">キャンセル</string>
+
+</resources>

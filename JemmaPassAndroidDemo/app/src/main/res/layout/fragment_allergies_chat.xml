@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_allergies_chat.xml — JEMMA Pass · Lot 14.5c19 (PHASE 14)
+
+    Écran chat allergies avec STT + Gemma streaming + TTS streaming
+    + mini-card IPS qui s'accumule + bouton 📝 vers le form.
+
+    Structure :
+      ┌────────────────────────────────────────────────┐
+      │ ← 🩹 Chat Allergies                        📝  │  (toolbar + form btn)
+      ├────────────────────────────────────────────────┤
+      │ Données capturées  3/5                         │  (IPS draft card)
+      │ ✅ Substance : Pénicilline                     │
+      │ ✅ Catégorie : Médicament (auto KB)            │
+      │ ✅ Sévérité  : Sévère                          │
+      │ ⌛ Statut    : —                               │
+      │ ⌛ Manifest. : —                               │
+      ├────────────────────────────────────────────────┤
+      │ 🤖 Bonjour, dis-moi…                           │
+      │ 👤 Je suis allergique…                         │  ← RecyclerView
+      │ 🤖 Allergie aux arachides…▮                    │
+      ├────────────────────────────────────────────────┤
+      │  🎤  [transcript live]   ⏹/▶                   │  ← input row
+      └────────────────────────────────────────────────┘
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/allergies_chat_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/menu_allergies_chat"
+            app:navigationIcon="@android:drawable/ic_menu_revert"
+            app:title="@string/allergies_chat_title"
+            app:titleTextColor="@color/jemma_primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenu central : IPS draft card → chat scroll → input row docké. -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Mini-card IPS : les champs FHIR R4 capturés au fur et à mesure. -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/allergies_chat_ips_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@color/jemma_surface"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="12dp">
+
+                <!-- Header : titre + compteur 3/6 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/allergies_chat_ips_card_title"
+                        android:textColor="@color/jemma_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/allergies_chat_ips_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/jemma_text_muted"
+                        android:textSize="12sp"
+                        tools:text="3/5" />
+
+                </LinearLayout>
+
+                <!-- 5 lignes : icône + label + valeur (date enlevée — non collectée par voix) -->
+                <TextView
+                    android:id="@+id/allergies_chat_ips_substance"
+                    style="@style/JemmaIpsCardLine"
+                    tools:text="✅ Substance : Pénicilline" />
+
+                <TextView
+                    android:id="@+id/allergies_chat_ips_category"
+                    style="@style/JemmaIpsCardLine"
+                    tools:text="✅ Catégorie : Médicament" />
+
+                <TextView
+                    android:id="@+id/allergies_chat_ips_severity"
+                    style="@style/JemmaIpsCardLine"
+                    tools:text="✅ Sévérité : Sévère" />
+
+                <TextView
+                    android:id="@+id/allergies_chat_ips_status"
+                    style="@style/JemmaIpsCardLine"
+                    tools:text="⌛ Statut : —" />
+
+                <TextView
+                    android:id="@+id/allergies_chat_ips_manifestation"
+                    style="@style/JemmaIpsCardLine"
+                    tools:text="⌛ Manifestation : —" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Chat scroll. -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/allergies_chat_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@id/allergies_chat_input_row"
+            app:layout_constraintTop_toBottomOf="@id/allergies_chat_ips_card"
+            tools:listitem="@layout/view_chat_msg_jemma" />
+
+        <!-- Input row : bouton micro + transcript live + bouton stop. -->
+        <LinearLayout
+            android:id="@+id/allergies_chat_input_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/jemma_surface"
+            android:gravity="center_vertical"
+            android:minHeight="64dp"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/allergies_chat_mic_button"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentDescription="@string/allergies_chat_mic_cd"
+                android:text="🎤"
+                android:textSize="22sp"
+                app:cornerRadius="28dp" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/allergies_chat_transcript_live"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:hint="@string/allergies_chat_input_hint"
+                    android:maxLines="3"
+                    android:textColor="@color/jemma_text"
+                    android:textColorHint="@color/jemma_text_muted"
+                    android:textSize="14sp"
+                    tools:text="Je suis allergique à la pénicilline…" />
+
+                <!-- 🆕 Lot 14.5c30 v6 — Animated waveform shown during STT
+                     recording. Drawn on top of the placeholder. Hidden by
+                     default; fragment toggles visibility on mic state. -->
+                <be.heyman.android.jemmapassdemo.ui.profile.allergies.chat.WaveformView
+                    android:id="@+id/allergies_chat_waveform"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+            </FrameLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/allergies_chat_stop_tts_button"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@string/allergies_chat_stop_tts_cd"
+                android:text="🔇"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:cornerRadius="22dp"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

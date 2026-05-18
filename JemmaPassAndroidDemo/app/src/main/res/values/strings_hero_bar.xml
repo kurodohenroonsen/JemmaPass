@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_hero_bar.xml — JEMMA Pass · v2.6.0 · L_HERO_BAR
+
+  Strings for the category filter chips in IpsCodePickerDialog.
+  Used only by allergy substance picker for now.
+-->
+<resources>
+
+    <!-- Picker category filter chips -->
+    <string name="ips_picker_cat_all">ALL</string>
+    <string name="ips_picker_cat_food_desc">Filter: food allergens</string>
+    <string name="ips_picker_cat_medication_desc">Filter: medication allergens</string>
+    <string name="ips_picker_cat_environment_desc">Filter: environment allergens</string>
+    <string name="ips_picker_cat_biologic_desc">Filter: biologic allergens</string>
+    <string name="ips_picker_cat_unknown_desc">Filter: unknown / others</string>
+
+</resources>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_permissions.xml — onboarding permissions screen.
+
+    Shown once, BEFORE the splash, on the very first launch (and re-shown if
+    any required permission was revoked since last run). Every permission
+    here is MANDATORY : without all 5 cards green, the demo is blocked from
+    proceeding to the splash + home.
+
+    The 5 cards group the 7 underlying Android runtime permissions :
+       1. CAMERA                 (1 perm)
+       2. RECORD_AUDIO           (1 perm)
+       3. BLUETOOTH_*            (3 perms : SCAN, ADVERTISE, CONNECT)
+       4. ACCESS_FINE_LOCATION   (1 perm)
+       5. POST_NOTIFICATIONS     (1 perm, Android 13+ only)
+
+    The "Grant all" button chains the 7 prompts in order. The "Continue"
+    button is enabled only once all 5 cards report state=GRANTED. If the
+    user clicks a "Denied permanently" card, the Fragment opens the system
+    Settings page so they can flip the toggle manually.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg"
+    android:fitsSystemWindows="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Header : mascot + title + intro paragraph -->
+            <ImageView
+                android:id="@+id/permissions_mascot"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/jemma_mascot"
+                tools:src="@android:drawable/sym_def_app_icon" />
+
+            <TextView
+                android:id="@+id/permissions_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center"
+                android:text="@string/permissions_title"
+                android:textColor="@color/jemma_primary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/permissions_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/permissions_intro"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="13sp" />
+
+            <!-- Mandatory chip — sets expectations early -->
+            <TextView
+                android:id="@+id/permissions_mandatory_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_pill_offline"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/permissions_mandatory_chip"
+                android:textColor="@color/jemma_primary"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <!-- The 5 permission cards. Each is a <include> on view_permission_card.xml.
+                 The Fragment wires onClick + state per card based on its key. -->
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="6dp"
+                app:dividerColor="@color/jemma_primary_25" />
+
+            <include
+                android:id="@+id/permissions_card_camera"
+                layout="@layout/view_permission_card" />
+
+            <include
+                android:id="@+id/permissions_card_microphone"
+                layout="@layout/view_permission_card" />
+
+            <include
+                android:id="@+id/permissions_card_bluetooth"
+                layout="@layout/view_permission_card" />
+
+            <include
+                android:id="@+id/permissions_card_location"
+                layout="@layout/view_permission_card" />
+
+            <include
+                android:id="@+id/permissions_card_notifications"
+                layout="@layout/view_permission_card" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="14dp"
+                app:dividerColor="@color/jemma_primary_25" />
+
+            <!-- Progress summary : "3 / 5 granted" -->
+            <TextView
+                android:id="@+id/permissions_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/jemma_text"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="3 / 5 accordées" />
+
+            <!-- Primary CTA : Grant all (chains the 7 system prompts) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/permissions_btn_grant_all"
+                style="@style/JemmaPrimaryButton"
+                android:layout_marginTop="14dp"
+                android:text="@string/permissions_btn_grant_all"
+                app:icon="@android:drawable/ic_lock_lock"
+                app:iconTint="@android:color/white" />
+
+            <!--
+                Continue : disabled until ALL 5 cards = GRANTED.
+
+                v2.2.9 : background, text, icon now use ColorStateList to
+                give a clearly different look when isEnabled=false. Without
+                this the button stayed orange even when disabled, looking
+                tappable. Now :
+                  • enabled  → orange + white text/icon (call to action)
+                  • disabled → muted slate + 50% white  (clearly inactive)
+            -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/permissions_btn_continue"
+                style="@style/JemmaPrimaryButton"
+                android:layout_marginTop="8dp"
+                android:enabled="false"
+                android:text="@string/permissions_btn_continue"
+                android:textColor="@color/btn_continue_foreground"
+                app:backgroundTint="@color/btn_continue_background"
+                app:icon="@android:drawable/ic_media_play"
+                app:iconTint="@color/btn_continue_foreground" />
+
+            <!-- Privacy footnote -->
+            <TextView
+                android:id="@+id/permissions_privacy_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/permissions_privacy_note"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="11sp" />
+
+            <!-- "Why mandatory?" expandable info panel.
+                 Hidden by default ; opens when the user taps the link below. -->
+            <TextView
+                android:id="@+id/permissions_why_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="@string/permissions_why_link"
+                android:textColor="@color/jemma_primary"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/permissions_why_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_debug_console"
+                android:fontFamily="monospace"
+                android:padding="10dp"
+                android:text="@string/permissions_why_text"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="11sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

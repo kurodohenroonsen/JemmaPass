@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Contacts edit fragment · NL ─── -->
+    <string name="contacts_edit_title">Noodcontacten</string>
+    <string name="contacts_edit_hero_title">Contacten</string>
+    <string name="contacts_fab_add_desc">Contact toevoegen</string>
+
+    <string name="contacts_empty_default">Nog geen contacten. Tik op de +-knop om er een toe te voegen.</string>
+    <string name="contacts_empty_no_profile">Maak eerst het patiëntprofiel aan voordat je contacten toevoegt.</string>
+    <string name="contacts_unnamed">dit contact</string>
+
+    <plurals name="contacts_count">
+        <item quantity="zero">Geen contacten</item>
+        <item quantity="one">%d contact</item>
+        <item quantity="other">%d contacten</item>
+    </plurals>
+
+    <string name="contacts_saved">Contacten bijgewerkt ✓</string>
+
+    <string name="contacts_delete_title">🗑 Dit contact verwijderen?</string>
+    <string name="contacts_delete_message">%1$s definitief verwijderen?</string>
+    <string name="contacts_delete_cancel">Annuleren</string>
+    <string name="contacts_delete_confirm">🗑 Verwijderen</string>
+
+    <!-- ─── Contact form bottom sheet ─── -->
+    <string name="contact_form_title_create">📞  Contact toevoegen</string>
+    <string name="contact_form_title_edit">📞  Contact bewerken</string>
+
+    <string name="contact_form_label_name">Naam van het contact</string>
+    <string name="contact_form_label_relation">Relatie</string>
+    <string name="contact_form_label_phone">Telefoon</string>
+    <string name="contact_form_label_email">E-mail</string>
+    <string name="contact_form_label_address">Adres</string>
+
+    <string name="contact_form_relation_hint">Tik om een relatie te kiezen</string>
+    <string name="contact_form_relation_picker_title">Relatie tot de patiënt</string>
+
+    <string name="contact_form_cancel">Annuleren</string>
+    <string name="contact_form_save">💾  Opslaan</string>
+
+    <string name="contact_form_validation_name">Naam van het contact is verplicht</string>
+    <string name="contact_form_validation_at_least_one">Vul ten minste een telefoon, e-mail of adres in</string>
+    <string name="contact_form_validation_email">Ongeldig e-mailformaat</string>
+
+    <!-- ─── IPS code picker dialog (generic) ─── -->
+    <string name="ips_picker_search_hint">🔎  Zoeken…</string>
+    <string name="ips_picker_count">%d resultaat(en)</string>
+    <string name="ips_picker_cancel">Annuleren</string>
+
+</resources>

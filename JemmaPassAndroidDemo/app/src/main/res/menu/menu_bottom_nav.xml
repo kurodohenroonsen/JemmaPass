@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    menu_bottom_nav.xml — REVAMPED. The "Home" tab is dropped because its
+    content (profile picker + 8 pillars grid) has been merged into the new
+    Profiles screen (item_profile_active.xml is now the rich card holding
+    the pillar grid).
+
+    🆕 L3 v2.5.2 update — the middle tab is renamed from "Radar" to
+    "SOS/Rescue" with a new alert-triangle icon. The id `dest_radar` is
+    preserved (still pointing at the same nav-graph destination) so that
+    the existing NavController plumbing keeps working ; only the title
+    string and the icon change. The destination itself (in nav_graph.xml)
+    now points at the new SosRescueHubFragment instead of the L1 stub.
+
+    Tab structure :
+       1. Profils      → fragment_profiles
+       2. SOS/Rescue   → fragment_sos_rescue_hub (auto-opens BottomSheet)
+       3. Settings     → fragment_settings
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dest_profiles"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="@string/bottom_nav_profiles" />
+
+    <item
+        android:id="@+id/dest_radar"
+        android:icon="@drawable/ic_sos_rescue_tab"
+        android:title="@string/bottom_nav_sos_rescue" />
+
+    <item
+        android:id="@+id/dest_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/bottom_nav_settings" />
+
+</menu>

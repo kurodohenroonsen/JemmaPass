@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gallery_menu_label">IPS の柱</string>
+    <string name="gallery_title">🩺 IPS の 18 柱</string>
+    <string name="gallery_subtitle">International Patient Summary の 18 種の FHIR リソース。タイルをタップして FHIR R4 構造、フィールド、コード体系を確認できます。</string>
+</resources>

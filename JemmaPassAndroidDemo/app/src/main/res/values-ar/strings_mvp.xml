@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · AR · 2026-05-17 -->
+    <string name="bottom_nav_profiles">الملفات</string>
+    <string name="bottom_nav_radar">رادار</string>
+    <string name="bottom_nav_settings">الإعدادات</string>
+    <string name="bottom_nav_sos_rescue">SOS/إنقاذ</string>
+
+    <string name="sos_rescue_hub_title">SOS / إنقاذ</string>
+    <string name="sos_rescue_hub_subtitle">اختر وضعًا للمتابعة: أرسل SOS كضحية، أو ابحث عن الضحايا كمنقذ.</string>
+    <string name="sos_rescue_hub_open_button">اختر الوضع</string>
+
+    <string name="mode_select_title">اختر دورك</string>
+    <string name="mode_select_sos_title">SOS · أحتاج إلى مساعدة</string>
+    <string name="mode_select_sos_subtitle">يبث ملفي الطبي إلى المنقذين القريبين عبر شبكة Bluetooth.</string>
+    <string name="mode_select_rescuer_title">إنقاذ · أريد المساعدة</string>
+    <string name="mode_select_rescuer_subtitle">امسح بث SOS وقم بفرز الضحايا على رادار مباشر.</string>
+
+    <string name="radar_btn_hide">إخفاء</string>
+    <string name="radar_btn_scan_qr">مسح QR</string>
+    <string name="radar_btn_start">📡 بدء الرادار</string>
+    <string name="radar_btn_stop">إيقاف</string>
+    <string name="l3_radar_btn_stop">🛑 إيقاف الرادار</string>
+
+    <string name="sos_broadcast_title">🆘 بث SOS</string>
+    <string name="sos_broadcast_subtitle">تحافظ خدمة الواجهة الأمامية على أيقونة شاشة القفل وتدوّر أجزاء BLE.</string>
+    <string name="sos_btn_start">بدء\nSOS</string>
+    <string name="sos_btn_stop">إيقاف\nSOS</string>
+    <string name="sos_btn_toggle">🔄 تبديل البث</string>
+    <string name="sos_btn_pause_broadcast">🔇 إيقاف بث BLE مؤقتًا</string>
+    <string name="sos_btn_resume_broadcast">🔊 استئناف بث BLE</string>
+    <string name="l3_sos_btn_start">🆘 تنشيط SOS</string>
+    <string name="l3_sos_btn_stop">🛑 إلغاء تنشيط SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">فشل إنشاء الصورة النقطية</string>
+    <string name="qr_save_file_failed">فشل إنشاء ملف الصورة</string>
+    <string name="qr_save_success">تم حفظ رمز QR في المعرض</string>
+    <string name="qr_save_write_failed">خطأ في الحفظ: %1$s</string>
+    <string name="pdf_export_in_progress">جارٍ إنشاء PDF موفر للحبر…</string>
+    <string name="pdf_export_failed">فشل إنشاء PDF</string>
+    <string name="share_jemma_pass_title">مشاركة Jemma Pass</string>
+    <string name="scanner_unavailable">الماسح غير متوفر: %1$s</string>
+</resources>

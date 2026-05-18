@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_medications_ips_full.xml · zh-CN -->
+<resources>
+
+    <!-- ── STATUS ── -->
+    <string name="medication_form_label_status">服用状态</string>
+    <string name="medication_form_status_hint">点击以选择</string>
+    <string name="medication_form_status_pick_title">FHIR MedicationStatement 状态</string>
+
+    <!-- ── EFFECTIVE DATE ── -->
+    <string name="medication_form_label_effective">服用起始日期</string>
+    <string name="medication_form_effective_hint">点击选择日期</string>
+    <string name="medication_form_effective_pick_title">服用起始日期</string>
+    <string name="medication_form_effective_clear_desc">清除日期</string>
+
+    <!-- ── REASON CODE (Condition KB) ── -->
+    <string name="medication_form_label_reason_code">结构化适应症（病况）</string>
+    <string name="medication_form_reason_code_hint">点击以选择病况</string>
+    <string name="medication_form_reason_code_picker_title">医学适应症</string>
+    <string name="medication_form_reason_code_clear_desc">清除适应症</string>
+
+</resources>

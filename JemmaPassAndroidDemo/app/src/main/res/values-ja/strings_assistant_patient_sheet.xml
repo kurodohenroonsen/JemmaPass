@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="assistant_mode_photo_patient_title">身分証をスキャン</string>
+    <string name="assistant_mode_photo_patient_sub">マイナンバーカード、パスポート、保険証…</string>
+    <string name="assistant_mode_voice_patient_sub">氏名、生年月日を伝えてください…</string>
+    <string name="assistant_patient_auto_return_toast">フィールド抽出完了 · フォームに戻ります…</string>
+</resources>

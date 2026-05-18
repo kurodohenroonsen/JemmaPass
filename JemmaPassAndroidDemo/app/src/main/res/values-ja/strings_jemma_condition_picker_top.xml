@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="condition_picker_status_top">%1$d 件の候補 · 入力で絞り込み</string>
+</resources>

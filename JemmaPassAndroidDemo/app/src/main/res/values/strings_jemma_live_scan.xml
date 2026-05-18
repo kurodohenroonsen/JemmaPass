@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="livescan_title">Live medication scan</string>
+    <string name="livescan_perm_missing">📷 Camera permission required for live scan</string>
+    <string name="livescan_victim_not_found">⚠️ Victim profile not found</string>
+
+    <string name="livescan_hint_searching">🐢 Point the camera at the medication box…</string>
+    <string name="livescan_hint_accumulating">🔍 %1$d frames · %2$d codes · trigger at %3$d</string>
+    <string name="livescan_hint_identifying">🧠 Identifying medication with Gemma vision…</string>
+    <string name="livescan_hint_crosschecking">🩺 Cross-check %1$s (%2$s) against patient…</string>
+
+    <string name="livescan_verdict_safe">No interactions detected</string>
+    <string name="livescan_explain_waiting">🧠 Gemma is preparing the explanation…</string>
+    <string name="livescan_safe_alt">🟢 Safe alternative: %1$s (%2$s)</string>
+    <string name="livescan_no_safe_found">No safe alternative found · %1$d candidates tested</string>
+    <string name="livescan_no_safe_banner">⚠️ Drug contraindicated · no safe alternative</string>
+    <string name="livescan_no_safe_advise">Recommend consulting a physician.</string>
+
+    <!-- 🆕 FIX4 -->
+    <string name="livescan_cancel_button">✕ CANCEL SCAN</string>
+    <string name="livescan_panel_phase_identifying">🧠 Gemma is identifying the medication…</string>
+    <string name="livescan_panel_phase_crosschecking">🩺 Cross-checking against patient…</string>
+    <string name="livescan_panel_close">Close</string>
+
+    <!-- 🆕 FIX7 — verbose zones for judges -->
+    <string name="livescan_panel_zone_ocr">👁  ML Kit OCR INPUT</string>
+    <string name="livescan_panel_zone_kb">🔍 KB FTS5 CANDIDATES</string>
+    <string name="livescan_panel_zone_gemma">🧠 GEMMA VISION DECISION</string>
+    <string name="livescan_panel_zone_xcheck">🩺 SQL CROSS-CHECK · DDInter 2.0</string>
+    <string name="livescan_panel_zone_stream">📡 GEMMA STREAMING EXPLANATION</string>
+</resources>

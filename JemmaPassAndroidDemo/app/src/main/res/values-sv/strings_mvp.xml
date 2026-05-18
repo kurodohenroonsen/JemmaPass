@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · SV · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Profiler</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Inställningar</string>
+    <string name="bottom_nav_sos_rescue">SOS/Räddning</string>
+
+    <string name="sos_rescue_hub_title">SOS / Räddning</string>
+    <string name="sos_rescue_hub_subtitle">Välj ett läge för att fortsätta: skicka ett SOS som offer eller sök efter offer som räddare.</string>
+    <string name="sos_rescue_hub_open_button">Välj läge</string>
+
+    <string name="mode_select_title">Välj din roll</string>
+    <string name="mode_select_sos_title">SOS · Jag behöver hjälp</string>
+    <string name="mode_select_sos_subtitle">Sänder min medicinska profil till räddare i närheten via Bluetooth-mesh.</string>
+    <string name="mode_select_rescuer_title">Räddning · Jag vill hjälpa</string>
+    <string name="mode_select_rescuer_subtitle">Sök efter SOS-sändningar och triagera offer i en live-radar.</string>
+
+    <string name="radar_btn_hide">Dölj</string>
+    <string name="radar_btn_scan_qr">Skanna QR</string>
+    <string name="radar_btn_start">📡 STARTA RADAR</string>
+    <string name="radar_btn_stop">Stoppa</string>
+    <string name="l3_radar_btn_stop">🛑 STOPPA RADAR</string>
+
+    <string name="sos_broadcast_title">🆘 SOS-sändning</string>
+    <string name="sos_broadcast_subtitle">Förgrundstjänst håller låsskärmsikonen och roterar BLE-bitar.</string>
+    <string name="sos_btn_start">STARTA\nSOS</string>
+    <string name="sos_btn_stop">STOPPA\nSOS</string>
+    <string name="sos_btn_toggle">🔄 VÄXLA SÄNDNING</string>
+    <string name="sos_btn_pause_broadcast">🔇 Pausa BLE-sändning</string>
+    <string name="sos_btn_resume_broadcast">🔊 Återuppta BLE-sändning</string>
+    <string name="l3_sos_btn_start">🆘 AKTIVERA SOS</string>
+    <string name="l3_sos_btn_stop">🛑 INAKTIVERA SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Kunde inte generera bitmap</string>
+    <string name="qr_save_file_failed">Kunde inte skapa bildfil</string>
+    <string name="qr_save_success">QR-kod sparad i galleriet</string>
+    <string name="qr_save_write_failed">Sparfel: %1$s</string>
+    <string name="pdf_export_in_progress">Genererar Eco-Bläck PDF…</string>
+    <string name="pdf_export_failed">PDF-generering misslyckades</string>
+    <string name="share_jemma_pass_title">Dela Jemma Pass</string>
+    <string name="scanner_unavailable">Skanner inte tillgänglig: %1$s</string>
+</resources>

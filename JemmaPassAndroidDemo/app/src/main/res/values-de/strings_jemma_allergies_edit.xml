@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Allergies edit fragment · DE ─── -->
+    <string name="allergies_edit_title">Allergien</string>
+    <string name="allergies_edit_hero_title">Allergien</string>
+    <string name="allergies_fab_add_desc">Allergie hinzufügen</string>
+
+    <string name="allergies_empty_default">Noch keine Allergien. Tippe auf die +-Schaltfläche, um eine hinzuzufügen.</string>
+    <string name="allergies_empty_no_profile">Erstelle zuerst das Patientenprofil, bevor du Allergien hinzufügst.</string>
+    <string name="allergies_unnamed">diese Allergie</string>
+
+    <plurals name="allergies_count">
+        <item quantity="zero">Keine Allergien</item>
+        <item quantity="one">%d Allergie</item>
+        <item quantity="other">%d Allergien</item>
+    </plurals>
+
+    <string name="allergies_saved">Allergien aktualisiert ✓</string>
+
+    <string name="allergies_delete_title">🗑 Diese Allergie löschen?</string>
+    <string name="allergies_delete_message">%1$s endgültig löschen?</string>
+    <string name="allergies_delete_cancel">Abbrechen</string>
+    <string name="allergies_delete_confirm">🗑 Löschen</string>
+
+    <!-- ─── Allergy form bottom sheet ─── -->
+    <string name="allergy_form_title_create">🩹  Allergie hinzufügen</string>
+    <string name="allergy_form_title_edit">🩹  Allergie bearbeiten</string>
+
+    <string name="allergy_form_label_substance">Substanz / Allergen</string>
+    <string name="allergy_form_label_severity">Schweregrad</string>
+    <string name="allergy_form_label_status">Status</string>
+    <string name="allergy_form_label_mechanism">Mechanismus</string>
+    <string name="allergy_form_mechanism_helper">z. B. IgE-vermittelt, Nahrungsmittel, usw.</string>
+    <string name="allergy_form_label_notes">Manifestation / Notizen</string>
+
+    <string name="allergy_form_substance_hint">Tippen, um eine Substanz zu wählen</string>
+    <string name="allergy_form_substance_picker_title">Substanz (SNOMED IPS)</string>
+
+    <string name="allergy_form_severity_high">⚠ Schwer</string>
+    <string name="allergy_form_severity_low">Leicht</string>
+    <string name="allergy_form_severity_unknown">Unbekannt</string>
+
+    <string name="allergy_form_status_active">Aktiv</string>
+    <string name="allergy_form_status_inactive">Inaktiv</string>
+    <string name="allergy_form_status_resolved">Behoben</string>
+
+    <string name="allergy_form_cancel">Abbrechen</string>
+    <string name="allergy_form_save">💾  Speichern</string>
+
+    <string name="allergy_form_validation_substance">Wähle zuerst eine Substanz</string>
+    <string name="allergy_form_validation_catalog_empty">SNOMED-Katalog nicht verfügbar. Erneut versuchen.</string>
+
+</resources>

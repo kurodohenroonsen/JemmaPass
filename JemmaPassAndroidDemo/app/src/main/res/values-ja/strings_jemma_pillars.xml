@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pillar_chip_active">アクティブ · 編集機能近日</string>
+
+    <!-- ═══ 柱 #1 · patient ═══ -->
+    <string name="pillar_patient_title">患者</string>
+    <string name="pillar_patient_ips_type">FHIR R4 · Patient</string>
+    <string name="pillar_patient_desc">身元と人口統計：氏名、性別、生年月日、血液型、連絡先。すべての IPS 文書のアンカー。</string>
+
+    <!-- ═══ 柱 #2 · contacts ═══ -->
+    <string name="pillar_contacts_title">緊急連絡先</string>
+    <string name="pillar_contacts_ips_type">FHIR R4 · Patient.contact</string>
+    <string name="pillar_contacts_desc">緊急時に連絡する信頼できる人（近親者、配偶者、友人）。FHIR Patient.contact[] にマッピング。</string>
+
+    <!-- ═══ 柱 #3 · allergies ═══ -->
+    <string name="pillar_allergies_title">アレルギー</string>
+    <string name="pillar_allergies_ips_type">FHIR R4 · AllergyIntolerance</string>
+    <string name="pillar_allergies_desc">確認済みの食物・薬物・環境・生物製剤アレルギーと重症度・反応。救助者の有害な相互作用回避に重要。</string>
+
+    <!-- ═══ 柱 #4 · medications ═══ -->
+    <string name="pillar_medications_title">処方薬</string>
+    <string name="pillar_medications_ips_type">FHIR R4 · MedicationStatement</string>
+    <string name="pillar_medications_desc">現在の処方：物質（ATC/RxNorm）、用量、頻度、経路。SOS受信時にDDInter 2.0 KB が876K 相互作用をリアルタイムチェック。</string>
+
+    <!-- ═══ 柱 #5 · conditions ═══ -->
+    <string name="pillar_conditions_title">現在の病状</string>
+    <string name="pillar_conditions_ips_type">FHIR R4 · Condition (clinical_status=active)</string>
+    <string name="pillar_conditions_desc">慢性または現在進行中の疾患：糖尿病、高血圧、喘息、心房細動など。SNOMED CT と ICD-10 でコード化。</string>
+
+    <!-- ═══ 柱 #6 · pastProblems ═══ -->
+    <string name="pillar_past_problems_title">既往歴</string>
+    <string name="pillar_past_problems_ips_type">FHIR R4 · Condition (clinical_status=resolved)</string>
+    <string name="pillar_past_problems_desc">解消された病状と歴史的診断：過去の手術、治癒した感染症、治癒した怪我。累積的な健康状況の文脈に有用。</string>
+
+    <!-- ═══ 柱 #7 · immunizations ═══ -->
+    <string name="pillar_immunizations_title">予防接種</string>
+    <string name="pillar_immunizations_ips_type">FHIR R4 · Immunization</string>
+    <string name="pillar_immunizations_desc">ワクチン接種履歴：ワクチンコード（CVX/SNOMED）、日付、ロット番号、製造元。渡航医療と感染症対応に重要。</string>
+
+    <!-- ═══ 柱 #8 · procedures ═══ -->
+    <string name="pillar_procedures_title">手術・処置</string>
+    <string name="pillar_procedures_ips_type">FHIR R4 · Procedure</string>
+    <string name="pillar_procedures_desc">手術および医療処置：虫垂切除、人工膝関節、心臓カテーテル法。SNOMED CT、CPT、ICD-10-PCS でコード化。</string>
+
+    <!-- ═══ 柱 #9 · devices ═══ -->
+    <string name="pillar_devices_title">医療機器</string>
+    <string name="pillar_devices_ips_type">FHIR R4 · DeviceUseStatement</string>
+    <string name="pillar_devices_desc">アクティブな医療機器とインプラント：ペースメーカー、インスリンポンプ、人工内耳、義肢。MRI 安全性と緊急医療に重要。</string>
+
+    <!-- ═══ 柱 #10 · functional ═══ -->
+    <string name="pillar_functional_title">機能状態</string>
+    <string name="pillar_functional_ips_type">FHIR R4 · ClinicalImpression / Observation</string>
+    <string name="pillar_functional_desc">感覚、運動、認知の障害：失明、難聴、麻痺、認知症。救助者がコミュニケーションを適応させるのに役立つ。</string>
+
+    <!-- ═══ 柱 #11 · pregnancy ═══ -->
+    <string name="pillar_pregnancy_title">妊娠状態</string>
+    <string name="pillar_pregnancy_ips_type">FHIR R4 · Observation (LOINC 82810-3)</string>
+    <string name="pillar_pregnancy_desc">現在の妊娠状態：妊娠中／妊娠していない／不明、予定日付き。薬剤と画像診断の禁忌に重要。</string>
+
+    <!-- ═══ 柱 #12 · results ═══ -->
+    <string name="pillar_results_title">検査結果</string>
+    <string name="pillar_results_ips_type">FHIR R4 · Observation (LOINC)</string>
+    <string name="pillar_results_desc">最近の検査値：血球数、血糖、INR、電解質など。LOINC と UCUM 単位でコード化。傾向分析の基礎。</string>
+
+    <!-- ═══ 柱 #13 · advanceDirectives ═══ -->
+    <string name="pillar_advance_title">事前指示書</string>
+    <string name="pillar_advance_ips_type">FHIR R4 · Consent</string>
+    <string name="pillar_advance_desc">終末期の希望：CPR（はい／いいえ）、コンフォートケア、人工栄養、臓器提供。患者の自律性を機械可読形式で表現。</string>
+
+    <!-- ═══ 柱 #14 · consents ═══ -->
+    <string name="pillar_consents_title">同意書</string>
+    <string name="pillar_consents_ips_type">FHIR R4 · Consent</string>
+    <string name="pillar_consents_desc">アクティブな同意と認可：データ共有、研究参加、臓器提供登録。意図と有効期限を追跡。</string>
+
+    <!-- ═══ 柱 #15 · goals ═══ -->
+    <string name="pillar_goals_title">ケアの目標</string>
+    <string name="pillar_goals_ips_type">FHIR R4 · Goal</string>
+    <string name="pillar_goals_desc">アクティブな治療目標：血圧目標、減量、回復のマイルストーン。ケアチームが治療計画を整合させるのに使用。</string>
+
+    <!-- ═══ 柱 #16 · encounters ═══ -->
+    <string name="pillar_encounters_title">受診履歴</string>
+    <string name="pillar_encounters_ips_type">FHIR R4 · Encounter</string>
+    <string name="pillar_encounters_desc">最近の医療受診：入院、外来診察、救急受診。現状のタイムライン的文脈を提供。</string>
+
+    <!-- ═══ 柱 #17 · occupational ═══ -->
+    <string name="pillar_occupational_title">職業データ</string>
+    <string name="pillar_occupational_ips_type">FHIR R4 · Observation (LOINC 74166-0)</string>
+    <string name="pillar_occupational_desc">現在の雇用状況：雇用主、職位。労働衛生、曝露歴、リハビリ計画に関連。</string>
+
+    <!-- ═══ 柱 #18 · providers ═══ -->
+    <string name="pillar_providers_title">ケアチーム</string>
+    <string name="pillar_providers_ips_type">FHIR R4 · CareTeam / Practitioner</string>
+    <string name="pillar_providers_desc">担当医とケア提供者：かかりつけ医、専門医、病院。引き継ぎとケアの継続性のための連絡先。</string>
+
+    <!-- ═══ FIELD LABELS ═══ -->
+    <string name="pillar_field_given_name">名</string>
+    <string name="pillar_field_given_name_desc">公的身分証明書に記載されたファーストネーム。</string>
+    <string name="pillar_field_family_name">姓</string>
+    <string name="pillar_field_family_name_desc">公的身分証明書に記載された姓。</string>
+    <string name="pillar_field_gender">性別</string>
+    <string name="pillar_field_gender_desc">行政上の性別（HL7 v3）：male, female, other, unknown。</string>
+    <string name="pillar_field_birth_date">生年月日</string>
+    <string name="pillar_field_birth_date_desc">ISO 8601 形式の生年月日（YYYY-MM-DD）。</string>
+    <string name="pillar_field_blood_type">血液型</string>
+    <string name="pillar_field_blood_type_desc">ABO + RhD グループ（例：A+、O-）。緊急時の輸血に重要。</string>
+
+    <string name="pillar_field_phone">電話</string>
+    <string name="pillar_field_phone_desc">個人電話番号、用途コード付き。</string>
+    <string name="pillar_field_email">メール</string>
+    <string name="pillar_field_email_desc">個人メールアドレス、用途コード付き。</string>
+    <string name="pillar_field_address_line1">住所（番地・町名）</string>
+    <string name="pillar_field_address_line1_desc">主たる住所（番地＋通り名）。</string>
+    <string name="pillar_field_city">市区町村</string>
+    <string name="pillar_field_city_desc">主たる住所の市区町村。</string>
+    <string name="pillar_field_country">国</string>
+    <string name="pillar_field_country_desc">居住国の ISO 3166 alpha-2 コード。</string>
+
+    <string name="pillar_field_contact_name">連絡先名</string>
+    <string name="pillar_field_contact_name_desc">緊急連絡先の人物の氏名。</string>
+    <string name="pillar_field_relationship">関係</string>
+    <string name="pillar_field_relationship_desc">患者との関係（配偶者、親、友人）、HL7 v3 RoleCode 準拠。</string>
+    <string name="pillar_field_phone_mobile">携帯電話</string>
+    <string name="pillar_field_phone_mobile_desc">連絡先の携帯（ContactPoint use=mobile）。</string>
+    <string name="pillar_field_phone_work">職場電話</string>
+    <string name="pillar_field_phone_work_desc">連絡先の職場電話（ContactPoint use=work）。</string>
+
+    <string name="pillar_field_substance">物質 / アレルゲン</string>
+    <string name="pillar_field_substance_desc">引き金となる物質、SNOMED CT または RxNorm でコード化が望ましい。</string>
+    <string name="pillar_field_criticality">重症度</string>
+    <string name="pillar_field_criticality_desc">最悪の予期反応の重症度：low, high, unable-to-assess。</string>
+    <string name="pillar_field_clinical_status">臨床ステータス</string>
+    <string name="pillar_field_clinical_status_desc">現在の状態：active, inactive, resolved（FHIR clinical-status）。</string>
+    <string name="pillar_field_manifestation">症状</string>
+    <string name="pillar_field_manifestation_desc">観察された反応：アナフィラキシー、蕁麻疹、浮腫など。</string>
+    <string name="pillar_field_onset_date">発症日</string>
+    <string name="pillar_field_onset_date_desc">病状／アレルギー／イベントが最初に現れた時（ISO 8601）。</string>
+
+    <string name="pillar_field_medication">薬剤</string>
+    <string name="pillar_field_medication_desc">薬剤、ATC または RxNorm でコード化が望ましい。DDI チェックの基盤。</string>
+    <string name="pillar_field_dose_value">量</string>
+    <string name="pillar_field_dose_value_desc">用量の数値（例：5）。</string>
+    <string name="pillar_field_dose_unit">単位</string>
+    <string name="pillar_field_dose_unit_desc">用量単位の UCUM コード（例：mg, mL, g）。</string>
+    <string name="pillar_field_timing">服用頻度</string>
+    <string name="pillar_field_timing_desc">頻度／スケジュール（例：1日2回、週1回）。</string>
+    <string name="pillar_field_route">投与経路</string>
+    <string name="pillar_field_route_desc">投与経路（経口、静注、外用など）。</string>
+    <string name="pillar_field_reason">理由 / 適応</string>
+    <string name="pillar_field_reason_desc">この薬剤を服用する理由 — Condition へのリンク。</string>
+
+    <string name="pillar_field_condition">病状</string>
+    <string name="pillar_field_condition_desc">疾患または診断、SNOMED CT または ICD-10 でコード化が望ましい。</string>
+    <string name="pillar_field_severity">重症度</string>
+    <string name="pillar_field_severity_desc">疾患の重症度：mild, moderate, severe（CodeableConcept）。</string>
+    <string name="pillar_field_verif_status">確認ステータス</string>
+    <string name="pillar_field_verif_status_desc">診断の確実性：confirmed, provisional, differential など。</string>
+
+    <string name="pillar_field_vaccine">ワクチン</string>
+    <string name="pillar_field_vaccine_desc">投与されたワクチン、CVX または SNOMED CT でコード化。</string>
+    <string name="pillar_field_lot_number">ロット番号</string>
+    <string name="pillar_field_lot_number_desc">製造元のバッチ識別子 — リコール対応に必要。</string>
+    <string name="pillar_field_manufacturer">製造元</string>
+    <string name="pillar_field_manufacturer_desc">製造組織（Pfizer、Moderna、GSK など）。</string>
+    <string name="pillar_field_site">接種部位</string>
+    <string name="pillar_field_site_desc">注射の身体部位（例：左三角筋）。</string>
+
+    <string name="pillar_field_procedure">処置</string>
+    <string name="pillar_field_procedure_desc">外科的または医療的処置、SNOMED CT または CPT でコード化。</string>
+    <string name="pillar_field_status">ステータス</string>
+    <string name="pillar_field_status_desc">FHIR リソースのステータス：in-progress, completed など。</string>
+    <string name="pillar_field_outcome">結果</string>
+    <string name="pillar_field_outcome_desc">処置の結果：successful, partially successful, unsuccessful。</string>
+
+    <string name="pillar_field_device">機器</string>
+    <string name="pillar_field_device_desc">埋め込みまたはアクティブな医療機器、UDI-DI 識別子付きが望ましい。</string>
+    <string name="pillar_field_body_site">身体部位</string>
+    <string name="pillar_field_body_site_desc">機器の解剖学的位置（例：右心室）。</string>
+
+    <string name="pillar_field_impairment">障害</string>
+    <string name="pillar_field_impairment_desc">機能的制限（例：失明、難聴、対麻痺）。</string>
+
+    <string name="pillar_field_status_preg">妊娠状態</string>
+    <string name="pillar_field_status_preg_desc">現状：妊娠中、非妊娠、不明。</string>
+
+    <string name="pillar_field_date">日付</string>
+    <string name="pillar_field_date_desc">イベントが発生または記録された時（ISO 8601）。</string>
+
+    <string name="pillar_field_loinc">LOINC コード</string>
+    <string name="pillar_field_loinc_desc">検査観察の LOINC 識別子（例：Hb は 718-7）。</string>
+    <string name="pillar_field_value">値</string>
+    <string name="pillar_field_value_desc">観察の数値またはコード化された結果。</string>
+    <string name="pillar_field_unit">単位</string>
+    <string name="pillar_field_unit_desc">UCUM 単位（例：mg/dL, mmol/L）。</string>
+    <string name="pillar_field_interpretation">解釈</string>
+    <string name="pillar_field_interpretation_desc">臨床的意味：normal, low, high, abnormal。</string>
+
+    <string name="pillar_field_category">カテゴリー</string>
+    <string name="pillar_field_category_desc">指示書のタイプ（LOINC コード）。</string>
+    <string name="pillar_field_status_adv">拡張ステータス</string>
+    <string name="pillar_field_status_adv_desc">現在有効または取消（FHIR Consent.status）。</string>
+    <string name="pillar_field_cpr">CPR（蘇生）</string>
+    <string name="pillar_field_cpr_desc">心停止時に蘇生を希望するか。</string>
+    <string name="pillar_field_comfort">コンフォートケア</string>
+    <string name="pillar_field_comfort_desc">治癒措置よりも快適性を優先。</string>
+    <string name="pillar_field_nutrition">人工栄養</string>
+    <string name="pillar_field_nutrition_desc">人工的な栄養／水分補給を希望するか。</string>
+
+    <string name="pillar_field_intent">意図</string>
+    <string name="pillar_field_intent_desc">FHIR Consent.intent：deny, permit など。</string>
+
+    <string name="pillar_field_description">説明</string>
+    <string name="pillar_field_description_desc">目標の平易な記述。</string>
+    <string name="pillar_field_priority">優先度</string>
+    <string name="pillar_field_priority_desc">目標の優先度：high, medium, low。</string>
+    <string name="pillar_field_target_date">目標日</string>
+    <string name="pillar_field_target_date_desc">目標達成までの日付。</string>
+
+    <string name="pillar_field_type">種類</string>
+    <string name="pillar_field_type_desc">受診の分類：ambulatory, emergency, inpatient など。</string>
+
+    <string name="pillar_field_employer">雇用主</string>
+    <string name="pillar_field_employer_desc">現在の雇用組織名。</string>
+    <string name="pillar_field_job_title">職位</string>
+    <string name="pillar_field_job_title_desc">現在の職位または職業。</string>
+
+    <string name="pillar_field_practitioner">医療従事者</string>
+    <string name="pillar_field_practitioner_desc">担当医その他の医療専門職。</string>
+    <string name="pillar_field_organization">組織</string>
+    <string name="pillar_field_organization_desc">病院、クリニック、ケア施設。</string>
+
+</resources>

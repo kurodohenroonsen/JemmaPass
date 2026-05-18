@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_model_card.xml — single Gemma model card in Settings. Reused 3 times :
+      • Gemma 4 E2B   (text + vision + audio · 2.4 GB · fast)
+      • Gemma 4 E4B   (text + vision + audio · 3.4 GB · quality)
+      • Gemma 3 270M  (intent classifier only · 290 MB · ultra-fast)
+
+    State chips :
+      • status : ⬇ not-downloaded / ⏳ downloading / ✓ downloaded / ★ active
+      • backend : GPU / CPU
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/jemma_card_active"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="1dp"
+    app:strokeColor="@color/jemma_primary_25"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/model_card_emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                tools:text="🧠" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/model_card_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="Gemma 4 E4B" />
+
+                <TextView
+                    android:id="@+id/model_card_capabilities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_text_muted"
+                    android:textSize="11sp"
+                    tools:text="text · vision · audio" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/model_card_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_pill_count"
+                android:fontFamily="monospace"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:textColor="@color/jemma_primary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:text="★ ACTIF" />
+        </LinearLayout>
+
+        <!-- Size + backend + downloaded byte count -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/model_card_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textColor="@color/jemma_primary"
+                android:textSize="10sp"
+                tools:text="3.4 GB" />
+
+            <TextView
+                android:id="@+id/model_card_backend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="monospace"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="10sp"
+                tools:text="GPU backend" />
+        </LinearLayout>
+
+        <!-- Download progress (visible during DL) -->
+        <ProgressBar
+            android:id="@+id/model_card_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="6dp"
+            android:max="100"
+            android:progressTint="@color/jemma_primary"
+            android:visibility="gone"
+            tools:progress="62"
+            tools:visibility="visible" />
+
+        <!-- Action row : download / activate / delete -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/model_card_btn_delete"
+                style="@style/JemmaTextButton"
+                android:layout_marginEnd="6dp"
+                android:textColor="@color/jemma_danger"
+                android:text="@string/btn_delete"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/model_card_btn_action"
+                style="@style/JemmaPrimaryButton"
+                android:layout_width="wrap_content"
+                android:text="@string/model_btn_download" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

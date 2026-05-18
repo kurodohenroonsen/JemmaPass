@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tts_safe">相互作用は検出されませんでした。</string>
+
+    <string name="tts_major_allergy">危険。%1$s に既知のアレルギーがあります。投与しないでください。</string>
+    <string name="tts_major_ddi">危険。%1$s と重大な相互作用があります。投与しないでください。</string>
+    <string name="tts_major_condition">危険。%1$s のため禁忌です。投与しないでください。</string>
+
+    <string name="tts_moderate_allergy">注意。%1$s と交差アレルギーがあります。医師に相談してください。</string>
+    <string name="tts_moderate_ddi">注意。%1$s と中等度の相互作用があります。医師に相談してください。</string>
+    <string name="tts_moderate_condition">注意。%1$s のため注意が必要です。医師に相談してください。</string>
+
+    <string name="tts_minor">%1$s と軽微な相互作用があります。</string>
+</resources>

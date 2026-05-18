@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="perso_edit_title">患者の身元情報</string>
+    <string name="perso_edit_hero_title">身元情報</string>
+    <string name="perso_edit_hero_subtitle">FHIR Patient · IPS · 4本柱アクティブ</string>
+
+    <string name="perso_section_name">氏名</string>
+    <string name="perso_section_gender">性別</string>
+    <string name="perso_section_birth_date">生年月日</string>
+    <string name="perso_section_nationality">国籍</string>
+    <string name="perso_section_blood_type">血液型</string>
+
+    <string name="perso_label_given_name">名</string>
+    <string name="perso_label_family_name">姓</string>
+    <string name="perso_label_birth_date_hint">タップして日付を選択</string>
+    <string name="perso_label_nationality_hint">タップして国を選択</string>
+
+    <string name="perso_gender_m">♂ 男</string>
+    <string name="perso_gender_f">♀ 女</string>
+    <string name="perso_gender_o">⚧ 他</string>
+    <string name="perso_gender_u">⊘ U</string>
+
+    <string name="perso_blood_type_pick_title">血液型</string>
+    <string name="perso_nationality_pick_title">国・国籍</string>
+    <string name="perso_birth_date_pick_title">生年月日</string>
+    <string name="perso_pick_chevron">›</string>
+    <string name="perso_nationality_dash">—</string>
+    <string name="perso_blood_type_dash">—</string>
+
+    <string name="perso_save_button">💾  保存</string>
+    <string name="perso_saved_created">プロファイルを作成しました ✓</string>
+    <string name="perso_saved_updated">プロファイルを更新しました ✓</string>
+
+    <string name="perso_validation_name_required">名または姓のうち少なくとも1つが必要です</string>
+    <string name="perso_validation_birth_required">生年月日が必要です (IPS)</string>
+    <string name="perso_validation_nationality_format">国籍は ISO-3166 alpha-2 形式 (例: BE, JP)</string>
+</resources>

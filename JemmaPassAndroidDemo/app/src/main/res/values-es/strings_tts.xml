@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tts_safe">No se detectaron interacciones.</string>
+
+    <string name="tts_major_allergy">Peligro. Alergia conocida a %1$s. No administrar.</string>
+    <string name="tts_major_ddi">Peligro. Interacción mayor con %1$s. No administrar.</string>
+    <string name="tts_major_condition">Peligro. Contraindicado por %1$s. No administrar.</string>
+
+    <string name="tts_moderate_allergy">Precaución. Reactividad cruzada con %1$s. Consulte a un médico.</string>
+    <string name="tts_moderate_ddi">Precaución. Interacción moderada con %1$s. Consulte a un médico.</string>
+    <string name="tts_moderate_condition">Precaución. Precaución por %1$s. Consulte a un médico.</string>
+
+    <string name="tts_minor">Interacción menor detectada con %1$s.</string>
+</resources>

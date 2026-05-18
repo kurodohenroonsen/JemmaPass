@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_settings.xml — REVAMPED.
+
+    Replaces the simple model-picker version from Livraison_demo_layouts_1.0.
+    Now hosts ALL the heavy bootstrapping that used to live on the splash :
+      • Model downloads (Gemma 4 E2B / E4B / Gemma 3 270M)
+      • Knowledge Base download (knowledge_full.db ~2.7 GB)
+      • Preflight readiness check (5 indicators)
+      • One-tap "Prepare the demo" button that chains model + KB downloads
+
+    Inspiration from Edge Gallery patterns we kept :
+      • 4-state download status (NOT_DOWNLOADED / IN_PROGRESS / SUCCEEDED / FAILED)
+      • Multi-state action button (Download → Pause → Resume → Activate → ★ Active)
+      • Expanded-vs-collapsed model card (tap to expand inline)
+
+    The Fragment populates each card via a per-id binding ; no RecyclerView
+    here because the set is fixed (3 models + 1 KB + 5 preflight rows).
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/settings_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/settings_title"
+            app:titleTextColor="@color/jemma_primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ╔═════════════════════════════════════════════════════════╗
+                 ║ ⚡ PREPARE THE DEMO — 1-TAP SETUP                        ║
+                 ║ Chains : E4B download + KB download + first warmup.     ║
+                 ║ Disabled if no permissions ; replaced by "✓ Ready" pill ║
+                 ║ once preflight checklist is fully green.                ║
+                 ╚═════════════════════════════════════════════════════════╝ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/settings_prepare_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="@color/jemma_card_active"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/jemma_accent"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="⚡"
+                            android:textSize="28sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/settings_prepare_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/settings_prepare_title"
+                                android:textColor="@color/jemma_text"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/settings_prepare_subtitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/settings_prepare_subtitle"
+                                android:textColor="@color/jemma_text_muted"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Aggregate progress ; visible only while chaining downloads. -->
+                    <ProgressBar
+                        android:id="@+id/settings_prepare_progress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp"
+                        android:layout_marginTop="12dp"
+                        android:max="100"
+                        android:progressTint="@color/jemma_accent"
+                        android:visibility="gone"
+                        tools:progress="42"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/settings_prepare_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="monospace"
+                        android:textColor="@color/jemma_text_muted"
+                        android:textSize="11sp"
+                        android:visibility="gone"
+                        tools:text="Étape 2/3 · KB 1.2 GB / 2.7 GB · 18 MB/s · ~3 min"
+                        tools:visibility="visible" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/settings_prepare_btn"
+                        style="@style/JemmaPrimaryButton"
+                        android:layout_marginTop="14dp"
+                        android:text="@string/settings_prepare_btn_start"
+                        app:backgroundTint="@color/jemma_accent"
+                        app:icon="@android:drawable/ic_media_play"
+                        app:iconTint="@android:color/white" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ╔═════════════════════════════════════════════════════════╗
+                 ║ ✅ PREFLIGHT — readiness checklist                       ║
+                 ║ 5 indicator rows. Each row : icon + label + status pill ║
+                 ║ Tap row → relevant section/screen jumps                 ║
+                 ╚═════════════════════════════════════════════════════════╝ -->
+            <TextView
+                style="@style/JemmaSectionHeader"
+                android:text="@string/settings_section_preflight" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/jemma_card_active"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp">
+
+                    <include
+                        android:id="@+id/settings_preflight_permissions"
+                        layout="@layout/view_preflight_row" />
+
+                    <include
+                        android:id="@+id/settings_preflight_model"
+                        layout="@layout/view_preflight_row" />
+
+                    <include
+                        android:id="@+id/settings_preflight_kb"
+                        layout="@layout/view_preflight_row" />
+
+                    <include
+                        android:id="@+id/settings_preflight_profile"
+                        layout="@layout/view_preflight_row" />
+
+                    <include
+                        android:id="@+id/settings_preflight_storage"
+                        layout="@layout/view_preflight_row" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ╔═════════════════════════════════════════════════════════╗
+                 ║ 🧠 GEMMA 4 MODELS                                        ║
+                 ╚═════════════════════════════════════════════════════════╝ -->
+            <TextView
+                style="@style/JemmaSectionHeader"
+                android:layout_marginTop="20dp"
+                android:text="@string/settings_section_model" />
+
+            <TextView
+                style="@style/JemmaIpsHint"
+                android:text="@string/settings_section_model_hint" />
+
+            <include
+                android:id="@+id/settings_model_e2b"
+                layout="@layout/view_model_card_v2" />
+
+            <include
+                android:id="@+id/settings_model_e4b"
+                layout="@layout/view_model_card_v2" />
+
+            <include
+                android:id="@+id/settings_model_270m"
+                layout="@layout/view_model_card_v2" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settings_btn_benchmark"
+                style="@style/JemmaTextButton"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center"
+                android:text="@string/settings_btn_benchmark"
+                app:icon="@android:drawable/ic_menu_sort_by_size" />
+
+            <!-- ╔═════════════════════════════════════════════════════════╗
+                 ║ 📚 KNOWLEDGE BASE                                        ║
+                 ╚═════════════════════════════════════════════════════════╝ -->
+            <TextView
+                style="@style/JemmaSectionHeader"
+                android:layout_marginTop="20dp"
+                android:text="@string/settings_section_kb" />
+
+            <TextView
+                style="@style/JemmaIpsHint"
+                android:text="@string/settings_section_kb_hint" />
+
+            <include
+                android:id="@+id/settings_kb_card"
+                layout="@layout/view_kb_card" />
+
+            <!-- ╔═════════════════════════════════════════════════════════╗
+                 ║ 🌐 LANGUAGE                                              ║
+                 ╚═════════════════════════════════════════════════════════╝ -->
+            <TextView
+                style="@style/JemmaSectionHeader"
+                android:layout_marginTop="20dp"
+                android:text="@string/settings_section_lang" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/JemmaTextInputLayout"
+                android:hint="@string/settings_lang_hint"
+                app:endIconMode="dropdown_menu">
+                <AutoCompleteTextView
+                    android:id="@+id/settings_lang_picker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:text="🇬🇧 English" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ╔═════════════════════════════════════════════════════════╗
+                 ║ 🧪 DEMO DATA                                             ║
+                 ╚═════════════════════════════════════════════════════════╝ -->
+            <TextView
+                style="@style/JemmaSectionHeader"
+                android:layout_marginTop="20dp"
+                android:text="@string/settings_section_demo" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/jemma_card_active"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_demo_personas_intro"
+                        android:textColor="@color/jemma_text_muted"
+                        android:textSize="12sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/settings_btn_seed_personas"
+                        style="@style/JemmaTextButton"
+                        android:layout_marginTop="8dp"
+                        android:layout_gravity="start"
+                        android:text="@string/settings_btn_seed_personas"
+                        app:icon="@android:drawable/ic_menu_add" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ╔═════════════════════════════════════════════════════════╗
+                 ║ 🆕 v4.1 FIX #3 — INFERENCE ACCELERATOR (GPU / CPU)      ║
+                 ╚═════════════════════════════════════════════════════════╝ -->
+            <TextView
+                style="@style/JemmaSectionHeader"
+                android:layout_marginTop="20dp"
+                android:text="@string/settings_accelerator_title" />
+
+            <TextView
+                style="@style/JemmaIpsHint"
+                android:text="@string/settings_accelerator_subtitle" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/settings_accelerator_toggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/settings_accelerator_gpu"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_accelerator_gpu" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/settings_accelerator_cpu"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_accelerator_cpu" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- ╔═════════════════════════════════════════════════════════╗
+                 ║ 🔒 PRIVACY                                               ║
+                 ╚═════════════════════════════════════════════════════════╝ -->
+            <TextView
+                style="@style/JemmaSectionHeader"
+                android:layout_marginTop="20dp"
+                android:text="@string/settings_section_privacy" />
+
+            <TextView
+                style="@style/JemmaIpsHint"
+                android:text="@string/settings_privacy_text" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settings_btn_wipe"
+                style="@style/JemmaTextButton"
+                android:layout_marginTop="6dp"
+                android:layout_gravity="start"
+                android:textColor="@color/jemma_danger"
+                android:text="@string/settings_btn_wipe"
+                app:icon="@android:drawable/ic_menu_delete"
+                app:iconTint="@color/jemma_danger" />
+
+            <!-- ╔═════════════════════════════════════════════════════════╗
+                 ║ ℹ️ ABOUT                                                  ║
+                 ╚═════════════════════════════════════════════════════════╝ -->
+            <View style="@style/JemmaDivider" />
+
+            <TextView
+                android:id="@+id/settings_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="11sp"
+                tools:text="JemmaAppDemo v1.0 · Gemma 4 Good Hackathon · ASBL Aktina · jemmapass.net" />
+
+            <TextView
+                android:id="@+id/settings_credits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="@string/settings_credits"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

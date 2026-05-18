@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="medications_edit_title">処方薬</string>
+    <string name="medications_edit_hero_title">処方薬</string>
+    <string name="medications_fab_add_desc">薬を追加</string>
+
+    <string name="medications_empty_default">処方薬がまだありません。+ ボタンで追加できます。</string>
+    <string name="medications_empty_no_profile">薬を追加する前に、まず患者プロファイルを作成してください。</string>
+    <string name="medications_unnamed">この薬</string>
+
+    <plurals name="medications_count">
+        <item quantity="other">処方薬 %d 件</item>
+    </plurals>
+
+    <string name="medications_saved">処方薬を更新しました ✓</string>
+
+    <string name="medications_delete_title">🗑 この薬を削除しますか？</string>
+    <string name="medications_delete_message">%1$s を完全に削除しますか？</string>
+    <string name="medications_delete_cancel">キャンセル</string>
+    <string name="medications_delete_confirm">🗑 削除</string>
+
+    <string name="medication_form_title_create">💊  薬を追加</string>
+    <string name="medication_form_title_edit">💊  薬を編集</string>
+
+    <string name="medication_form_label_substance">薬剤 (ATC / RxNorm)</string>
+    <string name="medication_form_label_dose_value">用量</string>
+    <string name="medication_form_label_dose_unit">単位</string>
+    <string name="medication_form_label_timing">服用頻度</string>
+    <string name="medication_form_timing_helper">例: 1日1回、1日2回、週1回など</string>
+    <string name="medication_form_label_route">経路</string>
+    <string name="medication_form_label_reason">適応</string>
+    <string name="medication_form_reason_helper">処方理由 (例: 高血圧)</string>
+
+    <string name="medication_form_substance_hint">タップして薬を検索</string>
+    <string name="medication_form_substance_picker_title">薬剤 (DIAMOND KB)</string>
+
+    <string name="medication_form_route_oral">💊 経口</string>
+    <string name="medication_form_route_injection">💉 IV/IM</string>
+    <string name="medication_form_route_topical">🧴 外用</string>
+    <string name="medication_form_route_subcutaneous">🩹 SC</string>
+
+    <string name="medication_form_cancel">キャンセル</string>
+    <string name="medication_form_save">💾  保存</string>
+
+    <string name="medication_form_validation_substance">まず薬を選択してください</string>
+    <string name="medication_form_validation_dose">用量が無効です (正の数値を入力)</string>
+
+    <string name="drug_picker_search_hint">🔎 薬剤を検索 (JP, EN, ATC…)</string>
+    <string name="drug_picker_status_hint">2 文字以上入力してください</string>
+    <string name="drug_picker_status_searching">🔎 検索中…</string>
+    <string name="drug_picker_status_count">%d 件の結果</string>
+    <string name="drug_picker_status_empty">結果なし。別の用語を試してください。</string>
+    <string name="drug_picker_status_error">ナレッジベースのエラー</string>
+    <string name="drug_picker_cancel">キャンセル</string>
+</resources>

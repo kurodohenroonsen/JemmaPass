@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_allergies_ips_full.xml · DE -->
+<resources>
+
+    <!-- ── TYPE (allergy/intolerance) ── -->
+    <string name="allergy_form_label_type">FHIR-Typ</string>
+    <string name="allergy_form_type_allergy">⚡ Allergie</string>
+    <string name="allergy_form_type_intolerance">⚠️ Intoleranz</string>
+
+    <!-- ── CATEGORY (food/med/env/bio) ── -->
+    <string name="allergy_form_label_category">Kategorie</string>
+    <string name="allergy_form_cat_food">🍴 Nahrung</string>
+    <string name="allergy_form_cat_medication">💊 Med.</string>
+    <string name="allergy_form_cat_environment">🌿 Umw.</string>
+    <string name="allergy_form_cat_biologic">🧬 Bio.</string>
+
+    <!-- ── ONSET ── -->
+    <string name="allergy_form_label_onset">Beginndatum</string>
+    <string name="allergy_form_onset_hint">Tippen, um ein Datum zu wählen</string>
+    <string name="allergy_form_onset_pick_title">Beginndatum der Allergie</string>
+    <string name="allergy_form_onset_clear_desc">Datum löschen</string>
+
+    <!-- ── REACTION ── -->
+    <string name="allergy_form_label_reaction">Beobachtete Reaktion</string>
+    <string name="allergy_form_reaction_hint">Tippen zur Auswahl (Urtikaria, Anaphylaxie…)</string>
+    <string name="allergy_form_reaction_picker_title">Reaktionsmanifestation</string>
+    <string name="allergy_form_reaction_clear_desc">Reaktion löschen</string>
+    <string name="allergy_form_reaction_sev_mild">🟢 Leicht</string>
+    <string name="allergy_form_reaction_sev_moderate">🟡 Mäßig</string>
+    <string name="allergy_form_reaction_sev_severe">🔴 Schwer</string>
+
+</resources>

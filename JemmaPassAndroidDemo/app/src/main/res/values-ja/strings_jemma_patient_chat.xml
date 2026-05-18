@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="patient_chat_title">🪪 患者 · 音声</string>
+    <string name="patient_chat_draft_card_title">取得データ</string>
+    <string name="patient_chat_draft_given_name_fmt">👤 名前: %1$s</string>
+    <string name="patient_chat_draft_gender_fmt">⚥ 性別: %1$s</string>
+    <string name="patient_chat_draft_birth_date_fmt">📅 生年月日: %1$s</string>
+
+    <string name="patient_chat_greeting">こんにちは!お名前、性別、生年月日を教えてください。</string>
+
+    <string name="patient_chat_input_hint">名前、性別、生年月日を話してください…</string>
+    <string name="patient_chat_mic_cd">マイクを有効化</string>
+
+    <string name="patient_chat_status_loading">⏳ 読み込み中…</string>
+    <string name="patient_chat_status_idle">🎤 どうぞ</string>
+    <string name="patient_chat_status_recording">🛑 聞いています…タップして停止</string>
+    <string name="patient_chat_status_thinking">🤔 Jemma が考えています…</string>
+    <string name="patient_chat_status_done">✅ 取得完了 — フォームへ戻る</string>
+
+    <string name="patient_chat_extract_failed">すみません、聞き取れませんでした。名前、性別、生年月日をもう一度お願いします。</string>
+    <string name="patient_chat_extract_error_fmt">Jemma エラー: %1$s</string>
+
+    <string name="patient_chat_mic_perm_needed">マイクの権限が必要です。</string>
+    <string name="patient_chat_stt_unsupported">この端末では音声認識が利用できません。</string>
+    <string name="patient_chat_stt_error_fmt">STT エラー: %1$s</string>
+
+</resources>

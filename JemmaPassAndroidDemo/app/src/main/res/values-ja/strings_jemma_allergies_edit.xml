@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="allergies_edit_title">アレルギー</string>
+    <string name="allergies_edit_hero_title">アレルギー</string>
+    <string name="allergies_fab_add_desc">アレルギーを追加</string>
+
+    <string name="allergies_empty_default">アレルギーがまだありません。+ ボタンで追加できます。</string>
+    <string name="allergies_empty_no_profile">アレルギーを追加する前に、まず患者プロファイルを作成してください。</string>
+    <string name="allergies_unnamed">このアレルギー</string>
+
+    <plurals name="allergies_count">
+        <item quantity="other">アレルギー %d 件</item>
+    </plurals>
+
+    <string name="allergies_saved">アレルギーを更新しました ✓</string>
+
+    <string name="allergies_delete_title">🗑 このアレルギーを削除しますか？</string>
+    <string name="allergies_delete_message">%1$s を完全に削除しますか？</string>
+    <string name="allergies_delete_cancel">キャンセル</string>
+    <string name="allergies_delete_confirm">🗑 削除</string>
+
+    <string name="allergy_form_title_create">🩹  アレルギーを追加</string>
+    <string name="allergy_form_title_edit">🩹  アレルギーを編集</string>
+
+    <string name="allergy_form_label_substance">物質 / アレルゲン</string>
+    <string name="allergy_form_label_severity">重症度</string>
+    <string name="allergy_form_label_status">ステータス</string>
+    <string name="allergy_form_label_mechanism">機序</string>
+    <string name="allergy_form_mechanism_helper">例: IgE介在性、食物関連など</string>
+    <string name="allergy_form_label_notes">症状 / 備考</string>
+
+    <string name="allergy_form_substance_hint">タップして物質を選択</string>
+    <string name="allergy_form_substance_picker_title">物質 (SNOMED IPS)</string>
+
+    <string name="allergy_form_severity_high">⚠ 重度</string>
+    <string name="allergy_form_severity_low">軽度</string>
+    <string name="allergy_form_severity_unknown">不明</string>
+
+    <string name="allergy_form_status_active">有効</string>
+    <string name="allergy_form_status_inactive">無効</string>
+    <string name="allergy_form_status_resolved">解消</string>
+
+    <string name="allergy_form_cancel">キャンセル</string>
+    <string name="allergy_form_save">💾  保存</string>
+
+    <string name="allergy_form_validation_substance">まず物質を選択してください</string>
+    <string name="allergy_form_validation_catalog_empty">SNOMED カタログが利用できません。再試行してください。</string>
+</resources>

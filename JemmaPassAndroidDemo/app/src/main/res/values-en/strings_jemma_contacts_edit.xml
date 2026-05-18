@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="contacts_edit_title">Emergency contacts</string>
+    <string name="contacts_edit_hero_title">Contacts</string>
+    <string name="contacts_fab_add_desc">Add a contact</string>
+
+    <string name="contacts_empty_default">No contacts yet. Tap the + button to add one.</string>
+    <string name="contacts_empty_no_profile">Create the patient profile first before adding contacts.</string>
+    <string name="contacts_unnamed">this contact</string>
+
+    <plurals name="contacts_count">
+        <item quantity="zero">No contacts</item>
+        <item quantity="one">%d contact</item>
+        <item quantity="other">%d contacts</item>
+    </plurals>
+
+    <string name="contacts_saved">Contacts updated ✓</string>
+
+    <string name="contacts_delete_title">🗑 Delete this contact?</string>
+    <string name="contacts_delete_message">Permanently delete %1$s?</string>
+    <string name="contacts_delete_cancel">Cancel</string>
+    <string name="contacts_delete_confirm">🗑 Delete</string>
+
+    <string name="contact_form_title_create">📞  Add a contact</string>
+    <string name="contact_form_title_edit">📞  Edit contact</string>
+
+    <string name="contact_form_label_name">Contact name</string>
+    <string name="contact_form_label_relation">Relationship</string>
+    <string name="contact_form_label_phone">Phone</string>
+    <string name="contact_form_label_email">Email</string>
+    <string name="contact_form_label_address">Address</string>
+
+    <string name="contact_form_relation_hint">Tap to pick a relationship</string>
+    <string name="contact_form_relation_picker_title">Relationship to patient</string>
+
+    <string name="contact_form_cancel">Cancel</string>
+    <string name="contact_form_save">💾  Save</string>
+
+    <string name="contact_form_validation_name">Contact name is required</string>
+    <string name="contact_form_validation_at_least_one">Provide at least one phone, email or address</string>
+    <string name="contact_form_validation_email">Invalid email format</string>
+
+    <string name="ips_picker_search_hint">🔎  Search…</string>
+    <string name="ips_picker_count">%d result(s)</string>
+    <string name="ips_picker_cancel">Cancel</string>
+</resources>

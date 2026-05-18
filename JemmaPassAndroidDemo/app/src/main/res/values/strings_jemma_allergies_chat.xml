@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="allergies_chat_title">🩹 Allergies chat</string>
+    <string name="allergies_chat_greeting">Hi! Tell me about your allergy — the substance, the severity, and what it causes.</string>
+    <string name="allergies_chat_input_hint">Tap 🎤 and speak…</string>
+    <string name="allergies_chat_mic_cd">Toggle the microphone to dictate an allergy</string>
+    <string name="allergies_chat_stop_tts_cd">Stop Jemma\'s voice</string>
+
+    <string name="allergies_chat_err_no_mic_permission">⚠️ I can\'t access the microphone. Open the app settings and grant the mic permission, then come back.</string>
+    <string name="allergies_chat_err_stt_unsupported">⚠️ Your phone doesn\'t support speech recognition. Use \"Enter manually\" from the allergies list instead.</string>
+    <string name="allergies_chat_err_stt_generic">⚠️ I couldn\'t listen (%1$s). Try again or switch to manual input.</string>
+    <string name="allergies_chat_err_gemma_generic">⚠️ Sorry, I had an issue processing what you said. Please try again.</string>
+
+    <!-- 🆕 Lot 14.5c19 — Mini-card IPS + form button -->
+    <string name="allergies_chat_ips_card_title">📋 Captured data</string>
+    <string name="allergies_chat_ips_progress">%1$d/5</string>
+    <string name="allergies_chat_ips_substance_label">Substance</string>
+    <string name="allergies_chat_ips_category_label">Category</string>
+    <string name="allergies_chat_ips_severity_label">Severity</string>
+    <string name="allergies_chat_ips_status_label">Status</string>
+    <string name="allergies_chat_ips_manifestation_label">Manifestation</string>
+    <string name="allergies_chat_ips_missing">—</string>
+    <string name="allergies_chat_ips_line_filled">✅ %1$s · %2$s</string>
+    <string name="allergies_chat_ips_line_missing">⌛ %1$s · —</string>
+
+    <string name="allergies_chat_cat_medication">Medication</string>
+    <string name="allergies_chat_cat_food">Food</string>
+    <string name="allergies_chat_cat_environment">Environment</string>
+    <string name="allergies_chat_cat_biologic">Biologic</string>
+
+    <string name="allergies_chat_sev_high">Severe</string>
+    <string name="allergies_chat_sev_low">Mild</string>
+    <string name="allergies_chat_sev_unknown">Unknown</string>
+
+    <string name="allergies_chat_status_active">Active</string>
+    <string name="allergies_chat_status_resolved">Resolved</string>
+    <string name="allergies_chat_status_inactive">Inactive</string>
+
+    <string name="allergies_chat_save">Save</string>
+    <string name="allergies_chat_save_toast_empty">Tell me at least what you\'re allergic to (the substance) before saving.</string>
+    <string name="allergies_chat_save_toast_resolving">Looking up the medical code…</string>
+    <string name="allergies_chat_save_toast_done">Allergy saved 🐢</string>
+
+    <!-- 🆕 Lot 14.5c24 -->
+    <string name="allergies_chat_ips_substance_resolved">✅ %1$s · %2$s (SNOMED %3$s)</string>
+    <string name="allergies_chat_ips_substance_pending">⏳ %1$s · %2$s (looking up…)</string>
+    <string name="allergies_chat_ips_substance_unresolved">⚠️ %1$s · %2$s (not found in KB)</string>
+
+    <string name="allergies_chat_audio_message">🎤 (audio message · %1$d s)</string>
+    <string name="allergies_chat_jemma_listening">🎧 Jemma is listening to your audio message…</string>
+    <string name="allergies_chat_jemma_thinking_analyze">🧠 One second, I\'m analyzing what you said…</string>
+    <string name="allergies_chat_jemma_thinking_snomed">💾 I\'m verifying the SNOMED code and saving…</string>
+    <string name="allergies_chat_jemma_thinking_default">🧠 One second, I\'m thinking…</string>
+    <string name="allergies_chat_error_audio_processing">Sorry, I couldn\'t process the audio. You can try again, or speak a second time (classic STT mode will take over). (%1$s)</string>
+    <string name="allergies_chat_error_generic">Sorry, I couldn\'t process your request. (%1$s)</string>
+
+    <string name="allergies_chat_auto_kb">(auto KB)</string>
+    <string name="allergies_chat_auto">(auto)</string>
+    
+    <string name="allergies_chat_bg_substance">Substance</string>
+    <string name="allergies_chat_bg_category">Category</string>
+    <string name="allergies_chat_bg_severity">Severity</string>
+    <string name="allergies_chat_bg_status">Status</string>
+    <string name="allergies_chat_bg_manifestation">Manifestation</string>
+    <string name="allergies_chat_bg_onset_date">Onset Date</string>
+    
+    <string name="allergies_chat_bg_search_intolerance">SNOMED Search</string>
+    <string name="allergies_chat_bg_search_reaction">SNOMED Reaction Search</string>
+    <string name="allergies_chat_bg_resolve_intolerance">SNOMED Resolved</string>
+    <string name="allergies_chat_bg_resolve_reaction">SNOMED Reaction Resolved</string>
+    <string name="allergies_chat_bg_confirm_code">SNOMED Code Confirmed</string>
+    <string name="allergies_chat_bg_confirm_reaction">Reaction Code Confirmed</string>
+    
+    <string name="allergies_chat_bg_get_profile">Profile Read</string>
+    <string name="allergies_chat_bg_cross_check">Medication Cross-Check</string>
+    <string name="allergies_chat_bg_red_alert">Critical Alert</string>
+    
+    <string name="allergies_chat_bg_play_tts">Jemma Speaks</string>
+    <string name="allergies_chat_bg_ask_choice">User Question</string>
+    
+    <string name="allergies_chat_bg_save_draft">Save</string>
+    <string name="allergies_chat_bg_cancel_exit">Cancel</string>
+
+</resources>

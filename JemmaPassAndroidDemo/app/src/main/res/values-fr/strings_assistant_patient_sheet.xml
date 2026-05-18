@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_assistant_patient_sheet.xml — Lot 14.5c36
+  Per-pillar overrides for the bottom sheet when pillar=PATIENT.
+  Photo + voice rows get patient-specific text instead of the
+  medication defaults.
+-->
+<resources>
+    <string name="assistant_mode_photo_patient_title">Scanner une pièce d\'identité</string>
+    <string name="assistant_mode_photo_patient_sub">CNI, passeport, carte vitale…</string>
+    <string name="assistant_mode_voice_patient_sub">Dis ton nom, date de naissance…</string>
+    <string name="assistant_patient_auto_return_toast">Champs extraits · retour au formulaire…</string>
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · FI · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Profiilit</string>
+    <string name="bottom_nav_radar">Tutka</string>
+    <string name="bottom_nav_settings">Asetukset</string>
+    <string name="bottom_nav_sos_rescue">SOS/Pelastus</string>
+
+    <string name="sos_rescue_hub_title">SOS / Pelastus</string>
+    <string name="sos_rescue_hub_subtitle">Valitse tila jatkaaksesi: lähetä SOS uhrina tai etsi uhreja pelastajana.</string>
+    <string name="sos_rescue_hub_open_button">Valitse tila</string>
+
+    <string name="mode_select_title">Valitse roolisi</string>
+    <string name="mode_select_sos_title">SOS · Tarvitsen apua</string>
+    <string name="mode_select_sos_subtitle">Lähettää lääketieteellisen profiilini lähellä oleville pelastajille Bluetooth-verkon kautta.</string>
+    <string name="mode_select_rescuer_title">Pelastus · Haluan auttaa</string>
+    <string name="mode_select_rescuer_subtitle">Etsi SOS-lähetyksiä ja triagoi uhrit reaaliaikaisessa tutkassa.</string>
+
+    <string name="radar_btn_hide">Piilota</string>
+    <string name="radar_btn_scan_qr">Skannaa QR</string>
+    <string name="radar_btn_start">📡 KÄYNNISTÄ TUTKA</string>
+    <string name="radar_btn_stop">Pysäytä</string>
+    <string name="l3_radar_btn_stop">🛑 PYSÄYTÄ TUTKA</string>
+
+    <string name="sos_broadcast_title">🆘 SOS-lähetys</string>
+    <string name="sos_broadcast_subtitle">Etualapalvelu pitää lukitusnäytön kuvakkeen ja kierrättää BLE-paloja.</string>
+    <string name="sos_btn_start">KÄYNNISTÄ\nSOS</string>
+    <string name="sos_btn_stop">PYSÄYTÄ\nSOS</string>
+    <string name="sos_btn_toggle">🔄 VAIHDA LÄHETYSTÄ</string>
+    <string name="sos_btn_pause_broadcast">🔇 Keskeytä BLE-lähetys</string>
+    <string name="sos_btn_resume_broadcast">🔊 Jatka BLE-lähetystä</string>
+    <string name="l3_sos_btn_start">🆘 AKTIVOI SOS</string>
+    <string name="l3_sos_btn_stop">🛑 POISTA SOS KÄYTÖSTÄ</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Bittikartan luonti epäonnistui</string>
+    <string name="qr_save_file_failed">Kuvatiedoston luonti epäonnistui</string>
+    <string name="qr_save_success">QR-koodi tallennettu galleriaan</string>
+    <string name="qr_save_write_failed">Tallennusvirhe: %1$s</string>
+    <string name="pdf_export_in_progress">Luodaan Eko-Muste PDF:ää…</string>
+    <string name="pdf_export_failed">PDF:n luonti epäonnistui</string>
+    <string name="share_jemma_pass_title">Jaa Jemma Pass</string>
+    <string name="scanner_unavailable">Skanneri ei käytettävissä: %1$s</string>
+</resources>

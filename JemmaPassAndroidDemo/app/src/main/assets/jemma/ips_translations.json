@@ -1,0 +1,1702 @@
+{
+  "no-allergy-info": {
+    "en": "No information about allergies",
+    "fr": "Aucune information sur les allergies",
+    "ja": "アレルギー情報なし"
+  },
+  "no-known-allergies": {
+    "en": "No known allergies",
+    "fr": "Aucune allergie connue",
+    "ja": "既知のアレルギーなし"
+  },
+  "no-known-environmental-allergies": {
+    "en": "No known environmental allergies",
+    "fr": "Aucune allergie environnementale connue",
+    "ja": "既知の環境アレルギーなし"
+  },
+  "no-known-food-allergies": {
+    "en": "No known food allergies",
+    "fr": "Aucune allergie alimentaire connue",
+    "ja": "既知の食物アレルギーなし"
+  },
+  "no-known-medication-allergies": {
+    "en": "No known medication allergies",
+    "fr": "Aucune allergie médicamenteuse connue",
+    "ja": "既知の薬物アレルギーなし"
+  },
+  "710943006": {
+    "en": "Cockroach protein",
+    "fr": "Protéine de blatte",
+    "ja": "ゴキブリタンパク質"
+  },
+  "7791007": {
+    "en": "Glycine max protein",
+    "fr": "Protéine de soja",
+    "ja": "ダイズタンパク質"
+  },
+  "260156007": {
+    "en": "Mouse urine proteins",
+    "fr": "Protéines urinaires de souris",
+    "ja": "マウス尿タンパク質"
+  },
+  "232350006": {
+    "en": "Allergy to dust mite protein",
+    "fr": "Allergie aux acariens",
+    "ja": "家塵ダニアレルギー"
+  },
+  "264287008": {
+    "en": "Animal dander",
+    "fr": "Squames animales",
+    "ja": "動物のフケ"
+  },
+  "288328004": {
+    "en": "Bee venom",
+    "fr": "Venin d'abeille",
+    "ja": "ミツバチ毒"
+  },
+  "260152009": {
+    "en": "Cat dander",
+    "fr": "Squames de chat",
+    "ja": "ネコのフケ"
+  },
+  "289949002": {
+    "en": "Cypress pollen",
+    "fr": "Pollen de cyprès",
+    "ja": "ヒノキ花粉"
+  },
+  "260154005": {
+    "en": "Dog dander",
+    "fr": "Squames de chien",
+    "ja": "イヌのフケ"
+  },
+  "33008008": {
+    "en": "Dust",
+    "fr": "Poussière",
+    "ja": "塵埃"
+  },
+  "256435007": {
+    "en": "Feather",
+    "fr": "Plumes",
+    "ja": "羽毛"
+  },
+  "256292005": {
+    "en": "Flower and weed pollen",
+    "fr": "Pollen de fleurs et d'herbacées",
+    "ja": "花・雑草花粉"
+  },
+  "256277009": {
+    "en": "Grass pollen",
+    "fr": "Pollen de graminées",
+    "ja": "イネ科花粉"
+  },
+  "128488006": {
+    "en": "House dust",
+    "fr": "Poussière de maison",
+    "ja": "ハウスダスト"
+  },
+  "280939008": {
+    "en": "Insect venom",
+    "fr": "Venin d'insecte",
+    "ja": "昆虫毒"
+  },
+  "111088007": {
+    "en": "Latex",
+    "fr": "Latex",
+    "ja": "ラテックス"
+  },
+  "260126003": {
+    "en": "Olive pollen",
+    "fr": "Pollen d'olivier",
+    "ja": "オリーブ花粉"
+  },
+  "256259004": {
+    "en": "Pollen",
+    "fr": "Pollen",
+    "ja": "花粉"
+  },
+  "320835005": {
+    "en": "Pollen allergy preparations",
+    "fr": "Préparations contre l'allergie au pollen",
+    "ja": "花粉アレルギー製剤"
+  },
+  "256303006": {
+    "en": "Ragweed pollen",
+    "fr": "Pollen d'ambroisie",
+    "ja": "ブタクサ花粉"
+  },
+  "303314008": {
+    "en": "Scorpion venom",
+    "fr": "Venins de scorpion",
+    "ja": "サソリ毒"
+  },
+  "303315009": {
+    "en": "Spider venom",
+    "fr": "Venins d'araignée",
+    "ja": "クモ毒"
+  },
+  "256260009": {
+    "en": "Tree and shrub pollen",
+    "fr": "Pollen d'arbres et d'arbustes",
+    "ja": "樹木・低木花粉"
+  },
+  "256305004": {
+    "en": "Tree resin",
+    "fr": "Résine d'arbre",
+    "ja": "樹脂"
+  },
+  "256440004": {
+    "en": "Vespidae venom",
+    "fr": "Venin de guêpe",
+    "ja": "スズメバチ毒"
+  },
+  "260118006": {
+    "en": "Wall pellitory pollen",
+    "fr": "Pollen de pariétaire",
+    "ja": "ヒカゲミズ花粉"
+  },
+  "419604006": {
+    "en": "Weed pollen",
+    "fr": "Pollen d'herbacées",
+    "ja": "雑草花粉"
+  },
+  "260108001": {
+    "en": "Wormwood pollen",
+    "fr": "Pollen d'armoise",
+    "ja": "ヨモギ花粉"
+  },
+  "414285001": {
+    "en": "Allergy to food",
+    "fr": "Hypersensibilité alimentaire",
+    "ja": "過敏症-食品性"
+  },
+  "91935009": {
+    "en": "Allergy to peanut",
+    "fr": "Hypersensibilité aux arachides",
+    "ja": "過敏症-ピーナッツ"
+  },
+  "782594005": {
+    "en": "Allergy to soy protein",
+    "fr": "Allergie aux protéines de soja",
+    "ja": "大豆タンパク質アレルギー"
+  },
+  "256350002": {
+    "en": "Almond",
+    "fr": "Amandes",
+    "ja": "アーモンド"
+  },
+  "391737006": {
+    "en": "Almond oil",
+    "fr": "Huile d'amande",
+    "ja": "アーモンドオイル"
+  },
+  "735215001": {
+    "en": "Apple",
+    "fr": "Pomme",
+    "ja": "リンゴ"
+  },
+  "226491003": {
+    "en": "Apple juice",
+    "fr": "Jus de pomme",
+    "ja": "リンゴジュース"
+  },
+  "256307007": {
+    "en": "Banana",
+    "fr": "Banane",
+    "ja": "バナナ"
+  },
+  "227493005": {
+    "en": "Cashew nut",
+    "fr": "Noix de cajou",
+    "ja": "カシューナッツ"
+  },
+  "256326004": {
+    "en": "Celery",
+    "fr": "Céleri",
+    "ja": "セロリ"
+  },
+  "102264005": {
+    "en": "Cheese",
+    "fr": "Fromage",
+    "ja": "チーズ"
+  },
+  "735248001": {
+    "en": "Cherry",
+    "fr": "Cerise",
+    "ja": "サクランボ"
+  },
+  "80237000": {
+    "en": "Cocoa butter",
+    "fr": "Beurre de cacao",
+    "ja": "カカオバター"
+  },
+  "264295007": {
+    "en": "Cow's milk protein",
+    "fr": "Protéine de lait de vache",
+    "ja": "牛乳タンパク質"
+  },
+  "736159005": {
+    "en": "Crab",
+    "fr": "Crabe",
+    "ja": "カニ"
+  },
+  "726759005": {
+    "en": "Cuttlefish",
+    "fr": "Seiche",
+    "ja": "イカ"
+  },
+  "303300008": {
+    "en": "Egg protein",
+    "fr": "Protéines d'oeuf",
+    "ja": "卵蛋白質"
+  },
+  "256443002": {
+    "en": "Egg white",
+    "fr": "Blanc d'oeuf",
+    "ja": "卵白"
+  },
+  "102263004": {
+    "en": "Eggs (edible)",
+    "fr": "Oeufs",
+    "ja": "卵"
+  },
+  "735971005": {
+    "en": "Fish",
+    "fr": "Poisson",
+    "ja": "魚"
+  },
+  "406774009": {
+    "en": "Fish derived omega 3 fatty acid",
+    "fr": "Oméga-3 d'origine marine",
+    "ja": "魚由来オメガ3脂肪酸"
+  },
+  "735341005": {
+    "en": "Fish oil",
+    "fr": "Huiles de poisson",
+    "ja": "魚油"
+  },
+  "255620007": {
+    "en": "Food",
+    "fr": "Aliments",
+    "ja": "食物"
+  },
+  "59533004": {
+    "en": "Food additive",
+    "fr": "Additifs alimentaires",
+    "ja": "食品添加物"
+  },
+  "89811004": {
+    "en": "Gluten",
+    "fr": "Glutens",
+    "ja": "グルテン"
+  },
+  "256353000": {
+    "en": "Hazelnut",
+    "fr": "Noisette",
+    "ja": "ヘーゼルナッツ"
+  },
+  "235719002": {
+    "en": "Intolerance to food",
+    "fr": "Intolérance alimentaire",
+    "ja": "食物不耐性"
+  },
+  "260176001": {
+    "en": "Kiwi fruit",
+    "fr": "Kiwi",
+    "ja": "キウイフルーツ"
+  },
+  "47703008": {
+    "en": "Lactose",
+    "fr": "Lactose",
+    "ja": "乳糖"
+  },
+  "736162008": {
+    "en": "Lobster",
+    "fr": "Homard",
+    "ja": "ロブスター"
+  },
+  "710179004": {
+    "en": "Lupine seed",
+    "fr": "Graine de lupin",
+    "ja": "ルピナス種子"
+  },
+  "1003736004": {
+    "en": "Mammalian milk based food",
+    "fr": "Aliment à base de lait de mammifère",
+    "ja": "哺乳類乳製品"
+  },
+  "735977009": {
+    "en": "Marine crustacean",
+    "fr": "Crustacé marin",
+    "ja": "海洋甲殻類"
+  },
+  "28647000": {
+    "en": "Meat",
+    "fr": "Viande",
+    "ja": "食肉"
+  },
+  "227150003": {
+    "en": "Mussel",
+    "fr": "Moule",
+    "ja": "ムール貝"
+  },
+  "51905005": {
+    "en": "Mustard",
+    "fr": "Moutarde",
+    "ja": "マスタード"
+  },
+  "736031006": {
+    "en": "Oyster",
+    "fr": "Huître",
+    "ja": "カキ"
+  },
+  "762952008": {
+    "en": "Peanut",
+    "fr": "Arachide",
+    "ja": "ピーナッツ"
+  },
+  "227512001": {
+    "en": "Pistachio nut",
+    "fr": "Pistache",
+    "ja": "ピスタチオ"
+  },
+  "226934003": {
+    "en": "Pork",
+    "fr": "Porc",
+    "ja": "豚肉"
+  },
+  "418471000": {
+    "en": "Propensity to adverse reactions to food",
+    "fr": "Prédisposition aux réactions indésirables aux aliments",
+    "ja": "食物有害反応傾向"
+  },
+  "710183004": {
+    "en": "Rabbit - meat",
+    "fr": "Viande de lapin",
+    "ja": "ウサギ肉"
+  },
+  "226915003": {
+    "en": "Red meat",
+    "fr": "Viande rouge",
+    "ja": "赤身肉"
+  },
+  "44027008": {
+    "en": "Seafood",
+    "fr": "Produits de la mer",
+    "ja": "魚介"
+  },
+  "260167008": {
+    "en": "Sesame seed",
+    "fr": "Graine de sésame",
+    "ja": "ゴマ"
+  },
+  "735029006": {
+    "en": "Shellfish",
+    "fr": "Coquillages",
+    "ja": "貝類"
+  },
+  "278840001": {
+    "en": "Shrimp",
+    "fr": "Crevette",
+    "ja": "エビ"
+  },
+  "102261002": {
+    "en": "Strawberry",
+    "fr": "Fraises",
+    "ja": "イチゴ"
+  },
+  "734881000": {
+    "en": "Tomato",
+    "fr": "Tomates",
+    "ja": "トマト"
+  },
+  "227144008": {
+    "en": "Tuna fish",
+    "fr": "Thon",
+    "ja": "マグロ"
+  },
+  "256352005": {
+    "en": "Walnut - nut",
+    "fr": "Noix",
+    "ja": "クルミ"
+  },
+  "412071004": {
+    "en": "Wheat",
+    "fr": "Blé",
+    "ja": "小麦"
+  },
+  "39579001": {
+    "en": "Anaphylaxis",
+    "fr": "Anaphylaxie",
+    "ja": "アナフィラキシー"
+  },
+  "41291007": {
+    "en": "Angioedema",
+    "fr": "Angioedème",
+    "ja": "血管性浮腫"
+  },
+  "195967001": {
+    "en": "Asthma",
+    "fr": "Hyperréactivité bronchique",
+    "ja": "気管支反応性亢進"
+  },
+  "24079001": {
+    "en": "Atopic dermatitis",
+    "fr": "Eczéma atopique",
+    "ja": "皮膚炎-アトピー性"
+  },
+  "4386001": {
+    "en": "Bronchospasm",
+    "fr": "Bronchospasme",
+    "ja": "気管支けいれん"
+  },
+  "271759003": {
+    "en": "Bullous eruption",
+    "fr": "Éruption bulleuse",
+    "ja": "水疱性皮疹"
+  },
+  "698247007": {
+    "en": "Cardiac arrhythmia",
+    "fr": "Troubles du rythme cardiaque",
+    "ja": "不整脈"
+  },
+  "410430005": {
+    "en": "Cardiorespiratory arrest",
+    "fr": "Arrêt cardiopulmonaire",
+    "ja": "心肺停止"
+  },
+  "9826008": {
+    "en": "Conjunctivitis",
+    "fr": "Conjonctivite",
+    "ja": "結膜炎"
+  },
+  "49727002": {
+    "en": "Cough",
+    "fr": "Toux",
+    "ja": "咳"
+  },
+  "62315008": {
+    "en": "Diarrhea",
+    "fr": "Diarrhée",
+    "ja": "下痢"
+  },
+  "702809001": {
+    "en": "Drug reaction with eosinophilia and systemic symptoms",
+    "fr": "Syndrome d'hypersensibilité médicamenteuse",
+    "ja": "好酸球増加と全身症状を伴う薬物反応"
+  },
+  "162290004": {
+    "en": "Dry eyes",
+    "fr": "Sécheresse oculaire",
+    "ja": "ドライアイ"
+  },
+  "267036007": {
+    "en": "Dyspnea",
+    "fr": "Dyspnée",
+    "ja": "呼吸困難"
+  },
+  "43116000": {
+    "en": "Eczema",
+    "fr": "Eczéma",
+    "ja": "湿疹"
+  },
+  "51599000": {
+    "en": "Edema of larynx",
+    "fr": "Oedème laryngé",
+    "ja": "喉頭浮腫"
+  },
+  "271807003": {
+    "en": "Eruption of skin",
+    "fr": "Éruption cutanée",
+    "ja": "皮疹"
+  },
+  "781682005": {
+    "en": "Hyperemia of eye",
+    "fr": "Hyperhémie oculaire",
+    "ja": "眼充血"
+  },
+  "418363000": {
+    "en": "Itching of skin",
+    "fr": "Prurit",
+    "ja": "そう痒症"
+  },
+  "768962006": {
+    "en": "Lyell syndrome",
+    "fr": "Syndrome de Lyell",
+    "ja": "中毒性表皮壊死融解症"
+  },
+  "422587007": {
+    "en": "Nausea",
+    "fr": "Nausée",
+    "ja": "悪心"
+  },
+  "271757001": {
+    "en": "Papular eruption",
+    "fr": "Éruption papuleuse",
+    "ja": "丘疹性発疹"
+  },
+  "70076002": {
+    "en": "Rhinitis",
+    "fr": "Irritation nasale",
+    "ja": "鼻刺激感"
+  },
+  "91175000": {
+    "en": "Seizure",
+    "fr": "Crises épileptiques",
+    "ja": "けいれん性発作"
+  },
+  "76067001": {
+    "en": "Sneezing",
+    "fr": "Éternuement",
+    "ja": "くしゃみ"
+  },
+  "73442001": {
+    "en": "Stevens-Johnson syndrome",
+    "fr": "Syndrome de Stevens-Johnson",
+    "ja": "Stevens-Johnson症候群"
+  },
+  "23924001": {
+    "en": "Tight chest",
+    "fr": "Constriction dans la poitrine",
+    "ja": "胸部絞扼感"
+  },
+  "126485001": {
+    "en": "Urticaria",
+    "fr": "Urticaire",
+    "ja": "蕁麻疹"
+  },
+  "31996006": {
+    "en": "Vasculitis",
+    "fr": "Vascularite",
+    "ja": "血管炎"
+  },
+  "422400008": {
+    "en": "Vomiting",
+    "fr": "Vomissement",
+    "ja": "嘔吐"
+  },
+  "247472004": {
+    "en": "Wheal",
+    "fr": "Boules d'oedème",
+    "ja": "イラクサ皮疹"
+  },
+  "346313005": {
+    "en": "Allergen extract vaccine",
+    "fr": "Vaccin à base d'extrait d'allergène",
+    "ja": "アレルゲン抽出物ワクチン"
+  },
+  "416098002": {
+    "en": "Allergy to drug",
+    "fr": "Hypersensibilité médicamenteuse",
+    "ja": "過敏症-薬物"
+  },
+  "91936005": {
+    "en": "Allergy to penicillin",
+    "fr": "Allergie à la pénicilline",
+    "ja": "ペニシリンアレルギー"
+  },
+  "346364006": {
+    "en": "Cat allergy vaccine",
+    "fr": "Vaccin contre l'allergie aux chats",
+    "ja": "猫アレルギーワクチン"
+  },
+  "346405008": {
+    "en": "Dog allergy vaccine",
+    "fr": "Vaccin contre l'allergie aux chiens",
+    "ja": "犬アレルギーワクチン"
+  },
+  "63338004": {
+    "en": "Drug flavoring",
+    "fr": "Arôme médicamenteux",
+    "ja": "薬物香味料"
+  },
+  "346467003": {
+    "en": "Horse dander allergy vaccine",
+    "fr": "Vaccin contre Horse dander allergy",
+    "ja": "Horse dander allergyワクチン"
+  },
+  "346468008": {
+    "en": "House dust allergy vaccine",
+    "fr": "Vaccin contre l'allergie à la poussière",
+    "ja": "ハウスダストアレルギーワクチン"
+  },
+  "346469000": {
+    "en": "House mite allergy vaccine",
+    "fr": "Vaccin contre l'allergie aux acariens",
+    "ja": "ダニアレルギーワクチン"
+  },
+  "59037007": {
+    "en": "Intolerance to drug",
+    "fr": "Intolérance médicamenteuse",
+    "ja": "薬物不耐性"
+  },
+  "428601009": {
+    "en": "Paratyphoid vaccine",
+    "fr": "Vaccin contre Paratyphoid",
+    "ja": "Paratyphoidワクチン"
+  },
+  "409568008": {
+    "en": "Pentavalent botulinum toxoid vaccine",
+    "fr": "Vaccin contre Pentavalent botulinum toxoid",
+    "ja": "Pentavalent botulinum toxoidワクチン"
+  },
+  "419511003": {
+    "en": "Propensity to adverse reactions to drug",
+    "fr": "Prédisposition aux réactions indésirables aux médicaments",
+    "ja": "薬物有害反応傾向"
+  },
+  "871921009": {
+    "en": "Staphylococcus toxoid vaccine",
+    "fr": "Vaccin contre Staphylocoque toxoid",
+    "ja": "ブドウ球菌toxoidワクチン"
+  },
+  "1119254000": {
+    "en": "Streptococcus pneumoniae Danish serotype 1, 3, 4, 5, 6A, 6B, 7F, 9V, 14, 18C, 19A, 19F, and 23F capsular polysaccharide antigens only vaccine product",
+    "fr": "Vaccin contre les sérotypes danois 1, 3, 4, 5, 6A, 6B, 7F, 9V, 14, 18C, 19A, 19F, 23F de Streptococcus pneumoniae",
+    "ja": "肺炎連鎖球菌デンマーク血清型1, 3, 4, 5, 6A, 6B, 7F, 9V, 14, 18C, 19A, 19F, 23F莢膜多糖抗原のみのワクチン"
+  },
+  "37146000": {
+    "en": "Typhus vaccine",
+    "fr": "Vaccin contre Typhus",
+    "ja": "Typhusワクチン"
+  },
+  "787859002": {
+    "en": "Vaccine product",
+    "fr": "Vaccins",
+    "ja": "ワクチン"
+  },
+  "836384003": {
+    "en": "Vaccine product containing Bacillus anthracis antigen",
+    "fr": "Vaccin contenant l'antigène de Bacillus anthracis (charbon)",
+    "ja": "炭疽菌抗原を含むワクチン"
+  },
+  "836368004": {
+    "en": "Vaccine product containing bacteria antigen",
+    "fr": "Vaccin contenant l'antigène de bactéries",
+    "ja": "細菌抗原を含むワクチン"
+  },
+  "601000221108": {
+    "en": "Vaccine product containing Bordetella pertussis antigen",
+    "fr": "Vaccin contenant l'antigène de Bordetella pertussis (coqueluche)",
+    "ja": "百日咳菌抗原を含むワクチン"
+  },
+  "840599008": {
+    "en": "Vaccine product containing Borrelia burgdorferi antigen",
+    "fr": "Vaccin contenant l'antigène de Borrelia burgdorferi (Lyme)",
+    "ja": "ライム病ボレリア抗原を含むワクチン"
+  },
+  "863911006": {
+    "en": "Vaccine product containing Clostridium tetani antigen",
+    "fr": "Vaccin contenant l'antigène de Clostridium tetani (tétanos)",
+    "ja": "破傷風菌抗原を含むワクチン"
+  },
+  "1101000221104": {
+    "en": "Vaccine product containing Clostridium tetani toxoid antigen",
+    "fr": "Vaccin contenant l'anatoxine de Clostridium tetani (tétanos)",
+    "ja": "破傷風菌類毒素を含むワクチン"
+  },
+  "836381006": {
+    "en": "Vaccine product containing Corynebacterium diphtheriae antigen",
+    "fr": "Vaccin contenant l'antigène de Corynebacterium diphtheriae (diphtérie)",
+    "ja": "ジフテリア菌抗原を含むワクチン"
+  },
+  "836397001": {
+    "en": "Vaccine product containing Coxiella burnetii antigen",
+    "fr": "Vaccin contenant l'antigène de Coxiella burnetii (fièvre Q)",
+    "ja": "コクシエラ・バーネティ抗原を含むワクチン"
+  },
+  "836380007": {
+    "en": "Vaccine product containing Haemophilus influenzae type b antigen",
+    "fr": "Vaccin contenant l'antigène de Haemophilus influenzae type b",
+    "ja": "インフルエンザ菌type b抗原を含むワクチン"
+  },
+  "836375003": {
+    "en": "Vaccine product containing Hepatitis A virus antigen",
+    "fr": "Vaccin contenant l'antigène de virus de l'hépatite A",
+    "ja": "A型肝炎ウイルス抗原を含むワクチン"
+  },
+  "836374004": {
+    "en": "Vaccine product containing Hepatitis B virus antigen",
+    "fr": "Vaccin contenant l'antigène de virus de l'hépatite B",
+    "ja": "B型肝炎ウイルス抗原を含むワクチン"
+  },
+  "836495005": {
+    "en": "Vaccine product containing Human alphaherpesvirus 3 antigen",
+    "fr": "Vaccin contenant l'antigène de herpèsvirus humain 3 (varicelle/zona)",
+    "ja": "ヒトアルファヘルペスウイルス3抗原を含むワクチン"
+  },
+  "836379009": {
+    "en": "Vaccine product containing Human papillomavirus antigen",
+    "fr": "Vaccin contenant l'antigène de papillomavirus humain (HPV)",
+    "ja": "ヒトパピローマウイルス抗原を含むワクチン"
+  },
+  "1031000221108": {
+    "en": "Vaccine product containing Human poliovirus antigen",
+    "fr": "Vaccin contenant l'antigène de poliovirus humain",
+    "ja": "ヒトポリオウイルス抗原を含むワクチン"
+  },
+  "836377006": {
+    "en": "Vaccine product containing Influenza virus antigen",
+    "fr": "Vaccin contenant l'antigène de virus influenza (grippe)",
+    "ja": "インフルエンザウイルス抗原を含むワクチン"
+  },
+  "836378001": {
+    "en": "Vaccine product containing Japanese encephalitis virus antigen",
+    "fr": "Vaccin contenant l'antigène de virus de l'encéphalite japonaise",
+    "ja": "日本脳炎ウイルス抗原を含むワクチン"
+  },
+  "836402002": {
+    "en": "Vaccine product containing live attenuated Mycobacterium bovis antigen",
+    "fr": "Vaccin contenant l'antigène de live attenuated Mycobacterium bovis",
+    "ja": "live attenuated Mycobacterium bovis抗原を含むワクチン"
+  },
+  "836382004": {
+    "en": "Vaccine product containing Measles morbillivirus antigen",
+    "fr": "Vaccin contenant l'antigène de morbillivirus de la rougeole",
+    "ja": "麻疹モルビリウイルス抗原を含むワクチン"
+  },
+  "836498007": {
+    "en": "Vaccine product containing Mumps orthorubulavirus antigen",
+    "fr": "Vaccin contenant l'antigène de orthorubulavirus des oreillons",
+    "ja": "ムンプスオルソルブラウイルス抗原を含むワクチン"
+  },
+  "836401009": {
+    "en": "Vaccine product containing Neisseria meningitidis antigen",
+    "fr": "Vaccin contenant l'antigène de Neisseria meningitidis (méningocoque)",
+    "ja": "髄膜炎菌抗原を含むワクチン"
+  },
+  "871876003": {
+    "en": "Vaccine product containing only acellular Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de acellular Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae antigens",
+    "ja": "acellular Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae antigens抗原のみを含むワクチン"
+  },
+  "871889009": {
+    "en": "Vaccine product containing only acellular Bordetella pertussis and Corynebacterium diphtheriae and Hepatitis B virus and inactivated whole Human poliovirus antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de acellular Bordetella pertussis and Corynebacterium diphtheriae and Hepatitis B virus and inactivated whole Human poliovirus antigens",
+    "ja": "acellular Bordetella pertussis and Corynebacterium diphtheriae and Hepatitis B virus and inactivated whole Human poliovirus antigens抗原のみを含むワクチン"
+  },
+  "871759008": {
+    "en": "Vaccine product containing only acellular Bordetella pertussis antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de acellular Bordetella pertussis",
+    "ja": "acellular Bordetella pertussis抗原のみを含むワクチン"
+  },
+  "871895005": {
+    "en": "Vaccine product containing only Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae and Haemophilus influenzae type b and Hepatitis B virus and Human poliovirus antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Bordetella pertussis (coqueluche) and Clostridium tetani and Corynebacterium diphtheriae and Haemophilus influenzae type b and Hepatitis B virus and Human poliovirus antigens",
+    "ja": "百日咳菌and Clostridium tetani and Corynebacterium diphtheriae and Haemophilus influenzae type b and Hepatitis B virus and Human poliovirus antigens抗原のみを含むワクチン"
+  },
+  "871887006": {
+    "en": "Vaccine product containing only Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae and Haemophilus influenzae type b and Human poliovirus antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Bordetella pertussis (coqueluche) and Clostridium tetani and Corynebacterium diphtheriae and Haemophilus influenzae type b and Human poliovirus antigens",
+    "ja": "百日咳菌and Clostridium tetani and Corynebacterium diphtheriae and Haemophilus influenzae type b and Human poliovirus antigens抗原のみを含むワクチン"
+  },
+  "871839001": {
+    "en": "Vaccine product containing only Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae and Haemophilus influenzae type b antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Bordetella pertussis (coqueluche) and Clostridium tetani and Corynebacterium diphtheriae and Haemophilus influenzae type b antigens",
+    "ja": "百日咳菌and Clostridium tetani and Corynebacterium diphtheriae and Haemophilus influenzae type b antigens抗原のみを含むワクチン"
+  },
+  "871878002": {
+    "en": "Vaccine product containing only Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae and Human poliovirus antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Bordetella pertussis (coqueluche) and Clostridium tetani and Corynebacterium diphtheriae and Human poliovirus antigens",
+    "ja": "百日咳菌and Clostridium tetani and Corynebacterium diphtheriae and Human poliovirus antigens抗原のみを含むワクチン"
+  },
+  "871875004": {
+    "en": "Vaccine product containing only Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Bordetella pertussis (coqueluche) and Clostridium tetani and Corynebacterium diphtheriae antigens",
+    "ja": "百日咳菌and Clostridium tetani and Corynebacterium diphtheriae antigens抗原のみを含むワクチン"
+  },
+  "871837004": {
+    "en": "Vaccine product containing only Clostridium tetani and Corynebacterium diphtheriae and Human poliovirus antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Clostridium tetani (tétanos) and Corynebacterium diphtheriae and Human poliovirus antigens",
+    "ja": "破傷風菌and Corynebacterium diphtheriae and Human poliovirus antigens抗原のみを含むワクチン"
+  },
+  "871826000": {
+    "en": "Vaccine product containing only Clostridium tetani and Corynebacterium diphtheriae antigens",
+    "fr": "Vaccin antidiphtérique antitétanique",
+    "ja": "ジフテリア-破傷風ワクチン"
+  },
+  "775641005": {
+    "en": "Vaccine product containing only Clostridium tetani toxoid adsorbed and Corynebacterium diphtheriae toxoid antigens",
+    "fr": "Vaccin contenant uniquement l'anatoxine de Clostridium tetani (tétanos) toxoid adsorbed and Corynebacterium diphtheriae toxoid antigens",
+    "ja": "破傷風菌toxoid adsorbed and Corynebacterium diphtheriae toxoid antigens類毒素のみを含むワクチン"
+  },
+  "777725002": {
+    "en": "Vaccine product containing only Clostridium tetani toxoid antigen adsorbed",
+    "fr": "Vaccin contenant uniquement l'anatoxine de Clostridium tetani (tétanos) toxoid antigen adsorbed",
+    "ja": "破傷風菌toxoid antigen adsorbed類毒素のみを含むワクチン"
+  },
+  "871806004": {
+    "en": "Vaccine product containing only Haemophilus influenzae type b and Hepatitis B virus antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Haemophilus influenzae type b and Hepatitis B virus antigens",
+    "ja": "インフルエンザ菌type b and Hepatitis B virus antigens抗原のみを含むワクチン"
+  },
+  "836500008": {
+    "en": "Vaccine product containing only Haemophilus influenzae type b and Neisseria meningitidis serogroup C antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Haemophilus influenzae type b and Neisseria meningitidis serogroup C antigens",
+    "ja": "インフルエンザ菌type b and Neisseria meningitidis serogroup C antigens抗原のみを含むワクチン"
+  },
+  "871803007": {
+    "en": "Vaccine product containing only Hepatitis A and Hepatitis B virus antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Hepatitis A and Hepatitis B virus antigens",
+    "ja": "Hepatitis A and Hepatitis B virus antigens抗原のみを含むワクチン"
+  },
+  "871804001": {
+    "en": "Vaccine product containing only Hepatitis A virus and Salmonella enterica subspecies enterica serovar Typhi antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de virus de l'hépatite A and Salmonella enterica subspecies enterica serovar Typhi antigens",
+    "ja": "A型肝炎ウイルスand Salmonella enterica subspecies enterica serovar Typhi antigens抗原のみを含むワクチン"
+  },
+  "871908002": {
+    "en": "Vaccine product containing only Human alphaherpesvirus 3 and Measles morbillivirus and Mumps orthorubulavirus and Rubella virus antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de herpèsvirus humain 3 (varicelle/zona) and Measles morbillivirus and Mumps orthorubulavirus and Rubella virus antigens",
+    "ja": "ヒトアルファヘルペスウイルス3and Measles morbillivirus and Mumps orthorubulavirus and Rubella virus antigens抗原のみを含むワクチン"
+  },
+  "871740006": {
+    "en": "Vaccine product containing only inactivated whole Human poliovirus antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de inactivated whole Human poliovirus",
+    "ja": "inactivated whole Human poliovirus抗原のみを含むワクチン"
+  },
+  "1131000221109": {
+    "en": "Vaccine product containing only inactivated whole Rabies lyssavirus antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de inactivated whole Rabies lyssavirus",
+    "ja": "inactivated whole Rabies lyssavirus抗原のみを含むワクチン"
+  },
+  "1001000221103": {
+    "en": "Vaccine product containing only inactivated whole Vibrio cholerae antigen in oral dose form",
+    "fr": "Vaccin contenant uniquement l'antigène de inactivated whole Vibrio cholerae antigen in oral dose form",
+    "ja": "inactivated whole Vibrio cholerae antigen in oral dose form抗原のみを含むワクチン"
+  },
+  "871772009": {
+    "en": "Vaccine product containing only Influenza A virus subtype H1N1 antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de sous-type de virus influenza A H1N1",
+    "ja": "A型インフルエンザウイルス亜型H1N1抗原のみを含むワクチン"
+  },
+  "1181000221105": {
+    "en": "Vaccine product containing only Influenza virus antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de virus influenza (grippe)",
+    "ja": "インフルエンザウイルス抗原のみを含むワクチン"
+  },
+  "871768005": {
+    "en": "Vaccine product containing only Influenza virus antigen in nasal dose form",
+    "fr": "Vaccin contenant uniquement l'antigène de virus influenza (grippe) antigen in nasal dose form",
+    "ja": "インフルエンザウイルスantigen in nasal dose form抗原のみを含むワクチン"
+  },
+  "2221000221107": {
+    "en": "Vaccine product containing only live attenuated Human alphaherpesvirus 3 antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de live attenuated Human alphaherpesvirus 3",
+    "ja": "live attenuated Human alphaherpesvirus 3抗原のみを含むワクチン"
+  },
+  "1051000221104": {
+    "en": "Vaccine product containing only live attenuated Human poliovirus serotypes 1 and 3 antigens in oral dose form",
+    "fr": "Vaccin contenant uniquement l'antigène de live attenuated Human poliovirus serotypes 1 and 3 antigens in oral dose form",
+    "ja": "live attenuated Human poliovirus serotypes 1 and 3 antigens in oral dose form抗原のみを含むワクチン"
+  },
+  "871738001": {
+    "en": "Vaccine product containing only live attenuated Mumps orthorubulavirus antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de live attenuated Mumps orthorubulavirus",
+    "ja": "live attenuated Mumps orthorubulavirus抗原のみを含むワクチン"
+  },
+  "1081000221109": {
+    "en": "Vaccine product containing only live attenuated Rotavirus antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de live attenuated Rotavirus",
+    "ja": "live attenuated Rotavirus抗原のみを含むワクチン"
+  },
+  "971000221109": {
+    "en": "Vaccine product containing only live attenuated Salmonella enterica subspecies enterica serovar Typhi antigen in oral dose form",
+    "fr": "Vaccin contenant uniquement l'antigène de live attenuated Salmonella enterica subspecies enterica serovar Typhi antigen in oral dose form",
+    "ja": "live attenuated Salmonella enterica subspecies enterica serovar Typhi antigen in oral dose form抗原のみを含むワクチン"
+  },
+  "1011000221100": {
+    "en": "Vaccine product containing only live attenuated Vibrio cholerae antigen in oral dose form",
+    "fr": "Vaccin contenant uniquement l'antigène de live attenuated Vibrio cholerae antigen in oral dose form",
+    "ja": "live attenuated Vibrio cholerae antigen in oral dose form抗原のみを含むワクチン"
+  },
+  "1121000221106": {
+    "en": "Vaccine product containing only live attenuated Yellow fever virus antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de live attenuated Yellow fever virus",
+    "ja": "live attenuated Yellow fever virus抗原のみを含むワクチン"
+  },
+  "871831003": {
+    "en": "Vaccine product containing only Measles morbillivirus and Mumps orthorubulavirus and Rubella virus antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de morbillivirus de la rougeole and Mumps orthorubulavirus and Rubella virus antigens",
+    "ja": "麻疹モルビリウイルスand Mumps orthorubulavirus and Rubella virus antigens抗原のみを含むワクチン"
+  },
+  "871765008": {
+    "en": "Vaccine product containing only Measles morbillivirus antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de morbillivirus de la rougeole",
+    "ja": "麻疹モルビリウイルス抗原のみを含むワクチン"
+  },
+  "871737006": {
+    "en": "Vaccine product containing only Mumps orthorubulavirus antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de orthorubulavirus des oreillons",
+    "ja": "ムンプスオルソルブラウイルス抗原のみを含むワクチン"
+  },
+  "871871008": {
+    "en": "Vaccine product containing only Neisseria meningitidis serogroup A and C antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Neisseria meningitidis (méningocoque) serogroup A and C antigens",
+    "ja": "髄膜炎菌serogroup A and C antigens抗原のみを含むワクチン"
+  },
+  "871873006": {
+    "en": "Vaccine product containing only Neisseria meningitidis serogroup A, C, W135 and Y antigens",
+    "fr": "Vaccin contenant uniquement l'antigène de Neisseria meningitidis (méningocoque) serogroup A, C, W135 and Y antigens",
+    "ja": "髄膜炎菌serogroup A, C, W135 and Y antigens抗原のみを含むワクチン"
+  },
+  "1981000221108": {
+    "en": "Vaccine product containing only Neisseria meningitidis serogroup B antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de Neisseria meningitidis (méningocoque) serogroup B",
+    "ja": "髄膜炎菌serogroup B抗原のみを含むワクチン"
+  },
+  "871866001": {
+    "en": "Vaccine product containing only Neisseria meningitidis serogroup C antigen",
+    "fr": "Vaccin contenant uniquement l'antigène de Neisseria meningitidis (méningocoque) serogroup C",
+    "ja": "髄膜炎菌serogroup C抗原のみを含むワクチン"
+  },
+  "2171000221104": {
+    "en": "Vaccine product containing only Salmonella enterica subspecies enterica serovar Typhi capsular polysaccharide unconjugated antigen in parenteral dose form",
+    "fr": "Vaccin contenant uniquement l'antigène de Salmonella enterica subspecies enterica serovar Typhi capsular polysaccharide unconjugated antigen in parenteral dose form",
+    "ja": "Salmonella enterica subspecies enterica serovar Typhi capsular polysaccharide unconjugated antigen in parenteral dose form抗原のみを含むワクチン"
+  },
+  "1801000221105": {
+    "en": "Vaccine product containing only Streptococcus pneumoniae capsular polysaccharide antigen conjugated",
+    "fr": "Vaccin contenant uniquement l'antigène de Streptococcus pneumoniae (pneumocoque) capsular polysaccharide antigen conjugated",
+    "ja": "肺炎連鎖球菌capsular polysaccharide antigen conjugated抗原のみを含むワクチン"
+  },
+  "1052328007": {
+    "en": "Vaccine product containing only Streptococcus pneumoniae Danish serotype 4, 6B, 9V, 14, 18C, 19F, and 23F capsular polysaccharide antigens conjugated",
+    "fr": "Vaccin contenant uniquement l'antigène de Streptococcus pneumoniae (pneumocoque) Danish serotype 4, 6B, 9V, 14, 18C, 19F, and 23F capsular polysaccharide antigens conjugated",
+    "ja": "肺炎連鎖球菌Danish serotype 4, 6B, 9V, 14, 18C, 19F, and 23F capsular polysaccharide antigens conjugated抗原のみを含むワクチン"
+  },
+  "774618008": {
+    "en": "Vaccine product containing only whole cell Bordetella pertussis and Clostridium tetani toxoid adsorbed and Corynebacterium diphtheriae toxoid antigens",
+    "fr": "Vaccin contenant uniquement l'anatoxine de whole cell Bordetella pertussis and Clostridium tetani toxoid adsorbed and Corynebacterium diphtheriae toxoid antigens",
+    "ja": "whole cell Bordetella pertussis and Clostridium tetani toxoid adsorbed and Corynebacterium diphtheriae toxoid antigens類毒素のみを含むワクチン"
+  },
+  "836393002": {
+    "en": "Vaccine product containing Rabies lyssavirus antigen",
+    "fr": "Vaccin contenant l'antigène de rage lyssavirus",
+    "ja": "狂犬病lyssavirus抗原を含むワクチン"
+  },
+  "871918007": {
+    "en": "Vaccine product containing Rickettsia antigen",
+    "fr": "Vaccin contenant l'antigène de Rickettsia",
+    "ja": "Rickettsia抗原を含むワクチン"
+  },
+  "836387005": {
+    "en": "Vaccine product containing Rotavirus antigen",
+    "fr": "Vaccin contenant l'antigène de Rotavirus",
+    "ja": "Rotavirus抗原を含むワクチン"
+  },
+  "836388000": {
+    "en": "Vaccine product containing Rubella virus antigen",
+    "fr": "Vaccin contenant l'antigène de Rubella virus",
+    "ja": "Rubella virus抗原を含むワクチン"
+  },
+  "836390004": {
+    "en": "Vaccine product containing Salmonella enterica subspecies enterica serovar Typhi antigen",
+    "fr": "Vaccin contenant l'antigène de Salmonella enterica subspecies enterica serovar Typhi",
+    "ja": "Salmonella enterica subspecies enterica serovar Typhi抗原を含むワクチン"
+  },
+  "836398006": {
+    "en": "Vaccine product containing Streptococcus pneumoniae antigen",
+    "fr": "Vaccin contenant l'antigène de Streptococcus pneumoniae (pneumocoque)",
+    "ja": "肺炎連鎖球菌抗原を含むワクチン"
+  },
+  "836403007": {
+    "en": "Vaccine product containing Tick-borne encephalitis virus antigen",
+    "fr": "Vaccin contenant l'antigène de Tick-borne encephalitis virus",
+    "ja": "Tick-borne encephalitis virus抗原を含むワクチン"
+  },
+  "836389008": {
+    "en": "Vaccine product containing Vaccinia virus antigen",
+    "fr": "Vaccin contenant l'antigène de Vaccinia virus",
+    "ja": "Vaccinia virus抗原を含むワクチン"
+  },
+  "836383009": {
+    "en": "Vaccine product containing Vibrio cholerae antigen",
+    "fr": "Vaccin contenant l'antigène de Vibrio cholerae (choléra)",
+    "ja": "コレラ菌抗原を含むワクチン"
+  },
+  "836369007": {
+    "en": "Vaccine product containing virus antigen",
+    "fr": "Vaccin contenant l'antigène de virus",
+    "ja": "virus抗原を含むワクチン"
+  },
+  "836385002": {
+    "en": "Vaccine product containing Yellow fever virus antigen",
+    "fr": "Vaccin contenant l'antigène de Yellow fever virus",
+    "ja": "Yellow fever virus抗原を含むワクチン"
+  },
+  "840549009": {
+    "en": "Vaccine product containing Yersinia pestis antigen",
+    "fr": "Vaccin contenant l'antigène de Yersinia pestis",
+    "ja": "Yersinia pestis抗原を含むワクチン"
+  },
+  "418920007": {
+    "en": "Adhesive agent",
+    "fr": "Agent adhésif",
+    "ja": "接着剤"
+  },
+  "52454007": {
+    "en": "Albumin",
+    "fr": "Albumine",
+    "ja": "アルブミン"
+  },
+  "419199007": {
+    "en": "Allergy to substance",
+    "fr": "Allergie à une substance",
+    "ja": "物質に対するアレルギー"
+  },
+  "12503006": {
+    "en": "Aluminium",
+    "fr": "Aluminium",
+    "ja": "アルミニウム"
+  },
+  "256313003": {
+    "en": "Ananas comosus",
+    "fr": "Ananas",
+    "ja": "パイナップル"
+  },
+  "57720001": {
+    "en": "Anise oil",
+    "fr": "Huile d'anis",
+    "ja": "アニス油"
+  },
+  "840535000": {
+    "en": "Antibody to severe acute respiratory syndrome coronavirus 2",
+    "fr": "Anticorps anti-SARS-CoV-2",
+    "ja": "SARS-CoV-2抗体"
+  },
+  "116637007": {
+    "en": "Antigen of Fungus",
+    "fr": "Antigènes fongiques",
+    "ja": "真菌抗原"
+  },
+  "840536004": {
+    "en": "Antigen of severe acute respiratory syndrome coronavirus 2",
+    "fr": "Antigène du SARS-CoV-2",
+    "ja": "SARS-CoV-2抗原"
+  },
+  "11526002": {
+    "en": "Aspartame",
+    "fr": "Aspartame",
+    "ja": "アスパルテーム"
+  },
+  "386936005": {
+    "en": "Azelaic acid",
+    "fr": "Acide azélaïque",
+    "ja": "アゼライン酸"
+  },
+  "91598004": {
+    "en": "Benzoyl peroxide",
+    "fr": "Peroxyde de benzoyle",
+    "ja": "過酸化ベンゾイル"
+  },
+  "255640000": {
+    "en": "Biocide",
+    "fr": "Agents biocides",
+    "ja": "殺生物剤"
+  },
+  "412061001": {
+    "en": "Blueberries",
+    "fr": "Myrtilles",
+    "ja": "ブルーベリー"
+  },
+  "261243003": {
+    "en": "Brass",
+    "fr": "Laiton",
+    "ja": "真鍮"
+  },
+  "421556008": {
+    "en": "Capsicum",
+    "fr": "Capsicum (piment)",
+    "ja": "トウガラシ属"
+  },
+  "227408005": {
+    "en": "Capsicum annuum",
+    "fr": "Capsicum annuum (poivron/piment)",
+    "ja": "トウガラシ"
+  },
+  "9021002": {
+    "en": "Carbaryl",
+    "fr": "Carbaryl (insecticide)",
+    "ja": "カルバリル"
+  },
+  "256319004": {
+    "en": "Carrot",
+    "fr": "Carotte",
+    "ja": "ニンジン"
+  },
+  "23182003": {
+    "en": "Cereal grain",
+    "fr": "Céréales",
+    "ja": "穀類"
+  },
+  "102262009": {
+    "en": "Chocolate",
+    "fr": "Chocolat",
+    "ja": "チョコレート"
+  },
+  "227388008": {
+    "en": "Cinnamon",
+    "fr": "Cannelle",
+    "ja": "シナモン"
+  },
+  "59351004": {
+    "en": "Citrate",
+    "fr": "Citrate",
+    "ja": "クエン酸塩"
+  },
+  "419420009": {
+    "en": "Citrullus lanatus",
+    "fr": "Pastèque",
+    "ja": "スイカ"
+  },
+  "102259006": {
+    "en": "Citrus fruit",
+    "fr": "Agrume",
+    "ja": "柑橘類"
+  },
+  "11894001": {
+    "en": "Clostridium botulinum toxin",
+    "fr": "Toxines botuliniques",
+    "ja": "ボツリヌス毒素"
+  },
+  "116560007": {
+    "en": "Clostridium perfringens epsilon toxin",
+    "fr": "Toxine epsilon de Clostridium perfringens",
+    "ja": "ウェルシュ菌イプシロン毒素"
+  },
+  "26159005": {
+    "en": "Clostridium tetani toxin",
+    "fr": "Toxine tétanique",
+    "ja": "破傷風毒素"
+  },
+  "227389000": {
+    "en": "Clove",
+    "fr": "Clou de girofle",
+    "ja": "クローブ"
+  },
+  "735211005": {
+    "en": "Coconut",
+    "fr": "Noix de coco",
+    "ja": "ココナッツ"
+  },
+  "735245003": {
+    "en": "Cod",
+    "fr": "Cabillaud",
+    "ja": "タラ"
+  },
+  "66925006": {
+    "en": "Copper",
+    "fr": "Cuivre",
+    "ja": "銅"
+  },
+  "707239006": {
+    "en": "Corynebacterium spp toxin",
+    "fr": "Toxine de Corynebacterium spp",
+    "ja": "コリネバクテリウム属毒素"
+  },
+  "289122001": {
+    "en": "Cosmetic material",
+    "fr": "Matériau cosmétique",
+    "ja": "化粧品素材"
+  },
+  "89889006": {
+    "en": "Cotton fiber",
+    "fr": "Fibre de coton",
+    "ja": "綿繊維"
+  },
+  "260153004": {
+    "en": "Cow dander",
+    "fr": "Squames de vache",
+    "ja": "牛のフケ"
+  },
+  "260177005": {
+    "en": "Cucumis",
+    "fr": "Melon",
+    "ja": "メロン"
+  },
+  "227395004": {
+    "en": "Curry powder",
+    "fr": "Poudre de curry",
+    "ja": "カレー粉"
+  },
+  "396031000": {
+    "en": "Dimeticone",
+    "fr": "Diméticone",
+    "ja": "ジメチコン"
+  },
+  "387293003": {
+    "en": "Dithranol",
+    "fr": "Dithranol",
+    "ja": "アントラリン"
+  },
+  "61789006": {
+    "en": "Dye",
+    "fr": "Teintures",
+    "ja": "染料"
+  },
+  "762766007": {
+    "en": "Edible substance",
+    "fr": "Substance comestible",
+    "ja": "食用物質"
+  },
+  "115589000": {
+    "en": "Ethanolamine",
+    "fr": "Éthanolamine",
+    "ja": "アミノエタノール"
+  },
+  "12510000": {
+    "en": "Eucalyptus oil",
+    "fr": "Huile d'eucalyptus",
+    "ja": "ユーカリ油"
+  },
+  "227425007": {
+    "en": "Figs",
+    "fr": "Figues",
+    "ja": "イチジク"
+  },
+  "63766005": {
+    "en": "Flour",
+    "fr": "Farine",
+    "ja": "小麦粉"
+  },
+  "72511004": {
+    "en": "Fruit",
+    "fr": "Fruit",
+    "ja": "果実"
+  },
+  "735030001": {
+    "en": "Garlic",
+    "fr": "Ail",
+    "ja": "ニンニク"
+  },
+  "227400003": {
+    "en": "Ginger",
+    "fr": "Gingembre",
+    "ja": "ショウガ"
+  },
+  "57126000": {
+    "en": "Glue",
+    "fr": "Colle",
+    "ja": "接着剤"
+  },
+  "430503006": {
+    "en": "Glutamate",
+    "fr": "L-Glutamate",
+    "ja": "グルタミン酸"
+  },
+  "256355007": {
+    "en": "Glycine max",
+    "fr": "Soja",
+    "ja": "大豆"
+  },
+  "2309006": {
+    "en": "Gold",
+    "fr": "Or",
+    "ja": "金"
+  },
+  "264331002": {
+    "en": "Grain",
+    "fr": "Céréale",
+    "ja": "穀物"
+  },
+  "412145001": {
+    "en": "Hair dye",
+    "fr": "Teintures capillaires",
+    "ja": "毛髪染剤"
+  },
+  "227374009": {
+    "en": "Herbs and spices",
+    "fr": "Herbes et épices",
+    "ja": "ハーブとスパイス"
+  },
+  "442461000124102": {
+    "en": "Hickory nut",
+    "fr": "Noix de hickory",
+    "ja": "ヒッコリーナッツ"
+  },
+  "256417003": {
+    "en": "Horse dander",
+    "fr": "Squames de cheval",
+    "ja": "馬のフケ"
+  },
+  "412150007": {
+    "en": "Insect debris",
+    "fr": "Débris d'insectes",
+    "ja": "昆虫の残骸"
+  },
+  "736258006": {
+    "en": "Insect salivary substance",
+    "fr": "Substance salivaire d'insecte",
+    "ja": "昆虫唾液物質"
+  },
+  "782197009": {
+    "en": "Intolerance to substance",
+    "fr": "Intolérance à une substance",
+    "ja": "物質に対する不耐性"
+  },
+  "3829006": {
+    "en": "Iron",
+    "fr": "Fer",
+    "ja": "鉄"
+  },
+  "42416001": {
+    "en": "Lanolin",
+    "fr": "Lanoline",
+    "ja": "ラノリン"
+  },
+  "260179008": {
+    "en": "Mango fruit",
+    "fr": "Mangue",
+    "ja": "マンゴー"
+  },
+  "425620007": {
+    "en": "Metal",
+    "fr": "Métaux",
+    "ja": "金属"
+  },
+  "2799001": {
+    "en": "Methylbenzethonium chloride",
+    "fr": "Chlorure de méthylbenzéthonium",
+    "ja": "塩化メチルベンゼトニウム"
+  },
+  "256419000": {
+    "en": "Mouse epithelium",
+    "fr": "Épithélium de souris",
+    "ja": "マウス上皮"
+  },
+  "735045008": {
+    "en": "Mushroom",
+    "fr": "Champignon",
+    "ja": "キノコ"
+  },
+  "33396006": {
+    "en": "Nickel",
+    "fr": "Nickel",
+    "ja": "ニッケル"
+  },
+  "276310004": {
+    "en": "Non-human hair - material",
+    "fr": "Poils non humains (matériau)",
+    "ja": "非ヒト毛 (材料)"
+  },
+  "13577000": {
+    "en": "Nut",
+    "fr": "Noix",
+    "ja": "ナッツ"
+  },
+  "735046009": {
+    "en": "Nutmeg",
+    "fr": "Noix de muscade",
+    "ja": "ナツメグ"
+  },
+  "230034002": {
+    "en": "Nuts and seeds",
+    "fr": "Noix et graines",
+    "ja": "ナッツと種子"
+  },
+  "418504009": {
+    "en": "Oat",
+    "fr": "Avoine",
+    "ja": "オーツ麦"
+  },
+  "735979007": {
+    "en": "Octopus",
+    "fr": "Poulpe",
+    "ja": "タコ"
+  },
+  "735047000": {
+    "en": "Onion",
+    "fr": "Oignons",
+    "ja": "タマネギ"
+  },
+  "256306003": {
+    "en": "Orange - fruit",
+    "fr": "Orange (fruit)",
+    "ja": "オレンジ"
+  },
+  "116549003": {
+    "en": "Organochlorine pesticide",
+    "fr": "Pesticide organochloré",
+    "ja": "有機塩素系農薬"
+  },
+  "119417004": {
+    "en": "Organophosphate insecticide",
+    "fr": "Insecticide organophosphoré",
+    "ja": "有機リン系殺虫剤"
+  },
+  "255667006": {
+    "en": "Paraffin",
+    "fr": "Paraffine",
+    "ja": "パラフィン"
+  },
+  "735049002": {
+    "en": "Peach",
+    "fr": "Pêche",
+    "ja": "桃"
+  },
+  "410853002": {
+    "en": "Perfluorochemical",
+    "fr": "Composé perfluoré",
+    "ja": "ペルフルオロ化合物"
+  },
+  "418785009": {
+    "en": "Perfume",
+    "fr": "Parfum",
+    "ja": "香料"
+  },
+  "59545008": {
+    "en": "Pesticide",
+    "fr": "Pesticides",
+    "ja": "有害生物駆除物質"
+  },
+  "227538001": {
+    "en": "Pickle",
+    "fr": "Cornichon",
+    "ja": "ピクルス"
+  },
+  "227511008": {
+    "en": "Pine nut",
+    "fr": "Pignon de pin",
+    "ja": "松の実"
+  },
+  "1137358000": {
+    "en": "Piper",
+    "fr": "Poivre",
+    "ja": "コショウ"
+  },
+  "387398009": {
+    "en": "Podophyllum resin",
+    "fr": "Podophylline",
+    "ja": "ポドフィリン"
+  },
+  "256504004": {
+    "en": "Polycarbonate dental material",
+    "fr": "Matériau dentaire en polycarbonate",
+    "ja": "ポリカーボネート歯科材料"
+  },
+  "83619009": {
+    "en": "Polyvinyl alcohol",
+    "fr": "Poly(alcool vinylique)",
+    "ja": "ポリビニルアルコール"
+  },
+  "735053000": {
+    "en": "Potato",
+    "fr": "Pomme de terre",
+    "ja": "ジャガイモ"
+  },
+  "28230009": {
+    "en": "Poultry",
+    "fr": "Volaille",
+    "ja": "鶏肉"
+  },
+  "418268006": {
+    "en": "Product containing antigen of live attenuated Mycobacterium bovis",
+    "fr": "Vaccin BCG",
+    "ja": "BCGワクチン"
+  },
+  "774702006": {
+    "en": "Product containing only antigen of live attenuated Mycobacterium bovis",
+    "fr": "Vaccin contenant uniquement l'antigène de Mycobacterium bovis vivant atténué (BCG)",
+    "ja": "弱毒生Mycobacterium bovis抗原のみを含むワクチン (BCG)"
+  },
+  "227313005": {
+    "en": "Pulse vegetable",
+    "fr": "Légumineuse",
+    "ja": "豆類"
+  },
+  "311846002": {
+    "en": "Pyrethroid insecticide",
+    "fr": "Insecticide pyréthroïde",
+    "ja": "ピレスロイド系殺虫剤"
+  },
+  "412153009": {
+    "en": "Rabbit dander",
+    "fr": "Squames de lapin",
+    "ja": "ウサギのフケ"
+  },
+  "227444000": {
+    "en": "Raspberries",
+    "fr": "Framboises",
+    "ja": "ラズベリー"
+  },
+  "67324005": {
+    "en": "Rice",
+    "fr": "Riz",
+    "ja": "米"
+  },
+  "43230003": {
+    "en": "Rubber",
+    "fr": "Caoutchouc",
+    "ja": "ゴム"
+  },
+  "412068007": {
+    "en": "Rye",
+    "fr": "Seigle",
+    "ja": "ライ麦"
+  },
+  "128489003": {
+    "en": "Sand",
+    "fr": "Sable",
+    "ja": "砂"
+  },
+  "264337003": {
+    "en": "Seed",
+    "fr": "Graine",
+    "ja": "種子"
+  },
+  "51420009": {
+    "en": "Silicon",
+    "fr": "Silicium",
+    "ja": "ケイ素"
+  },
+  "13652007": {
+    "en": "Silicone",
+    "fr": "Silicone",
+    "ja": "シリコーン"
+  },
+  "412156001": {
+    "en": "Silk",
+    "fr": "Soie",
+    "ja": "絹"
+  },
+  "41967008": {
+    "en": "Silver",
+    "fr": "Argent",
+    "ja": "銀"
+  },
+  "735006003": {
+    "en": "Squid",
+    "fr": "Calmar",
+    "ja": "イカ"
+  },
+  "767406000": {
+    "en": "Sulfite and/or sulfite derivative",
+    "fr": "Sulfite et/ou dérivés sulfités",
+    "ja": "亜硫酸塩および亜硫酸塩誘導体"
+  },
+  "43735007": {
+    "en": "Sulfur",
+    "fr": "Soufre",
+    "ja": "硫黄"
+  },
+  "415710007": {
+    "en": "Terpene",
+    "fr": "Terpènes",
+    "ja": "イソプレノイド"
+  },
+  "418490008": {
+    "en": "Tetanolysin",
+    "fr": "Tétanolysine",
+    "ja": "テタノリジン"
+  },
+  "418794003": {
+    "en": "Tetanospasmin",
+    "fr": "Tétanospasmine",
+    "ja": "テタノスパスミン"
+  },
+  "412070003": {
+    "en": "Vanilla",
+    "fr": "Vanille",
+    "ja": "バニラ"
+  },
+  "726764009": {
+    "en": "Vicia faba",
+    "fr": "Vicia faba (fève)",
+    "ja": "ソラマメ"
+  },
+  "1985008": {
+    "en": "Vomitus",
+    "fr": "Vomissements",
+    "ja": "嘔吐物"
+  },
+  "419633007": {
+    "en": "White paraffin",
+    "fr": "Paraffine blanche",
+    "ja": "白色パラフィン"
+  },
+  "14402002": {
+    "en": "Wood",
+    "fr": "Bois",
+    "ja": "木材"
+  },
+  "412161004": {
+    "en": "Wool",
+    "fr": "Laine",
+    "ja": "羊毛"
+  },
+  "772245002": {
+    "en": "Wool alcohol",
+    "fr": "Alcool de laine",
+    "ja": "羊毛脂アルコール"
+  },
+  "418266005": {
+    "en": "Yellow paraffin",
+    "fr": "Paraffine jaune",
+    "ja": "黄色パラフィン"
+  },
+  "412357001": {
+    "en": "Zea mays",
+    "fr": "Maïs",
+    "ja": "トウモロコシ"
+  },
+  "232347008": {
+    "en": "Allergy to fish",
+    "fr": "Allergie au poisson",
+    "ja": "魚アレルギー"
+  },
+  "419263009": {
+    "en": "Allergy to tree pollen",
+    "fr": "Allergie au pollen d'arbres",
+    "ja": "樹木花粉アレルギー"
+  },
+  "300916003": {
+    "en": "Latex allergy",
+    "fr": "Allergie au latex",
+    "ja": "ラテックスアレルギー"
+  },
+  "419474003": {
+    "en": "Allergy to soy",
+    "fr": "Allergie au soja",
+    "ja": "大豆アレルギー"
+  },
+  "I10": {
+    "en": "Essential hypertension",
+    "fr": "Hypertension artérielle essentielle",
+    "ja": "本態性高血圧症"
+  },
+  "I50.9": {
+    "en": "Congestive heart failure",
+    "fr": "Insuffisance cardiaque congestive",
+    "ja": "うっ血性心不全"
+  },
+  "C09AA02": {
+    "en": "Enalapril",
+    "fr": "Énalapril",
+    "ja": "エナラプリル"
+  },
+  "B01AC06": {
+    "en": "Aspirin",
+    "fr": "Aspirine",
+    "ja": "アスピリン"
+  },
+  "C07AB07": {
+    "en": "Bisoprolol",
+    "fr": "Bisoprolol",
+    "ja": "ビソプロロール"
+  },
+  "R06AX26": {
+    "en": "Fexofenadine",
+    "fr": "Fexofénadine",
+    "ja": "フェキソフェナジン"
+  },
+  "R05DA09": {
+    "en": "Dextromethorphan",
+    "fr": "Dextrométhorphane",
+    "ja": "デキストロメトルファン"
+  },
+  "C03CA01": {
+    "en": "Furosemide",
+    "fr": "Furosémide",
+    "ja": "フロセミド"
+  }
+}

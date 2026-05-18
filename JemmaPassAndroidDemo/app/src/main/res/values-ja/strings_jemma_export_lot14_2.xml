@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_export_lot14_2.xml — Lot 14.2 (PHASE 14) · JA -->
+<resources>
+
+    <!-- エクスポート 3 チャンネルのタブ -->
+    <string name="qr_tab_pruned">📦 コンパクト</string>
+    <string name="qr_tab_text">🌐 テキスト</string>
+    <string name="qr_tab_fhir">🏥 FHIR</string>
+
+    <!-- 言語セレクタ (Channel 2 テキスト専用) -->
+    <string name="qr_lang_fr">🇫🇷 FR</string>
+    <string name="qr_lang_en">🇬🇧 EN</string>
+    <string name="qr_lang_ja">🇯🇵 JA</string>
+
+    <!-- スライドショー再生/一時停止 (Channel 3 FHIR マルチフレーム) -->
+    <string name="qr_play_pause">スライドショー再生 / 一時停止</string>
+
+    <!-- クリップボードコピー (タイトルバー) -->
+    <string name="qr_action_copy">コピー</string>
+    <string name="qr_copy_done">📋 コピー完了 — %1$d 文字</string>
+    <string name="qr_copy_empty">コピーするものがありません (エンコーダ準備中)。</string>
+    <string name="qr_copy_failed">コピーに失敗しました。</string>
+
+    <!-- PDF エクスポート (タイトルバー) -->
+    <string name="qr_action_pdf">PDF エクスポート</string>
+
+    <!-- フォーマットチップのラベル -->
+    <string name="qr_format_chip_pruned">📦 _j2 · %1$dB · %2$s</string>
+    <string name="qr_format_chip_text">🌐 テキスト %1$s · %2$dB · %3$s</string>
+    <string name="qr_format_chip_fhir">🏥 FHIR R4 · %1$dB · %2$s</string>
+    <string name="qr_frame_one">1 フレーム</string>
+    <string name="qr_frame_many">%1$d フレーム</string>
+
+</resources>

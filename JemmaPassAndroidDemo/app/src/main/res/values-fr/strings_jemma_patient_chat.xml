@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_patient_chat.xml — JEMMA Pass · Lot 14.5c42 (PHASE 14)
+
+    🆕 c42 :
+    • Sexe ajouté à la card de draft + greeting mis à jour pour le demander
+    • patient_chat_confirm_fmt SUPPRIMÉ (la confirmation est maintenant
+      construite en Kotlin avec deux variantes : visuelle (emoji + ISO) et
+      TTS-friendly (français parlé, sans tiret/parenthèses/emoji))
+-->
+<resources>
+
+    <string name="patient_chat_title">🪪 Patient · Voix</string>
+    <string name="patient_chat_draft_card_title">Données capturées</string>
+    <string name="patient_chat_draft_given_name_fmt">👤 Prénom : %1$s</string>
+    <string name="patient_chat_draft_gender_fmt">⚥ Sexe : %1$s</string>
+    <string name="patient_chat_draft_birth_date_fmt">📅 Naissance : %1$s</string>
+
+    <string name="patient_chat_greeting">Bonjour ! Dis-moi ton prénom, ton sexe, et ta date de naissance.</string>
+
+    <string name="patient_chat_input_hint">Dis ton prénom, ton sexe et ta date de naissance…</string>
+    <string name="patient_chat_mic_cd">Activer le micro</string>
+
+    <string name="patient_chat_status_loading">⏳ Chargement…</string>
+    <string name="patient_chat_status_idle">🎤 À toi de parler</string>
+    <string name="patient_chat_status_recording">🛑 J\'écoute… tape pour arrêter</string>
+    <string name="patient_chat_status_thinking">🤔 Jemma analyse…</string>
+    <string name="patient_chat_status_done">✅ Capturé — retour au formulaire</string>
+
+    <string name="patient_chat_extract_failed">Désolée, je n\'ai pas bien compris. Tu peux répéter ton prénom, ton sexe et ta date de naissance ?</string>
+    <string name="patient_chat_extract_error_fmt">Erreur Jemma : %1$s</string>
+
+    <string name="patient_chat_mic_perm_needed">Permission micro nécessaire.</string>
+    <string name="patient_chat_stt_unsupported">La reconnaissance vocale n\'est pas disponible sur cet appareil.</string>
+    <string name="patient_chat_stt_error_fmt">Erreur STT : %1$s</string>
+
+</resources>

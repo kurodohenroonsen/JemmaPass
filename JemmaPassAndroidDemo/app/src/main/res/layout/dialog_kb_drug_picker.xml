@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="8dp">
+
+    <EditText
+        android:id="@+id/drug_picker_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/drug_picker_search_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1" />
+
+    <TextView
+        android:id="@+id/drug_picker_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="#94A3B8"
+        android:textSize="12sp"
+        tools:text="Tape au moins 2 caractères…" />
+
+    <ListView
+        android:id="@+id/drug_picker_list"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:choiceMode="singleChoice"
+        android:divider="#334155"
+        android:dividerHeight="1dp" />
+
+</LinearLayout>

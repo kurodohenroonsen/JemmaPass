@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_export_lot14.xml — Lot 14.1 (PHASE 14)
+
+    Strings ajoutées pour :
+      • le bouton 📤 dans la title bar du ProfileDetailFragment
+      • les erreurs / Toast du QrViewerFragment
+      • les stubs Save / Share (en attendant Lot 14.2)
+-->
+<resources>
+
+    <!-- Menu item dans la toolbar du ProfileDetailFragment. -->
+    <string name="profile_detail_action_export">Exporter</string>
+
+    <!-- Toasts d'erreur du QrViewerFragment. -->
+    <string name="qr_error_no_profile">Aucun profil à exporter.</string>
+    <string name="qr_error_load_failed">Échec du chargement du profil.</string>
+    <string name="qr_error_encode_failed">Échec de l\'encodage QR : %1$s</string>
+    <string name="qr_error_bitmap_failed">Échec du rendu du QR.</string>
+
+    <!-- Stubs des actions Save / Share — implémentés au Lot 14.2. -->
+    <string name="qr_action_stub_save_lot14">Sauvegarde en galerie — arrive au Lot 14.2 🐢</string>
+    <string name="qr_action_stub_share_lot14">Partage — arrive au Lot 14.2 🐢</string>
+
+</resources>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="ja">
+
+    <string name="allergies_chat_title">🩹 アレルギー チャット</string>
+    <string name="allergies_chat_greeting">こんにちは。アレルギーについて教えてください — 原因物質、重症度、症状を話してください。</string>
+    <string name="allergies_chat_input_hint">🎤 を押して話してください…</string>
+    <string name="allergies_chat_mic_cd">マイクのオン/オフを切り替えてアレルギーを口述</string>
+    <string name="allergies_chat_stop_tts_cd">JEMMA の音声を停止</string>
+
+    <string name="allergies_chat_err_no_mic_permission">⚠️ マイクにアクセスできません。アプリ設定でマイクを許可してから戻ってきてください。</string>
+    <string name="allergies_chat_err_stt_unsupported">⚠️ お使いの端末は音声認識に対応していません。アレルギー一覧から「手動で入力」をご利用ください。</string>
+    <string name="allergies_chat_err_stt_generic">⚠️ 聞き取れませんでした（%1$s）。もう一度試すか、手動入力に切り替えてください。</string>
+    <string name="allergies_chat_err_gemma_generic">⚠️ すみません、処理に問題が発生しました。もう一度お試しください。</string>
+
+    <!-- 🆕 Lot 14.5c19 -->
+    <string name="allergies_chat_ips_card_title">📋 取得済みデータ</string>
+    <string name="allergies_chat_ips_progress">%1$d/5</string>
+    <string name="allergies_chat_ips_substance_label">原因物質</string>
+    <string name="allergies_chat_ips_category_label">カテゴリー</string>
+    <string name="allergies_chat_ips_severity_label">重症度</string>
+    <string name="allergies_chat_ips_status_label">状態</string>
+    <string name="allergies_chat_ips_manifestation_label">症状</string>
+    <string name="allergies_chat_ips_missing">—</string>
+    <string name="allergies_chat_ips_line_filled">✅ %1$s · %2$s</string>
+    <string name="allergies_chat_ips_line_missing">⌛ %1$s · —</string>
+
+    <string name="allergies_chat_cat_medication">薬剤</string>
+    <string name="allergies_chat_cat_food">食品</string>
+    <string name="allergies_chat_cat_environment">環境</string>
+    <string name="allergies_chat_cat_biologic">生物</string>
+
+    <string name="allergies_chat_sev_high">重度</string>
+    <string name="allergies_chat_sev_low">軽度</string>
+    <string name="allergies_chat_sev_unknown">不明</string>
+
+    <string name="allergies_chat_status_active">活動中</string>
+    <string name="allergies_chat_status_resolved">解消</string>
+    <string name="allergies_chat_status_inactive">非活動</string>
+
+    <string name="allergies_chat_save">保存</string>
+    <string name="allergies_chat_save_toast_empty">保存する前に、まず何にアレルギーがあるか（原因物質）を教えてください。</string>
+    <string name="allergies_chat_save_toast_resolving">医療コードを検索中…</string>
+    <string name="allergies_chat_save_toast_done">アレルギーを保存しました 🐢</string>
+
+    <!-- 🆕 Lot 14.5c24 -->
+    <string name="allergies_chat_ips_substance_resolved">✅ %1$s · %2$s (SNOMED %3$s)</string>
+    <string name="allergies_chat_ips_substance_pending">⏳ %1$s · %2$s （検索中…）</string>
+    <string name="allergies_chat_ips_substance_unresolved">⚠️ %1$s · %2$s （データベース未登録）</string>
+
+    <string name="allergies_chat_audio_message">🎤 (音声メッセージ · %1$d 秒)</string>
+    <string name="allergies_chat_jemma_listening">🎧 ジェマが音声メッセージを聞いています…</string>
+    <string name="allergies_chat_jemma_thinking_analyze">🧠 少し待って、何を言ったか分析しています…</string>
+    <string name="allergies_chat_jemma_thinking_snomed">💾 SNOMEDコードを確認して保存しています…</string>
+    <string name="allergies_chat_jemma_thinking_default">🧠 少し待って、考えています…</string>
+    <string name="allergies_chat_error_audio_processing">申し訳ありませんが、音声を処理できませんでした。もう一度試すか、2回目に話すと（従来のSTTモードが引き継ぎます）。(%1$s)</string>
+    <string name="allergies_chat_error_generic">申し訳ありませんが、リクエストを処理できませんでした。(%1$s)</string>
+
+    <string name="allergies_chat_auto_kb">(自動 KB)</string>
+    <string name="allergies_chat_auto">(自動)</string>
+    
+    <string name="allergies_chat_bg_substance">物質</string>
+    <string name="allergies_chat_bg_category">カテゴリー</string>
+    <string name="allergies_chat_bg_severity">重症度</string>
+    <string name="allergies_chat_bg_status">ステータス</string>
+    <string name="allergies_chat_bg_manifestation">症状</string>
+    <string name="allergies_chat_bg_onset_date">発症日</string>
+    
+    <string name="allergies_chat_bg_search_intolerance">SNOMED 検索</string>
+    <string name="allergies_chat_bg_search_reaction">SNOMED 症状検索</string>
+    <string name="allergies_chat_bg_resolve_intolerance">SNOMED 解決</string>
+    <string name="allergies_chat_bg_resolve_reaction">SNOMED 症状解決</string>
+    <string name="allergies_chat_bg_confirm_code">SNOMED コード確認済み</string>
+    <string name="allergies_chat_bg_confirm_reaction">症状コード確認済み</string>
+    
+    <string name="allergies_chat_bg_get_profile">プロファイル読み込み</string>
+    <string name="allergies_chat_bg_cross_check">薬剤クロスチェック</string>
+    <string name="allergies_chat_bg_red_alert">クリティカルアラート</string>
+    
+    <string name="allergies_chat_bg_play_tts">ジェマの音声</string>
+    <string name="allergies_chat_bg_ask_choice">ユーザーへの質問</string>
+    
+    <string name="allergies_chat_bg_save_draft">保存</string>
+    <string name="allergies_chat_bg_cancel_exit">キャンセル</string>
+
+</resources>

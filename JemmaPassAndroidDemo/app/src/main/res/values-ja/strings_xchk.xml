@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="xchk_title">臨床的な相互作用を検出</string>
+    <string name="xchk_new_item_prefix">新規項目：</string>
+    <string name="xchk_section_existing_meds">既存の薬剤との競合</string>
+    <string name="xchk_match_on">マッチ：%1$s</string>
+    <string name="xchk_severity">重症度：%1$s</string>
+    <string name="xchk_en_disclaimer">ⓘ 詳細情報は英語で提供されます（臨床参照言語）。</string>
+    <string name="xchk_save_anyway">それでも保存</string>
+    <string name="xchk_cancel">確認</string>
+</resources>

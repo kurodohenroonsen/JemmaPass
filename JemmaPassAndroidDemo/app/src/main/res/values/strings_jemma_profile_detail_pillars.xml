@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Clickable pillars section in the profile detail page -->
+    <string name="profile_detail_pillars_title">🩺  Profile pillars</string>
+    <string name="profile_detail_pillars_subtitle">Tap a pillar to edit it. 4 active pillars (manual edit), 14 more coming.</string>
+</resources>

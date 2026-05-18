@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    menu_allergies_chat.xml — Lot 14.5c23
+
+    Bouton 💾 Sauvegarder dans la toolbar du chat allergies. Désactivé tant
+    que le draft IPS n'a pas le minimum requis (substance). S'active dès
+    que la substance est captée.
+
+    Note : pas de form intermédiaire — le save envoie directement le
+    setFragmentResult(RESULT_KEY) attendu par AllergiesEditFragment, puis
+    on pop back.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_allergies_chat_save"
+        android:enabled="false"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/allergies_chat_save"
+        app:showAsAction="always" />
+
+</menu>

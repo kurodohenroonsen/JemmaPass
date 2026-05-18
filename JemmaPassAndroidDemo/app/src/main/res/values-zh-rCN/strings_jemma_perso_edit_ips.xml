@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_perso_edit_ips.xml · zh-CN -->
+<resources>
+
+    <!-- ─── Section "Postal address" ─── -->
+    <string name="perso_section_address">📮  邮政地址</string>
+    <string name="perso_address_hint">完整地址</string>
+    <string name="perso_address_helper">例如：Rue de la Paix 12, 5660 Couvin, 比利时</string>
+
+    <!-- ─── Section "Patient telecom" ─── -->
+    <string name="perso_section_telecom">📞  患者联系方式</string>
+    <string name="perso_telecom_helper">患者本人的电话和电子邮箱（与紧急联系人不同）</string>
+    <string name="perso_telecom_phone_hint">电话</string>
+    <string name="perso_telecom_email_hint">电子邮箱</string>
+
+    <!-- ─── Section "Identifier" ─── -->
+    <string name="perso_section_identifier">🆔  国家身份证号</string>
+    <string name="perso_identifier_hint">身份证号码</string>
+    <string name="perso_identifier_helper">例如：国民登记号、社会保障号、身份证号</string>
+
+</resources>

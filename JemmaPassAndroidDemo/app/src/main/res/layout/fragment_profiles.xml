@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_profiles.xml — v2.2.6 : empty state now wrapped in a
+    NestedScrollView so its content (mascot + title + 3 large CTAs) is
+    fully reachable on shorter screens or when the system bars eat into
+    the viewport. Without this wrapper, the third CTA "Personas démo"
+    was cropped at the bottom on devices with ~830dp usable height.
+
+    The NestedScrollView plays nicely with the AppBarLayout's collapse-on-
+    scroll behaviour (kept the same `appbar_scrolling_view_behavior` it
+    had before).
+
+    États gérés par le Fragment :
+      • 0 profil  → masque le RecyclerView, affiche `view_profiles_empty_state`
+      • 1+ profils → affiche le RecyclerView avec :
+          - 1 row "active" (item_profile_active.xml) en haut, contenant la
+            grille des 8 piliers (4 actifs + 4 stubs)
+          - N rows "other" (item_profile_other.xml) en dessous
+
+    Bandeau orange "demo not ready" en haut, visible si n'importe quel
+    élément du preflight (cf. fragment_settings) est ❌. Tap → Settings.
+
+    FAB bottom-end : ouvre dialog_profile_create_choice (3 voies).
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/profiles_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/profiles_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:logo="@mipmap/ic_launcher"
+            app:title="@string/profiles_title"
+            app:titleTextColor="@color/jemma_primary"
+            app:menu="@menu/menu_profiles" />
+
+        <!-- Demo not ready banner — visible if any preflight item is KO -->
+        <include
+            android:id="@+id/profiles_demo_banner"
+            layout="@layout/view_demo_not_ready_banner" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- LIST mode (1+ profiles) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/profiles_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="100dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_profile_other" />
+
+    <!--
+        EMPTY STATE mode (0 profile, 1st run) — Fragment toggles visibility.
+        Wrapped in a NestedScrollView so the 3 CTA cards remain reachable on
+        smaller viewports. fillViewport=true keeps the included layout
+        stretched to at least the visible height (so the mascot stays
+        centered when there's room) but lets it grow taller when needed.
+    -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/profiles_empty_state_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include
+            android:id="@+id/profiles_empty_state"
+            layout="@layout/view_profiles_empty_state" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- FAB : "+ New profile" — opens dialog_profile_create_choice -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/profiles_fab_new"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:text="@string/profiles_fab_new"
+        app:backgroundTint="@color/jemma_primary"
+        app:icon="@android:drawable/ic_input_add" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

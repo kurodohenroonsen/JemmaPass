@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_assistant_patient_pipeline.xml — Lot 14.5c35
+
+    Patient extraction pipeline screen. 4 steps :
+      1. Photo loaded
+      2. OCR (ML Kit)
+      3. MRZ pre-parse (instant if applicable, else skipped)
+      4. Gemma multimodal extraction
+
+    Layout :
+      ┌──────────────────────────────────────────────┐
+      │ ← Assistant · Patient                        │
+      ├──────────────────────────────────────────────┤
+      │  ┌───────────────────────────────────────┐   │
+      │  │      [ ID/document preview ]          │   │
+      │  └───────────────────────────────────────┘   │
+      │  ⚠ L'assistant pré-remplit. Vérifie chaque   │
+      │     champ avant d'enregistrer.               │
+      │                                              │
+      │  ◯ 1 · Photo         OK                      │
+      │  ◯ 2 · OCR           En attente              │
+      │  ◯ 3 · MRZ           En attente (optionnel)  │
+      │  ◯ 4 · Gemma 4       En attente              │
+      │                                              │
+      │  [ Annuler ]       [ Ouvrir le formulaire ]  │
+      └──────────────────────────────────────────────┘
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/jemma_surface">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/patient_pipeline_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/patient_pipeline_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/jemma_surface"
+            app:title="@string/assistant_patient_title"
+            app:titleTextColor="@color/jemma_primary"
+            app:navigationIcon="@android:drawable/ic_menu_revert" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- 🆕 c37 — Multi-image preview strip. Replaces the single
+                 ImageView with a HorizontalScrollView that contains one
+                 ImageView per uploaded photo. The Kotlin populates the
+                 strip dynamically. patient_pipeline_preview is kept as
+                 the FIRST ImageView in the strip so existing code that
+                 references it (loadPreview) still works. -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/patient_pipeline_thumbs_strip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/patient_pipeline_preview"
+                            android:layout_width="240dp"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/assistant_patient_preview_desc"
+                            tools:src="@android:drawable/sym_def_app_icon" />
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/patient_pipeline_empty_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/assistant_patient_no_image"
+                    android:textColor="@color/jemma_text_muted"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    tools:visibility="gone" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/patient_pipeline_strip_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:paddingTop="4dp"
+                android:paddingEnd="4dp"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="11sp"
+                tools:text="1 / 2"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/assistant_patient_review_hint"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="12sp" />
+
+            <!-- 4 steps card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <!-- 🆕 c37 — Step 0 : Gemma 4 init (~12s on first run).
+                         Without explicit visual feedback the user thinks
+                         the screen is frozen. This step makes the wait
+                         visible and reassuring. -->
+                    <include
+                        android:id="@+id/patient_step_0"
+                        layout="@layout/view_assistant_progress_step" />
+
+                    <View style="@style/JemmaDivider" />
+
+                    <include
+                        android:id="@+id/patient_step_1"
+                        layout="@layout/view_assistant_progress_step" />
+
+                    <View style="@style/JemmaDivider" />
+
+                    <include
+                        android:id="@+id/patient_step_2"
+                        layout="@layout/view_assistant_progress_step" />
+
+                    <View style="@style/JemmaDivider" />
+
+                    <include
+                        android:id="@+id/patient_step_3"
+                        layout="@layout/view_assistant_progress_step" />
+
+                    <View style="@style/JemmaDivider" />
+
+                    <include
+                        android:id="@+id/patient_step_4"
+                        layout="@layout/view_assistant_progress_step" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Action buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/patient_pipeline_btn_cancel"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/patient_pipeline_btn_open_form"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/assistant_patient_btn_open_form"
+                    android:enabled="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_perso_edit_ips_full.xml · DE -->
+<resources>
+
+    <!-- Section header IPS-FULL -->
+    <string name="perso_section_ips_header">— Vollständige IPS-Konformität —</string>
+
+    <!-- 📮 Postal address (structured) -->
+    <string name="perso_address_line_hint">Straße / Nummer / weitere Zeilen</string>
+    <string name="perso_address_line_helper">z. B. Rue de la Paix 12 (kann mehrzeilig sein)</string>
+    <string name="perso_address_city_hint">Stadt</string>
+    <string name="perso_address_postal_hint">Postleitzahl</string>
+    <string name="perso_address_country_hint">Land (ISO-2)</string>
+    <string name="perso_address_country_pick_title">Wohnsitzland wählen</string>
+    <string name="perso_address_use_pick_title">Verwendung der Adresse</string>
+    <string name="perso_address_use_label_prefix">Verwendung:</string>
+
+    <!-- 🆔 Identifier -->
+    <string name="perso_identifier_system_pick_title">Art der Kennung</string>
+    <string name="perso_identifier_system_label_prefix">System:</string>
+    <string name="perso_identifier_value_hint">Nummer</string>
+
+    <!-- 👨‍⚕️ General practitioner -->
+    <string name="perso_section_gp">👨‍⚕️  Hausarzt</string>
+    <string name="perso_gp_hint">Name des Arztes</string>
+    <string name="perso_gp_helper">FHIR Patient.generalPractitioner — vollständigen Namen des Hausarztes eingeben</string>
+
+    <!-- 🌐 Preferred language -->
+    <string name="perso_section_language">🌐  Bevorzugte Sprache</string>
+    <string name="perso_language_pick_title">Bevorzugte Sprache wählen</string>
+
+    <!-- Pickers -->
+    <string name="perso_pick_hint">Tippen zur Auswahl</string>
+
+</resources>

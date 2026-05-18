@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma.xml — French (fr).
+    Translation of the EN default strings_jemma.xml (in values/).
+    Same key set, French wording. Kept in sync key-for-key with EN.
+-->
+<resources>
+
+    <!-- App identity -->
+    <string name="jemma_app_name">JemmaAppDemo</string>
+    <string name="splash_tagline">Universal IPS Health Passport · Edge AI</string>
+    <string name="splash_offline_chip">Mode avion · 100 % on-device</string>
+    <string name="jemma_mascot">Mascotte Jemma</string>
+
+    <!-- Bottom nav -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_radar">Radar</string>
+    <string name="nav_settings">Paramètres</string>
+
+    <!-- Generic buttons -->
+    <string name="btn_save">Enregistrer</string>
+    <string name="btn_cancel">Annuler</string>
+    <string name="btn_delete">Supprimer</string>
+    <string name="btn_close">Fermer</string>
+    <string name="btn_retry">Réessayer</string>
+
+    <!-- Home -->
+    <string name="home_active_profile">Profil actif</string>
+    <string name="home_add_profile">Ajouter un profil</string>
+    <string name="home_sos_cta">SOS</string>
+
+    <!-- Pillars titles -->
+    <string name="pillar_perso">Identité</string>
+    <string name="pillar_contacts">Contacts</string>
+    <string name="pillar_allergies">Allergies</string>
+    <string name="pillar_medications">Médicaments</string>
+    <string name="pillar_conditions">Conditions</string>
+    <string name="pillar_immunizations">Vaccins</string>
+    <string name="pillar_procedures">Procédures</string>
+    <string name="pillar_devices">Dispositifs</string>
+    <string name="pillar_stub_coming_soon">Disponible dans la version production</string>
+
+    <!-- Perso -->
+    <string name="perso_title">Identité</string>
+    <string name="perso_section_identity">Identification (FHIR Patient)</string>
+    <string name="perso_section_clinical">Données cliniques</string>
+    <string name="perso_field_given_name">Prénom</string>
+    <string name="perso_field_family_name">Nom</string>
+    <string name="perso_field_birth_date">Date de naissance</string>
+    <string name="perso_field_gender">Sexe</string>
+    <string name="perso_field_language">Langue de communication</string>
+    <string name="perso_field_blood_type">Groupe sanguin</string>
+    <string name="perso_field_height_cm">Taille</string>
+    <string name="perso_field_weight_kg">Poids</string>
+    <string name="perso_ips_hint">Mappé sur FHIR R4 Patient · IPS-conforme · stocké localement (Room) · jamais envoyé en clair.</string>
+    <string name="gender_male">Masculin</string>
+    <string name="gender_female">Féminin</string>
+    <string name="gender_other">Autre</string>
+    <string name="gender_unknown">Inconnu</string>
+
+    <!-- Contacts -->
+    <string name="contacts_title">Contacts</string>
+    <string name="contacts_subtitle">FHIR R4 · RelatedPerson</string>
+    <string name="contacts_btn_add">Ajouter</string>
+    <string name="contacts_btn_call">Appeler</string>
+    <string name="contacts_empty">Aucun contact d\'urgence enregistré.\nAppuyez sur + pour en ajouter un.</string>
+    <string name="contact_dialog_title_new">Nouveau contact</string>
+    <string name="contact_dialog_ips_type">FHIR R4 · RelatedPerson</string>
+    <string name="contact_field_name">Nom du contact</string>
+    <string name="contact_field_relationship">Lien de parenté</string>
+    <string name="contact_field_phone">Téléphone</string>
+    <string name="contact_field_email">E-mail (optionnel)</string>
+    <string name="contact_field_language">Langue préférée</string>
+
+    <!-- Allergies -->
+    <string name="allergies_title">Allergies</string>
+    <string name="allergies_subtitle">FHIR R4 · AllergyIntolerance</string>
+    <string name="allergies_add_text">Ajouter</string>
+    <string name="allergies_add_voice">Dicter une allergie</string>
+    <string name="allergies_add_image">Photo d\'un rapport</string>
+    <string name="allergies_empty">Aucune allergie enregistrée.\nUtilisez les boutons en bas à droite pour en ajouter par texte, voix ou image.</string>
+    <string name="allergy_dialog_title_new">Nouvelle allergie</string>
+    <string name="allergy_dialog_ips_type">FHIR R4 · AllergyIntolerance</string>
+    <string name="allergy_field_substance">Substance</string>
+    <string name="allergy_field_substance_hint">Tapez le nom (autocomplete sur la KB SNOMED)</string>
+    <string name="allergy_field_snomed">Code SNOMED CT</string>
+    <string name="allergy_field_severity">Sévérité</string>
+    <string name="allergy_field_reaction">Réaction décrite</string>
+    <string name="allergy_severity_mild">Légère</string>
+    <string name="allergy_severity_moderate">Modérée</string>
+    <string name="allergy_severity_severe">Sévère</string>
+
+    <!-- Medications -->
+    <string name="medications_title">Médicaments</string>
+    <string name="medications_subtitle">FHIR R4 · MedicationStatement</string>
+    <string name="medications_add_text">Ajouter</string>
+    <string name="medications_add_voice">Dicter un médicament</string>
+    <string name="medications_add_image">Scanner une boîte</string>
+    <string name="medications_empty">Aucun médicament enregistré.\nUtilisez les boutons en bas à droite pour en ajouter par texte, voix ou photo de boîte.</string>
+    <string name="medication_dialog_title_new">Nouveau médicament</string>
+    <string name="medication_dialog_ips_type">FHIR R4 · MedicationStatement</string>
+    <string name="medication_field_name">Nom du médicament</string>
+    <string name="medication_field_atc">Code ATC</string>
+    <string name="medication_field_dose">Dose</string>
+    <string name="medication_field_unit">Unité</string>
+    <string name="medication_field_frequency">Fréquence</string>
+    <string name="medication_field_frequency_hint">Ex. : 1 cp matin et soir, 3x/jour, 1x à 8h</string>
+    <string name="medication_field_route">Voie d\'administration</string>
+    <string name="medication_field_active">Traitement en cours</string>
+
+    <!-- Med scan dialog -->
+    <string name="medscan_title">Scan médicament</string>
+    <string name="medscan_subtitle">Boîte · blister · ordonnance</string>
+    <string name="medscan_image_placeholder">Aucune image capturée</string>
+    <string name="medscan_result_label">▼ RÉSULTAT</string>
+    <string name="medscan_btn_save">Enregistrer ce médicament</string>
+    <string name="medscan_btn_retry">Réessayer</string>
+    <string name="medscan_btn_reject">Rejeter</string>
+
+    <!-- Voice / debug -->
+    <string name="voice_input_cd">Dicter</string>
+    <string name="debug_console_label">▼ DEBUG PIPELINE</string>
+    <string name="debug_console_label_pipeline">▼ DEBUG PIPELINE COMPLET</string>
+    <string name="debug_console_toggle">Afficher / masquer le journal</string>
+    <string name="debug_console_copy">Copier le log</string>
+
+    <!-- Pillar stub -->
+    <string name="stub_title_default">Pilier</string>
+    <string name="stub_lock_chip">Production</string>
+    <string name="stub_section_fields">Champs IPS</string>
+    <string name="stub_section_kb_links">Référentiels KB</string>
+    <string name="stub_btn_production">Voir l\'app de production sur jemmapass.net</string>
+
+    <!-- Export -->
+    <string name="export_title">Exporter</string>
+    <string name="export_subtitle">QR codes du profil actif</string>
+    <string name="export_section_formats">Formats disponibles</string>
+    <string name="qr_viewer_title">QR généré</string>
+    <string name="qr_image_cd">Code QR</string>
+    <string name="qr_prev_frame">Image précédente</string>
+    <string name="qr_next_frame">Image suivante</string>
+    <string name="qr_btn_save">Enregistrer dans la galerie</string>
+    <string name="qr_btn_share">Partager</string>
+
+    <!-- SOS -->
+    <string name="sos_title">SOS — Diffusion</string>
+    <string name="sos_btn_start">DIFFUSER\nSOS</string>
+    <string name="sos_btn_stop">ARRÊTER\nSOS</string>
+    <string name="sos_telemetry_label">▼ TÉLÉMÉTRIE</string>
+    <string name="sos_telemetry_chunks">Chunks rotation</string>
+    <string name="sos_telemetry_advertise">Broadcasts BLE</string>
+    <string name="sos_telemetry_gps">GPS</string>
+    <string name="sos_telemetry_duty">Duty cycle</string>
+    <string name="sos_peers_around">Autour de moi</string>
+
+    <!-- Radar (rescuer) -->
+    <string name="radar_title">JEMMA Radar</string>
+    <string name="radar_status_active">🎯 Découverte active — recherche victimes &amp; sauveteurs…</string>
+    <string name="radar_btn_hide">Masquer</string>
+    <string name="radar_btn_scan_qr">Scanner QR</string>
+    <string name="radar_btn_stop">Arrêter</string>
+
+    <!-- Triage SALT -->
+    <string name="triage_wait">WAIT — En attente</string>
+    <string name="triage_eval">EVAL — En évaluation</string>
+    <string name="triage_stab">STAB — Stabilisé</string>
+    <string name="triage_help">HELP — Demande aide</string>
+    <string name="triage_evac">EVAC — Évacuation</string>
+    <string name="triage_dcd">DCD — Décédé</string>
+
+    <!-- Patient detail -->
+    <string name="patient_title">Fiche patient</string>
+    <string name="patient_btn_scan_med">📷 Scanner un médicament — vérifier compatibilité</string>
+    <string name="patient_section_allergies">⚠️ Allergies</string>
+    <string name="patient_section_medications">💊 Médicaments</string>
+    <string name="patient_section_conditions">🩺 Conditions</string>
+    <string name="patient_section_immunizations">💉 Vaccins</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_section_model">Modèle Gemma 4</string>
+    <string name="settings_section_kb">Knowledge Base</string>
+    <string name="settings_section_lang">Langue de l\'interface</string>
+    <string name="settings_section_demo">Données de démonstration</string>
+    <string name="settings_section_privacy">Confidentialité</string>
+    <string name="settings_lang_hint">Langue</string>
+    <string name="settings_kb_redownload">Re-télécharger la KB</string>
+    <string name="settings_btn_seed_personas">Créer les profils Kurodo, Misako, Haru</string>
+    <string name="settings_privacy_text">Toutes les données sont stockées localement (Room) et ne quittent jamais votre téléphone, sauf si vous générez un QR ou activez le SOS BLE. Aucune télémétrie. Aucun cloud.</string>
+    <string name="settings_btn_wipe">Effacer toutes les données</string>
+    <string name="settings_btn_benchmark">Comparer E2B vs E4B (benchmark)</string>
+    <string name="model_btn_download">Télécharger</string>
+    <string name="model_btn_activate">Activer</string>
+    <string name="model_btn_active">★ Actif</string>
+
+    <!-- Benchmark -->
+    <string name="benchmark_title">Benchmark Gemma E2B vs E4B</string>
+    <string name="benchmark_prompt_hint">Prompt de test</string>
+    <string name="benchmark_btn_run">Lancer le benchmark</string>
+    <string name="benchmark_col_e2b">E2B (2.4 GB)</string>
+    <string name="benchmark_col_e4b">E4B (3.4 GB)</string>
+
+    <!-- Top-bar menus -->
+    <string name="menu_export">Exporter</string>
+    <string name="menu_settings">Paramètres</string>
+    <string name="menu_radar_mode_rescuer">Mode sauveteur</string>
+    <string name="menu_radar_mode_sos">Mode SOS</string>
+    <string name="menu_radar_diagnostics">Diagnostics mesh</string>
+
+
+    <!-- ═════ Permissions onboarding (Livraison_demo_permissions_1.2.0) ═════ -->
+
+    <!-- Header -->
+    <string name="permissions_title">Autorisations requises</string>
+    <string name="permissions_intro">JemmaAppDemo fonctionne 100 % sur l\'appareil. Pour cela, elle a besoin de quelques accès Android. Chaque permission ne sert qu\'à la fonctionnalité associée.</string>
+    <string name="permissions_mandatory_chip">Toutes obligatoires pour la démo</string>
+
+    <!-- Card titles -->
+    <string name="permission_camera_title">Caméra</string>
+    <string name="permission_microphone_title">Microphone</string>
+    <string name="permission_bluetooth_title">Bluetooth (3 permissions)</string>
+    <string name="permission_location_title">Localisation précise</string>
+    <string name="permission_notifications_title">Notifications</string>
+
+    <!-- Card descriptions -->
+    <string name="permission_camera_desc">Scanner les boîtes de médicaments, blisters et ordonnances pour identifier la molécule via Gemma 4 multimodal.</string>
+    <string name="permission_microphone_desc">Dicter vos allergies, médicaments et noms de contacts. Votre voix est transcrite localement par Gemma 4 — jamais envoyée à un cloud.</string>
+    <string name="permission_bluetooth_desc">Découvrir et diffuser les chunks SOS via le mesh JEMMA en cas d\'incident grave. Aucune connexion internet requise.</string>
+    <string name="permission_location_desc">Inclure vos coordonnées GPS dans les chunks SOS pour que les sauveteurs vous trouvent sur le radar.</string>
+    <string name="permission_notifications_desc">Maintenir le diffuseur SOS actif en arrière-plan et alerter les sauveteurs proches.</string>
+
+    <!-- Status pill labels -->
+    <string name="permission_status_pending">À faire</string>
+    <string name="permission_status_granted">✓ Accordé</string>
+    <string name="permission_status_denied">✗ Refusé</string>
+    <string name="permission_status_settings">⚙ Réglages</string>
+
+    <!-- Buttons -->
+    <string name="permissions_btn_grant_all">Tout accorder</string>
+    <string name="permissions_btn_continue">Continuer vers la démo</string>
+
+    <!-- Summary template -->
+    <string name="permissions_summary_template">%1$d / %2$d accordées</string>
+
+    <!-- Privacy + Why -->
+    <string name="permissions_privacy_note">JEMMA n\'envoie jamais vos données. Ces autorisations restent sur votre téléphone. Mode avion ou rien.</string>
+    <string name="permissions_why_link">Pourquoi sont-elles toutes obligatoires ?</string>
+    <string name="permissions_why_text">JemmaAppDemo est une vraie démo, pas une démo bidon. Chaque fonctionnalité montrée au jury doit fonctionner de bout en bout :\n\n• Le pipeline scan médicament a besoin de la caméra.\n• Le pipeline saisie vocale a besoin du microphone.\n• La diffusion SOS mesh a besoin des 3 permissions Bluetooth + GPS + de la notification du foreground service.\n\nSi l\'une de ces permissions est refusée, la démo correspondante échouerait au moment de l\'enregistrement vidéo. Le règlement du hackathon exige une soumission entièrement fonctionnelle.</string>
+
+    <!-- Settings rationale (shown in dialog when DENIED_PERMANENT) -->
+    <string name="permissions_rationale_title">Ouvrir les Réglages</string>
+    <string name="permissions_rationale_message">Vous avez précédemment refusé cette permission. Merci de l\'accorder manuellement dans Réglages Android → Applications → JemmaAppDemo → Autorisations.</string>
+    <string name="permissions_rationale_btn_open">Ouvrir les Réglages</string>
+    <string name="permissions_rationale_btn_cancel">Annuler</string>
+
+
+    <!-- ═════ Settings revamp (Livraison_demo_settings_1.3.0) ═════ -->
+
+    <!-- Prepare-the-demo card -->
+    <string name="settings_prepare_title">Préparer la démo</string>
+    <string name="settings_prepare_subtitle">Télécharge Gemma 4 E4B + la Knowledge Base d\'un seul tap. Environ 6.1 GB · ~5 min en Wi-Fi.</string>
+    <string name="settings_prepare_btn_start">Démarrer (6.1 GB)</string>
+    <string name="settings_prepare_btn_pause">Pause</string>
+    <string name="settings_prepare_btn_resume">Reprendre</string>
+    <string name="settings_prepare_btn_done">✓ Démo prête</string>
+
+    <!-- Preflight section -->
+    <string name="settings_section_preflight">Avant toute démo</string>
+    <string name="preflight_permissions_label">Permissions accordées</string>
+    <string name="preflight_model_label">Modèle Gemma téléchargé</string>
+    <string name="preflight_kb_label">Knowledge Base téléchargée</string>
+    <string name="preflight_profile_label">Au moins un profil créé</string>
+    <string name="preflight_storage_label">Stockage libre</string>
+
+    <!-- Section hints -->
+    <string name="settings_section_model_hint">3 variantes disponibles. E4B est recommandé pour les téléphones avec ≥ 8 GB de RAM. Touchez une carte pour développer.</string>
+    <string name="settings_section_kb_hint">Knowledge base clinique locale utilisée par Gemma pour ancrer ses réponses. Nécessaire pour le scan de médicament et les croisements DDI.</string>
+
+    <!-- KB card -->
+    <string name="kb_card_name">knowledge_full.db</string>
+    <string name="kb_card_description">Lecteur SQLite + FTS5 contenant la Clinical Forge KB multilingue : hiérarchie ATC, ponts RxNorm, SNOMED CT, DDinter 2.0 (300 K interactions), interactions médicament-aliment. Utilisé par chaque tool call de grounding.</string>
+    <string name="kb_stat_codes">CODES</string>
+    <string name="kb_stat_langs">LANGUES</string>
+    <string name="kb_stat_ddi">PAIRES DDI</string>
+    <string name="kb_stat_fts">FTS5</string>
+
+    <!-- Model expanded stats -->
+    <string name="model_stat_backend">BACKEND</string>
+    <string name="model_stat_format">FORMAT</string>
+    <string name="model_stat_prefill">PREFILL</string>
+    <string name="model_stat_decode">DÉCODE</string>
+
+    <!-- Demo personas -->
+    <string name="settings_demo_personas_intro">Crée les profils de Kurodo (pèlerin Henro belge, allergique aux pénicillines et au poisson), Misako (son épouse japonaise, 69 ans) et Haru (réfugiée de Shikoku, 80 ans, sous warfarine). Utilisés pour reproduire le scénario de catastrophe.</string>
+
+    <!-- Credits -->
+    <string name="settings_credits">Basé sur Google AI Edge Gallery · Apache 2.0 · litert-lm 0.10.1 · Propulsé par Gemma 4</string>
+
+
+    <!-- ═════ Profiles screen (Livraison_demo_profiles_1.4.0) ═════ -->
+
+    <!-- Toolbar -->
+    <string name="profiles_title">Profils</string>
+
+    <!-- Bottom nav -->
+    <string name="bottom_nav_profiles">Profils</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Réglages</string>
+
+    <!-- Demo not ready banner -->
+    <string name="profiles_banner_title">Démo non prête</string>
+    <string name="profiles_banner_text_template">%1$d sur %2$d éléments manquants</string>
+    <string name="profiles_banner_action">Réglages</string>
+
+    <!-- Empty state hero -->
+    <string name="profiles_empty_title">Bienvenue à bord</string>
+    <string name="profiles_empty_subtitle">Créez votre premier profil de santé pour commencer. Tout reste sur cet appareil.</string>
+    <string name="profiles_empty_privacy_note">JEMMA n\'envoie jamais vos données. Tous les profils restent sur votre téléphone, chiffrés au repos.</string>
+
+    <!-- 3 creation paths (also reused in dialog_profile_create_choice) -->
+    <string name="profiles_cta_wizard_title">Pilier par pilier</string>
+    <string name="profiles_cta_wizard_subtitle">Démarrage rapide : juste votre nom + date de naissance. Complétez le reste à votre rythme.</string>
+    <string name="profiles_cta_qr_title">Scanner un QR code</string>
+    <string name="profiles_cta_qr_subtitle">Détection automatique de 3 formats. Le format texte+langue utilise Gemma 4 pour analyser des résumés de santé en texte libre vers FHIR.</string>
+    <string name="profiles_cta_personas_title">Personas démo</string>
+    <string name="profiles_cta_personas_subtitle">Créer les profils Kurodo, Misako et Haru pour reproduire le scénario de catastrophe.</string>
+
+    <!-- Sections in the recycler -->
+    <string name="profiles_section_active">PROFIL ACTIF</string>
+    <string name="profiles_section_others">AUTRES PROFILS</string>
+
+    <!-- Active card -->
+    <string name="profile_active_pill">★ ACTIF</string>
+    <string name="profiles_btn_export">Exporter QR</string>
+    <string name="profiles_btn_sos">SOS</string>
+
+    <!-- FAB -->
+    <string name="profiles_fab_new">Nouveau profil</string>
+
+    <!-- Long-press menu -->
+    <string name="profile_lpm_activate">Activer</string>
+    <string name="profile_lpm_edit">Modifier</string>
+    <string name="profile_lpm_export">Exporter QR</string>
+    <string name="profile_lpm_delete">Supprimer le profil</string>
+    <string name="profile_lpm_delete_confirm_title">Supprimer ce profil ?</string>
+    <string name="profile_lpm_delete_confirm_message">Toutes les ressources FHIR rattachées à ce profil seront définitivement supprimées. Action irréversible.</string>
+
+    <!-- Create choice dialog -->
+    <string name="profile_create_dialog_title">Nouveau profil</string>
+    <string name="profile_create_dialog_subtitle">Choisissez la méthode de création.</string>
+
+    <!-- Quick create dialog -->
+    <string name="profile_quick_dialog_title">Démarrage rapide</string>
+    <string name="profile_quick_dialog_subtitle">Saisissez juste le nom et la date de naissance. Vous pourrez compléter les infos médicales plus tard depuis chaque pilier.</string>
+    <string name="profile_quick_field_name">Nom complet</string>
+    <string name="profile_quick_field_birthdate">Date de naissance (AAAA-MM-JJ)</string>
+    <string name="profile_quick_btn_create">Créer le profil</string>
+    <string name="profile_quick_hint">Ces deux champs créent une ressource FHIR R4 Patient minimaliste conforme à IPS-Patient-uv-ips. Les autres piliers (allergies, médicaments, contacts) peuvent être ajoutés à tout moment.</string>
+
+    <string name="error_camera_unavailable">Appareil photo indisponible</string>
+    <string name="error_no_image_captured">Aucune image capturée</string>
+</resources>

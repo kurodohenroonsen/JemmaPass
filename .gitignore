@@ -1,0 +1,36 @@
+# OS / System files
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+*.temp
+
+# IDE / Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+local.properties
+
+# Gradle
+.gradle/
+build/
+**/build/
+.kotlin/
+kotlin-daemon-libs/
+
+# Archives and Zip files (to avoid committing huge temporary backups/zips)
+*.zip
+*.tar
+*.gz
+*.rar
+
+# Web/Brand output/dependencies if any
+node_modules/
+dist/
+.env
+.env.*

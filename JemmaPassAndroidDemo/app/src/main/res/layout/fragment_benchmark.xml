@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_benchmark.xml — side-by-side comparison of E2B vs E4B.
+    User picks a benchmark prompt (preset list), taps "Run", both models run
+    sequentially (or alternately), latency + tokens/s + result are shown in
+    two columns. Pure showcase for the LiteRT track ($10K).
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/benchmark_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/benchmark_title"
+            app:titleTextColor="@color/jemma_primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="14dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Prompt picker -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/JemmaTextInputLayout"
+            android:hint="@string/benchmark_prompt_hint"
+            app:endIconMode="dropdown_menu">
+            <AutoCompleteTextView
+                android:id="@+id/benchmark_prompt_picker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                tools:text="DDI : warfarine + ibuprofène ?" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Run button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/benchmark_btn_run"
+            style="@style/JemmaPrimaryButton"
+            android:layout_marginTop="6dp"
+            android:text="@string/benchmark_btn_run"
+            app:icon="@android:drawable/ic_media_play" />
+
+        <!-- Side-by-side columns -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="14dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <!-- E2B column -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/jemma_card_active"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:text="@string/benchmark_col_e2b"
+                        android:textColor="@color/jemma_primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/benchmark_e2b_metrics"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="monospace"
+                        android:textColor="@color/jemma_text_muted"
+                        android:textSize="10sp"
+                        tools:text="prefill 412 ms · 24 tok/s" />
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_debug_console"
+                        android:padding="6dp">
+                        <TextView
+                            android:id="@+id/benchmark_e2b_output"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:textColor="@color/jemma_text"
+                            android:textSize="11sp"
+                            tools:text="DDI Major. Risque saignement." />
+                    </ScrollView>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- E4B column -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/jemma_card_active"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp"
+                app:strokeColor="@color/jemma_primary"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:text="@string/benchmark_col_e4b"
+                        android:textColor="@color/jemma_primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/benchmark_e4b_metrics"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="monospace"
+                        android:textColor="@color/jemma_text_muted"
+                        android:textSize="10sp"
+                        tools:text="prefill 690 ms · 18 tok/s" />
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_debug_console"
+                        android:padding="6dp">
+                        <TextView
+                            android:id="@+id/benchmark_e4b_output"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:textColor="@color/jemma_text"
+                            android:textSize="11sp"
+                            tools:text="Interaction Major. Risque hémorragique majoré : ibuprofène inhibe COX-1 + déplace warfarine de l'albumine. Surveiller INR. Préférer paracétamol." />
+                    </ScrollView>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

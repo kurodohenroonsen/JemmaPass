@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_profiles.xml — v2.2.16.5
+
+    English defaults for the Profiles list + detail screen.
+    French and Japanese translations live in values-fr/ and values-ja/.
+-->
+<resources>
+
+    <!-- ProfileListAdapter / item_profile_summary card -->
+    <string name="profile_card_allergies_count">🩹 %1$d allergies</string>
+    <string name="profile_card_medications_count">💊 %1$d medications</string>
+    <string name="profile_card_conditions_count">🩺 %1$d conditions</string>
+
+    <!-- ProfileDetailFragment header / banner -->
+    <string name="profile_detail_screen_title">Profile</string>
+    <string name="profile_detail_birthdate">📅 %1$s</string>
+    <string name="profile_detail_blood">🩸 %1$s</string>
+    <string name="profile_detail_alert_banner_major">⚠ %1$d major alert(s) detected</string>
+    <string name="profile_detail_alert_banner_other">⚠ Other alerts detected</string>
+    <string name="profile_detail_load_failed">Could not load profile.</string>
+
+    <!-- Section titles -->
+    <string name="profile_detail_allergies_title">🩹 ALLERGIES (%1$d)</string>
+    <string name="profile_detail_medications_title">💊 MEDICATIONS (%1$d)</string>
+    <string name="profile_detail_conditions_title">🩺 CONDITIONS (%1$d)</string>
+    <string name="profile_detail_alerts_title">⚡ ALERTS</string>
+    <!-- v2.2.16.5 : hint above the alerts list to make them feel tappable -->
+    <string name="profile_detail_alerts_hint">Tap an alert for details</string>
+
+    <!-- Criticality labels (HIGH / LOW / unknown) -->
+    <string name="profile_detail_criticality_high">HIGH</string>
+    <string name="profile_detail_criticality_low">LOW</string>
+    <string name="profile_detail_criticality_unknown">unknown</string>
+
+    <!-- Allergy alert dialog -->
+    <string name="profile_detail_allergy_alert_title">⚠ Allergy alert</string>
+    <string name="profile_detail_allergy_alert_msg">Patient is allergic to <b>%1$s</b>, but profile prescribes <b>%2$s</b>.</string>
+    <string name="profile_detail_allergy_match_label">Match: %1$s</string>
+
+    <!-- DDI bottom sheet labels -->
+    <string name="profile_detail_ddi_severity_label">Severity</string>
+    <string name="profile_detail_ddi_mechanism_label">Mechanism</string>
+    <string name="profile_detail_ddi_description_label">Description</string>
+    <string name="profile_detail_ddi_management_label">Management</string>
+    <string name="profile_detail_ddi_alternative_label">Alternative</string>
+
+    <!-- Drug × disease alert dialog -->
+    <string name="profile_detail_ddsi_title">⚠ Drug × condition contraindication</string>
+    <string name="profile_detail_ddsi_severity_label">Severity: %1$s</string>
+
+    <!-- Generic close button -->
+    <string name="profile_detail_dialog_close">Close</string>
+
+    <!-- v2.2.16.5 : Long-press menu actions on profile cards -->
+    <string name="profile_long_press_menu_title">%1$s — actions</string>
+    <string name="profile_action_set_current">⭐ Set as current profile</string>
+    <string name="profile_action_delete">🗑 Delete profile</string>
+
+    <!-- v2.2.16.5 : Delete confirmation dialog -->
+    <string name="delete_confirm_title">Delete profile?</string>
+    <string name="delete_confirm_message">Are you sure you want to delete %1$s? This cannot be undone.</string>
+    <string name="delete_confirm_action">Delete</string>
+    <string name="delete_cancel_action">Cancel</string>
+
+    <!-- v2.2.16.5 : Toasts -->
+    <string name="profile_set_current_toast">⭐ %1$s is now the current profile</string>
+    <string name="profile_deleted_toast">🗑 %1$s deleted</string>
+    <string name="qr_import_updated_template">Profile already imported — %1$s updated</string>
+
+</resources>

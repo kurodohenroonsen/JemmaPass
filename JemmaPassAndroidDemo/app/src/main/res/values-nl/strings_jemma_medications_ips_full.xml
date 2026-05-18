@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_medications_ips_full.xml · NL -->
+<resources>
+
+    <!-- ── STATUS ── -->
+    <string name="medication_form_label_status">Inname-status</string>
+    <string name="medication_form_status_hint">Tik om te kiezen</string>
+    <string name="medication_form_status_pick_title">FHIR MedicationStatement-status</string>
+
+    <!-- ── EFFECTIVE DATE ── -->
+    <string name="medication_form_label_effective">Begindatum inname</string>
+    <string name="medication_form_effective_hint">Tik om een datum te kiezen</string>
+    <string name="medication_form_effective_pick_title">Begindatum inname</string>
+    <string name="medication_form_effective_clear_desc">Datum wissen</string>
+
+    <!-- ── REASON CODE (Condition KB) ── -->
+    <string name="medication_form_label_reason_code">Gestructureerde indicatie (aandoening)</string>
+    <string name="medication_form_reason_code_hint">Tik om een aandoening te kiezen</string>
+    <string name="medication_form_reason_code_picker_title">Medische indicatie</string>
+    <string name="medication_form_reason_code_clear_desc">Indicatie wissen</string>
+
+</resources>

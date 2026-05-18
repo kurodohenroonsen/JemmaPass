@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Medications edit fragment · NL ─── -->
+    <string name="medications_edit_title">Medicatie</string>
+    <string name="medications_edit_hero_title">Medicatie</string>
+    <string name="medications_fab_add_desc">Medicijn toevoegen</string>
+
+    <string name="medications_empty_default">Nog geen medicijnen. Tik op de +-knop om er een toe te voegen.</string>
+    <string name="medications_empty_no_profile">Maak eerst het patiëntprofiel aan voordat je medicijnen toevoegt.</string>
+    <string name="medications_unnamed">dit medicijn</string>
+
+    <plurals name="medications_count">
+        <item quantity="zero">Geen medicijnen</item>
+        <item quantity="one">%d medicijn</item>
+        <item quantity="other">%d medicijnen</item>
+    </plurals>
+
+    <string name="medications_saved">Medicatie bijgewerkt ✓</string>
+
+    <string name="medications_delete_title">🗑 Dit medicijn verwijderen?</string>
+    <string name="medications_delete_message">%1$s definitief verwijderen?</string>
+    <string name="medications_delete_cancel">Annuleren</string>
+    <string name="medications_delete_confirm">🗑 Verwijderen</string>
+
+    <!-- ─── Medication form bottom sheet ─── -->
+    <string name="medication_form_title_create">💊  Medicijn toevoegen</string>
+    <string name="medication_form_title_edit">💊  Medicijn bewerken</string>
+
+    <string name="medication_form_label_substance">Stof (ATC / RxNorm)</string>
+    <string name="medication_form_label_dose_value">Dosis</string>
+    <string name="medication_form_label_dose_unit">Eenheid</string>
+    <string name="medication_form_label_timing">Frequentie</string>
+    <string name="medication_form_timing_helper">Bijv. 1×/dag, 2×/dag, wekelijks…</string>
+    <string name="medication_form_label_route">Toedieningsweg</string>
+    <string name="medication_form_label_reason">Indicatie</string>
+    <string name="medication_form_reason_helper">Waarom deze behandeling (bijv. hypertensie)</string>
+
+    <string name="medication_form_substance_hint">Tik om een medicijn te zoeken</string>
+    <string name="medication_form_substance_picker_title">Medicijn (DIAMOND KB)</string>
+
+    <string name="medication_form_route_oral">💊 Oraal</string>
+    <string name="medication_form_route_injection">💉 IV/IM</string>
+    <string name="medication_form_route_topical">🧴 Topisch</string>
+    <string name="medication_form_route_subcutaneous">🩹 SC</string>
+
+    <string name="medication_form_cancel">Annuleren</string>
+    <string name="medication_form_save">💾  Opslaan</string>
+
+    <string name="medication_form_validation_substance">Kies eerst een medicijn</string>
+    <string name="medication_form_validation_dose">Ongeldige dosis (moet een positief getal zijn)</string>
+
+    <!-- ─── KB drug picker dialog ─── -->
+    <string name="drug_picker_search_hint">🔎 Zoek een medicijn (NL, EN, ATC…)</string>
+    <string name="drug_picker_status_hint">Typ minstens 2 tekens om te zoeken</string>
+    <string name="drug_picker_status_searching">🔎 Zoeken…</string>
+    <string name="drug_picker_status_count">%d resultaat(en)</string>
+    <string name="drug_picker_status_empty">Geen resultaten. Probeer een andere term.</string>
+    <string name="drug_picker_status_error">Fout in de kennisbank</string>
+    <string name="drug_picker_cancel">Annuleren</string>
+
+</resources>

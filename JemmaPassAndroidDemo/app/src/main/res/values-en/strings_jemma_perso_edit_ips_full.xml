@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="perso_section_ips_header">— Full IPS compliance —</string>
+
+    <string name="perso_address_line_hint">Street / number / additional lines</string>
+    <string name="perso_address_line_helper">E.g. 12 Peace Street (can be multi-line)</string>
+    <string name="perso_address_city_hint">City</string>
+    <string name="perso_address_postal_hint">Postal code</string>
+    <string name="perso_address_country_hint">Country (ISO-2)</string>
+    <string name="perso_address_country_pick_title">Pick country of residence</string>
+    <string name="perso_address_use_pick_title">Address use</string>
+    <string name="perso_address_use_label_prefix">Use:</string>
+
+    <string name="perso_identifier_system_pick_title">Identifier type</string>
+    <string name="perso_identifier_system_label_prefix">System:</string>
+    <string name="perso_identifier_value_hint">Number</string>
+
+    <string name="perso_section_gp">👨‍⚕️  General Practitioner</string>
+    <string name="perso_gp_hint">Doctor\'s name</string>
+    <string name="perso_gp_helper">FHIR Patient.generalPractitioner — enter the GP full name</string>
+
+    <string name="perso_section_language">🌐  Preferred language</string>
+    <string name="perso_language_pick_title">Pick preferred language</string>
+
+    <string name="perso_pick_hint">Tap to choose</string>
+</resources>

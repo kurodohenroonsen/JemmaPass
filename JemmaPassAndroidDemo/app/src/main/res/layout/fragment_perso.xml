@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_perso.xml — IPS Patient resource editor.
+    Maps 1:1 to FHIR R4 Patient + IPS extensions. Each field can be filled by
+    typing OR by tapping the mic button (VoiceInputButton custom view, not
+    embedded here — the Fragment will inject it programmatically next to each
+    EditText). The save button persists to ProfileEntity in Room.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/perso_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/perso_title"
+            app:titleTextColor="@color/jemma_primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                style="@style/JemmaSectionHeader"
+                android:text="@string/perso_section_identity" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/JemmaTextInputLayout"
+                android:hint="@string/perso_field_given_name">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/perso_given_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/JemmaTextInputLayout"
+                android:hint="@string/perso_field_family_name">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/perso_family_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/JemmaTextInputLayout"
+                android:hint="@string/perso_field_birth_date"
+                app:endIconMode="custom"
+                app:endIconDrawable="@android:drawable/ic_menu_my_calendar">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/perso_birth_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    tools:text="1978-04-12" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Gender (IPS administrative-gender) -->
+            <TextView
+                style="@style/JemmaFieldLabel"
+                android:text="@string/perso_field_gender" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/perso_gender_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/perso_gender_male"
+                    style="@style/JemmaSegmentButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/gender_male" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/perso_gender_female"
+                    style="@style/JemmaSegmentButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/gender_female" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/perso_gender_other"
+                    style="@style/JemmaSegmentButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/gender_other" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/perso_gender_unknown"
+                    style="@style/JemmaSegmentButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/gender_unknown" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- Communication language (IPS Patient.communication.language) -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/JemmaTextInputLayout"
+                android:layout_marginTop="12dp"
+                android:hint="@string/perso_field_language"
+                app:endIconMode="dropdown_menu">
+                <AutoCompleteTextView
+                    android:id="@+id/perso_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:text="🇫🇷 Français (fr)" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View style="@style/JemmaDivider" />
+
+            <TextView
+                style="@style/JemmaSectionHeader"
+                android:text="@string/perso_section_clinical" />
+
+            <!-- Blood type — IPS extension; not part of core Patient resource -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/JemmaTextInputLayout"
+                android:hint="@string/perso_field_blood_type"
+                app:endIconMode="dropdown_menu">
+                <AutoCompleteTextView
+                    android:id="@+id/perso_blood_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:text="A+" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/JemmaTextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:hint="@string/perso_field_height_cm"
+                    app:suffixText="cm">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/perso_height_cm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/JemmaTextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:hint="@string/perso_field_weight_kg"
+                    app:suffixText="kg">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/perso_weight_kg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!-- Save button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/perso_btn_save"
+                style="@style/JemmaPrimaryButton"
+                android:layout_marginTop="24dp"
+                android:text="@string/btn_save" />
+
+            <!-- IPS resource code link (educational) -->
+            <TextView
+                style="@style/JemmaIpsHint"
+                android:layout_marginTop="20dp"
+                android:text="@string/perso_ips_hint" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

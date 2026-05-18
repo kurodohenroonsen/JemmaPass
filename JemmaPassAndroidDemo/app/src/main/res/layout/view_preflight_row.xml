@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_preflight_row.xml — single row in the preflight readiness checklist
+    of the Settings screen. Reused 5 times :
+       1. Permissions accordées
+       2. Au moins 1 modèle Gemma téléchargé
+       3. Knowledge Base téléchargée
+       4. Au moins 1 profil créé
+       5. Stockage suffisant pour la démo (≥ 8 GB libre)
+
+    Tap : navigates to the relevant section (permissions screen, model card,
+    KB card, profile creation, etc.).
+
+    Status icon set by Fragment :
+       ✅ ok        → severity_low + ic_menu_compass
+       ❌ ko        → severity_high + ic_menu_close_clear_cancel
+       ⏳ pending   → text_muted + ic_menu_recent_history
+       ⚙ in-progress → primary + ic_popup_sync (animated)
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <ImageView
+        android:id="@+id/preflight_status_icon"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        app:tint="@color/severity_low"
+        tools:src="@android:drawable/ic_menu_compass" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/preflight_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/jemma_text"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            tools:text="Permissions accordées" />
+
+        <TextView
+            android:id="@+id/preflight_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="monospace"
+            android:textColor="@color/jemma_text_muted"
+            android:textSize="10sp"
+            tools:text="5 / 5 accordées" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:src="@android:drawable/ic_media_play"
+        app:tint="@color/jemma_text_muted" />
+
+</LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_assistant_patient.xml — Lot 14.5c35 · FR -->
+<resources>
+    <string name="assistant_sheet_title_patient">Identité du patient</string>
+    <string name="assistant_patient_title">Assistant · Identité</string>
+    <string name="assistant_patient_preview_desc">Aperçu du document scanné</string>
+    <string name="assistant_patient_no_image">Aucune image à analyser.</string>
+    <string name="assistant_patient_review_hint">⚠ L\'assistant pré-remplit. Relis chaque champ dans le formulaire avant d\'enregistrer.</string>
+    <string name="assistant_patient_btn_open_form">Ouvrir le formulaire ▸</string>
+
+    <string name="assistant_patient_step_0">0 · Init Jemma 4</string>
+    <string name="assistant_patient_step_1">1 · Photo</string>
+    <string name="assistant_patient_step_2">2 · OCR (ML Kit)</string>
+    <string name="assistant_patient_step_3">3 · MRZ (CNI/passeport)</string>
+    <string name="assistant_patient_step_4">4 · Gemma 4 — extraction</string>
+
+    <string name="assistant_patient_step_0_running">Chargement du modèle vision…</string>
+    <string name="assistant_patient_step_0_done_fmt">Modèle prêt en %1$.1f s ✓</string>
+    <string name="assistant_patient_step_1_done">Image chargée ✓</string>
+    <string name="assistant_patient_step_1_done_fmt">%1$d images chargées ✓</string>
+    <string name="assistant_patient_step_2_running">Lecture OCR du document…</string>
+    <string name="assistant_patient_step_2_running_fmt">Lecture OCR · image %1$d / %2$d…</string>
+    <string name="assistant_patient_step_2_done_fmt">%1$d caractères extraits ✓</string>
+    <string name="assistant_patient_step_2_done_multi_fmt">%1$d caractères sur %2$d images ✓</string>
+    <string name="assistant_patient_step_3_running">Tentative de décodage MRZ…</string>
+    <string name="assistant_patient_step_3_done_fmt">MRZ %1$s décodé · %2$s ✓</string>
+    <string name="assistant_patient_step_3_skipped">Pas de MRZ détecté · Gemma fera tout</string>
+    <string name="assistant_patient_step_4_running">Gemma analyse l\'image + l\'OCR…</string>
+    <string name="assistant_patient_step_4_done_fmt">%1$d champs extraits ✓</string>
+
+    <string name="assistant_patient_strip_count_fmt">%1$d photos</string>
+</resources>

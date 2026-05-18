@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ips_picker_cat_all">すべて</string>
+    <string name="ips_picker_cat_food_desc">フィルター：食物アレルゲン</string>
+    <string name="ips_picker_cat_medication_desc">フィルター：医薬品アレルゲン</string>
+    <string name="ips_picker_cat_environment_desc">フィルター：環境アレルゲン</string>
+    <string name="ips_picker_cat_biologic_desc">フィルター：生物製剤アレルゲン</string>
+    <string name="ips_picker_cat_unknown_desc">フィルター：不明・その他</string>
+</resources>

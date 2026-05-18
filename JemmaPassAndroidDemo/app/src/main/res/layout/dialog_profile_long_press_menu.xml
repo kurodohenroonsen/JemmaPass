@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    dialog_profile_long_press_menu.xml — BottomSheetDialogFragment shown on
+    long-press of any profile card (active or other). Lists 4 actions with
+    consistent emoji + label + arrow chevron pattern.
+
+    Behaviour per row :
+      Activate   → activate this profile, dismiss, animate card to top
+                   (hidden if profile is already active)
+      Edit       → navigate to dest_perso for this profile
+      Export QR  → navigate to dest_export_hub for this profile
+      Delete     → AlertDialog "Are you sure?" + delete from Room
+
+    Header row shows the profile being acted on, so the user has confirmation
+    they're about to act on the right one (matters when the list is long).
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/jemma_surface"
+    android:orientation="vertical"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/jemma_text_muted"
+        android:alpha="0.4" />
+
+    <!-- Header : which profile is being acted on -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="14dp">
+
+        <TextView
+            android:id="@+id/profile_lpm_emoji"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_avatar_circle"
+            android:gravity="center"
+            android:textSize="22sp"
+            tools:text="👵" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profile_lpm_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/jemma_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="Misako Henroonsen" />
+
+            <TextView
+                android:id="@+id/profile_lpm_meta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="11sp"
+                tools:text="♀ · 69 ans · O+" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View style="@style/JemmaDivider"
+          android:layout_marginStart="0dp"
+          android:layout_marginEnd="0dp"
+          android:layout_marginTop="0dp"
+          android:layout_marginBottom="0dp" />
+
+    <!-- Row : Activate -->
+    <LinearLayout
+        android:id="@+id/profile_lpm_activate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
+
+        <TextView
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="★"
+            android:textColor="@color/jemma_primary"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="@string/profile_lpm_activate"
+            android:textColor="@color/jemma_text"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@android:drawable/ic_media_play"
+            app:tint="@color/jemma_text_muted" />
+    </LinearLayout>
+
+    <!-- Row : Edit -->
+    <LinearLayout
+        android:id="@+id/profile_lpm_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
+
+        <TextView
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="✏️"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="@string/profile_lpm_edit"
+            android:textColor="@color/jemma_text"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@android:drawable/ic_media_play"
+            app:tint="@color/jemma_text_muted" />
+    </LinearLayout>
+
+    <!-- Row : Export QR -->
+    <LinearLayout
+        android:id="@+id/profile_lpm_export"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
+
+        <TextView
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="📤"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="@string/profile_lpm_export"
+            android:textColor="@color/jemma_text"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@android:drawable/ic_media_play"
+            app:tint="@color/jemma_text_muted" />
+    </LinearLayout>
+
+    <View style="@style/JemmaDivider"
+          android:layout_marginStart="0dp"
+          android:layout_marginEnd="0dp"
+          android:layout_marginTop="2dp"
+          android:layout_marginBottom="2dp" />
+
+    <!-- Row : Delete (red, destructive) -->
+    <LinearLayout
+        android:id="@+id/profile_lpm_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_menu_delete"
+            app:tint="@color/jemma_danger" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="@string/profile_lpm_delete"
+            android:textColor="@color/jemma_danger"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

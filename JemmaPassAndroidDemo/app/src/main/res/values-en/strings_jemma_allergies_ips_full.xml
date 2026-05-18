@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="allergy_form_label_type">FHIR Type</string>
+    <string name="allergy_form_type_allergy">⚡ Allergy</string>
+    <string name="allergy_form_type_intolerance">⚠️ Intolerance</string>
+
+    <string name="allergy_form_label_category">Category</string>
+    <string name="allergy_form_cat_food">🍴 Food</string>
+    <string name="allergy_form_cat_medication">💊 Med.</string>
+    <string name="allergy_form_cat_environment">🌿 Env.</string>
+    <string name="allergy_form_cat_biologic">🧬 Bio.</string>
+
+    <string name="allergy_form_label_onset">Onset date</string>
+    <string name="allergy_form_onset_hint">Tap to pick a date</string>
+    <string name="allergy_form_onset_pick_title">Allergy detection date</string>
+    <string name="allergy_form_onset_clear_desc">Clear date</string>
+
+    <string name="allergy_form_label_reaction">Observed reaction</string>
+    <string name="allergy_form_reaction_hint">Tap to pick (hives, anaphylaxis…)</string>
+    <string name="allergy_form_reaction_picker_title">Reaction manifestation</string>
+    <string name="allergy_form_reaction_clear_desc">Clear reaction</string>
+    <string name="allergy_form_reaction_sev_mild">🟢 Mild</string>
+    <string name="allergy_form_reaction_sev_moderate">🟡 Moderate</string>
+    <string name="allergy_form_reaction_sev_severe">🔴 Severe</string>
+</resources>

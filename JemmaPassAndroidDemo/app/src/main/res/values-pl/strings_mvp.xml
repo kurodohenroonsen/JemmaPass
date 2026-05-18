@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · PL · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Profile</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Ustawienia</string>
+    <string name="bottom_nav_sos_rescue">SOS/Ratunek</string>
+
+    <string name="sos_rescue_hub_title">SOS / Ratunek</string>
+    <string name="sos_rescue_hub_subtitle">Wybierz tryb, aby kontynuować: wyślij SOS jako poszkodowany lub szukaj poszkodowanych jako ratownik.</string>
+    <string name="sos_rescue_hub_open_button">Wybierz tryb</string>
+
+    <string name="mode_select_title">Wybierz swoją rolę</string>
+    <string name="mode_select_sos_title">SOS · Potrzebuję pomocy</string>
+    <string name="mode_select_sos_subtitle">Nadaje mój profil medyczny do pobliskich ratowników przez siatkę Bluetooth.</string>
+    <string name="mode_select_rescuer_title">Ratunek · Chcę pomóc</string>
+    <string name="mode_select_rescuer_subtitle">Skanuj nadawania SOS i segreguj poszkodowanych na żywym radarze.</string>
+
+    <string name="radar_btn_hide">Ukryj</string>
+    <string name="radar_btn_scan_qr">Skanuj QR</string>
+    <string name="radar_btn_start">📡 START RADARU</string>
+    <string name="radar_btn_stop">Stop</string>
+    <string name="l3_radar_btn_stop">🛑 ZATRZYMAJ RADAR</string>
+
+    <string name="sos_broadcast_title">🆘 Nadawanie SOS</string>
+    <string name="sos_broadcast_subtitle">Usługa pierwszego planu utrzymuje ikonę ekranu blokady i rotuje fragmenty BLE.</string>
+    <string name="sos_btn_start">START\nSOS</string>
+    <string name="sos_btn_stop">STOP\nSOS</string>
+    <string name="sos_btn_toggle">🔄 PRZEŁĄCZ NADAWANIE</string>
+    <string name="sos_btn_pause_broadcast">🔇 Wstrzymaj nadawanie BLE</string>
+    <string name="sos_btn_resume_broadcast">🔊 Wznów nadawanie BLE</string>
+    <string name="l3_sos_btn_start">🆘 AKTYWUJ SOS</string>
+    <string name="l3_sos_btn_stop">🛑 DEAKTYWUJ SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Nie udało się wygenerować bitmapy</string>
+    <string name="qr_save_file_failed">Nie udało się utworzyć pliku obrazu</string>
+    <string name="qr_save_success">Kod QR zapisany w galerii</string>
+    <string name="qr_save_write_failed">Błąd zapisu: %1$s</string>
+    <string name="pdf_export_in_progress">Generowanie PDF Eko-Atramentem…</string>
+    <string name="pdf_export_failed">Nie udało się wygenerować PDF</string>
+    <string name="share_jemma_pass_title">Udostępnij Jemma Pass</string>
+    <string name="scanner_unavailable">Skaner niedostępny: %1$s</string>
+</resources>

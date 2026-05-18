@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_kb_condition_picker.xml · DE -->
+<resources>
+    <string name="condition_picker_search_hint">🔎 Symptom / Manifestation suchen (DE, EN, SNOMED…)</string>
+    <string name="condition_picker_status_hint">Mindestens 2 Zeichen eingeben (Urtikaria, Anaphylaxie, Ödem…)</string>
+</resources>

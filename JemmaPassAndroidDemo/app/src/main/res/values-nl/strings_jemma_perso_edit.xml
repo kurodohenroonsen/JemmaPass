@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_jemma_perso_edit.xml · NL
+  Note: gender glyphs (♂ ♀ ⚧ ⊘) kept identical across locales to avoid
+  AAPT2 reference issues (no leading '?').
+-->
+<resources>
+
+    <!-- Toolbar / hero -->
+    <string name="perso_edit_title">Patiëntidentiteit</string>
+    <string name="perso_edit_hero_title">Identiteit</string>
+    <string name="perso_edit_hero_subtitle">FHIR Patient · IPS · 4 actieve pijlers</string>
+
+    <!-- Sections -->
+    <string name="perso_section_name">Voor- en achternaam</string>
+    <string name="perso_section_gender">Geslacht</string>
+    <string name="perso_section_birth_date">Geboortedatum</string>
+    <string name="perso_section_nationality">Nationaliteit</string>
+    <string name="perso_section_blood_type">Bloedgroep</string>
+
+    <!-- Field labels -->
+    <string name="perso_label_given_name">Voornaam</string>
+    <string name="perso_label_family_name">Achternaam</string>
+    <string name="perso_label_birth_date_hint">Tik om een datum te kiezen</string>
+    <string name="perso_label_nationality_hint">Tik om een land te kiezen</string>
+
+    <!-- Gender toggle (mono-line, no '?' which AAPT2 parses as ?attr/) -->
+    <string name="perso_gender_m">♂ M</string>
+    <string name="perso_gender_f">♀ V</string>
+    <string name="perso_gender_o">⚧ A</string>
+    <string name="perso_gender_u">⊘ U</string>
+
+    <!-- Pickers -->
+    <string name="perso_blood_type_pick_title">Bloedgroep</string>
+    <string name="perso_nationality_pick_title">Land / nationaliteit</string>
+    <string name="perso_birth_date_pick_title">Geboortedatum</string>
+    <string name="perso_pick_chevron">›</string>
+    <string name="perso_nationality_dash">—</string>
+    <string name="perso_blood_type_dash">—</string>
+
+    <!-- Save -->
+    <string name="perso_save_button">💾  Opslaan</string>
+    <string name="perso_saved_created">Profiel aangemaakt ✓</string>
+    <string name="perso_saved_updated">Profiel bijgewerkt ✓</string>
+
+    <!-- Validation errors -->
+    <string name="perso_validation_name_required">Ten minste een voor- of achternaam is vereist</string>
+    <string name="perso_validation_birth_required">Geboortedatum is vereist (IPS)</string>
+    <string name="perso_validation_nationality_format">Nationaliteit in ISO-3166 alpha-2-formaat (bv. BE, JP)</string>
+
+</resources>

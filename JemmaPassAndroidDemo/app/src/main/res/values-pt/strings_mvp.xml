@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · PT · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Perfis</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Configurações</string>
+    <string name="bottom_nav_sos_rescue">SOS/Resgate</string>
+
+    <string name="sos_rescue_hub_title">SOS / Resgate</string>
+    <string name="sos_rescue_hub_subtitle">Escolha um modo para continuar: envie um SOS como vítima, ou procure vítimas como socorrista.</string>
+    <string name="sos_rescue_hub_open_button">Escolher modo</string>
+
+    <string name="mode_select_title">Escolha seu papel</string>
+    <string name="mode_select_sos_title">SOS · Preciso de ajuda</string>
+    <string name="mode_select_sos_subtitle">Transmite meu perfil médico para socorristas próximos via mesh Bluetooth.</string>
+    <string name="mode_select_rescuer_title">Resgate · Quero ajudar</string>
+    <string name="mode_select_rescuer_subtitle">Procure transmissões SOS e faça triagem de vítimas em um radar ao vivo.</string>
+
+    <string name="radar_btn_hide">Ocultar</string>
+    <string name="radar_btn_scan_qr">Escanear QR</string>
+    <string name="radar_btn_start">📡 INICIAR RADAR</string>
+    <string name="radar_btn_stop">Parar</string>
+    <string name="l3_radar_btn_stop">🛑 PARAR RADAR</string>
+
+    <string name="sos_broadcast_title">🆘 Transmissão SOS</string>
+    <string name="sos_broadcast_subtitle">O serviço em primeiro plano mantém o ícone da tela bloqueada e gira os chunks BLE.</string>
+    <string name="sos_btn_start">INICIAR\nSOS</string>
+    <string name="sos_btn_stop">PARAR\nSOS</string>
+    <string name="sos_btn_toggle">🔄 ALTERNAR TRANSMISSÃO</string>
+    <string name="sos_btn_pause_broadcast">🔇 Pausar transmissão BLE</string>
+    <string name="sos_btn_resume_broadcast">🔊 Retomar transmissão BLE</string>
+    <string name="l3_sos_btn_start">🆘 ATIVAR SOS</string>
+    <string name="l3_sos_btn_stop">🛑 DESATIVAR SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Falha ao gerar bitmap</string>
+    <string name="qr_save_file_failed">Falha ao criar arquivo de imagem</string>
+    <string name="qr_save_success">QR code salvo na galeria</string>
+    <string name="qr_save_write_failed">Erro ao salvar: %1$s</string>
+    <string name="pdf_export_in_progress">Gerando PDF Eco-Tinta…</string>
+    <string name="pdf_export_failed">Falha na geração do PDF</string>
+    <string name="share_jemma_pass_title">Compartilhar o Jemma Pass</string>
+    <string name="scanner_unavailable">Scanner indisponível: %1$s</string>
+</resources>

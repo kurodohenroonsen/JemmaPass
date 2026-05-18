@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_patient_detail.xml — opened when the rescuer taps a peer in the
+    radar list. Shows the rescued profile in a compact, glance-able layout :
+
+    Hero row : avatar + name (in criticality color) + origin sub-line + crit pill + close
+    Vital row : 4 cells (sex, age, blood, triage)
+    SCAN MEDOC button : runs the cross-check pipeline against THIS peer
+    Allergies / Medications : 2-column compact layout
+    Conditions / Immunizations : full-width below
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Hero row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/patient_hero_emoji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="36sp"
+                    tools:text="👵" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/patient_hero_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        tools:text="Haru"
+                        tools:textColor="@color/severity_high" />
+
+                    <TextView
+                        android:id="@+id/patient_hero_subline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textSize="11sp"
+                        tools:text="📷 Scanné par QR · 🇯🇵 JA"
+                        tools:textColor="@color/jemma_accent" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/patient_hero_pill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_pill_count"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    tools:text="Urgent"
+                    tools:textColor="@color/severity_high" />
+
+                <ImageButton
+                    android:id="@+id/patient_btn_close"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="6dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/btn_close"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    app:tint="@color/jemma_text" />
+
+            </LinearLayout>
+
+            <!-- Vital row : 4 cells -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/patient_vital_sex"
+                    layout="@layout/view_vital_cell"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="3dp" />
+
+                <include
+                    android:id="@+id/patient_vital_age"
+                    layout="@layout/view_vital_cell"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp" />
+
+                <include
+                    android:id="@+id/patient_vital_blood"
+                    layout="@layout/view_vital_cell"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp" />
+
+                <include
+                    android:id="@+id/patient_vital_triage"
+                    layout="@layout/view_vital_cell"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="3dp" />
+
+            </LinearLayout>
+
+            <!--
+                🆕 v2.5.11.2 — Inline SALT triage row. Same buttons as the
+                victim card adapter (⏳ WAIT 🔍 EVAL ✅ STAB 🆘 HELP 🚑 EVAC
+                🕊 DCD), so the rescuer can re-triage without going back to
+                the radar list. Active button is filled with its SALT colour
+                (programmatic GradientDrawable in PatientDetailFragment).
+                The "🔄 Annuler décès" pill appears below if SALT==DCD.
+            -->
+            <LinearLayout
+                android:id="@+id/patient_salt_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/patient_salt_btn_wait"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="3dp"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:textSize="20sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="WAIT"
+                    tools:text="⏳" />
+
+                <TextView
+                    android:id="@+id/patient_salt_btn_eval"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="3dp"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:textSize="20sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="EVAL"
+                    tools:text="🔍" />
+
+                <TextView
+                    android:id="@+id/patient_salt_btn_stab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="3dp"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:textSize="20sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="STAB"
+                    tools:text="✅" />
+
+                <TextView
+                    android:id="@+id/patient_salt_btn_help"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="3dp"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:textSize="20sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="HELP"
+                    tools:text="🆘" />
+
+                <TextView
+                    android:id="@+id/patient_salt_btn_evac"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="3dp"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:textSize="20sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="EVAC"
+                    tools:text="🚑" />
+
+                <TextView
+                    android:id="@+id/patient_salt_btn_dcd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:textSize="20sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="DCD"
+                    tools:text="🕊️" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/patient_salt_btn_cancel_dcd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="6dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="6dp"
+                android:textSize="13sp"
+                android:textColor="@color/jemma_text"
+                android:fontFamily="sans-serif-medium"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone"
+                android:contentDescription="@string/triage_btn_cancel_deceased"
+                tools:text="🔄 Annuler décès"
+                tools:visibility="visible" />
+
+            <!-- Big SCAN MEDOC button — pipeline cross-check against THIS peer -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/patient_btn_scan_med"
+                style="@style/JemmaPrimaryButton"
+                android:layout_marginTop="14dp"
+                android:text="@string/patient_btn_scan_med"
+                app:backgroundTint="@color/jemma_accent"
+                app:icon="@android:drawable/ic_menu_camera"
+                app:iconTint="@android:color/white" />
+
+            <!-- Scan result banner — visible after scan (filled by Fragment) -->
+            <FrameLayout
+                android:id="@+id/patient_scan_result_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+            <!-- 2-column row : Allergies + Medications -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/JemmaPatientSectionHeader"
+                        android:text="@string/patient_section_allergies" />
+
+                    <LinearLayout
+                        android:id="@+id/patient_allergies_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/JemmaPatientSectionHeader"
+                        android:text="@string/patient_section_medications" />
+
+                    <LinearLayout
+                        android:id="@+id/patient_medications_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/JemmaPatientSectionHeader"
+                android:layout_marginTop="12dp"
+                android:text="@string/patient_section_conditions" />
+
+            <LinearLayout
+                android:id="@+id/patient_conditions_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                style="@style/JemmaPatientSectionHeader"
+                android:layout_marginTop="12dp"
+                android:text="@string/patient_section_immunizations" />
+
+            <LinearLayout
+                android:id="@+id/patient_immunizations_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Jemma Floating Voice Chat Notification (overlay at top) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/jemma_voice_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:alpha="0.85"
+        app:cardBackgroundColor="#D9101D2A"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:strokeColor="@color/jemma_primary"
+        app:strokeWidth="1dp"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <!-- Glowing Avatar Badge -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="top"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#1A0D9688"
+                app:strokeColor="#800D9688"
+                app:strokeWidth="1.5dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/jemmapass_icon" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/jemma_notification_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Jemma · Analyse en direct"
+                        android:textColor="@color/jemma_primary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/jemma_notification_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.6"
+                        android:fontFamily="sans-serif"
+                        android:text="À l'instant"
+                        android:textColor="@color/jemma_text_muted"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Accumulating text of speech -->
+                <TextView
+                    android:id="@+id/jemma_notification_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/jemma_text"
+                    android:textSize="13sp"
+                    tools:text="Vérification en cours..." />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

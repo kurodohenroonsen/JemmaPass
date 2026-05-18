@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Allergies edit fragment · zh-CN ─── -->
+    <string name="allergies_edit_title">过敏</string>
+    <string name="allergies_edit_hero_title">过敏</string>
+    <string name="allergies_fab_add_desc">添加过敏</string>
+
+    <string name="allergies_empty_default">尚无过敏记录。点击 + 按钮添加一项。</string>
+    <string name="allergies_empty_no_profile">添加过敏记录前请先创建患者档案。</string>
+    <string name="allergies_unnamed">此过敏</string>
+
+    <plurals name="allergies_count">
+        <item quantity="other">%d 项过敏</item>
+    </plurals>
+
+    <string name="allergies_saved">过敏已更新 ✓</string>
+
+    <string name="allergies_delete_title">🗑 删除此过敏？</string>
+    <string name="allergies_delete_message">永久删除 %1$s？</string>
+    <string name="allergies_delete_cancel">取消</string>
+    <string name="allergies_delete_confirm">🗑 删除</string>
+
+    <!-- ─── Allergy form bottom sheet ─── -->
+    <string name="allergy_form_title_create">🩹  添加过敏</string>
+    <string name="allergy_form_title_edit">🩹  编辑过敏</string>
+
+    <string name="allergy_form_label_substance">物质 / 过敏原</string>
+    <string name="allergy_form_label_severity">严重程度</string>
+    <string name="allergy_form_label_status">状态</string>
+    <string name="allergy_form_label_mechanism">机制</string>
+    <string name="allergy_form_mechanism_helper">例如：IgE 介导、食物等</string>
+    <string name="allergy_form_label_notes">表现 / 备注</string>
+
+    <string name="allergy_form_substance_hint">点击以选择物质</string>
+    <string name="allergy_form_substance_picker_title">物质 (SNOMED IPS)</string>
+
+    <string name="allergy_form_severity_high">⚠ 严重</string>
+    <string name="allergy_form_severity_low">轻度</string>
+    <string name="allergy_form_severity_unknown">未知</string>
+
+    <string name="allergy_form_status_active">激活</string>
+    <string name="allergy_form_status_inactive">未激活</string>
+    <string name="allergy_form_status_resolved">已解决</string>
+
+    <string name="allergy_form_cancel">取消</string>
+    <string name="allergy_form_save">💾  保存</string>
+
+    <string name="allergy_form_validation_substance">请先选择一种物质</string>
+    <string name="allergy_form_validation_catalog_empty">SNOMED 目录不可用。请重试。</string>
+
+</resources>

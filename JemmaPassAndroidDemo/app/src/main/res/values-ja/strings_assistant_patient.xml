@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_assistant_patient.xml — Lot 14.5c35 · JA -->
+<resources>
+    <string name="assistant_sheet_title_patient">患者の身元</string>
+    <string name="assistant_patient_title">アシスタント · 身元</string>
+    <string name="assistant_patient_preview_desc">スキャンした文書のプレビュー</string>
+    <string name="assistant_patient_no_image">分析する画像がありません。</string>
+    <string name="assistant_patient_review_hint">⚠ アシスタントが事前入力します。保存する前に各フィールドを確認してください。</string>
+    <string name="assistant_patient_btn_open_form">フォームを開く ▸</string>
+
+    <string name="assistant_patient_step_0">0 · Jemma 4 初期化</string>
+    <string name="assistant_patient_step_1">1 · 写真</string>
+    <string name="assistant_patient_step_2">2 · OCR (ML Kit)</string>
+    <string name="assistant_patient_step_3">3 · MRZ (ID/パスポート)</string>
+    <string name="assistant_patient_step_4">4 · Gemma 4 — 抽出</string>
+
+    <string name="assistant_patient_step_0_running">ビジョンモデル読込み中…</string>
+    <string name="assistant_patient_step_0_done_fmt">モデル準備完了 %1$.1f 秒 ✓</string>
+    <string name="assistant_patient_step_1_done">画像読込み完了 ✓</string>
+    <string name="assistant_patient_step_1_done_fmt">%1$d 枚読込み完了 ✓</string>
+    <string name="assistant_patient_step_2_running">OCR で文書を読み取り中…</string>
+    <string name="assistant_patient_step_2_running_fmt">OCR · 画像 %1$d / %2$d…</string>
+    <string name="assistant_patient_step_2_done_fmt">%1$d 文字抽出 ✓</string>
+    <string name="assistant_patient_step_2_done_multi_fmt">%2$d 枚から %1$d 文字 ✓</string>
+    <string name="assistant_patient_step_3_running">MRZ デコード試行中…</string>
+    <string name="assistant_patient_step_3_done_fmt">%1$s MRZ デコード成功 · %2$s ✓</string>
+    <string name="assistant_patient_step_3_skipped">MRZ 検出されず · Gemma が全て担当</string>
+    <string name="assistant_patient_step_4_running">Gemma が画像と OCR を分析中…</string>
+    <string name="assistant_patient_step_4_done_fmt">%1$d フィールド抽出 ✓</string>
+
+    <string name="assistant_patient_strip_count_fmt">写真 %1$d 枚</string>
+</resources>

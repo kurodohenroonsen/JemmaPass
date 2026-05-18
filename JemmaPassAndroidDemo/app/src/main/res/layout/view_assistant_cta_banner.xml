@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_assistant_cta_banner.xml — Lot 14.3 (PHASE 14)
+
+    Banner réutilisable "🤖 Remplir avec l'Assistant Jemma" à inclure
+    en tête de tout fragment de form (PatientEdit, MedicationForm, etc.)
+    où l'utilisateur peut bénéficier d'un pré-remplissage.
+
+    Usage dans un layout parent :
+        <include
+            android:id="@+id/assistant_cta_banner"
+            layout="@layout/view_assistant_cta_banner" />
+
+    Le `id` permet au Fragment de cacher (visibility=gone) ou de wirer
+    l'onClick. Convention : visibility=visible par défaut, le Fragment
+    le cache si pas pertinent (ex : edit-mode d'un existant).
+
+    Accessibilité TalkBack :
+    - Le LinearLayout racine est focusable + cliquable + has full CD
+    - Les child views ont importantForAccessibility="no" pour ne pas
+      polluer (TalkBack lit le CD du parent, pas tous les fragments)
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/assistant_cta_banner_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="6dp"
+    android:background="@drawable/bg_assistant_cta"
+    android:clickable="true"
+    android:contentDescription="@string/assistant_patient_banner_cd"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:minHeight="72dp"
+    android:orientation="horizontal"
+    android:padding="14dp">
+
+    <!-- Icône JemmaPass, préservant ses couleurs d'origine. -->
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/jemmapass_icon" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:importantForAccessibility="no"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/assistant_patient_banner_title"
+            android:textColor="@color/jemma_primary"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="3dp"
+            android:text="@string/assistant_patient_banner_sub"
+            android:textColor="@color/jemma_text_muted"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
+        android:text="▸"
+        android:textColor="@color/jemma_primary"
+        android:textSize="22sp" />
+</LinearLayout>

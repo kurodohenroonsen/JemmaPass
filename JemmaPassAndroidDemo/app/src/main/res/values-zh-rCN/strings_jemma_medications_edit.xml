@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Medications edit fragment · zh-CN ─── -->
+    <string name="medications_edit_title">药物</string>
+    <string name="medications_edit_hero_title">药物</string>
+    <string name="medications_fab_add_desc">添加药物</string>
+
+    <string name="medications_empty_default">尚无药物。点击 + 按钮添加一项。</string>
+    <string name="medications_empty_no_profile">添加药物前请先创建患者档案。</string>
+    <string name="medications_unnamed">此药物</string>
+
+    <plurals name="medications_count">
+        <item quantity="other">%d 种药物</item>
+    </plurals>
+
+    <string name="medications_saved">药物已更新 ✓</string>
+
+    <string name="medications_delete_title">🗑 删除此药物？</string>
+    <string name="medications_delete_message">永久删除 %1$s？</string>
+    <string name="medications_delete_cancel">取消</string>
+    <string name="medications_delete_confirm">🗑 删除</string>
+
+    <!-- ─── Medication form bottom sheet ─── -->
+    <string name="medication_form_title_create">💊  添加药物</string>
+    <string name="medication_form_title_edit">💊  编辑药物</string>
+
+    <string name="medication_form_label_substance">活性物质 (ATC / RxNorm)</string>
+    <string name="medication_form_label_dose_value">剂量</string>
+    <string name="medication_form_label_dose_unit">单位</string>
+    <string name="medication_form_label_timing">频率</string>
+    <string name="medication_form_timing_helper">例如：每日 1×、每日 2×、每周…</string>
+    <string name="medication_form_label_route">给药途径</string>
+    <string name="medication_form_label_reason">适应症</string>
+    <string name="medication_form_reason_helper">为何使用此治疗（如高血压）</string>
+
+    <string name="medication_form_substance_hint">点击以搜索药物</string>
+    <string name="medication_form_substance_picker_title">药物 (DIAMOND KB)</string>
+
+    <string name="medication_form_route_oral">💊 口服</string>
+    <string name="medication_form_route_injection">💉 静脉/肌注</string>
+    <string name="medication_form_route_topical">🧴 外用</string>
+    <string name="medication_form_route_subcutaneous">🩹 皮下</string>
+
+    <string name="medication_form_cancel">取消</string>
+    <string name="medication_form_save">💾  保存</string>
+
+    <string name="medication_form_validation_substance">请先选择一种药物</string>
+    <string name="medication_form_validation_dose">剂量无效（须为正数）</string>
+
+    <!-- ─── KB drug picker dialog ─── -->
+    <string name="drug_picker_search_hint">🔎 搜索药物（中文、英文、ATC…）</string>
+    <string name="drug_picker_status_hint">至少输入 2 个字符进行搜索</string>
+    <string name="drug_picker_status_searching">🔎 正在搜索…</string>
+    <string name="drug_picker_status_count">%d 项结果</string>
+    <string name="drug_picker_status_empty">无结果。请尝试其他关键词。</string>
+    <string name="drug_picker_status_error">知识库错误</string>
+    <string name="drug_picker_cancel">取消</string>
+
+</resources>

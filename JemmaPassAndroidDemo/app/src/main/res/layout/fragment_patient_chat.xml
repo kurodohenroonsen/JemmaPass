@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_patient_chat.xml — JEMMA Pass · Lot 14.5c40 (PHASE 14)
+
+    Mode vocal minimal pour le pilier Patient (prénom + naissance).
+
+    Structure :
+      ┌────────────────────────────────────────────────┐
+      │ ← 🪪 Patient · Voice                           │  (toolbar)
+      ├────────────────────────────────────────────────┤
+      │ 👤 Prénom       : Claude                       │  (draft card mini)
+      │ 📅 Naissance    : 1979-04-04                   │
+      ├────────────────────────────────────────────────┤
+      │ 🤖 Comment t'appelles-tu …                     │  ← RecyclerView
+      │ 👤 Claude, 4 avril 1979                        │
+      │ 🤖 Noté : Claude, 1979-04-04 ✅                │
+      ├────────────────────────────────────────────────┤
+      │  🎤  [transcript live]    [status]             │  ← input row
+      └────────────────────────────────────────────────┘
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/patient_chat_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@android:drawable/ic_menu_revert"
+            app:title="@string/patient_chat_title"
+            app:titleTextColor="@color/jemma_primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Mini-card draft IPS : 2 champs uniquement -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/patient_chat_draft_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@color/jemma_surface"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_chat_draft_card_title"
+                    android:textColor="@color/jemma_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/patient_chat_draft_given_name"
+                    style="@style/JemmaIpsCardLine"
+                    tools:text="👤 Prénom : Claude" />
+
+                <TextView
+                    android:id="@+id/patient_chat_draft_gender"
+                    style="@style/JemmaIpsCardLine"
+                    tools:text="⚥ Sexe : homme" />
+
+                <TextView
+                    android:id="@+id/patient_chat_draft_birth_date"
+                    style="@style/JemmaIpsCardLine"
+                    tools:text="📅 Naissance : 1979-04-04" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Chat scroll -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/patient_chat_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@id/patient_chat_input_row"
+            app:layout_constraintTop_toBottomOf="@id/patient_chat_draft_card"
+            tools:listitem="@layout/view_chat_msg_jemma" />
+
+        <!-- Input row : bouton mic + transcript live + status -->
+        <LinearLayout
+            android:id="@+id/patient_chat_input_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/jemma_surface"
+            android:gravity="center_vertical"
+            android:minHeight="72dp"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/patient_chat_mic_button"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentDescription="@string/patient_chat_mic_cd"
+                android:text="🎤"
+                android:textSize="22sp"
+                app:cornerRadius="28dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/patient_chat_transcript_live"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:hint="@string/patient_chat_input_hint"
+                    android:maxLines="2"
+                    android:textColor="@color/jemma_text"
+                    android:textColorHint="@color/jemma_text_muted"
+                    android:textSize="14sp"
+                    tools:text="Je m'appelle Claude…" />
+
+                <TextView
+                    android:id="@+id/patient_chat_status_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/patient_chat_status_loading"
+                    android:textColor="@color/jemma_text_muted"
+                    android:textSize="11sp"
+                    tools:text="🎤 À toi" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

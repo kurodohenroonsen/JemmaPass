@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Contacts edit fragment · DE ─── -->
+    <string name="contacts_edit_title">Notfallkontakte</string>
+    <string name="contacts_edit_hero_title">Kontakte</string>
+    <string name="contacts_fab_add_desc">Kontakt hinzufügen</string>
+
+    <string name="contacts_empty_default">Noch keine Kontakte. Tippe auf die +-Schaltfläche, um einen hinzuzufügen.</string>
+    <string name="contacts_empty_no_profile">Erstelle zuerst das Patientenprofil, bevor du Kontakte hinzufügst.</string>
+    <string name="contacts_unnamed">dieser Kontakt</string>
+
+    <plurals name="contacts_count">
+        <item quantity="zero">Keine Kontakte</item>
+        <item quantity="one">%d Kontakt</item>
+        <item quantity="other">%d Kontakte</item>
+    </plurals>
+
+    <string name="contacts_saved">Kontakte aktualisiert ✓</string>
+
+    <string name="contacts_delete_title">🗑 Diesen Kontakt löschen?</string>
+    <string name="contacts_delete_message">%1$s endgültig löschen?</string>
+    <string name="contacts_delete_cancel">Abbrechen</string>
+    <string name="contacts_delete_confirm">🗑 Löschen</string>
+
+    <!-- ─── Contact form bottom sheet ─── -->
+    <string name="contact_form_title_create">📞  Kontakt hinzufügen</string>
+    <string name="contact_form_title_edit">📞  Kontakt bearbeiten</string>
+
+    <string name="contact_form_label_name">Name des Kontakts</string>
+    <string name="contact_form_label_relation">Beziehung</string>
+    <string name="contact_form_label_phone">Telefon</string>
+    <string name="contact_form_label_email">E-Mail</string>
+    <string name="contact_form_label_address">Adresse</string>
+
+    <string name="contact_form_relation_hint">Tippen, um eine Beziehung zu wählen</string>
+    <string name="contact_form_relation_picker_title">Beziehung zum Patienten</string>
+
+    <string name="contact_form_cancel">Abbrechen</string>
+    <string name="contact_form_save">💾  Speichern</string>
+
+    <string name="contact_form_validation_name">Name des Kontakts ist erforderlich</string>
+    <string name="contact_form_validation_at_least_one">Gib mindestens eine Telefonnummer, E-Mail oder Adresse ein</string>
+    <string name="contact_form_validation_email">Ungültiges E-Mail-Format</string>
+
+    <!-- ─── IPS code picker dialog (generic) ─── -->
+    <string name="ips_picker_search_hint">🔎  Suchen…</string>
+    <string name="ips_picker_count">%d Ergebnis(se)</string>
+    <string name="ips_picker_cancel">Abbrechen</string>
+
+</resources>

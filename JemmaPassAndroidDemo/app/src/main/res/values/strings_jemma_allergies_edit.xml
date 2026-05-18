@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Allergies edit fragment ────────────────── -->
+    <string name="allergies_edit_title">Allergies</string>
+    <string name="allergies_edit_hero_title">Allergies</string>
+    <string name="allergies_fab_add_desc">Add allergy</string>
+
+    <string name="allergies_empty_default">No allergies yet. Tap the + button to add one.</string>
+    <string name="allergies_empty_no_profile">Create the patient profile first before adding allergies.</string>
+    <string name="allergies_unnamed">this allergy</string>
+
+    <plurals name="allergies_count">
+        <item quantity="zero">No allergies</item>
+        <item quantity="one">%d allergy</item>
+        <item quantity="other">%d allergies</item>
+    </plurals>
+
+    <string name="allergies_saved">Allergies updated ✓</string>
+
+    <string name="allergies_delete_title">🗑 Delete this allergy?</string>
+    <string name="allergies_delete_message">Permanently delete %1$s?</string>
+    <string name="allergies_delete_cancel">Cancel</string>
+    <string name="allergies_delete_confirm">🗑 Delete</string>
+
+    <!-- ─── Allergy form bottom sheet ──────────────── -->
+    <string name="allergy_form_title_create">🩹  Add allergy</string>
+    <string name="allergy_form_title_edit">🩹  Edit allergy</string>
+
+    <string name="allergy_form_label_substance">Substance / Allergen</string>
+    <string name="allergy_form_label_severity">Severity</string>
+    <string name="allergy_form_label_status">Status</string>
+    <string name="allergy_form_label_mechanism">Mechanism</string>
+    <string name="allergy_form_mechanism_helper">e.g. IgE-mediated, food, etc.</string>
+    <string name="allergy_form_label_notes">Manifestation / Notes</string>
+
+    <string name="allergy_form_substance_hint">Tap to pick a substance</string>
+    <string name="allergy_form_substance_picker_title">Substance (SNOMED IPS)</string>
+
+    <string name="allergy_form_severity_high">⚠ Severe</string>
+    <string name="allergy_form_severity_low">Mild</string>
+    <string name="allergy_form_severity_unknown">Unknown</string>
+
+    <string name="allergy_form_status_active">Active</string>
+    <string name="allergy_form_status_inactive">Inactive</string>
+    <string name="allergy_form_status_resolved">Resolved</string>
+
+    <string name="allergy_form_cancel">Cancel</string>
+    <string name="allergy_form_save">💾  Save</string>
+
+    <string name="allergy_form_validation_substance">Pick a substance first</string>
+    <string name="allergy_form_validation_catalog_empty">SNOMED catalog unavailable. Try again.</string>
+
+</resources>

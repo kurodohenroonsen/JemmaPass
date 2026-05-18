@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_victim_card.xml — v2.5.12 (compact UX)
+
+    Compacted from 5 rows to 2 rows :
+
+      Row 1 (header) :  [strip] crit · sex/age emoji · NAME · #sid · range · LANG · ⚠2💊3 · seen
+      Row 2 (SALT)   :  ⏳WAIT  🔍EVAL  ✅STAB  🆘HELP  🚑EVAC  🕊DCD
+      Row 3 (cancel) :  (only when SALT==DCD)  🔄 Annuler décès
+
+    Rescuer rows use the same layout but hide the SALT row entirely
+    (they don't need triage). The strip color tells them apart : red/
+    yellow/green for victims, accent blue for rescuers.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginVertical="3dp"
+    android:background="@drawable/bg_card_neutral"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <View
+        android:id="@+id/victim_crit_strip"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:background="@color/jemma_crit_unknown" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp">
+
+        <!--
+            Row 1 — Identity + range + chips + counts on ONE line
+            Order : emoji  NAME  #sid  ·  RANGE  ·  LANG  ·  ⚠2💊3  ·  seen
+        -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/victim_emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginEnd="6dp"
+                tools:text="👨" />
+
+            <TextView
+                android:id="@+id/victim_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/jemma_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:maxWidth="120dp"
+                tools:text="Kurodo" />
+
+            <TextView
+                android:id="@+id/victim_sid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFamily="monospace"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="10sp"
+                tools:text="#a4f2" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/victim_chip_lang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9sp"
+                android:textColor="@color/jemma_paper"
+                android:textStyle="bold"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="1dp"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/bg_chip_lang"
+                android:fontFamily="monospace"
+                tools:text="FR" />
+
+            <TextView
+                android:id="@+id/victim_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/jemma_primary"
+                android:textSize="11sp"
+                android:fontFamily="monospace"
+                tools:text="9m·S" />
+        </LinearLayout>
+
+        <!--
+            Row 1b — Secondary line (very compact) : crit/SALT label · age/sex/blood · counts · seen
+        -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="2dp">
+
+            <TextView
+                android:id="@+id/victim_crit_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="@color/jemma_text_muted"
+                android:textAllCaps="true"
+                android:letterSpacing="0.06"
+                android:fontFamily="sans-serif-medium"
+                tools:text="🔴 RED" />
+
+            <TextView
+                android:id="@+id/victim_chip_demo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/jemma_text_muted"
+                tools:text="♂ · 40s · B-" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/victim_counts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="10sp"
+                tools:text="⚠2·💊3" />
+
+            <TextView
+                android:id="@+id/victim_meta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="10sp"
+                android:fontFamily="monospace"
+                tools:text="✓5/5·4s" />
+        </LinearLayout>
+
+        <!--
+            Row 2 — Inline SALT triage buttons (rescuer-mode only ; hidden
+            in SOS broadcast list or for rescuer rows via showInlineTriage
+            and isRescuer flags in the adapter).
+        -->
+        <LinearLayout
+            android:id="@+id/victim_salt_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/victim_salt_btn_wait"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:paddingVertical="6dp"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="WAIT"
+                tools:text="⏳" />
+
+            <TextView
+                android:id="@+id/victim_salt_btn_eval"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:paddingVertical="6dp"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="EVAL"
+                tools:text="🔍" />
+
+            <TextView
+                android:id="@+id/victim_salt_btn_stab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:paddingVertical="6dp"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="STAB"
+                tools:text="✅" />
+
+            <TextView
+                android:id="@+id/victim_salt_btn_help"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:paddingVertical="6dp"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="HELP"
+                tools:text="🆘" />
+
+            <TextView
+                android:id="@+id/victim_salt_btn_evac"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:paddingVertical="6dp"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="EVAC"
+                tools:text="🚑" />
+
+            <TextView
+                android:id="@+id/victim_salt_btn_dcd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingVertical="6dp"
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="DCD"
+                tools:text="🕊️" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/victim_salt_btn_cancel_dcd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="4dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textSize="11sp"
+            android:textColor="@color/jemma_text"
+            android:fontFamily="sans-serif-medium"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            android:contentDescription="@string/triage_btn_cancel_deceased"
+            tools:text="🔄 Annuler décès"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+</LinearLayout>

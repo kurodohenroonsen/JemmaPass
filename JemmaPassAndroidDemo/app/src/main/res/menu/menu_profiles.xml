@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    menu_profiles.xml — Lot 14.1b (PHASE 14)
+    Toolbar menu of fragment_profiles.xml.
+
+    🆕 Lot 14.1b — Removed `menu_profiles_pillars_gallery` (i icon) and
+    `menu_profiles_settings` (wrench icon). Décision Kudoro : la title
+    bar des Profils ne doit pas être encombrée — gallery + settings
+    accessibles autrement (à definir, probablement via long-press ou
+    le bouton Réglages dans la bottom nav).
+
+    Items restants (gauche à droite) :
+      • menu_profiles_new       — plus icon → create new profile
+      • menu_profiles_import_qr — camera icon → scan QR pour import
+
+    History :
+    🆕 L_HERO_BAR — Added `menu_profiles_new` as the FIRST visible item
+    (a + icon) since the FAB is hidden by the bottom nav. Direct entry
+    point to PatientEditFragment in CREATE mode.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_profiles_new"
+        android:icon="@drawable/ic_plus_24"
+        android:title="@string/profiles_fab_new"
+        app:showAsAction="always"
+        app:iconTint="@android:color/white" />
+
+    <item
+        android:id="@+id/menu_profiles_import_qr"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="@string/profiles_action_import_qr"
+        app:showAsAction="always" />
+
+</menu>

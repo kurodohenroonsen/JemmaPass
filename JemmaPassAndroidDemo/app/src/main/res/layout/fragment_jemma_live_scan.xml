@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  fragment_jemma_live_scan.xml — JEMMA Pass · Live Scan · FIX4
+
+  🆕 FIX4 : bouton Annuler GÉANT rouge full-width 80dp en bottom.
+  Recouvre la bottom nav du host activity → l'utilisateur ne peut
+  pas changer d'écran pendant un scan rescue actif.
+
+  Tap = abort + liveScanRepo.resetAsync() + navigateUp.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <!-- ─── Preview CameraX (couche arrière) ──────────────────── -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/livescan_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:scaleType="fillCenter"
+        app:implementationMode="performance" />
+
+    <!-- ─── Overlay JEMMA (banner + OCR + chips) ─────────────── -->
+    <be.heyman.android.jemmapassdemo.ai.livescan.LiveScanOverlayView
+        android:id="@+id/livescan_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- ─── 🆕 FIX4 : bouton Annuler GÉANT ────────────────────── -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/livescan_cancel_btn"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:text="@string/livescan_cancel_button"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:backgroundTint="#DC2626"
+        app:cornerRadius="0dp"
+        app:icon="@android:drawable/ic_menu_close_clear_cancel"
+        app:iconGravity="textStart"
+        app:iconSize="28dp"
+        app:iconTint="@android:color/white" />
+
+</FrameLayout>

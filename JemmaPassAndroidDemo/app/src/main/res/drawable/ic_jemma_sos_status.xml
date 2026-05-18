@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    🆕 L44.15 — JEMMA SOS status bar icon.
+
+    Style: white-on-transparent vector. Android 5+ status bar requires
+    monochromatic icons; the system will tint them with the app's
+    notification color (set via setColor()).
+
+    Design: a stylized turtle shell (JEMMA mascot abstracted) with a
+    central pulse mark to suggest "broadcasting". Hexagonal pattern
+    inside the shell evokes a microchip — the on-device AI nature.
+
+    Sized for 24x24dp at the standard density. Visible at 16x16 in the
+    status bar.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#FFFFFF">
+
+    <!-- Outer turtle shell — rounded hexagon -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="1.0"
+        android:pathData="M12,2.5 L19.5,7 L19.5,17 L12,21.5 L4.5,17 L4.5,7 Z"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0"/>
+
+    <!-- Inner cutout — leaves a white shell ring with darker center -->
+    <path
+        android:fillColor="#000000"
+        android:fillAlpha="1.0"
+        android:pathData="M12,5.5 L17,8.5 L17,15.5 L12,18.5 L7,15.5 L7,8.5 Z"
+        android:strokeColor="#000000"
+        android:strokeWidth="0"/>
+
+    <!-- Central pulse "S" curve — 3 dashes evoking morse SOS -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="1.0"
+        android:pathData="M9.5,11 L11,11 L11,12 L9.5,12 Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="1.0"
+        android:pathData="M11.25,11 L12.75,11 L12.75,12 L11.25,12 Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="1.0"
+        android:pathData="M13,11 L14.5,11 L14.5,12 L13,12 Z"/>
+
+    <!-- Bottom middle dot — pulse anchor -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="1.0"
+        android:pathData="M11.5,13.5 L12.5,13.5 L12.5,14.5 L11.5,14.5 Z"/>
+</vector>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_radar_peer_row.xml — full row used in the radar peer list (rescuer mode).
+    Shows current SALT triage state on the left + 6 triage action buttons on
+    the right. Tap on the row body opens the patient detail sheet.
+
+    SALT codes (pillar action) :
+      ⏳ WAIT    — initial / waiting for assessment
+      🔍 EVAL    — being evaluated
+      ✅ STAB    — stable
+      🆘 HELP    — needs help
+      🚑 EVAC    — needs evacuation
+      🕊️ DCD     — deceased (long-press confirm)
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/jemma_card_active"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <!-- Top : avatar + name + meta + distance -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/radar_peer_emoji"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:textSize="22sp"
+                tools:text="👵" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/radar_peer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="Haru" />
+
+                <TextView
+                    android:id="@+id/radar_peer_meta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_text_muted"
+                    android:textSize="11sp"
+                    tools:text="♀ · 70 ans · A+ · 🇯🇵 ja" />
+
+                <TextView
+                    android:id="@+id/radar_peer_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_text_muted"
+                    android:textSize="11sp"
+                    tools:text="📷 QR · 5 allergies · 6 méds" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/radar_peer_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textColor="@color/jemma_primary"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="11 m" />
+
+        </LinearLayout>
+
+        <!-- SALT triage state pill + 6 action buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/radar_peer_salt_pill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/bg_pill_count"
+                android:fontFamily="monospace"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:text="✅ STAB"
+                tools:textColor="@color/severity_low" />
+
+            <HorizontalScrollView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/radar_peer_action_wait"
+                        style="@style/JemmaTriageActionBtn"
+                        android:contentDescription="@string/triage_wait"
+                        tools:ignore="HardcodedText"
+                        android:src="@android:drawable/ic_menu_recent_history" />
+
+                    <ImageButton
+                        android:id="@+id/radar_peer_action_eval"
+                        style="@style/JemmaTriageActionBtn"
+                        android:contentDescription="@string/triage_eval"
+                        android:src="@android:drawable/ic_menu_search" />
+
+                    <ImageButton
+                        android:id="@+id/radar_peer_action_stab"
+                        style="@style/JemmaTriageActionBtn"
+                        android:contentDescription="@string/triage_stab"
+                        android:src="@android:drawable/ic_menu_compass" />
+
+                    <ImageButton
+                        android:id="@+id/radar_peer_action_help"
+                        style="@style/JemmaTriageActionBtn"
+                        android:contentDescription="@string/triage_help"
+                        android:src="@android:drawable/ic_dialog_alert" />
+
+                    <ImageButton
+                        android:id="@+id/radar_peer_action_evac"
+                        style="@style/JemmaTriageActionBtn"
+                        android:contentDescription="@string/triage_evac"
+                        android:src="@android:drawable/ic_menu_send" />
+
+                    <ImageButton
+                        android:id="@+id/radar_peer_action_dcd"
+                        style="@style/JemmaTriageActionBtn"
+                        android:contentDescription="@string/triage_dcd"
+                        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

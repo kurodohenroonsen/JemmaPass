@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_xchk.xml — JEMMA Pass · v2.6.0 · L_PHASE13 HOTFIX
+
+  Strings for the CrossCheckAlertDialog (clinical interaction warning).
+  Detail texts (description, management) come from the KB in English only.
+
+  Note: 3 keys (xchk_section_allergies, xchk_section_ddi, xchk_section_drug_disease)
+  are already defined in strings_blindage.xml from L_BLINDAGE phase — DO NOT
+  re-add them here, Android will fail to merge duplicate resources.
+-->
+<resources>
+
+    <string name="xchk_title">Clinical interaction detected</string>
+    <string name="xchk_new_item_prefix">New item:</string>
+    <string name="xchk_section_existing_meds">Conflicts with existing medications</string>
+    <string name="xchk_match_on">Match: %1$s</string>
+    <string name="xchk_severity">Severity: %1$s</string>
+    <string name="xchk_en_disclaimer">ⓘ Detailed information is provided in English (clinical reference language).</string>
+    <string name="xchk_save_anyway">Save anyway</string>
+    <string name="xchk_cancel">Review</string>
+
+</resources>

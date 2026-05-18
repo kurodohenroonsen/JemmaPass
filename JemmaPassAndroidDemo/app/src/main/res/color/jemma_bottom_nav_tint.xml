@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    jemma_bottom_nav_tint.xml — color state list for BottomNavigationView
+    item icon + text tints. Selected = primary green, unselected = muted text.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true"  android:color="@color/jemma_primary" />
+    <item android:state_checked="false" android:color="@color/jemma_text_muted" />
+    <item                                android:color="@color/jemma_text_muted" />
+</selector>

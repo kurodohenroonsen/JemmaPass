@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_jemma_perso_edit.xml · DE
+  Note: gender glyphs (♂ ♀ ⚧ ⊘) kept identical across locales to avoid
+  AAPT2 reference issues (no leading '?').
+-->
+<resources>
+
+    <!-- Toolbar / hero -->
+    <string name="perso_edit_title">Patientenidentität</string>
+    <string name="perso_edit_hero_title">Identität</string>
+    <string name="perso_edit_hero_subtitle">FHIR Patient · IPS · 4 aktive Säulen</string>
+
+    <!-- Sections -->
+    <string name="perso_section_name">Vor- und Nachname</string>
+    <string name="perso_section_gender">Geschlecht</string>
+    <string name="perso_section_birth_date">Geburtsdatum</string>
+    <string name="perso_section_nationality">Staatsangehörigkeit</string>
+    <string name="perso_section_blood_type">Blutgruppe</string>
+
+    <!-- Field labels -->
+    <string name="perso_label_given_name">Vorname</string>
+    <string name="perso_label_family_name">Nachname</string>
+    <string name="perso_label_birth_date_hint">Tippen, um ein Datum zu wählen</string>
+    <string name="perso_label_nationality_hint">Tippen, um ein Land zu wählen</string>
+
+    <!-- Gender toggle (mono-line, no '?' which AAPT2 parses as ?attr/) -->
+    <string name="perso_gender_m">♂ M</string>
+    <string name="perso_gender_f">♀ W</string>
+    <string name="perso_gender_o">⚧ D</string>
+    <string name="perso_gender_u">⊘ U</string>
+
+    <!-- Pickers -->
+    <string name="perso_blood_type_pick_title">Blutgruppe</string>
+    <string name="perso_nationality_pick_title">Land / Staatsangehörigkeit</string>
+    <string name="perso_birth_date_pick_title">Geburtsdatum</string>
+    <string name="perso_pick_chevron">›</string>
+    <string name="perso_nationality_dash">—</string>
+    <string name="perso_blood_type_dash">—</string>
+
+    <!-- Save -->
+    <string name="perso_save_button">💾  Speichern</string>
+    <string name="perso_saved_created">Profil erstellt ✓</string>
+    <string name="perso_saved_updated">Profil aktualisiert ✓</string>
+
+    <!-- Validation errors -->
+    <string name="perso_validation_name_required">Mindestens ein Vor- oder Nachname ist erforderlich</string>
+    <string name="perso_validation_birth_required">Geburtsdatum ist erforderlich (IPS)</string>
+    <string name="perso_validation_nationality_format">Staatsangehörigkeit im ISO-3166-Alpha-2-Format (z. B. BE, JP)</string>
+
+</resources>

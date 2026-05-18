@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    colors_jemma_sos_rescue.xml — v2.5.6
+    Additional colours used by the rescuer-mode radar + victim-mode SOS
+    broadcast screens. The existing jemma_primary / jemma_bg / jemma_text
+    palette is preserved (dark theme, emerald accent).
+-->
+<resources>
+
+    <!-- Criticality (legacy 0..3 mapping, still used as fallback when no SALT event exists) -->
+    <color name="jemma_crit_unknown">#94A3B8</color>
+    <color name="jemma_crit_green">#10B981</color>
+    <color name="jemma_crit_yellow">#F59E0B</color>
+    <color name="jemma_crit_red">#EF4444</color>
+
+    <!-- Radar canvas -->
+    <color name="jemma_radar_bg_inner">#1E293B</color>
+    <color name="jemma_radar_bg_outer">#0F172A</color>
+    <color name="jemma_radar_ring">#10B981</color>
+    <color name="jemma_radar_sweep">#10B981</color>
+    <color name="jemma_radar_self">#FBBF24</color>
+
+    <!-- Rescuer dot (mini-radar SOS side — sky 400 distinct from any SALT color) -->
+    <color name="jemma_rescuer_dot">#38BDF8</color>
+
+    <!-- Surfaces -->
+    <color name="jemma_surface_2">#243046</color>
+    <color name="jemma_paper">#F1F5F9</color>
+    <color name="jemma_rule">#334155</color>
+
+    <!-- Status badges -->
+    <color name="jemma_badge_idle">#475569</color>
+    <color name="jemma_badge_paused">#334155</color>
+    <color name="jemma_badge_unknown">#475569</color>
+
+    <!-- Chip backgrounds -->
+    <color name="jemma_chip_demo">#334155</color>
+    <color name="jemma_chip_lang">#1E40AF</color>
+
+    <!-- SOS button active state -->
+    <color name="jemma_sos_btn_active">#7F1D1D</color>
+
+</resources>

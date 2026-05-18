@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qr_save_bitmap_failed">ビットマップの生成に失敗しました</string>
+    <string name="qr_save_file_failed">画像ファイルの作成に失敗しました</string>
+    <string name="qr_save_success">QRコードをギャラリーに保存しました</string>
+    <string name="qr_save_write_failed">保存エラー: %1$s</string>
+
+    <string name="pdf_export_in_progress">エコインクPDFを生成中…</string>
+    <string name="pdf_export_failed">PDF生成に失敗しました</string>
+
+    <string name="share_jemma_pass_title">Jemma Passを共有</string>
+
+    <string name="scanner_unavailable">スキャナーは利用できません: %1$s</string>
+</resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_downloads.xml — version JA.
+-->
+<resources>
+
+    <!-- ═════ 集計 "デモを準備する" ═════ -->
+    <string name="dl_step_template">ステップ %1$d / %2$d</string>
+    <string name="dl_bytes_template">%1$s / %2$s</string>
+    <string name="dl_rate_template">%1$s/秒</string>
+    <string name="dl_eta_min_template">残り約 %1$d 分</string>
+    <string name="dl_eta_sec_template">残り約 %1$d 秒</string>
+    <string name="dl_eta_hour_template">残り約 %1$d 時間 %2$d 分</string>
+
+    <string name="dl_done_label">✓ デモ準備完了</string>
+    <string name="dl_failed_template">ダウンロード失敗 : %1$s</string>
+    <string name="dl_paused_label">一時停止中</string>
+    <string name="dl_idle_label">未開始</string>
+
+    <string name="dl_current_template">処理中 : %1$s</string>
+
+    <!-- ═════ モデルカード ピル ═════ -->
+    <string name="dl_pill_not_downloaded">未ダウンロード</string>
+    <string name="dl_pill_partial">部分的</string>
+    <string name="dl_pill_downloading">ダウンロード中</string>
+    <string name="dl_pill_succeeded">✓ ダウンロード済</string>
+    <string name="dl_pill_active">★ アクティブ</string>
+    <string name="dl_pill_failed">⚠ 失敗</string>
+
+    <!-- Action buttons -->
+    <string name="dl_btn_download">ダウンロード</string>
+    <string name="dl_btn_pause">一時停止</string>
+    <string name="dl_btn_resume">再開</string>
+    <string name="dl_btn_retry">再試行</string>
+    <string name="dl_btn_activate">有効化</string>
+    <string name="dl_btn_already_active">既に有効</string>
+
+    <!-- Confirm dialog -->
+    <string name="dl_delete_confirm_title">このダウンロードを削除しますか?</string>
+    <string name="dl_delete_confirm_message">%1$s (%2$s) はこの端末から削除されます。設定からいつでも再ダウンロードできます。</string>
+    <string name="dl_delete_confirm_btn_yes">削除</string>
+    <string name="dl_delete_confirm_btn_no">キャンセル</string>
+
+    <!-- ═════ Preflight 詳細 ═════ -->
+    <string name="preflight_perms_detail_template">%2$d 件中 %1$d 件許可済</string>
+    <string name="preflight_model_detail_active_template">%1$s · %2$s · アクティブ</string>
+    <string name="preflight_model_detail_none">未ダウンロード</string>
+    <string name="preflight_kb_detail_template">%1$s</string>
+    <string name="preflight_kb_detail_none">未ダウンロード</string>
+
+    <plurals name="preflight_profile_detail_count">
+        <item quantity="other">%d 件のプロフィール</item>
+    </plurals>
+
+    <string name="preflight_storage_detail_template">空き容量 %1$s</string>
+
+    <!-- ═════ 容量 / ネットワーク 警告 ═════ -->
+    <string name="dl_low_storage_title">空き容量が不足しています</string>
+    <string name="dl_low_storage_message">ダウンロードには %1$s 必要ですが、この端末には %2$s しか空きがありません。容量を空けてから再試行してください。</string>
+    <string name="dl_low_storage_btn_ok">OK</string>
+
+    <string name="dl_no_network_title">ネットワーク接続なし</string>
+    <string name="dl_no_network_message">JEMMA は jemmapass.net に接続できません。Wi-Fi またはモバイルデータを確認してください。</string>
+
+    <string name="dl_metered_warning_title">モバイルデータ通信でダウンロード</string>
+    <string name="dl_metered_warning_message">Wi-Fi 接続ではありません。モバイルデータで %1$s をダウンロードすると料金が発生する場合があります。続行しますか?</string>
+    <string name="dl_metered_warning_btn_continue">続行</string>
+    <string name="dl_metered_warning_btn_wait">Wi-Fi を待つ</string>
+
+</resources>

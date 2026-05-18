@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · NO · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Profiler</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Innstillinger</string>
+    <string name="bottom_nav_sos_rescue">SOS/Redning</string>
+
+    <string name="sos_rescue_hub_title">SOS / Redning</string>
+    <string name="sos_rescue_hub_subtitle">Velg en modus for å fortsette: send et SOS som offer, eller skann offer som redningsmann.</string>
+    <string name="sos_rescue_hub_open_button">Velg modus</string>
+
+    <string name="mode_select_title">Velg din rolle</string>
+    <string name="mode_select_sos_title">SOS · Jeg trenger hjelp</string>
+    <string name="mode_select_sos_subtitle">Sender min medisinske profil til nærliggende redningsmenn via Bluetooth-mesh.</string>
+    <string name="mode_select_rescuer_title">Redning · Jeg vil hjelpe</string>
+    <string name="mode_select_rescuer_subtitle">Skann etter SOS-sendinger og triager offer på en live-radar.</string>
+
+    <string name="radar_btn_hide">Skjul</string>
+    <string name="radar_btn_scan_qr">Skann QR</string>
+    <string name="radar_btn_start">📡 START RADAR</string>
+    <string name="radar_btn_stop">Stopp</string>
+    <string name="l3_radar_btn_stop">🛑 STOPP RADAR</string>
+
+    <string name="sos_broadcast_title">🆘 SOS-sending</string>
+    <string name="sos_broadcast_subtitle">Forgrunnstjeneste holder låseskjermikonet og roterer BLE-deler.</string>
+    <string name="sos_btn_start">START\nSOS</string>
+    <string name="sos_btn_stop">STOPP\nSOS</string>
+    <string name="sos_btn_toggle">🔄 BYTT SENDING</string>
+    <string name="sos_btn_pause_broadcast">🔇 Pause BLE-sending</string>
+    <string name="sos_btn_resume_broadcast">🔊 Gjenoppta BLE-sending</string>
+    <string name="l3_sos_btn_start">🆘 AKTIVER SOS</string>
+    <string name="l3_sos_btn_stop">🛑 DEAKTIVER SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Kunne ikke generere bitmap</string>
+    <string name="qr_save_file_failed">Kunne ikke opprette bildefil</string>
+    <string name="qr_save_success">QR-kode lagret i galleriet</string>
+    <string name="qr_save_write_failed">Lagringsfeil: %1$s</string>
+    <string name="pdf_export_in_progress">Genererer Øko-Blekk PDF…</string>
+    <string name="pdf_export_failed">PDF-generering mislyktes</string>
+    <string name="share_jemma_pass_title">Del Jemma Pass</string>
+    <string name="scanner_unavailable">Skanner ikke tilgjengelig: %1$s</string>
+</resources>

@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma.xml — Japanese (ja).
+    Translation of the EN default strings_jemma.xml (in values/).
+
+    Japanese conventions used here :
+      • Polite plain (です・ます) form throughout — appropriate for an emergency
+        product where the tone must be reassuring but not too casual
+      • Medical / clinical terms use the standard Japanese FHIR-JP conventions
+        when they exist (患者リソース, アレルギー, etc.); ATC/SNOMED kept in latin
+      • Shikoku / pilgrim cultural cues preserved (the SOS scenario takes
+        place during a Shikoku earthquake with Haru as the elderly Japanese
+        victim — see the storytelling in the writeup)
+-->
+<resources>
+
+    <!-- App identity -->
+    <string name="jemma_app_name">JemmaAppDemo</string>
+    <string name="splash_tagline">ユニバーサル IPS 健康パスポート · エッジ AI</string>
+    <string name="splash_offline_chip">機内モード · 100 % オンデバイス</string>
+    <string name="jemma_mascot">ジェマのマスコット</string>
+
+    <!-- Bottom nav -->
+    <string name="nav_home">ホーム</string>
+    <string name="nav_radar">レーダー</string>
+    <string name="nav_settings">設定</string>
+
+    <!-- Generic buttons -->
+    <string name="btn_save">保存</string>
+    <string name="btn_cancel">キャンセル</string>
+    <string name="btn_delete">削除</string>
+    <string name="btn_close">閉じる</string>
+    <string name="btn_retry">再試行</string>
+
+    <!-- Home -->
+    <string name="home_active_profile">使用中のプロフィール</string>
+    <string name="home_add_profile">プロフィールを追加</string>
+    <string name="home_sos_cta">SOS</string>
+
+    <!-- Pillars titles -->
+    <string name="pillar_perso">本人情報</string>
+    <string name="pillar_contacts">緊急連絡先</string>
+    <string name="pillar_allergies">アレルギー</string>
+    <string name="pillar_medications">服用中の薬</string>
+    <string name="pillar_conditions">既往歴</string>
+    <string name="pillar_immunizations">予防接種</string>
+    <string name="pillar_procedures">医療処置</string>
+    <string name="pillar_devices">医療機器</string>
+    <string name="pillar_stub_coming_soon">本番アプリで利用可能</string>
+
+    <!-- Perso -->
+    <string name="perso_title">本人情報</string>
+    <string name="perso_section_identity">本人確認 (FHIR Patient)</string>
+    <string name="perso_section_clinical">臨床データ</string>
+    <string name="perso_field_given_name">名</string>
+    <string name="perso_field_family_name">姓</string>
+    <string name="perso_field_birth_date">生年月日</string>
+    <string name="perso_field_gender">性別</string>
+    <string name="perso_field_language">使用言語</string>
+    <string name="perso_field_blood_type">血液型</string>
+    <string name="perso_field_height_cm">身長</string>
+    <string name="perso_field_weight_kg">体重</string>
+    <string name="perso_ips_hint">FHIR R4 Patient にマッピング · IPS 準拠 · 端末内 (Room) 保存 · 平文送信なし。</string>
+    <string name="gender_male">男性</string>
+    <string name="gender_female">女性</string>
+    <string name="gender_other">その他</string>
+    <string name="gender_unknown">不明</string>
+
+    <!-- Contacts -->
+    <string name="contacts_title">緊急連絡先</string>
+    <string name="contacts_subtitle">FHIR R4 · RelatedPerson</string>
+    <string name="contacts_btn_add">追加</string>
+    <string name="contacts_btn_call">電話する</string>
+    <string name="contacts_empty">緊急連絡先がまだ登録されていません。\n+ をタップして追加してください。</string>
+    <string name="contact_dialog_title_new">新しい連絡先</string>
+    <string name="contact_dialog_ips_type">FHIR R4 · RelatedPerson</string>
+    <string name="contact_field_name">連絡先の氏名</string>
+    <string name="contact_field_relationship">関係</string>
+    <string name="contact_field_phone">電話番号</string>
+    <string name="contact_field_email">メール (任意)</string>
+    <string name="contact_field_language">希望言語</string>
+
+    <!-- Allergies -->
+    <string name="allergies_title">アレルギー</string>
+    <string name="allergies_subtitle">FHIR R4 · AllergyIntolerance</string>
+    <string name="allergies_add_text">追加</string>
+    <string name="allergies_add_voice">アレルギーを音声入力</string>
+    <string name="allergies_add_image">診断書を撮影</string>
+    <string name="allergies_empty">登録されたアレルギーはありません。\n右下のボタンから、テキスト・音声・画像で追加できます。</string>
+    <string name="allergy_dialog_title_new">新しいアレルギー</string>
+    <string name="allergy_dialog_ips_type">FHIR R4 · AllergyIntolerance</string>
+    <string name="allergy_field_substance">物質</string>
+    <string name="allergy_field_substance_hint">名称を入力してください (SNOMED KB の自動補完)</string>
+    <string name="allergy_field_snomed">SNOMED CT コード</string>
+    <string name="allergy_field_severity">重症度</string>
+    <string name="allergy_field_reaction">記録された反応</string>
+    <string name="allergy_severity_mild">軽度</string>
+    <string name="allergy_severity_moderate">中等度</string>
+    <string name="allergy_severity_severe">重度</string>
+
+    <!-- Medications -->
+    <string name="medications_title">服用中の薬</string>
+    <string name="medications_subtitle">FHIR R4 · MedicationStatement</string>
+    <string name="medications_add_text">追加</string>
+    <string name="medications_add_voice">薬を音声入力</string>
+    <string name="medications_add_image">箱をスキャン</string>
+    <string name="medications_empty">登録された薬はありません。\n右下のボタンから、テキスト・音声・箱の写真で追加できます。</string>
+    <string name="medication_dialog_title_new">新しい薬</string>
+    <string name="medication_dialog_ips_type">FHIR R4 · MedicationStatement</string>
+    <string name="medication_field_name">薬の名称</string>
+    <string name="medication_field_atc">ATC コード</string>
+    <string name="medication_field_dose">用量</string>
+    <string name="medication_field_unit">単位</string>
+    <string name="medication_field_frequency">頻度</string>
+    <string name="medication_field_frequency_hint">例: 朝晩 1 錠、1 日 3 回、午前 8 時に 1 回</string>
+    <string name="medication_field_route">投与経路</string>
+    <string name="medication_field_active">服用中</string>
+
+    <!-- Med scan dialog -->
+    <string name="medscan_title">薬のスキャン</string>
+    <string name="medscan_subtitle">箱 · ブリスター · 処方箋</string>
+    <string name="medscan_image_placeholder">画像が取得されていません</string>
+    <string name="medscan_result_label">▼ 結果</string>
+    <string name="medscan_btn_save">この薬を保存</string>
+    <string name="medscan_btn_retry">再試行</string>
+    <string name="medscan_btn_reject">破棄</string>
+
+    <!-- Voice / debug -->
+    <string name="voice_input_cd">音声入力</string>
+    <string name="debug_console_label">▼ デバッグパイプライン</string>
+    <string name="debug_console_label_pipeline">▼ デバッグパイプライン (詳細)</string>
+    <string name="debug_console_toggle">ログの表示 / 非表示</string>
+    <string name="debug_console_copy">ログをコピー</string>
+
+    <!-- Pillar stub -->
+    <string name="stub_title_default">情報項目</string>
+    <string name="stub_lock_chip">本番版</string>
+    <string name="stub_section_fields">IPS フィールド</string>
+    <string name="stub_section_kb_links">KB コード体系</string>
+    <string name="stub_btn_production">jemmapass.net で本番アプリを見る</string>
+
+    <!-- Export -->
+    <string name="export_title">エクスポート</string>
+    <string name="export_subtitle">使用中プロフィールの QR コード</string>
+    <string name="export_section_formats">利用可能な形式</string>
+    <string name="qr_viewer_title">生成された QR</string>
+    <string name="qr_image_cd">QR コード</string>
+    <string name="qr_prev_frame">前のフレーム</string>
+    <string name="qr_next_frame">次のフレーム</string>
+    <string name="qr_btn_save">ギャラリーに保存</string>
+    <string name="qr_btn_share">共有</string>
+
+    <!-- SOS -->
+    <string name="sos_title">SOS — 発信</string>
+    <string name="sos_btn_start">SOS\n開始</string>
+    <string name="sos_btn_stop">SOS\n停止</string>
+    <string name="sos_telemetry_label">▼ テレメトリー</string>
+    <string name="sos_telemetry_chunks">チャンクローテーション</string>
+    <string name="sos_telemetry_advertise">BLE 発信</string>
+    <string name="sos_telemetry_gps">GPS</string>
+    <string name="sos_telemetry_duty">デューティサイクル</string>
+    <string name="sos_peers_around">周囲</string>
+
+    <!-- Radar (rescuer) -->
+    <string name="radar_title">JEMMA レーダー</string>
+    <string name="radar_status_active">🎯 探索中 — 被災者と救助者を検索しています…</string>
+    <string name="radar_btn_hide">隠す</string>
+    <string name="radar_btn_scan_qr">QR をスキャン</string>
+    <string name="radar_btn_stop">停止</string>
+
+    <!-- Triage SALT -->
+    <string name="triage_wait">WAIT — 待機中</string>
+    <string name="triage_eval">EVAL — 評価中</string>
+    <string name="triage_stab">STAB — 安定</string>
+    <string name="triage_help">HELP — 救援要請</string>
+    <string name="triage_evac">EVAC — 搬送</string>
+    <string name="triage_dcd">DCD — 死亡</string>
+
+    <!-- Patient detail -->
+    <string name="patient_title">患者情報</string>
+    <string name="patient_btn_scan_med">📷 薬をスキャン — 適合性を確認</string>
+    <string name="patient_section_allergies">⚠️ アレルギー</string>
+    <string name="patient_section_medications">💊 服用中の薬</string>
+    <string name="patient_section_conditions">🩺 既往歴</string>
+    <string name="patient_section_immunizations">💉 予防接種</string>
+
+    <!-- Settings -->
+    <string name="settings_title">設定</string>
+    <string name="settings_section_model">Gemma 4 モデル</string>
+    <string name="settings_section_kb">ナレッジベース</string>
+    <string name="settings_section_lang">表示言語</string>
+    <string name="settings_section_demo">デモデータ</string>
+    <string name="settings_section_privacy">プライバシー</string>
+    <string name="settings_lang_hint">言語</string>
+    <string name="settings_kb_redownload">KB を再ダウンロード</string>
+    <string name="settings_btn_seed_personas">クロド・美砂子・春のプロフィールを作成</string>
+    <string name="settings_privacy_text">すべてのデータは端末内 (Room) に保存され、QR の生成や BLE SOS の起動を行わない限り、端末から送信されません。テレメトリーなし。クラウドなし。</string>
+    <string name="settings_btn_wipe">すべてのデータを消去</string>
+    <string name="settings_btn_benchmark">E2B と E4B を比較 (ベンチマーク)</string>
+    <string name="model_btn_download">ダウンロード</string>
+    <string name="model_btn_activate">有効化</string>
+    <string name="model_btn_active">★ 使用中</string>
+
+    <!-- Benchmark -->
+    <string name="benchmark_title">Gemma E2B vs E4B ベンチマーク</string>
+    <string name="benchmark_prompt_hint">テストプロンプト</string>
+    <string name="benchmark_btn_run">ベンチマークを実行</string>
+    <string name="benchmark_col_e2b">E2B (2.4 GB)</string>
+    <string name="benchmark_col_e4b">E4B (3.4 GB)</string>
+
+    <!-- Top-bar menus -->
+    <string name="menu_export">エクスポート</string>
+    <string name="menu_settings">設定</string>
+    <string name="menu_radar_mode_rescuer">救助者モード</string>
+    <string name="menu_radar_mode_sos">SOS モード</string>
+    <string name="menu_radar_diagnostics">メッシュ診断</string>
+
+
+    <!-- ═════ Permissions onboarding (Livraison_demo_permissions_1.2.0) ═════ -->
+
+    <!-- Header -->
+    <string name="permissions_title">必要な権限</string>
+    <string name="permissions_intro">JemmaAppDemo は端末内で 100 % 動作します。そのために、いくつかの低レベルな Android 権限が必要です。各権限は、対応する機能のためだけに使われます。</string>
+    <string name="permissions_mandatory_chip">デモには すべて 必須</string>
+
+    <!-- Card titles -->
+    <string name="permission_camera_title">カメラ</string>
+    <string name="permission_microphone_title">マイク</string>
+    <string name="permission_bluetooth_title">Bluetooth (3 権限)</string>
+    <string name="permission_location_title">正確な位置情報</string>
+    <string name="permission_notifications_title">通知</string>
+
+    <!-- Card descriptions -->
+    <string name="permission_camera_desc">薬の箱・ブリスター・処方箋をスキャンし、Gemma 4 マルチモーダルで成分を特定します。</string>
+    <string name="permission_microphone_desc">アレルギー・服用薬・連絡先名を音声入力します。音声は Gemma 4 によって端末内で処理され、クラウドには送信されません。</string>
+    <string name="permission_bluetooth_desc">大規模災害時に JEMMA メッシュ経由で SOS チャンクを発信・受信します。インターネット接続は不要です。</string>
+    <string name="permission_location_desc">救助者がレーダーで貴方を見つけられるよう、SOS チャンクに GPS 座標を含めます。</string>
+    <string name="permission_notifications_desc">バックグラウンドで SOS 発信を維持し、近くの救助者に通知します。</string>
+
+    <!-- Status pill labels -->
+    <string name="permission_status_pending">未許可</string>
+    <string name="permission_status_granted">✓ 許可済</string>
+    <string name="permission_status_denied">✗ 拒否</string>
+    <string name="permission_status_settings">⚙ 設定</string>
+
+    <!-- Buttons -->
+    <string name="permissions_btn_grant_all">すべて許可</string>
+    <string name="permissions_btn_continue">デモへ進む</string>
+
+    <!-- Summary template -->
+    <string name="permissions_summary_template">%1$d / %2$d 許可済</string>
+
+    <!-- Privacy + Why -->
+    <string name="permissions_privacy_note">JEMMA はあなたのデータを決してアップロードしません。これらの権限は端末内に留まります。機内モードか、何もしないか。</string>
+    <string name="permissions_why_link">なぜすべて必須なのですか?</string>
+    <string name="permissions_why_text">JemmaAppDemo は本物のデモです。偽のデモではありません。審査員に見せる各機能は、最初から最後まで本当に動く必要があります :\n\n• 薬スキャン パイプラインにはカメラが必要です。\n• 音声入力 パイプラインにはマイクが必要です。\n• メッシュ SOS 発信 には 3 つの Bluetooth 権限 + GPS + フォアグラウンド サービス通知が必要です。\n\nいずれかが拒否されると、対応するデモが録画中に失敗します。ハッカソン規約は、完全に機能する提出物を要求しています。</string>
+
+    <!-- Settings rationale -->
+    <string name="permissions_rationale_title">設定を開く</string>
+    <string name="permissions_rationale_message">この権限を以前に拒否されています。Android 設定 → アプリ → JemmaAppDemo → 権限 から手動で許可してください。</string>
+    <string name="permissions_rationale_btn_open">設定を開く</string>
+    <string name="permissions_rationale_btn_cancel">キャンセル</string>
+
+
+    <!-- ═════ Settings revamp (Livraison_demo_settings_1.3.0) ═════ -->
+
+    <!-- Prepare-the-demo card -->
+    <string name="settings_prepare_title">デモを準備する</string>
+    <string name="settings_prepare_subtitle">Gemma 4 E4B とナレッジベースをワンタップでダウンロード。約 6.1 GB · Wi-Fi で約 5 分。</string>
+    <string name="settings_prepare_btn_start">開始 (6.1 GB)</string>
+    <string name="settings_prepare_btn_pause">一時停止</string>
+    <string name="settings_prepare_btn_resume">再開</string>
+    <string name="settings_prepare_btn_done">✓ デモ準備完了</string>
+
+    <!-- Preflight section -->
+    <string name="settings_section_preflight">デモ前のチェック</string>
+    <string name="preflight_permissions_label">権限が許可されている</string>
+    <string name="preflight_model_label">Gemma モデルをダウンロード済</string>
+    <string name="preflight_kb_label">ナレッジベースをダウンロード済</string>
+    <string name="preflight_profile_label">プロフィールが 1 件以上ある</string>
+    <string name="preflight_storage_label">空き容量</string>
+
+    <!-- Section hints -->
+    <string name="settings_section_model_hint">3 つのバリエーションが利用可能。RAM 8 GB 以上のデバイスでは E4B を推奨。カードをタップして詳細を表示。</string>
+    <string name="settings_section_kb_hint">Gemma が回答の根拠とする、端末内の臨床ナレッジベース。薬のスキャンと DDI クロスチェックに必須。</string>
+
+    <!-- KB card -->
+    <string name="kb_card_name">knowledge_full.db</string>
+    <string name="kb_card_description">多言語 Clinical Forge KB を内蔵した SQLite + FTS5 リーダー : ATC 階層、RxNorm ブリッジ、SNOMED CT、DDinter 2.0 (相互作用 300 K 件)、薬剤-食品相互作用。すべての grounding ツール呼び出しで使用。</string>
+    <string name="kb_stat_codes">コード数</string>
+    <string name="kb_stat_langs">言語</string>
+    <string name="kb_stat_ddi">DDI ペア</string>
+    <string name="kb_stat_fts">FTS5</string>
+
+    <!-- Model expanded stats -->
+    <string name="model_stat_backend">バックエンド</string>
+    <string name="model_stat_format">形式</string>
+    <string name="model_stat_prefill">プリフィル</string>
+    <string name="model_stat_decode">デコード</string>
+
+    <!-- Demo personas -->
+    <string name="settings_demo_personas_intro">クロド (ベルギー人のお遍路、ペニシリン・魚アレルギー)、美砂子 (日本人の妻、69 歳)、春 (四国の被災者、80 歳、ワルファリン服用中) のプロフィールを作成。災害シナリオの再現に使用。</string>
+
+    <!-- Credits -->
+    <string name="settings_credits">Google AI Edge Gallery を基に構築 · Apache 2.0 · litert-lm 0.10.1 · Powered by Gemma 4</string>
+
+
+    <!-- ═════ Profiles screen (Livraison_demo_profiles_1.4.0) ═════ -->
+
+    <!-- Toolbar -->
+    <string name="profiles_title">プロフィール</string>
+
+    <!-- Bottom nav -->
+    <string name="bottom_nav_profiles">プロフィール</string>
+    <string name="bottom_nav_radar">レーダー</string>
+    <string name="bottom_nav_settings">設定</string>
+
+    <!-- Demo not ready banner -->
+    <string name="profiles_banner_title">デモ準備未完了</string>
+    <string name="profiles_banner_text_template">%2$d 項目中 %1$d 項目が未完了</string>
+    <string name="profiles_banner_action">設定</string>
+
+    <!-- Empty state hero -->
+    <string name="profiles_empty_title">ようこそ</string>
+    <string name="profiles_empty_subtitle">最初の健康プロフィールを作成して始めましょう。すべてこの端末内に保存されます。</string>
+    <string name="profiles_empty_privacy_note">JEMMA はあなたのデータを決してアップロードしません。すべてのプロフィールは端末内に暗号化されて保存されます。</string>
+
+    <!-- 3 creation paths -->
+    <string name="profiles_cta_wizard_title">ピラーごと</string>
+    <string name="profiles_cta_wizard_subtitle">クイックスタート : 名前と生年月日のみ。残りはご自分のペースで。</string>
+    <string name="profiles_cta_qr_title">QR コードをスキャン</string>
+    <string name="profiles_cta_qr_subtitle">3 つの形式を自動検出。テキスト+言語形式は Gemma 4 が自由記述の健康サマリーを FHIR に解析します。</string>
+    <string name="profiles_cta_personas_title">デモのペルソナ</string>
+    <string name="profiles_cta_personas_subtitle">災害シナリオを再現するため、クロド、美砂子、春のプロフィールを作成。</string>
+
+    <!-- Sections in the recycler -->
+    <string name="profiles_section_active">アクティブなプロフィール</string>
+    <string name="profiles_section_others">その他のプロフィール</string>
+
+    <!-- Active card -->
+    <string name="profile_active_pill">★ アクティブ</string>
+    <string name="profiles_btn_export">QR で出力</string>
+    <string name="profiles_btn_sos">SOS</string>
+
+    <!-- FAB -->
+    <string name="profiles_fab_new">新規プロフィール</string>
+
+    <!-- Long-press menu -->
+    <string name="profile_lpm_activate">有効化</string>
+    <string name="profile_lpm_edit">編集</string>
+    <string name="profile_lpm_export">QR で出力</string>
+    <string name="profile_lpm_delete">プロフィールを削除</string>
+    <string name="profile_lpm_delete_confirm_title">このプロフィールを削除しますか?</string>
+    <string name="profile_lpm_delete_confirm_message">このプロフィールに紐付くすべての FHIR リソースが完全に削除されます。この操作は元に戻せません。</string>
+
+    <!-- Create choice dialog -->
+    <string name="profile_create_dialog_title">新規プロフィール</string>
+    <string name="profile_create_dialog_subtitle">作成方法を選択してください。</string>
+
+    <!-- Quick create dialog -->
+    <string name="profile_quick_dialog_title">クイックスタート</string>
+    <string name="profile_quick_dialog_subtitle">名前と生年月日だけ入力してください。医療情報は後から各ピラーで補足できます。</string>
+    <string name="profile_quick_field_name">氏名</string>
+    <string name="profile_quick_field_birthdate">生年月日 (YYYY-MM-DD)</string>
+    <string name="profile_quick_btn_create">プロフィールを作成</string>
+    <string name="profile_quick_hint">これらの 2 項目で IPS-Patient-uv-ips に準拠した最小限の FHIR R4 Patient リソースが作成されます。他のピラー (アレルギー、薬剤、連絡先) はいつでも追加できます。</string>
+
+    <string name="error_camera_unavailable">カメラが利用できません</string>
+    <string name="error_no_image_captured">画像がキャプチャされていません</string>
+</resources>

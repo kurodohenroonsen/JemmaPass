@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_sos_peer_minicard.xml — compact card shown on the SOS broadcast
+    screen for each nearby rescuer or victim. Includes optional SALT triage
+    pill if a triage event has been received for this peer.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    app:cardBackgroundColor="@color/jemma_card_active"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/sos_peer_emoji"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            tools:text="⛑️" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sos_peer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/jemma_text"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Kamekichi" />
+
+            <TextView
+                android:id="@+id/sos_peer_salt_pill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_pill_count"
+                android:fontFamily="monospace"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:text="✅ STAB"
+                tools:textColor="@color/severity_low"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/sos_peer_subline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="10sp"
+                tools:text="🇯🇵 ja · ⛑️ rescuer" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/sos_peer_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textColor="@color/jemma_primary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="&lt; 10 m" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

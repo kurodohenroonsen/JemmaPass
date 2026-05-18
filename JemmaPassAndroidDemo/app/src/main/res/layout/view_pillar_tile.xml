@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_pillar_tile.xml — single tile in the 4-column ACTIVE pillars grid
+    inside item_profile_active.xml. Used 4 times :
+       perso · contacts · allergies · medications
+
+    Compact vertical tile : emoji + label + count badge.
+    Tap → navigate to the matching fragment for the active profile.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/pillar_tile_emoji"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textSize="24sp"
+        tools:text="💊" />
+
+    <TextView
+        android:id="@+id/pillar_tile_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/jemma_text"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        tools:text="Médocs" />
+
+    <TextView
+        android:id="@+id/pillar_tile_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/bg_pill_count"
+        android:fontFamily="monospace"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:textColor="@color/jemma_primary"
+        android:textSize="9sp"
+        android:textStyle="bold"
+        tools:text="3" />
+
+</LinearLayout>

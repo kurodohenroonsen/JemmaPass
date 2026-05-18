@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stub pillar lock chip. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+    <solid android:color="#33334155" />
+    <corners android:radius="99dp" />
+    <stroke android:width="1dp" android:color="@color/jemma_text_muted" />
+</shape>

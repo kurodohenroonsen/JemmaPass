@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="assistant_mode_photo_patient_title">Scan an ID document</string>
+    <string name="assistant_mode_photo_patient_sub">National ID, passport, health card…</string>
+    <string name="assistant_mode_voice_patient_sub">Say your name, date of birth…</string>
+    <string name="assistant_patient_auto_return_toast">Fields extracted · returning to form…</string>
+</resources>

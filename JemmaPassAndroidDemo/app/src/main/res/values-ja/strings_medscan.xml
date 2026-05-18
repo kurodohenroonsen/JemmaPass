@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Panel header -->
+    <string name="medscan_header">🧠 ジェマが解析中…</string>
+
+    <!-- Step labels -->
+    <string name="medscan_step_scan">薬のスキャン</string>
+    <string name="medscan_step_ocr">OCR（日本語＋ラテン）</string>
+    <string name="medscan_step_gemma">ジェマが推論中</string>
+    <string name="medscan_step_identify">薬の識別</string>
+    <string name="medscan_step_check">プロフィール照合</string>
+
+    <!-- Step details -->
+    <string name="medscan_detail_image_captured">画像を取得しました</string>
+    <string name="medscan_detail_ocr_empty">テキストを検出できませんでした</string>
+    <string name="medscan_detail_gemma_thinking">🧠 OCR テキストを解析中…</string>
+    <string name="medscan_detail_gemma_candidates">候補 %1$d 件: %2$s</string>
+    <string name="medscan_detail_gemma_no_candidates">ジェマは候補を提案できませんでした</string>
+    <string name="medscan_detail_kb_no_hit">ジェマの候補 %1$d 件は KB にありません</string>
+    <string name="medscan_detail_kb_orphan_only">KB マッチ (%1$s) ただし ATC コードなし → クロスチェック不可</string>
+    <string name="medscan_detail_identified">%1$s · ATC %2$s · マッチ %3$s</string>
+    <string name="medscan_detail_not_identified">%1$d 回試行しましたが KB に該当なし</string>
+    <string name="medscan_detail_skipped">スキップ（候補なし）</string>
+    <string name="medscan_detail_identified_no_atc">%1$s — %2$s でマッチしましたが ATC なし</string>
+    <string name="medscan_detail_no_atc_skip">スキップ — クロスチェック用 ATC なし</string>
+    <string name="medscan_detail_check_summary">アレルギー: %1$d · 相互作用: %2$d · 疾患: %3$d</string>
+
+    <!-- Verdict titles -->
+    <string name="medscan_verdict_major_title">🚨 重大 — 投与禁止</string>
+    <string name="medscan_verdict_moderate_title">⚠️ 中度 — 注意</string>
+    <string name="medscan_verdict_minor_title">⚠️ 軽度 — 記録</string>
+    <string name="medscan_verdict_clean_title">✅ 問題なし — 干渉は確認されません</string>
+    <string name="medscan_verdict_not_identified_title">❓ 薬を特定できません</string>
+    <string name="medscan_verdict_failed_title">❌ スキャン失敗</string>
+
+    <!-- Verdict bodies -->
+    <string name="medscan_verdict_body_allergy">
+        アレルギー「%1$s」と %2$s が衝突（%3$s でマッチ）。
+    </string>
+    <string name="medscan_verdict_body_ddi">
+        %1$s × %2$s — %3$s 相互作用（%4$s）。
+    </string>
+    <string name="medscan_verdict_body_dz">
+        %1$s は「%2$s」に禁忌 — %3$s。
+    </string>
+    <string name="medscan_verdict_body_generic">%1$s の干渉を検出しました。詳細を確認してください。</string>
+
+    <!-- Verdict reasons -->
+    <string name="medscan_verdict_not_identified_reason">OCR テキストが KB のいずれの薬とも一致しません。</string>
+    <string name="medscan_verdict_no_atc_reason">%1$s を識別しましたが ATC コードがありません — KB の強化が必要です。</string>
+    <string name="medscan_verdict_gemma_no_candidates">ジェマは OCR から薬の候補を抽出できませんでした。よりクリアな写真をお試しください。</string>
+    <string name="medscan_verdict_kb_no_hit">ジェマは候補を提案しましたが、KB にはありません。</string>
+    <string name="medscan_verdict_kb_orphan_only">KB は %1$s を見つけましたが ATC コードがありません。クロスチェックには ATC が必要です — KB の強化が必要です。</string>
+
+    <!-- Errors -->
+    <string name="medscan_error_scanner_unavailable">この端末ではドキュメントスキャナーを利用できません。</string>
+    <string name="medscan_error_image_unavailable">取得した画像が読み取れません。</string>
+
+    <!-- Buttons -->
+    <string name="medscan_btn_details">詳細</string>
+    <string name="medscan_btn_close">閉じる</string>
+</resources>

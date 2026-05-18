@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_perso_edit_ips_full.xml — v2.6.0i · IPS-FULL Patient -->
+<resources>
+
+    <!-- Hero subtitle -->
+
+    <!-- Section header IPS-FULL -->
+    <string name="perso_section_ips_header">— Full IPS compliance —</string>
+
+    <!-- 📮 Postal address (structured) -->
+    <string name="perso_address_line_hint">Street / number / additional lines</string>
+    <string name="perso_address_line_helper">e.g. Rue de la Paix 12 (can be multi-line)</string>
+    <string name="perso_address_city_hint">City</string>
+    <string name="perso_address_postal_hint">Postal code</string>
+    <string name="perso_address_country_hint">Country (ISO-2)</string>
+    <string name="perso_address_country_pick_title">Pick country of residence</string>
+    <string name="perso_address_use_pick_title">Address use</string>
+    <string name="perso_address_use_label_prefix">Use:</string>
+
+    <!-- 📞 Telecom — strings partly defined in _ips.xml -->
+
+    <!-- 🆔 Identifier -->
+    <string name="perso_identifier_system_pick_title">Identifier type</string>
+    <string name="perso_identifier_system_label_prefix">System:</string>
+    <string name="perso_identifier_value_hint">Number</string>
+
+    <!-- 👨‍⚕️ General practitioner -->
+    <string name="perso_section_gp">👨‍⚕️  General practitioner</string>
+    <string name="perso_gp_hint">Doctor\'s name</string>
+    <string name="perso_gp_helper">FHIR Patient.generalPractitioner — enter the full name of the GP</string>
+
+    <!-- 🌐 Preferred language -->
+    <string name="perso_section_language">🌐  Preferred language</string>
+    <string name="perso_language_pick_title">Pick preferred language</string>
+
+    <!-- Pickers -->
+    <string name="perso_pick_hint">Tap to choose</string>
+
+</resources>

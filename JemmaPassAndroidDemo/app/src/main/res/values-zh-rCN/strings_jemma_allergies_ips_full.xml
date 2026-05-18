@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_allergies_ips_full.xml · zh-CN -->
+<resources>
+
+    <!-- ── TYPE (allergy/intolerance) ── -->
+    <string name="allergy_form_label_type">FHIR 类型</string>
+    <string name="allergy_form_type_allergy">⚡ 过敏</string>
+    <string name="allergy_form_type_intolerance">⚠️ 不耐受</string>
+
+    <!-- ── CATEGORY (food/med/env/bio) ── -->
+    <string name="allergy_form_label_category">类别</string>
+    <string name="allergy_form_cat_food">🍴 食物</string>
+    <string name="allergy_form_cat_medication">💊 药物</string>
+    <string name="allergy_form_cat_environment">🌿 环境</string>
+    <string name="allergy_form_cat_biologic">🧬 生物</string>
+
+    <!-- ── ONSET ── -->
+    <string name="allergy_form_label_onset">发病日期</string>
+    <string name="allergy_form_onset_hint">点击选择日期</string>
+    <string name="allergy_form_onset_pick_title">过敏发病日期</string>
+    <string name="allergy_form_onset_clear_desc">清除日期</string>
+
+    <!-- ── REACTION ── -->
+    <string name="allergy_form_label_reaction">观察到的反应</string>
+    <string name="allergy_form_reaction_hint">点击选择（荨麻疹、过敏反应…）</string>
+    <string name="allergy_form_reaction_picker_title">反应表现</string>
+    <string name="allergy_form_reaction_clear_desc">清除反应</string>
+    <string name="allergy_form_reaction_sev_mild">🟢 轻度</string>
+    <string name="allergy_form_reaction_sev_moderate">🟡 中度</string>
+    <string name="allergy_form_reaction_sev_severe">🔴 重度</string>
+
+</resources>

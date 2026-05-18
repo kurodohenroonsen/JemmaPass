@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_assistant_pipeline.xml — Lot 14.3 (PHASE 14)
+
+    Écran d'orchestration du pipeline d'Assistant Jemma.
+
+    Structure :
+      ┌──────────────────────────────────────────────┐
+      │ ← Assistant · Médicaments                    │
+      ├──────────────────────────────────────────────┤
+      │  ┌───────────────────────────────────────┐   │
+      │  │                                       │   │
+      │  │      [ image capturée preview ]       │   │
+      │  │                                       │   │
+      │  └───────────────────────────────────────┘   │
+      │  ⚠ L'assistant pré-remplit. Vérifie chaque   │
+      │     champ avant d'enregistrer.               │
+      │                                              │
+      │  ┌───────────────────────────────────────┐   │
+      │  │ ◯ 1 · OCR              En attente     │   │
+      │  ├───────────────────────────────────────┤   │
+      │  │ ◯ 2 · Gemma 4          En attente     │   │
+      │  ├───────────────────────────────────────┤   │
+      │  │ ◯ 3 · Base clinique    En attente     │   │
+      │  └───────────────────────────────────────┘   │
+      │                                              │
+      │  [ Annuler ]               [ Aperçu ▸ ]      │
+      └──────────────────────────────────────────────┘
+
+    Accessibilité TalkBack :
+    - Titre toolbar = heading principal du screen
+    - Disclaimer = important (pas masqué)
+    - Les 3 steps ont chacun leur liveRegion=polite
+    - Boutons ≥ 48dp, contentDescription explicite
+    - Focus order : titre → capture → disclaimer → steps → boutons
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/assistant_pipeline_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/assistant_pipeline_title_generic"
+            app:titleTextColor="@color/jemma_primary" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ─── Capture preview card ─── -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/jemma_surface"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp">
+
+                    <!-- 🆕 Lot 14.5b1 — RecyclerView horizontale + PagerSnapHelper
+                         = pager swipeable des N pages scannées. Sur single
+                         page = un seul item, snap inactif visuellement. -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/assistant_pages_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/assistant_capture_preview_cd"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:background="@color/jemma_card_active"
+                        tools:visibility="visible" />
+
+                    <!-- 🆕 Lot 14.5b1 — Chip "Page X / N" overlay top-right.
+                         Update via OnScrollListener à chaque snap. Cache si
+                         single page. -->
+                    <TextView
+                        android:id="@+id/assistant_pages_chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:layout_margin="10dp"
+                        android:background="#CC0F172A"
+                        android:fontFamily="sans-serif-medium"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:textColor="@color/jemma_primary"
+                        android:textSize="11sp"
+                        android:visibility="gone"
+                        tools:text="📄 Page 2 / 3"
+                        tools:visibility="visible" />
+
+                    <!-- Empty state (capture pas encore prise) -->
+                    <LinearLayout
+                        android:id="@+id/assistant_capture_empty_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/assistant_capture_empty_cd"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:importantForAccessibility="no"
+                            android:text="📭"
+                            android:textSize="42sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:importantForAccessibility="no"
+                            android:paddingTop="8dp"
+                            android:text="@string/assistant_capture_empty"
+                            android:textColor="@color/jemma_text_muted"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ─── Disclaimer (important UX) ─── -->
+            <TextView
+                android:id="@+id/assistant_pipeline_disclaimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="#1F2D1A14"
+                android:padding="10dp"
+                android:text="@string/assistant_pipeline_disclaimer"
+                android:textColor="#FFB000"
+                android:textSize="12sp" />
+
+            <!-- ─── 3 steps card ─── -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                app:cardBackgroundColor="@color/jemma_surface"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="?android:attr/listDivider"
+                    android:orientation="vertical"
+                    android:padding="4dp"
+                    android:showDividers="middle">
+
+                    <!-- Step 1 — OCR -->
+                    <include
+                        android:id="@+id/assistant_step_1"
+                        layout="@layout/view_assistant_progress_step" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="48dp"
+                        android:background="#1F2D3A4D" />
+
+                    <!-- Step 2 — Gemma 4 -->
+                    <include
+                        android:id="@+id/assistant_step_2"
+                        layout="@layout/view_assistant_progress_step" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="48dp"
+                        android:background="#1F2D3A4D" />
+
+                    <!-- Step 3 — KB -->
+                    <include
+                        android:id="@+id/assistant_step_3"
+                        layout="@layout/view_assistant_progress_step" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="48dp"
+                        android:background="#1F2D3A4D" />
+
+                    <!-- Step 4 — Gemma Vision -->
+                    <include
+                        android:id="@+id/assistant_step_4"
+                        layout="@layout/view_assistant_progress_step" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ─── Action buttons row ─── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="end|center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/assistant_pipeline_btn_cancel"
+                    style="@style/JemmaTextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:minHeight="48dp"
+                    android:text="@string/assistant_pipeline_btn_cancel" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/assistant_pipeline_btn_preview"
+                    style="@style/JemmaPrimaryButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/assistant_pipeline_btn_preview_cd"
+                    android:enabled="false"
+                    android:minHeight="48dp"
+                    android:text="@string/assistant_pipeline_btn_preview"
+                    app:icon="@android:drawable/ic_menu_view"
+                    tools:enabled="true" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Jemma Floating Voice Chat Notification (overlay at top) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/jemma_voice_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:alpha="0.85"
+        app:cardBackgroundColor="#D9101D2A"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:strokeColor="@color/jemma_primary"
+        app:strokeWidth="1dp"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <!-- Glowing Avatar Badge -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="top"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#1A0D9688"
+                app:strokeColor="#800D9688"
+                app:strokeWidth="1.5dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:scaleType="centerInside"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/jemmapass_icon" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/jemma_notification_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Jemma · Analyse en direct"
+                        android:textColor="@color/jemma_primary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/jemma_notification_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.6"
+                        android:fontFamily="sans-serif"
+                        android:text="À l'instant"
+                        android:textColor="@color/jemma_text_muted"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Accumulating text of speech -->
+                <TextView
+                    android:id="@+id/jemma_notification_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/jemma_text"
+                    android:textSize="13sp"
+                    tools:text="Vérification en cours..." />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

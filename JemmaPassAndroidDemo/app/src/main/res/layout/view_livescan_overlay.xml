@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  view_livescan_overlay.xml — JEMMA Pass · Live Scan v4 · FIX4
+
+  🆕 FIX4 : Phase A enrichie avec :
+    • hint_banner (top, toujours visible)
+    • ocr_live (sous le banner, dernière ligne OCR brute)
+    • candidate_chips (HorizontalScrollView avec chips ATC découverts)
+
+  Verdict box GONE en FIX4 (rendu côté PatientDetailFragment panel).
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ─── Top : banner + OCR live + chips candidates ─────────── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/livescan_hint_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#AA000000"
+            android:padding="14dp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:text="@string/livescan_hint_searching"
+            tools:text="🔍 4 frames · 2 codes · trigger at 4" />
+
+        <TextView
+            android:id="@+id/livescan_ocr_live"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#88000000"
+            android:padding="8dp"
+            android:gravity="center"
+            android:textColor="#FBBF24"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text='📷 "ASPIRIN BAYER 500MG"' />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#66000000"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/livescan_candidate_chips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+    <!-- ─── Verdict box (compat — visibility GONE en FIX4) ─────── -->
+    <LinearLayout
+        android:id="@+id/livescan_verdict_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="#DD0F172A"
+        android:padding="14dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/livescan_verdict_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/livescan_verdict_badges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/livescan_stream_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#E5E7EB"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/livescan_safe_alt_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:background="#15803D"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</merge>

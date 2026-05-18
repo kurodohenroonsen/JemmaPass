@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_medscan_step.xml — one row of the pipeline timeline.
+
+    Layout :
+      [emoji 📷]  [label "Scan du blister"]                  [state ✅] [dur "0.5s"]
+                  [detail "Détecté: オーグメンチン"]
+
+    State icon column (24dp) shows one of :
+      ⏳ PENDING   🔄 RUNNING (animated rotation)
+      ✅ OK        ⚠️ WARN     ❌ FAIL
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
+
+    <TextView
+        android:id="@+id/medscan_step_emoji"
+        android:layout_width="28dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:gravity="center"
+        tools:text="📷" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="6dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/medscan_step_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/jemma_text_primary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            tools:text="Scan du blister" />
+
+        <TextView
+            android:id="@+id/medscan_step_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#94A3B8"
+            android:textSize="11sp"
+            android:layout_marginTop="2dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="Détecté : オーグメンチン 250RS" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/medscan_step_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginStart="6dp"
+        tools:text="✅" />
+
+    <TextView
+        android:id="@+id/medscan_step_dur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#64748B"
+        android:textSize="11sp"
+        android:layout_marginStart="6dp"
+        android:minWidth="44dp"
+        android:gravity="end"
+        tools:text="0.5s" />
+
+</LinearLayout>

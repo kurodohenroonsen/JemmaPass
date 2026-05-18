@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · ID · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Profil</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Pengaturan</string>
+    <string name="bottom_nav_sos_rescue">SOS/Penyelamatan</string>
+
+    <string name="sos_rescue_hub_title">SOS / Penyelamatan</string>
+    <string name="sos_rescue_hub_subtitle">Pilih mode untuk melanjutkan: kirim SOS sebagai korban, atau pindai korban sebagai penyelamat.</string>
+    <string name="sos_rescue_hub_open_button">Pilih mode</string>
+
+    <string name="mode_select_title">Pilih peran Anda</string>
+    <string name="mode_select_sos_title">SOS · Saya butuh bantuan</string>
+    <string name="mode_select_sos_subtitle">Menyiarkan profil medis saya ke penyelamat terdekat melalui mesh Bluetooth.</string>
+    <string name="mode_select_rescuer_title">Penyelamatan · Saya ingin membantu</string>
+    <string name="mode_select_rescuer_subtitle">Pindai siaran SOS dan lakukan triase korban di radar langsung.</string>
+
+    <string name="radar_btn_hide">Sembunyikan</string>
+    <string name="radar_btn_scan_qr">Pindai QR</string>
+    <string name="radar_btn_start">📡 MULAI RADAR</string>
+    <string name="radar_btn_stop">Berhenti</string>
+    <string name="l3_radar_btn_stop">🛑 HENTIKAN RADAR</string>
+
+    <string name="sos_broadcast_title">🆘 Siaran SOS</string>
+    <string name="sos_broadcast_subtitle">Layanan latar depan menjaga ikon layar kunci dan memutar chunk BLE.</string>
+    <string name="sos_btn_start">MULAI\nSOS</string>
+    <string name="sos_btn_stop">BERHENTI\nSOS</string>
+    <string name="sos_btn_toggle">🔄 BERALIH SIARAN</string>
+    <string name="sos_btn_pause_broadcast">🔇 Jeda siaran BLE</string>
+    <string name="sos_btn_resume_broadcast">🔊 Lanjutkan siaran BLE</string>
+    <string name="l3_sos_btn_start">🆘 AKTIFKAN SOS</string>
+    <string name="l3_sos_btn_stop">🛑 NONAKTIFKAN SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Gagal membuat bitmap</string>
+    <string name="qr_save_file_failed">Gagal membuat berkas gambar</string>
+    <string name="qr_save_success">Kode QR disimpan ke galeri</string>
+    <string name="qr_save_write_failed">Galat penyimpanan: %1$s</string>
+    <string name="pdf_export_in_progress">Membuat PDF Hemat Tinta…</string>
+    <string name="pdf_export_failed">Pembuatan PDF gagal</string>
+    <string name="share_jemma_pass_title">Bagikan Jemma Pass</string>
+    <string name="scanner_unavailable">Pemindai tidak tersedia: %1$s</string>
+</resources>

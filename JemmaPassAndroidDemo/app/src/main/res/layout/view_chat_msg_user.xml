@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_chat_msg_user.xml — Lot 14.5c18
+
+    Bubble user (vert) alignée à droite avec avatar 👤. Refactor en
+    ConstraintLayout pour gérer le wrap propre :
+      - bubble : layout_width=0dp + constrainedWidth=true + width_default=wrap
+                 + bias=1.0 (push à droite jusqu'à l'avatar)
+                 → pour textes courts : wrap naturel à droite
+                 → pour textes longs : wrap multi-lignes sans dépasser à gauche
+      - avatar : 32dp fixé tout à droite
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="48dp"
+    android:paddingEnd="12dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <TextView
+        android:id="@+id/chat_msg_bubble"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_chat_bubble_user"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@id/chat_msg_user_avatar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_default="wrap"
+        tools:text="Je suis allergique à la pénicilline et c'est très sévère" />
+
+    <TextView
+        android:id="@+id/chat_msg_user_avatar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="6dp"
+        android:gravity="center"
+        android:importantForAccessibility="no"
+        android:text="👤"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/chat_msg_bubble"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/chat_msg_bubble" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_assistant.xml — Japanese (ja).
+    Polite plain form (です・ます). Medical terms aligned with Japanese
+    FHIR-JP conventions where applicable.
+-->
+<resources>
+
+    <!-- ─── ボトムシート: 入力モード選択 ─── -->
+    <string name="assistant_sheet_title_medications">服薬を追加</string>
+    <string name="assistant_sheet_title_allergies">アレルギーを追加</string>
+    <string name="assistant_sheet_title_contacts">連絡先を追加</string>
+    <string name="assistant_sheet_title_conditions">病態を追加</string>
+    <string name="assistant_sheet_title_generic">項目を追加</string>
+
+    <string name="assistant_section_header">Jemma アシスタント</string>
+    <string name="assistant_section_header_cd">Jemma アシスタント区分、入力モード 4 種類。</string>
+
+    <string name="assistant_mode_photo">薬を 1 つスキャン</string>
+    <string name="assistant_mode_photo_sub">薬の箱を 1 つずつ</string>
+    <string name="assistant_mode_photo_cd">薬を 1 つスキャンします。カメラで薬の箱を 1 つだけ撮影し、アシスタントが情報を抽出して整理します。デモで使える唯一のモードです。</string>
+
+    <string name="assistant_mode_livescan">書類をスキャン</string>
+    <string name="assistant_mode_livescan_sub">処方箋・予防接種手帳など</string>
+    <string name="assistant_mode_livescan_cd">処方箋や予防接種手帳など、複数ページの書類をスキャンします。デモでは利用できません。</string>
+
+    <string name="assistant_mode_voice">音声で入力</string>
+    <string name="assistant_mode_voice_sub">自然に話すと、アシスタントが整理します。</string>
+    <string name="assistant_mode_voice_cd">音声で入力します。自然に話すと、アシスタントが内容を文字に起こし、整理します。</string>
+
+    <string name="assistant_mode_text">テキストを貼り付け・入力</string>
+    <string name="assistant_mode_text_sub">メール・PDF・SMS から</string>
+    <string name="assistant_mode_text_cd">自由テキストを貼り付け、または入力します。メール、PDF、SMS からコピーした内容に便利です。</string>
+
+    <string name="assistant_sheet_divider_or">— または —</string>
+    <string name="assistant_sheet_manual">手動で入力</string>
+    <string name="assistant_sheet_manual_cd">手動で入力します。アシスタントを使わず、通常のフォームを開きます。</string>
+
+    <!-- ─── 患者 (Patient) CTA バナー ─── -->
+    <string name="assistant_patient_banner_title">Jemma アシスタントで入力</string>
+    <string name="assistant_patient_banner_sub">身分証・パスポート・保険証の写真、または音声入力。</string>
+    <string name="assistant_patient_banner_cd">アクション喚起：Jemma アシスタントで身元フォームを入力します。タップして開始。</string>
+
+    <!-- ─── パイプライン画面 ─── -->
+    <string name="assistant_pipeline_title_medications">アシスタント · 服薬</string>
+    <string name="assistant_pipeline_title_allergies">アシスタント · アレルギー</string>
+    <string name="assistant_pipeline_title_contacts">アシスタント · 連絡先</string>
+    <string name="assistant_pipeline_title_patient">アシスタント · 身元</string>
+    <string name="assistant_pipeline_title_conditions">アシスタント · 病態</string>
+    <string name="assistant_pipeline_title_generic">Jemma アシスタント</string>
+
+    <string name="assistant_capture_preview_cd">撮影した画像のプレビュー。</string>
+    <string name="assistant_capture_empty">まだ撮影されていません</string>
+    <string name="assistant_capture_empty_cd">まだ撮影されていません。カメラまたは貼り付けボタンをタップして開始してください。</string>
+
+    <string name="assistant_step_1_title">1 · 文字抽出 (OCR)</string>
+    <string name="assistant_step_2_title">2 · 理解 (Gemma 4)</string>
+    <string name="assistant_step_3_title">3 · 検索 (臨床 KB)</string>
+    <string name="assistant_step_4_title">4 · 検証 (Jemma Vision)</string>
+
+    <string name="assistant_step_status_waiting">待機中</string>
+    <string name="assistant_step_status_running">処理中…</string>
+    <string name="assistant_step_status_done">完了</string>
+    <string name="assistant_step_status_error">エラー — タップで再試行</string>
+
+    <string name="assistant_step_announce_running">ステップ %1$d 開始: %2$s</string>
+    <string name="assistant_step_announce_done">ステップ %1$d 完了: %2$s</string>
+    <string name="assistant_step_announce_error">ステップ %1$d 失敗: %2$s</string>
+
+    <string name="assistant_pipeline_btn_cancel">キャンセル</string>
+    <string name="assistant_pipeline_btn_preview">プレビュー</string>
+    <string name="assistant_pipeline_btn_preview_cd">事前入力済みフォームを開き、確認して保存します。</string>
+    <string name="assistant_pipeline_disclaimer">⚠ アシスタントはフォームを事前入力します。保存する前に必ずすべての項目をご確認ください。</string>
+
+    <!-- ─── 14 個の IPS 柱（スタブ用）─── -->
+    <string name="assistant_stub_title_vaccinations">予防接種</string>
+    <string name="assistant_stub_title_procedures">処置</string>
+    <string name="assistant_stub_title_devices">医療機器</string>
+    <string name="assistant_stub_title_past_problems">既往歴</string>
+    <string name="assistant_stub_title_functional">機能状態</string>
+    <string name="assistant_stub_title_pregnancy">妊娠</string>
+    <string name="assistant_stub_title_results">検査結果</string>
+    <string name="assistant_stub_title_advance_directives">事前指示</string>
+    <string name="assistant_stub_title_consents">同意</string>
+    <string name="assistant_stub_title_goals">ケアの目標</string>
+    <string name="assistant_stub_title_encounters">受診・通院</string>
+    <string name="assistant_stub_title_occupational">職業情報</string>
+    <string name="assistant_stub_title_providers">医療チーム</string>
+    <string name="assistant_stub_title_conditions">現病歴</string>
+
+    <string name="assistant_stub_pitch">この柱はアシスタントが担当します。</string>
+    <string name="assistant_stub_pitch_sub">スキャン・音声・貼り付けで、Jemma が自動的に整理します。</string>
+    <string name="assistant_stub_btn_scan">📸 スキャン</string>
+    <string name="assistant_stub_btn_voice">🎤 音声</string>
+    <string name="assistant_stub_btn_text">⌨️ テキスト</string>
+    <string name="assistant_stub_btn_scan_cd">この柱に関連する書類をスキャンします。</string>
+    <string name="assistant_stub_btn_voice_cd">この柱の内容を音声で入力します。</string>
+    <string name="assistant_stub_btn_text_cd">この柱のテキスト内容を入力または貼り付けます。</string>
+
+    <!-- ─── Toasts (Lot 14.3 はデザインのみ) ─── -->
+    <string name="assistant_toast_design_preview">Lot 14.3 — デザインプレビューのみ · 実装は Lot 14.4 で。🐢</string>
+
+    <!-- ─── 🆕 Lot 14.4 — 複数項目プレビュー画面 ─── -->
+    <string name="assistant_multi_title">%1$d 件の服薬が検出されました</string>
+    <string name="assistant_multi_subtitle">保存しない項目のチェックを外してください。</string>
+    <string name="assistant_multi_select_all">すべて選択</string>
+    <string name="assistant_multi_unselect_all">すべて解除</string>
+    <string name="assistant_multi_save_n">%1$d 件を保存</string>
+    <string name="assistant_multi_save_none">選択された項目はありません</string>
+    <string name="assistant_multi_row_resolved_atc">ATC %1$s · %2$s</string>
+    <string name="assistant_multi_row_resolved_none">⚠ コード未解決</string>
+    <string name="assistant_multi_row_check_cd">%1$s をバッチ保存に含めるかどうかをチェック・解除します。</string>
+    <string name="assistant_multi_empty_title">服薬は検出されませんでした</string>
+    <string name="assistant_multi_empty_sub">より鮮明な写真を撮るか、テキストを手動で貼り付けてください。</string>
+
+    <!-- ─── 🆕 Lot 14.5a — 写真ソース選択（カメラ vs ギャラリー）─── -->
+    <string name="assistant_photo_source_title">写真はどこから?</string>
+    <string name="assistant_photo_source_camera">📷 撮影する</string>
+    <string name="assistant_photo_source_gallery">🖼️ ギャラリーから選ぶ</string>
+    <string name="assistant_photo_source_cancel">キャンセル</string>
+    <string name="assistant_photo_permission_camera_denied">カメラの権限が拒否されました。代わりにギャラリーから選んでください。</string>
+    <string name="assistant_photo_capture_failed">写真の撮影に失敗しました。</string>
+
+    <!-- ─── 🆕 Lot 14.5a — OCR ステップ（日本語：漢字 + ひらがな + カタカナ + ローマ字）─── -->
+    <string name="assistant_step_ocr_running">文字を読み取り中（日本語 + ローマ字）…</string>
+    <string name="assistant_step_ocr_done_chars">%1$d 文字 · %2$d ブロック · %3$d ms</string>
+    <string name="assistant_step_ocr_done_preview">抜粋: %1$s</string>
+    <string name="assistant_step_ocr_empty">テキストが検出されませんでした。より鮮明な写真をお試しください。</string>
+    <string name="assistant_step_ocr_failed">OCR 失敗: %1$s</string>
+    <string name="assistant_step_pending_lot_14_5b">Gemma + KB の接続待ち（Lot 14.5b）</string>
+
+    <!-- ─── 🆕 Lot 14.5b — ドキュメントスキャナー + マルチページ ─── -->
+    <string name="assistant_pages_chip_single">1 ページ</string>
+    <string name="assistant_pages_chip_plural">%1$d ページ</string>
+    <string name="assistant_pages_chip_position">ページ %1$d / %2$d</string>
+    <string name="assistant_step_ocr_running_page">ページ %1$d / %2$d を読み取り中（日本語 + ローマ字）…</string>
+    <string name="assistant_step_ocr_done_multipage">%1$d ページ · %2$d 文字 · %3$d ブロック · %4$d ms</string>
+    <string name="assistant_step_pending_lot_14_5c">Gemma + KB の接続待ち（Lot 14.5c）</string>
+
+    <!-- ─── 🆕 Lot 14.5c — Gemma + KB ステップ + バッチ保存 ─── -->
+    <string name="assistant_step_gemma_running">Gemma による薬剤の特定中…</string>
+    <string name="assistant_step_kb_running">臨床ナレッジベースで照合中…</string>
+    <string name="assistant_step_vision_running">Jemma Visionによる画像検証中…</string>
+    <string name="assistant_step_vision_failed">画像検証に失敗しました: %1$s</string>
+    <string name="assistant_step_gemma_failed">Gemma の抽出に失敗: %1$s</string>
+    <string name="assistant_step_no_candidates">Gemma は薬剤を検出できませんでした。より鮮明な写真をお試しください。</string>
+    <string name="assistant_save_no_profile">保存対象のアクティブなプロファイルがありません。</string>
+    <string name="assistant_save_success">%1$d 件の薬剤を追加しました。</string>
+    <!-- 🔧 Lot 14.5c4b hotfix -->
+    <string name="assistant_save_failed">保存に失敗: %1$s</string>
+    <!-- ─── 🆕 Lot 14.5c3 — Multi-preview row : skipped + page label ─── -->
+    <string name="assistant_multi_row_skipped">❌ 未識別</string>
+    <!-- 🔧 Lot 14.5c4b hotfix -->
+    <string name="assistant_multi_row_page_n">ページ %1$d</string>
+    <!-- ─── 🆕 Lot 14.5c4 — multi-preview の臨床アラート ─── -->
+    <plurals name="assistant_alerts_header">
+        <item quantity="other">⚠️ %1$d 件の臨床アラートを検出</item>
+    </plurals>
+    <string name="assistant_alerts_subtitle_with_majors">重大 %1$d 件 · 中等度 %2$d 件 · 追加後の仮想プロファイル</string>
+    <string name="assistant_alerts_subtitle_no_majors">中等度 %1$d 件 · 追加後の仮想プロファイル</string>
+
+    <!-- ─── 🆕 Lot 14.5c7 — Gemma による分かりやすい説明 ─── -->
+    <string name="assistant_alert_btn_vulgarise">✨ 分かりやすく説明</string>
+    <string name="assistant_alert_btn_vulgarising">✨ 説明中…</string>
+    <string name="assistant_alert_btn_relancer">🔄 再生成</string>
+    <string name="assistant_alert_vulgarise_header">✨ やさしい言葉で：</string>
+    <string name="assistant_alert_vulgarise_failed">⚠️ 説明を生成できませんでした。再試行するにはボタンを押してください。</string>
+
+    <!-- 🆕 Lot 14.5c11 — デモバッジ -->
+    <string name="assistant_mode_demo_badge">デモ</string>
+    <string name="assistant_mode_demo_badge_cd">ハッカソン・デモで有効なモード</string>
+    <string name="assistant_mode_disabled_demo_toast">デモでは利用できません</string>
+    <!-- 🆕 Lot 14.5c14 — 音声パイプラインは準備中 -->
+    <string name="allergies_voice_pipeline_soon">🎤 音声パイプラインは準備中です。今は手動フォームをご利用ください。</string>
+
+    <!-- 🆕 Lot 14.5c15 — アレルギー専用のサブテキスト「書類をスキャン」-->
+    <string name="assistant_mode_livescan_sub_allergies">アレルギーカード、検査報告書、IgE 結果…</string>
+</resources>

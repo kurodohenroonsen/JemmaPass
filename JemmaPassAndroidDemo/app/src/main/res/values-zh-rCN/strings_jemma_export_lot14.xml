@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_export_lot14.xml · zh-CN -->
+<resources>
+
+    <!-- Menu item in the ProfileDetailFragment toolbar. -->
+    <string name="profile_detail_action_export">导出</string>
+
+    <!-- QrViewerFragment error toasts. -->
+    <string name="qr_error_no_profile">没有可导出的档案。</string>
+    <string name="qr_error_load_failed">档案加载失败。</string>
+    <string name="qr_error_encode_failed">QR 编码失败：%1$s</string>
+    <string name="qr_error_bitmap_failed">QR 渲染失败。</string>
+
+    <!-- Save / Share action stubs — implemented in Lot 14.2. -->
+    <string name="qr_action_stub_save_lot14">保存到相册 — Lot 14.2 将支持 🐢</string>
+    <string name="qr_action_stub_share_lot14">分享 — Lot 14.2 将支持 🐢</string>
+
+</resources>

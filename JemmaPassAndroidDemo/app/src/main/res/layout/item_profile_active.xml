@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_profile_active.xml — THE active profile card. Becomes the Home
+    replacement now that bottom-nav doesn't have a Home tab anymore.
+
+    Layout :
+      ┌──────────────────────────────────────┐
+      │ 👨 Kurodo Henroonsen      ★ ACTIF    │   ← header row
+      │    ♂ · 47 ans · A+ · 🇫🇷             │
+      │    📛 2 al · 💊 3 méd · 👥 1 contact │
+      │ ──────────────────────────────────── │
+      │   📝     👥     ⚠️     💊            │   ← 4 ACTIVE pillars (grid)
+      │  Perso  Cont  Allerg  Médoc          │
+      │   2/12  1/N    2     3              │
+      │ ──────────────────────────────────── │
+      │   🩺🔒  💉🔒  🏥🔒  📱🔒              │   ← 4 STUB pillars (greyed)
+      │   Cond Vacc  Proc  Disp              │
+      │ ──────────────────────────────────── │
+      │  [📤 Exporter QR]  [SOS 🆘]          │   ← bottom action row
+      └──────────────────────────────────────┘
+
+    The 8 pillar tiles are concrete <View>s (not a RecyclerView) because
+    the count is fixed and we want simple ConstraintLayout placement.
+    Each tile is its own clickable area routing to the corresponding
+    fragment (perso/contacts/allergies/medications/stub).
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="14dp"
+    app:cardBackgroundColor="@color/jemma_card_active"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="3dp"
+    app:strokeColor="@color/jemma_primary"
+    app:strokeWidth="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- ═══ Section title : "Profil actif" -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="monospace"
+            android:text="@string/profiles_section_active"
+            android:textColor="@color/jemma_primary"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <!-- ═══ Header row : avatar + name + ★ ACTIVE pill -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <TextView
+                android:id="@+id/profile_active_emoji"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_avatar_circle"
+                android:gravity="center"
+                android:textSize="32sp"
+                tools:text="👨" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/profile_active_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_text"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Kurodo Henroonsen" />
+
+                <TextView
+                    android:id="@+id/profile_active_meta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/jemma_text_muted"
+                    android:textSize="12sp"
+                    tools:text="♂ · 47 ans · A+ · 🇫🇷 fr" />
+
+                <TextView
+                    android:id="@+id/profile_active_counts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/jemma_primary"
+                    android:textSize="11sp"
+                    tools:text="📛 2 al · 💊 3 méd · 👥 1 contact" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/profile_active_pill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_pill_count"
+                android:fontFamily="monospace"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/profile_active_pill"
+                android:textColor="@color/jemma_primary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <View style="@style/JemmaDivider"
+              android:layout_marginTop="0dp"
+              android:layout_marginBottom="0dp" />
+
+        <!-- ═══ ACTIVE PILLARS GRID (4 tiles) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <include
+                android:id="@+id/profile_active_tile_perso"
+                layout="@layout/view_pillar_tile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_contacts"
+                layout="@layout/view_pillar_tile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_allergies"
+                layout="@layout/view_pillar_tile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_medications"
+                layout="@layout/view_pillar_tile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <!-- ═══ STUB PILLARS GRID (4 tiles, locked) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp">
+
+            <include
+                android:id="@+id/profile_active_tile_conditions"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_immunizations"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_procedures"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_devices"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <!-- ═══ STUB PILLARS GRID — row 2 (L4 v2.5.3) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="6dp">
+
+            <include
+                android:id="@+id/profile_active_tile_pastproblems"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_functional"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_pregnancy"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_results"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <!-- ═══ STUB PILLARS GRID — row 3 (L4 v2.5.3) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="6dp">
+
+            <include
+                android:id="@+id/profile_active_tile_advance"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_consents"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_goals"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_encounters"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <!-- ═══ STUB PILLARS GRID — row 4 (L4 v2.5.3, 2 tiles + 2 spacers) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp">
+
+            <include
+                android:id="@+id/profile_active_tile_occupational"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/profile_active_tile_providers"
+                layout="@layout/view_pillar_tile_stub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <!-- 2 invisible spacers to keep the 4-column grid alignment -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <View style="@style/JemmaDivider"
+              android:layout_marginTop="0dp"
+              android:layout_marginBottom="0dp" />
+
+        <!-- ═══ Bottom action row : Export + SOS -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/profile_active_btn_export"
+                style="@style/JemmaTextButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/profiles_btn_export"
+                app:icon="@android:drawable/ic_menu_share" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@color/jemma_primary_25" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/profile_active_btn_sos"
+                style="@style/JemmaDangerButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/profiles_btn_sos"
+                app:icon="@android:drawable/ic_dialog_alert"
+                app:iconTint="@android:color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

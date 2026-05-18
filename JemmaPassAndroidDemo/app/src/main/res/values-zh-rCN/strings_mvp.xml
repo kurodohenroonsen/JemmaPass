@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · zh-CN · 2026-05-17 -->
+    <string name="bottom_nav_profiles">档案</string>
+    <string name="bottom_nav_radar">雷达</string>
+    <string name="bottom_nav_settings">设置</string>
+    <string name="bottom_nav_sos_rescue">SOS/救援</string>
+
+    <string name="sos_rescue_hub_title">SOS / 救援</string>
+    <string name="sos_rescue_hub_subtitle">选择模式继续：作为受害者发送 SOS，或作为救援者扫描受害者。</string>
+    <string name="sos_rescue_hub_open_button">选择模式</string>
+
+    <string name="mode_select_title">选择角色</string>
+    <string name="mode_select_sos_title">SOS · 我需要帮助</string>
+    <string name="mode_select_sos_subtitle">通过蓝牙网状网络向附近的救援者广播我的医疗档案。</string>
+    <string name="mode_select_rescuer_title">救援 · 我想帮助</string>
+    <string name="mode_select_rescuer_subtitle">扫描 SOS 广播，在实时雷达上对受害者进行分诊。</string>
+
+    <string name="radar_btn_hide">隐藏</string>
+    <string name="radar_btn_scan_qr">扫描二维码</string>
+    <string name="radar_btn_start">📡 启动雷达</string>
+    <string name="radar_btn_stop">停止</string>
+    <string name="l3_radar_btn_stop">🛑 停止雷达</string>
+
+    <string name="sos_broadcast_title">🆘 SOS 广播</string>
+    <string name="sos_broadcast_subtitle">前台服务保持锁屏图标并轮换 BLE 数据块。</string>
+    <string name="sos_btn_start">启动\nSOS</string>
+    <string name="sos_btn_stop">停止\nSOS</string>
+    <string name="sos_btn_toggle">🔄 切换广播</string>
+    <string name="sos_btn_pause_broadcast">🔇 暂停 BLE 广播</string>
+    <string name="sos_btn_resume_broadcast">🔊 恢复 BLE 广播</string>
+    <string name="l3_sos_btn_start">🆘 激活 SOS</string>
+    <string name="l3_sos_btn_stop">🛑 停用 SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">位图生成失败</string>
+    <string name="qr_save_file_failed">无法创建图像文件</string>
+    <string name="qr_save_success">二维码已保存到相册</string>
+    <string name="qr_save_write_failed">保存错误：%1$s</string>
+    <string name="pdf_export_in_progress">正在生成节墨 PDF…</string>
+    <string name="pdf_export_failed">PDF 生成失败</string>
+    <string name="share_jemma_pass_title">分享 Jemma Pass</string>
+    <string name="scanner_unavailable">扫描仪不可用：%1$s</string>
+</resources>

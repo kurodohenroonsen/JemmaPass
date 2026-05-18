@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    JemmaAppDemo — fragment_home.xml
+    Landing page after Splash. Top : profile picker (Spinner) + Settings + SOS
+    shortcut. Below : RecyclerView GridLayoutManager(span=2) showing the 4 active
+    pillars (Perso/Contacts/Allergies/Medications) followed by the 4 info-only
+    stub pillars (Conditions/Immun/Procedures/Devices). Bottom : Export hub CTA.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/home_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/home_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:logo="@mipmap/ic_launcher"
+            app:title="@string/jemma_app_name"
+            app:titleTextColor="@color/jemma_primary"
+            app:menu="@menu/menu_home" />
+
+        <!-- Profile selector row : Spinner + "+ Add" button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_active_profile"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="12sp" />
+
+            <Spinner
+                android:id="@+id/home_profile_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                tools:listitem="@android:layout/simple_spinner_item" />
+
+            <ImageButton
+                android:id="@+id/home_btn_add_profile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/home_add_profile"
+                android:src="@android:drawable/ic_input_add"
+                app:tint="@color/jemma_primary" />
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Cards grid : 4 active + 4 stubs (handled in adapter via item_view_type) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_pillars_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="100dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_pillar_card" />
+
+    <!-- FAB : SOS (red, prominent) -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/home_fab_sos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:contentDescription="@string/home_sos_cta"
+        android:text="@string/home_sos_cta"
+        android:textColor="@android:color/white"
+        app:backgroundTint="@color/jemma_danger"
+        app:icon="@android:drawable/ic_dialog_alert"
+        app:iconTint="@android:color/white" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

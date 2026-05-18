@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Contacts edit fragment · zh-CN ─── -->
+    <string name="contacts_edit_title">紧急联系人</string>
+    <string name="contacts_edit_hero_title">联系人</string>
+    <string name="contacts_fab_add_desc">添加联系人</string>
+
+    <string name="contacts_empty_default">尚无联系人。点击 + 按钮添加一项。</string>
+    <string name="contacts_empty_no_profile">添加联系人前请先创建患者档案。</string>
+    <string name="contacts_unnamed">此联系人</string>
+
+    <plurals name="contacts_count">
+        <item quantity="other">%d 位联系人</item>
+    </plurals>
+
+    <string name="contacts_saved">联系人已更新 ✓</string>
+
+    <string name="contacts_delete_title">🗑 删除此联系人？</string>
+    <string name="contacts_delete_message">永久删除 %1$s？</string>
+    <string name="contacts_delete_cancel">取消</string>
+    <string name="contacts_delete_confirm">🗑 删除</string>
+
+    <!-- ─── Contact form bottom sheet ─── -->
+    <string name="contact_form_title_create">📞  添加联系人</string>
+    <string name="contact_form_title_edit">📞  编辑联系人</string>
+
+    <string name="contact_form_label_name">联系人姓名</string>
+    <string name="contact_form_label_relation">关系</string>
+    <string name="contact_form_label_phone">电话</string>
+    <string name="contact_form_label_email">电子邮箱</string>
+    <string name="contact_form_label_address">地址</string>
+
+    <string name="contact_form_relation_hint">点击以选择关系</string>
+    <string name="contact_form_relation_picker_title">与患者的关系</string>
+
+    <string name="contact_form_cancel">取消</string>
+    <string name="contact_form_save">💾  保存</string>
+
+    <string name="contact_form_validation_name">联系人姓名为必填项</string>
+    <string name="contact_form_validation_at_least_one">请至少输入电话、电子邮箱或地址中的一项</string>
+    <string name="contact_form_validation_email">电子邮箱格式无效</string>
+
+    <!-- ─── IPS code picker dialog (generic) ─── -->
+    <string name="ips_picker_search_hint">🔎  搜索…</string>
+    <string name="ips_picker_count">%d 项结果</string>
+    <string name="ips_picker_cancel">取消</string>
+
+</resources>

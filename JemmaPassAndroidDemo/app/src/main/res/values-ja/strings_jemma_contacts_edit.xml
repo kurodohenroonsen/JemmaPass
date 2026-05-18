@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="contacts_edit_title">緊急連絡先</string>
+    <string name="contacts_edit_hero_title">連絡先</string>
+    <string name="contacts_fab_add_desc">連絡先を追加</string>
+
+    <string name="contacts_empty_default">連絡先がまだありません。+ ボタンで追加できます。</string>
+    <string name="contacts_empty_no_profile">連絡先を追加する前に、まず患者プロファイルを作成してください。</string>
+    <string name="contacts_unnamed">この連絡先</string>
+
+    <plurals name="contacts_count">
+        <item quantity="other">連絡先 %d 件</item>
+    </plurals>
+
+    <string name="contacts_saved">連絡先を更新しました ✓</string>
+
+    <string name="contacts_delete_title">🗑 この連絡先を削除しますか？</string>
+    <string name="contacts_delete_message">%1$s を完全に削除しますか？</string>
+    <string name="contacts_delete_cancel">キャンセル</string>
+    <string name="contacts_delete_confirm">🗑 削除</string>
+
+    <string name="contact_form_title_create">📞  連絡先を追加</string>
+    <string name="contact_form_title_edit">📞  連絡先を編集</string>
+
+    <string name="contact_form_label_name">連絡先名</string>
+    <string name="contact_form_label_relation">関係</string>
+    <string name="contact_form_label_phone">電話番号</string>
+    <string name="contact_form_label_email">メールアドレス</string>
+    <string name="contact_form_label_address">住所</string>
+
+    <string name="contact_form_relation_hint">タップして関係を選択</string>
+    <string name="contact_form_relation_picker_title">患者との関係</string>
+
+    <string name="contact_form_cancel">キャンセル</string>
+    <string name="contact_form_save">💾  保存</string>
+
+    <string name="contact_form_validation_name">連絡先名は必須です</string>
+    <string name="contact_form_validation_at_least_one">電話番号、メール、または住所を少なくとも 1 つ入力してください</string>
+    <string name="contact_form_validation_email">メールアドレスの形式が正しくありません</string>
+
+    <string name="ips_picker_search_hint">🔎  検索…</string>
+    <string name="ips_picker_count">%d 件の結果</string>
+    <string name="ips_picker_cancel">キャンセル</string>
+</resources>

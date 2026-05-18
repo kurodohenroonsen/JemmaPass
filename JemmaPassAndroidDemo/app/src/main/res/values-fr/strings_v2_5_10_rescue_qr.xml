@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="rescue_qr_title">Scanner la victime</string>
+    <string name="rescue_qr_hint">Pointe sur un badge papier QR JEMMA pour le diffuser aux secouristes proches via le mesh.</string>
+
+    <string name="rescue_qr_confirm_title">Diffuser cette victime ?</string>
+    <string name="rescue_qr_confirm_relay_explain">Sera diffusée dans le mesh pour que tous les secouristes proches voient cette victime avec ses données médicales complètes.</string>
+    <string name="rescue_qr_confirm_action">📡 Diffuser dans le mesh</string>
+
+    <string name="rescue_qr_relayed_template">📡 %1$s est diffusée dans le mesh</string>
+    <string name="rescue_qr_relay_error_template">❌ Diffusion impossible : %1$s</string>
+
+</resources>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_jemma_perso_edit.xml — FHIR Patient IPS form strings
+
+  🆕 v2.6.0b HOTFIX v2 — A leading '?' is interpreted by AAPT2 as
+  a reference to a theme attribute (style ?attr/...). So "? —"
+  becomes "?attr/ —" which doesn't exist → build failure.
+
+  Fix v2: replace '?' glyph with 'U' (Unknown FHIR code) or another
+  unicode-safe character. No backslash escape because Android reads
+  strings as XML first, \? is not recognized.
+
+  Chosen solution: use Unicode glyphs that directly correspond to
+  the FHIR administrative-gender codes:
+    M = male       → ♂ M
+    F = female     → ♀ F
+    O = other      → ⚧ O
+    U = unknown    → ⊘ U   (circled-slash, unambiguous)
+-->
+<resources>
+
+    <!-- Toolbar / hero -->
+    <string name="perso_edit_title">Patient identity</string>
+    <string name="perso_edit_hero_title">Identity</string>
+    <string name="perso_edit_hero_subtitle">FHIR Patient · IPS · 4 active pillars</string>
+
+    <!-- Sections -->
+    <string name="perso_section_name">First and last name</string>
+    <string name="perso_section_gender">Gender</string>
+    <string name="perso_section_birth_date">Date of birth</string>
+    <string name="perso_section_nationality">Nationality</string>
+    <string name="perso_section_blood_type">Blood type</string>
+
+    <!-- Field labels -->
+    <string name="perso_label_given_name">Given name</string>
+    <string name="perso_label_family_name">Family name</string>
+    <string name="perso_label_birth_date_hint">Tap to pick a date</string>
+    <string name="perso_label_nationality_hint">Tap to pick a country</string>
+
+    <!-- Gender toggle (mono-line, no '?' which AAPT2 parses as ?attr/) -->
+    <string name="perso_gender_m">♂ M</string>
+    <string name="perso_gender_f">♀ F</string>
+    <string name="perso_gender_o">⚧ O</string>
+    <string name="perso_gender_u">⊘ U</string>
+
+    <!-- Pickers -->
+    <string name="perso_blood_type_pick_title">Blood type</string>
+    <string name="perso_nationality_pick_title">Country / nationality</string>
+    <string name="perso_birth_date_pick_title">Date of birth</string>
+    <string name="perso_pick_chevron">›</string>
+    <string name="perso_nationality_dash">—</string>
+    <string name="perso_blood_type_dash">—</string>
+
+    <!-- Save -->
+    <string name="perso_save_button">💾  Save</string>
+    <string name="perso_saved_created">Profile created ✓</string>
+    <string name="perso_saved_updated">Profile updated ✓</string>
+
+    <!-- Validation errors -->
+    <string name="perso_validation_name_required">At least a first or last name is required</string>
+    <string name="perso_validation_birth_required">Date of birth is required (IPS)</string>
+    <string name="perso_validation_nationality_format">Nationality in ISO-3166 alpha-2 format (e.g. BE, JP)</string>
+
+</resources>

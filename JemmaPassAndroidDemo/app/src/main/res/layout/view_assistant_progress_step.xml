@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_assistant_progress_step.xml — Lot 14.3 (PHASE 14)
+
+    Un step du pipeline d'assistant. Inclu 3× dans
+    fragment_assistant_pipeline.xml :
+      • step 1 — OCR
+      • step 2 — Gemma 4
+      • step 3 — KB validation
+
+    États visuels :
+      • Waiting (default) : icon ◯ greyée + titre greyé
+      • Running           : icon ⏳ jaune animée + titre normal + spinner
+                            + body texte qui stream (token-by-token)
+      • Done              : icon ✅ verte + titre normal + body extrait
+      • Error             : icon ❌ rouge + titre normal + body erreur
+
+    Le Fragment swap le drawable de step_icon + texte de step_status +
+    couleur via setTextColor() + visibility du spinner / body.
+
+    Accessibilité TalkBack — point critique :
+    - `android:liveRegion="polite"` sur le root → quand le Fragment
+      modifie le contenu d'un step, TalkBack annonce automatiquement
+      le nouveau texte (sans interrompre l'utilisateur). Très puissant
+      pour suivre la progression en aveugle.
+    - Le root est `accessibilityHeading="false"` (les titres ne sont
+      pas des sections — le seul heading est le titre de l'écran)
+    - Le body multi-ligne est `accessibilityLiveRegion="polite"` aussi
+      pour annoncer le streaming de Gemma 4.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/step_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:accessibilityLiveRegion="polite"
+    android:gravity="top"
+    android:minHeight="64dp"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+    <!-- ─── Icon column (status indicator) ─── -->
+    <FrameLayout
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="12dp">
+
+        <!-- Icon emoji-style. Le Fragment change le text selon le statut. -->
+        <TextView
+            android:id="@+id/step_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:importantForAccessibility="no"
+            android:textSize="22sp"
+            tools:text="◯" />
+
+        <!-- Spinner indéterminé pour l'état RUNNING. Visible=gone par défaut. -->
+        <ProgressBar
+            android:id="@+id/step_spinner"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/jemma_primary"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </FrameLayout>
+
+    <!-- ─── Texts column ─── -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Title (e.g. "1 · Extraction du texte (OCR)") -->
+            <TextView
+                android:id="@+id/step_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/jemma_text"
+                android:textSize="14sp"
+                tools:text="@string/assistant_step_1_title" />
+
+            <!-- Status tag (e.g. "En cours…" / "423ms") -->
+            <TextView
+                android:id="@+id/step_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="monospace"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="11sp"
+                tools:text="423 ms" />
+        </LinearLayout>
+
+        <!-- Body — texte de detail (output stream, ou erreur). Visible=gone par défaut. -->
+        <TextView
+            android:id="@+id/step_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:accessibilityLiveRegion="polite"
+            android:fontFamily="monospace"
+            android:paddingTop="6dp"
+            android:textColor="@color/jemma_text_muted"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:text="&quot;Warfarine 5mg 1cp/j…&quot;\n28 mots détectés"
+            tools:visibility="visible" />
+    </LinearLayout>
+</LinearLayout>

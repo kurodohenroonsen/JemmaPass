@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="perso_section_address">📮  Postal address</string>
+    <string name="perso_address_hint">Full address</string>
+    <string name="perso_address_helper">E.g. 12 Peace Street, 5660 Couvin, Belgium</string>
+
+    <string name="perso_section_telecom">📞  Patient contact details</string>
+    <string name="perso_telecom_helper">Patient\'s own phone and email (distinct from emergency contacts)</string>
+    <string name="perso_telecom_phone_hint">Phone</string>
+    <string name="perso_telecom_email_hint">Email</string>
+
+    <string name="perso_section_identifier">🆔  National identifier</string>
+    <string name="perso_identifier_hint">ID card number</string>
+    <string name="perso_identifier_helper">E.g. national register number, SSN, ID card number</string>
+</resources>

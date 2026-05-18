@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gallery_menu_label">Piliers IPS</string>
+    <string name="gallery_title">🩺 Piliers IPS</string>
+    <string name="gallery_subtitle">Les 18 types de ressources FHIR d\'un International Patient Summary. Touche une tuile pour inspecter sa structure FHIR R4, ses champs et ses systèmes de codage.</string>
+</resources>

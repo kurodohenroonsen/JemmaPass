@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_assistant_multi_preview.xml — Lot 14.4 (PHASE 14)
+
+    Écran de preview batch après une détection multi-médocs par le
+    pipeline (typique : photo d'une fiche de traitement Careplus avec
+    12+ médocs).
+
+    Structure :
+      ┌──────────────────────────────────────────────┐
+      │ ← 12 médicaments détectés                    │
+      ├──────────────────────────────────────────────┤
+      │ ⚠ Vérifie. Décoche ce qui ne va pas.         │
+      │ ─────────────────────────────────────────    │
+      │ [ Tout sélectionner / désélectionner ]       │
+      │ ─────────────────────────────────────────    │
+      │ ┌──────────────────────────────────────┐     │
+      │ │ ☑  💊  BURINEX COMP 20 × 5MG         │     │
+      │ │      1× / semaine · OD               │     │
+      │ │      ATC C03CA01 · Furosemide        │     │
+      │ ├──────────────────────────────────────┤     │
+      │ │ ☑  💊  CARBONATE CALCIUM 1GR         │     │
+      │ │      1× / jour · MD                  │     │
+      │ │      ATC A12AA04 · Calcium carbonate │     │
+      │ ├──────────────────────────────────────┤     │
+      │ │ ☑  💊  D-CURE 25000UI                │     │
+      │ │      1× / mois · UD                  │     │
+      │ │      ⚠ Code non résolu               │     │
+      │ ├──────────────────────────────────────┤     │
+      │ │   ...                                │     │
+      │ └──────────────────────────────────────┘     │
+      │ [ Annuler ]        [ Enregistrer 11 méd. ▸ ] │
+      └──────────────────────────────────────────────┘
+
+    Pour Lot 14.4 (design only) : le fragment inflate 3 rows mockées
+    (Burinex/Carbonate Calcium/D-Cure) pour valider visuellement. Le
+    Lot 14.5 (IA) injectera les vrais médocs détectés par Gemma 4.
+
+    Accessibilité TalkBack :
+    - Titre toolbar = heading
+    - Disclaimer + ToggleAll = focusables séparés
+    - RecyclerView (au lot 14.5) ou LinearLayout (lot 14.4 mock) avec
+      live region pour annoncer le changement de count
+    - Bouton Save dynamique : son label change ("Enregistrer 11 méd.")
+      → TalkBack le relit à chaque update
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/multi_preview_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/assistant_pipeline_title_medications"
+            app:titleTextColor="@color/jemma_primary" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Header : titre dynamique "N médicaments détectés" + sub-line. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/multi_preview_count_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityHeading="true"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/jemma_text"
+                android:textSize="18sp"
+                tools:text="12 médicaments détectés" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:text="@string/assistant_multi_subtitle"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="13sp" />
+
+            <!-- Toggle all / unselect all (single button qui flip son texte). -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/multi_preview_toggle_all"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:minHeight="44dp"
+                android:text="@string/assistant_multi_unselect_all"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#1F2D3A4D"
+            android:importantForAccessibility="no" />
+
+        <!-- 🆕 Lot 14.5c8 — Bloc scrollable contenant la card alertes
+             et la liste des médicaments. Avant : la card alertes était
+             en wrap_content au-dessus d'un RecyclerView weight=1, donc
+             quand les alertes étaient longues (vulgarisations Gemma de
+             ~10 lignes × 3 alertes), elles poussaient les médocs et le
+             footer hors écran sans recours possible. Maintenant tout
+             scroll ensemble dans un NestedScrollView ; le RecyclerView
+             a nestedScrollingEnabled=false pour déléguer son scroll au
+             parent. Footer save/cancel reste sticky en bas. -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- 🆕 Lot 14.5c4 — Zone "Alertes cliniques" (visible si has alerts).
+                     Populée dynamiquement par AssistantMultiPreviewFragment après
+                     hydrate du profil virtuel (existant + nouveaux médocs). Affiche
+                     les DDI, allergie×médoc et drug×disease alerts dans une carte
+                     collapsable. -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/multi_preview_alerts_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/jemma_surface"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#FFA726"
+                    app:strokeWidth="1dp"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <!-- Header card "⚠️ N alertes cliniques détectées" -->
+                        <TextView
+                            android:id="@+id/multi_preview_alerts_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="#FFA726"
+                            android:textSize="14sp"
+                            tools:text="⚠️ 3 alertes cliniques détectées" />
+
+                        <!-- Sous-titre "M majeures · K modérées" -->
+                        <TextView
+                            android:id="@+id/multi_preview_alerts_subtitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/jemma_text_muted"
+                            android:textSize="12sp"
+                            tools:text="1 majeure · 2 modérées · profil virtuel après ajout" />
+
+                        <!-- Container pour les rows alertes (rempli en Kotlin). -->
+                        <LinearLayout
+                            android:id="@+id/multi_preview_alerts_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="vertical" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Liste : 🆕 Lot 14.5c → RecyclerView dynamique
+                     populé par les vrais ExtractedMedication issus de
+                     AssistantHandoff (anciennement 3 rows mockées Lot 14.4).
+                     🆕 Lot 14.5c8 : nestedScrollingEnabled=false + wrap_content
+                     pour scroller via le parent NestedScrollView. -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/multi_preview_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="8dp"
+                    tools:listitem="@layout/view_assistant_med_row" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- Footer actions sticky. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/jemma_surface"
+            android:gravity="end|center_vertical"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/multi_preview_btn_cancel"
+                style="@style/JemmaTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:minHeight="48dp"
+                android:text="@string/assistant_pipeline_btn_cancel" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/multi_preview_btn_save"
+                style="@style/JemmaPrimaryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                tools:text="Enregistrer 11 méd." />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qr_save_bitmap_failed">Error al generar el bitmap</string>
+    <string name="qr_save_file_failed">Error al crear el archivo de imagen</string>
+    <string name="qr_save_success">Código QR guardado en la galería</string>
+    <string name="qr_save_write_failed">Error al guardar: %1$s</string>
+
+    <string name="pdf_export_in_progress">Generando PDF Eco-Tinta…</string>
+    <string name="pdf_export_failed">Error al generar el PDF</string>
+
+    <string name="share_jemma_pass_title">Compartir el Jemma Pass</string>
+
+    <string name="scanner_unavailable">Escáner no disponible: %1$s</string>
+</resources>

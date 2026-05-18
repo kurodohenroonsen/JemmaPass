@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_medications_ips_full.xml · DE -->
+<resources>
+
+    <!-- ── STATUS ── -->
+    <string name="medication_form_label_status">Einnahmestatus</string>
+    <string name="medication_form_status_hint">Tippen zur Auswahl</string>
+    <string name="medication_form_status_pick_title">FHIR MedicationStatement-Status</string>
+
+    <!-- ── EFFECTIVE DATE ── -->
+    <string name="medication_form_label_effective">Einnahmebeginn</string>
+    <string name="medication_form_effective_hint">Tippen, um ein Datum zu wählen</string>
+    <string name="medication_form_effective_pick_title">Einnahmebeginn</string>
+    <string name="medication_form_effective_clear_desc">Datum löschen</string>
+
+    <!-- ── REASON CODE (Condition KB) ── -->
+    <string name="medication_form_label_reason_code">Strukturierte Indikation (Bedingung)</string>
+    <string name="medication_form_reason_code_hint">Tippen, um eine Bedingung zu wählen</string>
+    <string name="medication_form_reason_code_picker_title">Medizinische Indikation</string>
+    <string name="medication_form_reason_code_clear_desc">Indikation löschen</string>
+
+</resources>

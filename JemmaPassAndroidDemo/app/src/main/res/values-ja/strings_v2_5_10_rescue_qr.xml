@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="rescue_qr_title">負傷者の QR をスキャン</string>
+    <string name="rescue_qr_hint">JEMMA の紙 QR バッジをカメラに向けて、メッシュ経由で近くの救助者に伝達してください。</string>
+
+    <string name="rescue_qr_confirm_title">この負傷者を伝達しますか？</string>
+    <string name="rescue_qr_confirm_relay_explain">メッシュ経由で全ての近くの救助者にこの負傷者を医療情報付きで配信します。</string>
+    <string name="rescue_qr_confirm_action">📡 メッシュに配信</string>
+
+    <string name="rescue_qr_relayed_template">📡 %1$s をメッシュで中継中</string>
+    <string name="rescue_qr_relay_error_template">❌ 中継失敗: %1$s</string>
+
+</resources>

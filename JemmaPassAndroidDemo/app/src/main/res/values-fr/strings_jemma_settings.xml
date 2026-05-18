@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_settings.xml — version FR.
+-->
+<resources>
+
+    <!-- État boot KB -->
+    <string name="kb_boot_validating">Initialisation de la base de connaissances…</string>
+    <string name="kb_boot_failed_template">Échec init KB : %1$s</string>
+    <string name="kb_card_btn_reload">Recharger</string>
+    <string name="kb_card_validating_label">Validation SQLite + FTS5…</string>
+
+    <!-- Wipe -->
+    <string name="wipe_all_confirm_title">Tout effacer ?</string>
+    <string name="wipe_all_confirm_message">Tous les profils, les modèles téléchargés, la base de connaissances et les caches seront supprimés. L\'app revient à zéro. Cette action est irréversible.</string>
+    <string name="wipe_all_confirm_btn_yes">Tout effacer</string>
+    <string name="wipe_all_confirm_btn_no">Annuler</string>
+    <string name="wipe_all_done_toast">Toutes les données ont été effacées.</string>
+
+    <!-- Demo personas seed -->
+    <string name="seed_personas_done_toast">Profils Kurodo, Misako et Haru créés.</string>
+    <string name="seed_personas_disabled_toast">Le seed des personas sera disponible dans une livraison ultérieure.</string>
+
+    <!-- Toasts -->
+    <string name="toast_model_activated_template">%1$s activé</string>
+    <string name="toast_model_deleted_template">%1$s supprimé</string>
+    <string name="toast_kb_reloaded">Base de connaissances rechargée</string>
+
+    <!-- 🆕 v4.1 FIX #3 — Toggle accélérateur d'inférence -->
+    <string name="settings_accelerator_title">Accélérateur d\'inférence</string>
+    <string name="settings_accelerator_subtitle">GPU plus rapide mais peut crasher sur certains appareils. CPU plus lent mais toujours fiable.</string>
+    <string name="settings_accelerator_gpu">GPU (rapide)</string>
+    <string name="settings_accelerator_cpu">CPU (stable)</string>
+    <string name="settings_accelerator_changed_reload">Accélérateur modifié. Le modèle se rechargera à la prochaine utilisation.</string>
+
+</resources>

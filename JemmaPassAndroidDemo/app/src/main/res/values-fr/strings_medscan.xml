@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Panel header -->
+    <string name="medscan_header">🧠 Jemma analyse…</string>
+
+    <!-- Step labels -->
+    <string name="medscan_step_scan">Scan du blister</string>
+    <string name="medscan_step_ocr">OCR (JA + latin)</string>
+    <string name="medscan_step_gemma">Gemma raisonne</string>
+    <string name="medscan_step_identify">Identification du médicament</string>
+    <string name="medscan_step_check">Vérification du profil</string>
+
+    <!-- Step details -->
+    <string name="medscan_detail_image_captured">Image capturée</string>
+    <string name="medscan_detail_ocr_empty">Aucun texte détecté</string>
+    <string name="medscan_detail_gemma_thinking">🧠 Analyse du texte OCR…</string>
+    <string name="medscan_detail_gemma_candidates">%1$d candidats : %2$s</string>
+    <string name="medscan_detail_gemma_no_candidates">Gemma n\'a pas pu proposer de candidat</string>
+    <string name="medscan_detail_kb_no_hit">Aucun match KB pour %1$d candidats Gemma</string>
+    <string name="medscan_detail_kb_orphan_only">KB a matché (%1$s) mais sans code ATC → cross-check impossible</string>
+    <string name="medscan_detail_identified">%1$s · ATC %2$s · matché via %3$s</string>
+    <string name="medscan_detail_not_identified">Aucun résultat KB après %1$d tentatives</string>
+    <string name="medscan_detail_skipped">Sauté (pas de candidat)</string>
+    <string name="medscan_detail_identified_no_atc">%1$s — matché via %2$s, sans code ATC</string>
+    <string name="medscan_detail_no_atc_skip">Sauté — pas d\'ATC pour le cross-check</string>
+    <string name="medscan_detail_check_summary">Allergies : %1$d · DDI : %2$d · Conditions : %3$d</string>
+
+    <!-- Verdict titles -->
+    <string name="medscan_verdict_major_title">🚨 MAJEUR — NE PAS DONNER</string>
+    <string name="medscan_verdict_moderate_title">⚠️ MODÉRÉ — Prudence</string>
+    <string name="medscan_verdict_minor_title">⚠️ MINEUR — À noter</string>
+    <string name="medscan_verdict_clean_title">✅ OK — Aucune collision documentée</string>
+    <string name="medscan_verdict_not_identified_title">❓ Médicament non identifié</string>
+    <string name="medscan_verdict_failed_title">❌ Échec du scan</string>
+
+    <!-- Verdict bodies -->
+    <string name="medscan_verdict_body_allergy">
+        Allergie « %1$s » entre en collision avec %2$s (matché %3$s).
+    </string>
+    <string name="medscan_verdict_body_ddi">
+        %1$s × %2$s — interaction %3$s (%4$s).
+    </string>
+    <string name="medscan_verdict_body_dz">
+        %1$s contre-indiqué avec « %2$s » — %3$s.
+    </string>
+    <string name="medscan_verdict_body_generic">Collision %1$s détectée. Voir détails.</string>
+
+    <!-- Verdict reasons -->
+    <string name="medscan_verdict_not_identified_reason">Le texte OCR ne correspond à aucun médicament de la base.</string>
+    <string name="medscan_verdict_no_atc_reason">%1$s identifié mais sans code ATC — enrichissement KB nécessaire.</string>
+    <string name="medscan_verdict_gemma_no_candidates">Gemma n\'a pas réussi à extraire un médicament depuis l\'OCR. Essaie une photo plus nette.</string>
+    <string name="medscan_verdict_kb_no_hit">Gemma a proposé des candidats mais la base ne les connaît pas.</string>
+    <string name="medscan_verdict_kb_orphan_only">La KB a trouvé %1$s mais sans code ATC. Le cross-check exige un ATC — enrichissement KB nécessaire.</string>
+
+    <!-- Errors -->
+    <string name="medscan_error_scanner_unavailable">Le scanner de document n\'est pas disponible sur cet appareil.</string>
+    <string name="medscan_error_image_unavailable">L\'image capturée est illisible.</string>
+
+    <!-- Buttons -->
+    <string name="medscan_btn_details">Détails</string>
+    <string name="medscan_btn_close">Fermer</string>
+</resources>

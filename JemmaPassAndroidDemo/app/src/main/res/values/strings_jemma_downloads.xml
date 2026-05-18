@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_downloads.xml — i18n strings for the in-app rendering of
+    download state (Settings screen). Separate file from strings_jemma.xml
+    so the additions are easy to spot in code reviews.
+
+    NOTE about the system notification :
+    The Foreground Service notification shown by Google's DownloadWorker
+    (visible when the app is in background) uses HARDCODED ENGLISH STRINGS
+    in the Edge Gallery source code. We deliberately keep Google's worker
+    untouched (no fork, no maintenance debt). The notification will read
+    "Downloading \"gemma-4-E4B-it\" — Downloading in progress: 42%" in all
+    UI languages. This is acceptable because :
+      - the model name is universal
+      - the percentage is universal
+      - 99% of demo time the user looks at our in-app UI which IS i18n'd
+    See README.md of this delivery for the full rationale.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Aggregate "Prepare the demo" status line
+         Used by SettingsFragment to render the live status under the
+         progress bar of the prepare-demo card. The Fragment composes the
+         full string by concatenating these segments based on state.
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- Step indicator. %1$d = current 1-based step, %2$d = total steps. -->
+    <string name="dl_step_template">Step %1$d / %2$d</string>
+
+    <!-- Live progress bytes. %1$s = received (e.g. "1.2 GB"), %2$s = total. -->
+    <string name="dl_bytes_template">%1$s / %2$s</string>
+
+    <!-- Live transfer rate. %1$s = formatted rate (e.g. "18 MB/s"). -->
+    <string name="dl_rate_template">%1$s/s</string>
+
+    <!-- ETA short form. %1$d = remaining minutes (rounded). -->
+    <string name="dl_eta_min_template">~%1$d min</string>
+    <string name="dl_eta_sec_template">~%1$d s</string>
+    <string name="dl_eta_hour_template">~%1$d h %2$d min</string>
+
+    <!-- Done / failed states for the aggregate card. -->
+    <string name="dl_done_label">✓ Demo ready</string>
+    <string name="dl_failed_template">Download failed : %1$s</string>
+    <string name="dl_paused_label">Paused</string>
+    <string name="dl_idle_label">Not started</string>
+
+    <!-- Currently-downloading model name line. %1$s = displayName -->
+    <string name="dl_current_template">Currently : %1$s</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Per-model card status pill (Settings)
+         Used by the model_card_v2 layout. The pill text varies based on
+         ModelDownloadStatusType.
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <string name="dl_pill_not_downloaded">Not downloaded</string>
+    <string name="dl_pill_partial">Partial</string>
+    <string name="dl_pill_downloading">Downloading</string>
+    <string name="dl_pill_succeeded">✓ Downloaded</string>
+    <string name="dl_pill_active">★ Active</string>
+    <string name="dl_pill_failed">⚠ Failed</string>
+
+    <!-- Model card primary action button (multi-state). -->
+    <string name="dl_btn_download">Download</string>
+    <string name="dl_btn_pause">Pause</string>
+    <string name="dl_btn_resume">Resume</string>
+    <string name="dl_btn_retry">Retry</string>
+    <string name="dl_btn_activate">Activate</string>
+    <string name="dl_btn_already_active">Already active</string>
+
+    <!-- Confirm dialog when user taps Delete on a model card. -->
+    <string name="dl_delete_confirm_title">Delete this download?</string>
+    <string name="dl_delete_confirm_message">%1$s (%2$s) will be removed from this device. You can re-download it any time from Settings.</string>
+    <string name="dl_delete_confirm_btn_yes">Delete</string>
+    <string name="dl_delete_confirm_btn_no">Cancel</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Preflight checklist — dynamic detail lines
+         Used as the small monospace detail under each preflight row label
+         (which is already statically translated in strings_jemma.xml).
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- "5 / 5 granted" — used by preflight_permissions row -->
+    <string name="preflight_perms_detail_template">%1$d / %2$d granted</string>
+
+    <!-- "E4B 3.4 GB ★" or "Not downloaded yet" -->
+    <string name="preflight_model_detail_active_template">%1$s · %2$s · active</string>
+    <string name="preflight_model_detail_none">Not downloaded yet</string>
+
+    <!-- "knowledge_full.db 2.0 GB" or "Not downloaded yet" -->
+    <string name="preflight_kb_detail_template">%1$s</string>
+    <string name="preflight_kb_detail_none">Not downloaded yet</string>
+
+    <!-- "3 profiles" or "0 profiles — create one" -->
+    <plurals name="preflight_profile_detail_count">
+        <item quantity="zero">No profile</item>
+        <item quantity="one">%d profile</item>
+        <item quantity="other">%d profiles</item>
+    </plurals>
+
+    <!-- "12.4 GB free" -->
+    <string name="preflight_storage_detail_template">%1$s free</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Insufficient storage warnings
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- Shown if user taps Prepare-the-demo with too little free space. -->
+    <string name="dl_low_storage_title">Not enough free storage</string>
+    <string name="dl_low_storage_message">Download requires %1$s but only %2$s is free on this device. Free up space and try again.</string>
+    <string name="dl_low_storage_btn_ok">OK</string>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Network warnings
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <string name="dl_no_network_title">No network</string>
+    <string name="dl_no_network_message">JEMMA cannot reach jemmapass.net. Check Wi-Fi or mobile data.</string>
+
+    <string name="dl_metered_warning_title">Mobile data download</string>
+    <string name="dl_metered_warning_message">You are not on Wi-Fi. Downloading %1$s on mobile data may incur charges. Continue anyway?</string>
+    <string name="dl_metered_warning_btn_continue">Continue</string>
+    <string name="dl_metered_warning_btn_wait">Wait for Wi-Fi</string>
+
+</resources>

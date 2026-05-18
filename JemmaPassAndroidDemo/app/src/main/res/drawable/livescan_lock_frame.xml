@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  livescan_lock_frame.xml — JEMMA Pass · Live Scan · Lot 3
+
+  Cadre vert pulsant affiché au centre de la PreviewView quand le repo
+  passe en state Locked. Visuellement : "ce drug est confirmé, capture
+  imminente".
+
+  Couleurs : jemma_primary (#10B981) pour le stroke, cohérent avec le
+  reste de l'app rescue. Background semi-transparent pour ne pas masquer
+  la boîte du médicament en preview.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke
+        android:width="3dp"
+        android:color="@color/jemma_primary" />
+    <corners android:radius="12dp" />
+    <solid android:color="#26000000" />
+</shape>

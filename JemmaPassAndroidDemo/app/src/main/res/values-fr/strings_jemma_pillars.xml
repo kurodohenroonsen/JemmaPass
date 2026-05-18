@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pillar_chip_active">Actif · édition bientôt</string>
+
+    <!-- ═══ Pilier #1 · patient ═══ -->
+    <string name="pillar_patient_title">Patient</string>
+    <string name="pillar_patient_ips_type">FHIR R4 · Patient</string>
+    <string name="pillar_patient_desc">Identité civile et données démographiques : nom, genre, date de naissance, groupe sanguin, coordonnées. L\'ancrage de tout document IPS.</string>
+
+    <!-- ═══ Pilier #2 · contacts ═══ -->
+    <string name="pillar_contacts_title">Contacts d\'urgence</string>
+    <string name="pillar_contacts_ips_type">FHIR R4 · Patient.contact</string>
+    <string name="pillar_contacts_desc">Personnes de confiance (proches, conjoint·e, ami·e) à appeler en cas d\'urgence. Mappées sur FHIR Patient.contact[].</string>
+
+    <!-- ═══ Pilier #3 · allergies ═══ -->
+    <string name="pillar_allergies_title">Allergies</string>
+    <string name="pillar_allergies_ips_type">FHIR R4 · AllergyIntolerance</string>
+    <string name="pillar_allergies_desc">Allergies confirmées (alimentaires, médicamenteuses, environnementales, biologiques) avec criticité et réactions. Critique pour les premiers secours.</string>
+
+    <!-- ═══ Pilier #4 · medications ═══ -->
+    <string name="pillar_medications_title">Médicaments</string>
+    <string name="pillar_medications_ips_type">FHIR R4 · MedicationStatement</string>
+    <string name="pillar_medications_desc">Prescriptions actives : substance (ATC/RxNorm), dose, fréquence, voie. La base DDInter 2.0 vérifie 876K interactions en temps réel à la réception d\'un SOS.</string>
+
+    <!-- ═══ Pilier #5 · conditions ═══ -->
+    <string name="pillar_conditions_title">Pathologies actives</string>
+    <string name="pillar_conditions_ips_type">FHIR R4 · Condition (statut clinique = active)</string>
+    <string name="pillar_conditions_desc">Maladies chroniques ou actives : diabète, hypertension, asthme, fibrillation auriculaire, etc. Encodées en SNOMED CT et ICD-10.</string>
+
+    <!-- ═══ Pilier #6 · pastProblems ═══ -->
+    <string name="pillar_past_problems_title">Antécédents médicaux</string>
+    <string name="pillar_past_problems_ips_type">FHIR R4 · Condition (statut clinique = résolu)</string>
+    <string name="pillar_past_problems_desc">Pathologies résolues et diagnostics historiques : chirurgies passées, infections guéries, blessures cicatrisées. Contexte cumulatif utile.</string>
+
+    <!-- ═══ Pilier #7 · immunizations ═══ -->
+    <string name="pillar_immunizations_title">Vaccinations</string>
+    <string name="pillar_immunizations_ips_type">FHIR R4 · Immunization</string>
+    <string name="pillar_immunizations_desc">Historique vaccinal avec code vaccin (CVX/SNOMED), date, n° de lot, fabricant. Critique pour la médecine du voyage et la gestion d\'épidémie.</string>
+
+    <!-- ═══ Pilier #8 · procedures ═══ -->
+    <string name="pillar_procedures_title">Procédures</string>
+    <string name="pillar_procedures_ips_type">FHIR R4 · Procedure</string>
+    <string name="pillar_procedures_desc">Chirurgies et actes médicaux : appendicectomie, prothèse du genou, cathétérisme cardiaque. Codés en SNOMED CT, CPT ou ICD-10-PCS.</string>
+
+    <!-- ═══ Pilier #9 · devices ═══ -->
+    <string name="pillar_devices_title">Dispositifs médicaux</string>
+    <string name="pillar_devices_ips_type">FHIR R4 · DeviceUseStatement</string>
+    <string name="pillar_devices_desc">Dispositifs et implants actifs : pacemaker, pompe à insuline, implant cochléaire, prothèse. Info critique pour sécurité IRM et urgence.</string>
+
+    <!-- ═══ Pilier #10 · functional ═══ -->
+    <string name="pillar_functional_title">Statut fonctionnel</string>
+    <string name="pillar_functional_ips_type">FHIR R4 · ClinicalImpression / Observation</string>
+    <string name="pillar_functional_desc">Déficiences sensorielles, motrices ou cognitives : cécité, surdité, paralysie, démence. Aide les secouristes à adapter leur communication.</string>
+
+    <!-- ═══ Pilier #11 · pregnancy ═══ -->
+    <string name="pillar_pregnancy_title">Grossesse</string>
+    <string name="pillar_pregnancy_ips_type">FHIR R4 · Observation (LOINC 82810-3)</string>
+    <string name="pillar_pregnancy_desc">État actuel de grossesse : enceinte / non enceinte / inconnu, avec terme prévu. Critique pour les contre-indications médicamenteuses et d\'imagerie.</string>
+
+    <!-- ═══ Pilier #12 · results ═══ -->
+    <string name="pillar_results_title">Résultats labo</string>
+    <string name="pillar_results_ips_type">FHIR R4 · Observation (LOINC)</string>
+    <string name="pillar_results_desc">Valeurs récentes : NFS, glycémie, INR, électrolytes, etc. Encodées en LOINC avec unités UCUM. Base pour l\'analyse de tendance.</string>
+
+    <!-- ═══ Pilier #13 · advanceDirectives ═══ -->
+    <string name="pillar_advance_title">Directives anticipées</string>
+    <string name="pillar_advance_ips_type">FHIR R4 · Consent</string>
+    <string name="pillar_advance_desc">Volontés de fin de vie : RCP (oui/non), soins de confort, nutrition artificielle, don d\'organes. Autonomie du patient en forme machine-lisible.</string>
+
+    <!-- ═══ Pilier #14 · consents ═══ -->
+    <string name="pillar_consents_title">Consentements</string>
+    <string name="pillar_consents_ips_type">FHIR R4 · Consent</string>
+    <string name="pillar_consents_desc">Consentements et autorisations actifs : partage de données, recherche, registre des donneurs. Suit l\'intention et l\'expiration.</string>
+
+    <!-- ═══ Pilier #15 · goals ═══ -->
+    <string name="pillar_goals_title">Objectifs de soins</string>
+    <string name="pillar_goals_ips_type">FHIR R4 · Goal</string>
+    <string name="pillar_goals_desc">Objectifs de traitement actifs : tension artérielle cible, perte de poids, étape de récupération. Utilisés par l\'équipe pour aligner les plans.</string>
+
+    <!-- ═══ Pilier #16 · encounters ═══ -->
+    <string name="pillar_encounters_title">Rencontres / Visites</string>
+    <string name="pillar_encounters_ips_type">FHIR R4 · Encounter</string>
+    <string name="pillar_encounters_desc">Visites de santé récentes : hospitalisation, consultation, urgences. Fournit le contexte temporel de la situation actuelle.</string>
+
+    <!-- ═══ Pilier #17 · occupational ═══ -->
+    <string name="pillar_occupational_title">Données professionnelles</string>
+    <string name="pillar_occupational_ips_type">FHIR R4 · Observation (LOINC 74166-0)</string>
+    <string name="pillar_occupational_desc">Contexte professionnel actuel : employeur, poste. Pertinent pour santé au travail, exposition, et planification de réadaptation.</string>
+
+    <!-- ═══ Pilier #18 · providers ═══ -->
+    <string name="pillar_providers_title">Équipe de soins</string>
+    <string name="pillar_providers_ips_type">FHIR R4 · CareTeam / Practitioner</string>
+    <string name="pillar_providers_desc">Médecins traitants et soignants : médecin généraliste, spécialistes, hôpital. Coordonnées pour la passation et la continuité des soins.</string>
+
+    <!-- ═══ FIELD LABELS ═══ -->
+    <string name="pillar_field_given_name">Prénom</string>
+    <string name="pillar_field_given_name_desc">Prénom(s) tel·s qu\'inscrit·s sur la pièce d\'identité officielle.</string>
+    <string name="pillar_field_family_name">Nom</string>
+    <string name="pillar_field_family_name_desc">Nom de famille tel qu\'inscrit sur la pièce d\'identité officielle.</string>
+    <string name="pillar_field_gender">Genre</string>
+    <string name="pillar_field_gender_desc">Genre administratif (HL7 v3) : male, female, other, unknown.</string>
+    <string name="pillar_field_birth_date">Date de naissance</string>
+    <string name="pillar_field_birth_date_desc">Date de naissance au format ISO 8601 (AAAA-MM-JJ).</string>
+    <string name="pillar_field_blood_type">Groupe sanguin</string>
+    <string name="pillar_field_blood_type_desc">Groupe ABO + RhD (ex. A+, O-). Critique pour transfusion en urgence.</string>
+
+    <string name="pillar_field_phone">Téléphone</string>
+    <string name="pillar_field_phone_desc">Numéro(s) de téléphone personnel(s), avec code d\'usage.</string>
+    <string name="pillar_field_email">Email</string>
+    <string name="pillar_field_email_desc">Adresse(s) email personnelle(s), avec code d\'usage.</string>
+    <string name="pillar_field_address_line1">Adresse (rue)</string>
+    <string name="pillar_field_address_line1_desc">Adresse principale (numéro + nom de rue).</string>
+    <string name="pillar_field_city">Ville</string>
+    <string name="pillar_field_city_desc">Ville de résidence principale.</string>
+    <string name="pillar_field_country">Pays</string>
+    <string name="pillar_field_country_desc">Pays de résidence en code ISO 3166 alpha-2.</string>
+
+    <string name="pillar_field_contact_name">Nom du contact</string>
+    <string name="pillar_field_contact_name_desc">Nom complet de la personne de contact en cas d\'urgence.</string>
+    <string name="pillar_field_relationship">Lien</string>
+    <string name="pillar_field_relationship_desc">Relation au patient (conjoint·e, parent, ami·e) selon HL7 v3 RoleCode.</string>
+    <string name="pillar_field_phone_mobile">Téléphone mobile</string>
+    <string name="pillar_field_phone_mobile_desc">Mobile du contact (ContactPoint use=mobile).</string>
+    <string name="pillar_field_phone_work">Téléphone bureau</string>
+    <string name="pillar_field_phone_work_desc">Téléphone professionnel du contact (ContactPoint use=work).</string>
+
+    <string name="pillar_field_substance">Substance / Allergène</string>
+    <string name="pillar_field_substance_desc">La substance déclenchante, idéalement codée en SNOMED CT ou RxNorm.</string>
+    <string name="pillar_field_criticality">Criticité</string>
+    <string name="pillar_field_criticality_desc">Sévérité de la pire réaction attendue : low, high, unable-to-assess.</string>
+    <string name="pillar_field_clinical_status">Statut clinique</string>
+    <string name="pillar_field_clinical_status_desc">État courant : active, inactive, resolved (FHIR clinical-status).</string>
+    <string name="pillar_field_manifestation">Manifestation</string>
+    <string name="pillar_field_manifestation_desc">Réaction(s) observée(s) : anaphylaxie, urticaire, œdème, etc.</string>
+    <string name="pillar_field_onset_date">Date de découverte</string>
+    <string name="pillar_field_onset_date_desc">Quand la condition / l\'allergie / l\'événement est apparu·e (ISO 8601).</string>
+
+    <string name="pillar_field_medication">Médicament</string>
+    <string name="pillar_field_medication_desc">La substance, idéalement codée en ATC ou RxNorm. Base pour les checks DDI.</string>
+    <string name="pillar_field_dose_value">Quantité</string>
+    <string name="pillar_field_dose_value_desc">Quantité numérique de la dose (ex. 5).</string>
+    <string name="pillar_field_dose_unit">Unité</string>
+    <string name="pillar_field_dose_unit_desc">Code UCUM de l\'unité de dose (ex. mg, mL, g).</string>
+    <string name="pillar_field_timing">Fréquence</string>
+    <string name="pillar_field_timing_desc">Fréquence / horaire (ex. 2× par jour, 1×/semaine).</string>
+    <string name="pillar_field_route">Voie d\'administration</string>
+    <string name="pillar_field_route_desc">Voie d\'administration (orale, IV, topique, etc.).</string>
+    <string name="pillar_field_reason">Indication / Raison</string>
+    <string name="pillar_field_reason_desc">Pourquoi ce médicament est pris — lien vers une Condition.</string>
+
+    <string name="pillar_field_condition">Pathologie</string>
+    <string name="pillar_field_condition_desc">La maladie ou diagnostic, idéalement codé·e en SNOMED CT ou ICD-10.</string>
+    <string name="pillar_field_severity">Sévérité</string>
+    <string name="pillar_field_severity_desc">Sévérité de la maladie : mild, moderate, severe (CodeableConcept).</string>
+    <string name="pillar_field_verif_status">Statut de vérification</string>
+    <string name="pillar_field_verif_status_desc">Certitude diagnostique : confirmed, provisional, differential, etc.</string>
+
+    <string name="pillar_field_vaccine">Vaccin</string>
+    <string name="pillar_field_vaccine_desc">Le vaccin administré, codé en CVX ou SNOMED CT.</string>
+    <string name="pillar_field_lot_number">N° de lot</string>
+    <string name="pillar_field_lot_number_desc">Identifiant de lot du fabricant — utile pour le rappel de produit.</string>
+    <string name="pillar_field_manufacturer">Fabricant</string>
+    <string name="pillar_field_manufacturer_desc">L\'organisation productrice (Pfizer, Moderna, GSK, etc.).</string>
+    <string name="pillar_field_site">Site d\'injection</string>
+    <string name="pillar_field_site_desc">Localisation anatomique de l\'injection (ex. deltoïde gauche).</string>
+
+    <string name="pillar_field_procedure">Procédure</string>
+    <string name="pillar_field_procedure_desc">Procédure chirurgicale ou médicale, codée en SNOMED CT ou CPT.</string>
+    <string name="pillar_field_status">Statut</string>
+    <string name="pillar_field_status_desc">Statut FHIR de la ressource : in-progress, completed, etc.</string>
+    <string name="pillar_field_outcome">Résultat</string>
+    <string name="pillar_field_outcome_desc">Résultat de la procédure : successful, partially successful, unsuccessful.</string>
+
+    <string name="pillar_field_device">Dispositif</string>
+    <string name="pillar_field_device_desc">Dispositif médical implanté ou actif, idéalement avec identifiant UDI-DI.</string>
+    <string name="pillar_field_body_site">Site anatomique</string>
+    <string name="pillar_field_body_site_desc">Localisation anatomique du dispositif (ex. ventricule droit).</string>
+
+    <string name="pillar_field_impairment">Trouble / Déficience</string>
+    <string name="pillar_field_impairment_desc">La limitation fonctionnelle (ex. cécité, surdité, paraplégie).</string>
+
+    <string name="pillar_field_status_preg">Statut de grossesse</string>
+    <string name="pillar_field_status_preg_desc">État actuel : enceinte, non enceinte, inconnu.</string>
+
+    <string name="pillar_field_date">Date</string>
+    <string name="pillar_field_date_desc">Quand l\'événement s\'est produit ou a été enregistré (ISO 8601).</string>
+
+    <string name="pillar_field_loinc">Code LOINC</string>
+    <string name="pillar_field_loinc_desc">Identifiant LOINC de l\'observation labo (ex. 718-7 pour Hb).</string>
+    <string name="pillar_field_value">Valeur</string>
+    <string name="pillar_field_value_desc">Résultat numérique ou codé de l\'observation.</string>
+    <string name="pillar_field_unit">Unité</string>
+    <string name="pillar_field_unit_desc">Unité UCUM de mesure (ex. mg/dL, mmol/L).</string>
+    <string name="pillar_field_interpretation">Interprétation</string>
+    <string name="pillar_field_interpretation_desc">Sens clinique : normal, low, high, abnormal.</string>
+
+    <string name="pillar_field_category">Catégorie</string>
+    <string name="pillar_field_category_desc">Type de directive (code LOINC).</string>
+    <string name="pillar_field_status_adv">Statut étendu</string>
+    <string name="pillar_field_status_adv_desc">Actuellement en vigueur ou révoqué (FHIR Consent.status).</string>
+    <string name="pillar_field_cpr">RCP (réanimation)</string>
+    <string name="pillar_field_cpr_desc">Réanimation souhaitée en cas d\'arrêt cardiaque.</string>
+    <string name="pillar_field_comfort">Soins de confort</string>
+    <string name="pillar_field_comfort_desc">Privilégier le confort sur les mesures curatives.</string>
+    <string name="pillar_field_nutrition">Nutrition artificielle</string>
+    <string name="pillar_field_nutrition_desc">Alimentation/hydratation artificielle souhaitée.</string>
+
+    <string name="pillar_field_intent">Intention</string>
+    <string name="pillar_field_intent_desc">FHIR Consent.intent : deny, permit, etc.</string>
+
+    <string name="pillar_field_description">Description</string>
+    <string name="pillar_field_description_desc">Énoncé en langage clair de l\'objectif.</string>
+    <string name="pillar_field_priority">Priorité</string>
+    <string name="pillar_field_priority_desc">Priorité de l\'objectif : high, medium, low.</string>
+    <string name="pillar_field_target_date">Date cible</string>
+    <string name="pillar_field_target_date_desc">Date à laquelle l\'objectif doit être atteint.</string>
+
+    <string name="pillar_field_type">Type</string>
+    <string name="pillar_field_type_desc">Classe de rencontre : ambulatory, emergency, inpatient, etc.</string>
+
+    <string name="pillar_field_employer">Employeur</string>
+    <string name="pillar_field_employer_desc">Nom de l\'organisation employeuse actuelle.</string>
+    <string name="pillar_field_job_title">Poste</string>
+    <string name="pillar_field_job_title_desc">Intitulé de poste ou occupation actuelle.</string>
+
+    <string name="pillar_field_practitioner">Praticien</string>
+    <string name="pillar_field_practitioner_desc">Médecin traitant ou autre professionnel de santé.</string>
+    <string name="pillar_field_organization">Organisation</string>
+    <string name="pillar_field_organization_desc">Hôpital, clinique ou structure de soins.</string>
+
+</resources>

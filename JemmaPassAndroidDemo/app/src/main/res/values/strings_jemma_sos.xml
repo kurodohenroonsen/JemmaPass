@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    🆕 L1 v2.5.0 — JEMMA SOS notification strings (default = English).
+
+    These are the user-visible strings shown by JemmaSosService's
+    foreground notification (lock-screen, status-bar, shade). They are
+    the only strings we externalise in L1; the rest of the ported code
+    keeps its original wording for now, and a full pass will happen in
+    L3 when the native UI is built.
+
+    Locales shipped:
+      • values/         → English (default)
+      • values-fr/      → French
+      • values-ja/      → Japanese
+-->
+<resources>
+
+    <!-- Notification channel -->
+    <string name="jemma_sos_notif_channel_name">JEMMA SOS Beacon</string>
+    <string name="jemma_sos_notif_channel_description">JEMMA SOS Beacon — emergency safety service</string>
+
+    <!-- Broadcasting (active) -->
+    <string name="jemma_sos_notif_title_broadcasting">🆘 SOS Beacon ACTIVE</string>
+    <string name="jemma_sos_notif_text_broadcasting">Medical profile broadcast to nearby rescuers</string>
+    <string name="jemma_sos_notif_bigtext_broadcasting">Your medical profile is being broadcast to nearby rescuers via Bluetooth. Tap “⏸ Stop” to halt the broadcast.</string>
+    <string name="jemma_sos_notif_action_stop_broadcast">⏸ Stop broadcast</string>
+
+    <!-- Idle (active service, not broadcasting yet) -->
+    <string name="jemma_sos_notif_title_idle">🐢 JEMMA ready</string>
+    <string name="jemma_sos_notif_text_idle">SOS mode active — ready to broadcast your profile</string>
+    <string name="jemma_sos_notif_bigtext_idle">SOS mode active. Tap “🆘 Broadcast” to share your emergency medical profile with nearby JEMMA-equipped rescuers.</string>
+    <string name="jemma_sos_notif_action_start_broadcast">🆘 Broadcast</string>
+
+    <!-- Always present -->
+    <string name="jemma_sos_notif_action_disable">Disable</string>
+
+</resources>

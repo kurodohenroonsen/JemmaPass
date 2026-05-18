@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ips_picker_cat_all">TOUS</string>
+    <string name="ips_picker_cat_food_desc">Filtrer : allergènes alimentaires</string>
+    <string name="ips_picker_cat_medication_desc">Filtrer : allergènes médicamenteux</string>
+    <string name="ips_picker_cat_environment_desc">Filtrer : allergènes environnementaux</string>
+    <string name="ips_picker_cat_biologic_desc">Filtrer : allergènes biologiques</string>
+    <string name="ips_picker_cat_unknown_desc">Filtrer : inconnus / autres</string>
+</resources>

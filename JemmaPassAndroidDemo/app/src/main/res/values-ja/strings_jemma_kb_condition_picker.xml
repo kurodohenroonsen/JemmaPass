@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="condition_picker_search_hint">🔎 症状 / 兆候を検索 (JP, EN, SNOMED…)</string>
+    <string name="condition_picker_status_hint">2文字以上で検索 (蕁麻疹、アナフィラキシー、浮腫…)</string>
+</resources>

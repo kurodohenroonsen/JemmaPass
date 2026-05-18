@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright 2025 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Edge Gallery's themes (kept as-is, used by their Compose MainActivity) -->
+    <style name="Theme.Gallery" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Gallery.SplashScreen" parent="Theme.SplashScreen">
+        <!-- Need to match surfaceLight in Colors.kt -->
+        <item name="windowSplashScreenBackground">#FFFFFFFF</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen_animated_icon</item>
+        <item name="postSplashScreenTheme">@style/Theme.Gallery</item>
+    </style>
+    <style name="Theme.Gallery.OssLicenses" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
+    </style>
+
+    <!--
+        ═══════════════════════════════════════════════════════════════════
+        JEMMA's own theme — used by .MainActivity (AppCompatActivity).
+
+        Edge Gallery's Theme.Gallery descends from `android:Theme.Material`
+        which is NOT compatible with AppCompatActivity. Our View-system
+        Fragments need a Theme.AppCompat or Theme.Material3 (Material
+        Components) descendant, otherwise setContentView() throws :
+          IllegalStateException: You need to use a Theme.AppCompat theme
+
+        We use Theme.Material3.DayNight.NoActionBar because :
+          - it descends from Theme.AppCompat (AppCompatActivity OK)
+          - it brings Material3 for our MaterialAlertDialogBuilder, etc.
+          - DayNight follows the system dark/light setting
+          - NoActionBar lets us put a Toolbar inside each Fragment
+
+        Color scheme is wired to our jemma_primary (emerald) for primary
+        actions. Surface colors honor the JEMMA dark palette already
+        present in colors.xml.
+        ═══════════════════════════════════════════════════════════════════
+    -->
+    <style name="Theme.Jemma" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/jemma_primary</item>
+        <item name="colorOnPrimary">#FFFFFFFF</item>
+        <item name="colorPrimaryContainer">@color/jemma_primary_25</item>
+        <item name="colorOnPrimaryContainer">@color/jemma_primary</item>
+
+        <!-- Background / surfaces -->
+        <item name="android:colorBackground">@color/jemma_bg</item>
+        <item name="colorSurface">@color/jemma_surface</item>
+        <item name="colorOnSurface">@color/jemma_text</item>
+        <item name="colorOnSurfaceVariant">@color/jemma_text_muted</item>
+
+        <!-- Status bar mirrors our background to avoid a light-on-dark seam -->
+        <item name="android:statusBarColor">@color/jemma_bg</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+
+        <!-- Navigation bar (gesture nav home indicator) -->
+        <item name="android:navigationBarColor">@color/jemma_bg</item>
+
+        <!--
+            JEMMA does not opt out of edge-to-edge enforcement on Android 15+ ;
+            our layouts already use fitsSystemWindows / WindowInsets. If you
+            see content drawn behind the status bar, add the same
+            android:windowOptOutEdgeToEdgeEnforcement override as Theme.Gallery.OssLicenses.
+        -->
+    </style>
+
+    <!-- Splash screen variant for the JEMMA boot path (currently unused but
+         declared so a future post-splash transition is one-line away). -->
+    <style name="Theme.Jemma.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/jemma_bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen_animated_icon</item>
+        <item name="postSplashScreenTheme">@style/Theme.Jemma</item>
+    </style>
+
+</resources>

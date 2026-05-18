@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Allergies edit fragment · NL ─── -->
+    <string name="allergies_edit_title">Allergieën</string>
+    <string name="allergies_edit_hero_title">Allergieën</string>
+    <string name="allergies_fab_add_desc">Allergie toevoegen</string>
+
+    <string name="allergies_empty_default">Nog geen allergieën. Tik op de +-knop om er een toe te voegen.</string>
+    <string name="allergies_empty_no_profile">Maak eerst het patiëntprofiel aan voordat je allergieën toevoegt.</string>
+    <string name="allergies_unnamed">deze allergie</string>
+
+    <plurals name="allergies_count">
+        <item quantity="zero">Geen allergieën</item>
+        <item quantity="one">%d allergie</item>
+        <item quantity="other">%d allergieën</item>
+    </plurals>
+
+    <string name="allergies_saved">Allergieën bijgewerkt ✓</string>
+
+    <string name="allergies_delete_title">🗑 Deze allergie verwijderen?</string>
+    <string name="allergies_delete_message">%1$s definitief verwijderen?</string>
+    <string name="allergies_delete_cancel">Annuleren</string>
+    <string name="allergies_delete_confirm">🗑 Verwijderen</string>
+
+    <!-- ─── Allergy form bottom sheet ─── -->
+    <string name="allergy_form_title_create">🩹  Allergie toevoegen</string>
+    <string name="allergy_form_title_edit">🩹  Allergie bewerken</string>
+
+    <string name="allergy_form_label_substance">Stof / Allergeen</string>
+    <string name="allergy_form_label_severity">Ernst</string>
+    <string name="allergy_form_label_status">Status</string>
+    <string name="allergy_form_label_mechanism">Mechanisme</string>
+    <string name="allergy_form_mechanism_helper">Bijv. IgE-gemedieerd, voedsel, enz.</string>
+    <string name="allergy_form_label_notes">Manifestatie / Notities</string>
+
+    <string name="allergy_form_substance_hint">Tik om een stof te kiezen</string>
+    <string name="allergy_form_substance_picker_title">Stof (SNOMED IPS)</string>
+
+    <string name="allergy_form_severity_high">⚠ Ernstig</string>
+    <string name="allergy_form_severity_low">Mild</string>
+    <string name="allergy_form_severity_unknown">Onbekend</string>
+
+    <string name="allergy_form_status_active">Actief</string>
+    <string name="allergy_form_status_inactive">Inactief</string>
+    <string name="allergy_form_status_resolved">Opgelost</string>
+
+    <string name="allergy_form_cancel">Annuleren</string>
+    <string name="allergy_form_save">💾  Opslaan</string>
+
+    <string name="allergy_form_validation_substance">Kies eerst een stof</string>
+    <string name="allergy_form_validation_catalog_empty">SNOMED-catalogus niet beschikbaar. Probeer opnieuw.</string>
+
+</resources>

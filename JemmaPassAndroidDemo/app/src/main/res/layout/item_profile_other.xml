@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_profile_other.xml — compact card for non-active profiles.
+    Tap : activate (Fragment swaps the pill to ★ ACTIVE and animates
+          this card up to top, replacing previous active. See choice 1.A).
+    Long-press : opens dialog_profile_long_press_menu (Activate / Edit /
+                 Export QR / Delete).
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/jemma_card_active"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/profile_other_emoji"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_avatar_circle"
+            android:gravity="center"
+            android:textSize="24sp"
+            tools:text="👵" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profile_other_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/jemma_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="Misako Henroonsen" />
+
+            <TextView
+                android:id="@+id/profile_other_meta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="11sp"
+                tools:text="♀ · 69 ans · O+ · 🇯🇵 ja" />
+
+            <TextView
+                android:id="@+id/profile_other_counts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/jemma_primary"
+                android:textSize="10sp"
+                tools:text="📛 1 al · 💊 1 méd" />
+        </LinearLayout>
+
+        <!-- Source badge — emojis showing how this profile was created -->
+        <TextView
+            android:id="@+id/profile_other_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:textSize="14sp"
+            android:visibility="gone"
+            tools:text="📷"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_media_play"
+            app:tint="@color/jemma_text_muted" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

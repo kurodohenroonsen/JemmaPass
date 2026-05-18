@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="xchk_title">Interaction clinique détectée</string>
+    <string name="xchk_new_item_prefix">Nouvel élément :</string>
+    <string name="xchk_section_existing_meds">Conflits avec les médicaments existants</string>
+    <string name="xchk_match_on">Correspondance : %1$s</string>
+    <string name="xchk_severity">Sévérité : %1$s</string>
+    <string name="xchk_en_disclaimer">ⓘ Les informations détaillées sont en anglais (langue de référence clinique).</string>
+    <string name="xchk_save_anyway">Enregistrer quand même</string>
+    <string name="xchk_cancel">Revoir</string>
+</resources>

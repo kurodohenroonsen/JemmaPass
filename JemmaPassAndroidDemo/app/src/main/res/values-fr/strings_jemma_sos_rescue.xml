@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_sos_rescue.xml (FR) — JEMMA Pass · v2.5.6
+-->
+<resources>
+
+    <!-- v2.5.2.1 baseline -->
+    <string name="bottom_nav_sos_rescue">SOS/Secours</string>
+    <string name="sos_rescue_hub_title">SOS / Secours</string>
+    <string name="sos_rescue_hub_subtitle">Choisis un mode pour continuer : envoyer un SOS comme victime, ou chercher des victimes comme secouriste.</string>
+    <string name="sos_rescue_hub_open_button">Choisir un mode</string>
+    <string name="mode_select_title">Choisis ton rôle</string>
+    <string name="mode_select_sos_title">SOS · J\'ai besoin d\'aide</string>
+    <string name="mode_select_sos_subtitle">Diffuser mon profil médical aux secouristes proches via le mesh Bluetooth.</string>
+    <string name="mode_select_rescuer_title">Secours · Je veux aider</string>
+    <string name="mode_select_rescuer_subtitle">Chercher des diffusions SOS et triager les victimes sur un radar en direct.</string>
+
+    <string name="radar_rescuer_title">📡 Radar Secouriste</string>
+    <string name="radar_rescuer_subtitle">Découverte + diffusion via Google Nearby Connections (P2P_CLUSTER).</string>
+    <string name="radar_btn_start">📡 DÉMARRER RADAR</string>
+    <string name="l3_radar_btn_stop">🛑 ARRÊTER RADAR</string>
+    <string name="radar_l3_disclaimer">L3 v2.5.2 placeholder (obsolète en v2.5.6).</string>
+
+    <string name="sos_broadcast_title">🆘 Diffusion SOS</string>
+    <string name="sos_broadcast_subtitle">Le service en avant-plan tient l\'icône d\'écran de verrouillage et fait tourner les chunks BLE.</string>
+    <string name="l3_sos_btn_start">🆘 ACTIVER SOS</string>
+    <string name="sos_btn_toggle">🔄 BASCULER DIFFUSION</string>
+    <string name="l3_sos_btn_stop">🛑 DÉSACTIVER SOS</string>
+    <string name="sos_l3_disclaimer">L3 v2.5.2 placeholder (obsolète en v2.5.6).</string>
+
+    <!-- v2.5.5 + v2.5.5.2 -->
+    <string name="sos_badge_idle">◉ Inactif</string>
+    <string name="sos_badge_paused">◉ En pause</string>
+    <string name="sos_badge_active_unknown">◉ Actif</string>
+    <string name="sos_badge_active_green">◉ Actif · Vert</string>
+    <string name="sos_badge_active_yellow">◉ Actif · Jaune</string>
+    <string name="sos_badge_active_red">◉ Actif · Critique</string>
+
+    <string name="sos_elapsed">%1$02d:%2$02d</string>
+
+    <string name="sos_profile_label">Profil diffusé</string>
+    <string name="sos_no_profile_selected">Aucun profil sélectionné</string>
+
+    <string name="sos_criticality_label">Niveau de triage</string>
+    <string name="crit_unknown">Inconnu</string>
+    <string name="crit_green">Vert</string>
+    <string name="crit_yellow">Jaune</string>
+    <string name="crit_red">Critique</string>
+    <string name="crit_unknown_short">⚪ Inconnu</string>
+    <string name="crit_green_short">🟢 Vert</string>
+    <string name="crit_yellow_short">🟡 Jaune</string>
+    <string name="crit_red_short">🔴 Critique</string>
+
+    <string name="sos_btn_pause_broadcast">🔇 Pause BLE</string>
+    <string name="sos_btn_resume_broadcast">🔊 Reprendre BLE</string>
+
+    <string name="sos_err_no_profile">⚠ Aucun profil sélectionné. Va dans l\'onglet Profils et choisis-en un.</string>
+    <string name="sos_err_start_failed">⚠ Impossible de démarrer le SOS : %1$s</string>
+
+    <string name="sos_rescuers_label">Secouristes détectés</string>
+    <string name="sos_rescuers_count">%d détecté(s)</string>
+    <string name="sos_rescuers_empty">Aucun secouriste à portée. Continue à diffuser — ils apparaîtront ici.</string>
+    <string name="rescuer_anon">Secouriste</string>
+
+    <string name="radar_header_count">%d victime(s) détectée(s)</string>
+    <string name="radar_gps_locked">GPS · %1$.5f, %2$.5f</string>
+    <string name="radar_gps_pending">GPS en attente…</string>
+    <string name="radar_empty_state">Aucune balise SOS à proximité.\nLe radar écoute.</string>
+    <string name="radar_victims_section_title">Victimes</string>
+    <string name="victim_anon">Victime anonyme</string>
+    <string name="victim_no_gps_rssi">Sans GPS · RSSI %d dBm</string>
+    <string name="victim_counts_format">⚠️ %1$d allergies · 💊 %2$d médicaments</string>
+    <string name="victim_seen_now">à l\'instant</string>
+    <string name="victim_seen_secs">vu il y a %ds</string>
+    <string name="victim_seen_mins">vu il y a %d min</string>
+
+    <string name="sos_radar_label">Autour de moi</string>
+    <string name="sos_radar_empty">Rien détecté sur le radar pour le moment.</string>
+
+    <!-- v2.5.6 -->
+    <string name="sos_state_broadcasting">◉ DIFFUSION</string>
+
+    <string name="sos_my_salt_section">Mon statut de triage</string>
+    <string name="sos_my_salt_format">Statut : %1$s</string>
+    <string name="sos_my_salt_none">Pas encore triagé</string>
+    <string name="sos_my_salt_none_desc">Aucun secouriste ne m\'a évalué pour l\'instant. Reste calme et attends.</string>
+
+    <string name="sos_victims_label">Autres victimes autour</string>
+    <string name="sos_victims_count">%d détectée(s)</string>
+    <string name="sos_victims_empty">Aucune autre victime détectée.</string>
+
+    <string name="salt_wait_label">WAIT</string>
+    <string name="salt_wait_desc">En attente d\'évaluation (priorité faible)</string>
+    <string name="salt_eval_label">EVAL</string>
+    <string name="salt_eval_desc">Évaluation en cours</string>
+    <string name="salt_stab_label">STAB</string>
+    <string name="salt_stab_desc">Stabilisé — pas d\'intervention immédiate</string>
+    <string name="salt_help_label">HELP</string>
+    <string name="salt_help_desc">A besoin d\'aide tout de suite</string>
+    <string name="salt_evac_label">EVAC</string>
+    <string name="salt_evac_desc">Prêt à être évacué</string>
+    <string name="salt_dcd_label">DCD</string>
+    <string name="salt_dcd_desc">Décédé</string>
+
+    <string name="triage_sheet_title">Triage SALT</string>
+    <string name="triage_current_status">%1$s Actuel : %2$s</string>
+    <string name="triage_btn_cancel">Annuler</string>
+    <string name="triage_btn_cancel_deceased">↺ Annuler décès (revival)</string>
+    <string name="triage_confirm_title">Confirmer la transition</string>
+    <string name="triage_confirm_msg">Marquer %3$s comme %1$s %2$s ?\n\nCette transition est semi-irréversible.</string>
+    <string name="triage_confirm_yes">Confirmer</string>
+    <string name="triage_confirm_no">Annuler</string>
+
+</resources>

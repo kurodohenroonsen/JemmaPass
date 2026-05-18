@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_kb_card.xml — single card representing the knowledge_full.db
+    download (~2.7 GB SQLite + FTS5). Same 4-state pattern as the model
+    cards, but with KB-specific stats : codes count, languages, FTS5 status.
+
+    Source : https://jemmapass.net/models/knowledge_full.db
+    Schema : ATC + RxNorm + SNOMED + DDinter + interactions_food
+             + terminology_latin (FTS5) + terminology_cjk (FTS5 trigram)
+
+    The card is NOT included multiple times ; we keep it inlined as one
+    single layout reused via include in fragment_settings.xml.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    app:cardBackgroundColor="@color/jemma_card_active"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header row -->
+        <LinearLayout
+            android:id="@+id/kb_card_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_avatar_circle"
+                android:gravity="center"
+                android:text="📚"
+                android:textSize="22sp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/kb_card_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kb_card_name"
+                    android:textColor="@color/jemma_text"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/kb_card_subtitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="monospace"
+                        android:textColor="@color/jemma_text_muted"
+                        android:textSize="11sp"
+                        tools:text="ATC · RxNorm · SNOMED · DDinter · FTS5" />
+
+                    <TextView
+                        android:id="@+id/kb_card_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:textColor="@color/jemma_primary"
+                        android:textSize="10sp"
+                        tools:text="2.7 GB" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/kb_card_status_pill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_pill_count"
+                android:fontFamily="monospace"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:textColor="@color/jemma_primary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:text="✓ CHARGÉE" />
+
+            <ImageView
+                android:id="@+id/kb_card_chevron"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="6dp"
+                android:src="@android:drawable/arrow_down_float"
+                app:tint="@color/jemma_text_muted" />
+
+        </LinearLayout>
+
+        <!-- Download progress (visible only during DL) -->
+        <LinearLayout
+            android:id="@+id/kb_card_progress_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="12dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ProgressBar
+                android:id="@+id/kb_card_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:max="100"
+                android:progressTint="@color/jemma_primary"
+                tools:progress="42" />
+
+            <TextView
+                android:id="@+id/kb_card_progress_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="monospace"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="10sp"
+                tools:text="1.2 GB / 2.7 GB · 18 MB/s · ~3 min restantes" />
+        </LinearLayout>
+
+        <!-- Expanded section (tap header to toggle) -->
+        <LinearLayout
+            android:id="@+id/kb_card_expanded_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="14dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <View style="@style/JemmaDivider"
+                  android:layout_marginTop="0dp"
+                  android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/kb_card_description"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="12sp" />
+
+            <!-- 4 stat cells : codes / languages / DDIs / FTS5 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/JemmaTelemetryLabel"
+                        android:text="@string/kb_stat_codes" />
+                    <TextView
+                        android:id="@+id/kb_card_stat_codes"
+                        style="@style/JemmaTelemetryValue"
+                        tools:text="891 K" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/JemmaTelemetryLabel"
+                        android:text="@string/kb_stat_langs" />
+                    <TextView
+                        android:id="@+id/kb_card_stat_langs"
+                        style="@style/JemmaTelemetryValue"
+                        tools:text="25" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/JemmaTelemetryLabel"
+                        android:text="@string/kb_stat_ddi" />
+                    <TextView
+                        android:id="@+id/kb_card_stat_ddi"
+                        style="@style/JemmaTelemetryValue"
+                        tools:text="300 K" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/JemmaTelemetryLabel"
+                        android:text="@string/kb_stat_fts" />
+                    <TextView
+                        android:id="@+id/kb_card_stat_fts"
+                        style="@style/JemmaTelemetryValue"
+                        tools:text="latin + cjk" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Source URL -->
+            <TextView
+                android:id="@+id/kb_card_source"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="monospace"
+                android:textColor="@color/jemma_primary"
+                android:textSize="10sp"
+                tools:text="https://jemmapass.net/models/knowledge_full.db" />
+
+            <!-- Actions -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/kb_card_btn_delete"
+                    style="@style/JemmaTextButton"
+                    android:layout_marginEnd="6dp"
+                    android:textColor="@color/jemma_danger"
+                    android:text="@string/btn_delete"
+                    android:visibility="gone"
+                    app:icon="@android:drawable/ic_menu_delete"
+                    app:iconTint="@color/jemma_danger" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/kb_card_btn_secondary"
+                    style="@style/JemmaTextButton"
+                    android:layout_marginEnd="6dp"
+                    android:visibility="gone"
+                    tools:text="Pause" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/kb_card_btn_primary"
+                    style="@style/JemmaPrimaryButton"
+                    android:layout_width="wrap_content"
+                    tools:text="Télécharger (2.7 GB)" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

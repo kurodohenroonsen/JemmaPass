@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_blindage_phase3.xml — JEMMA Pass · v2.6.0 · L_BLINDAGE phase 3
+  
+  Strings additionnelles pour ContactsEditFragment duplicate detection
+  dialog. Le warning_message contient un placeholder (le name), donc on
+  a besoin d'un title sans placeholder pour le MaterialAlertDialog title.
+-->
+<resources>
+    <string name="contact_form_duplicate_title">⚠ Duplicate detected</string>
+</resources>

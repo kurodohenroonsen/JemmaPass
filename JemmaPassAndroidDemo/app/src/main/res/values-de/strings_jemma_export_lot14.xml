@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_export_lot14.xml · DE -->
+<resources>
+
+    <!-- Menu item in the ProfileDetailFragment toolbar. -->
+    <string name="profile_detail_action_export">Exportieren</string>
+
+    <!-- QrViewerFragment error toasts. -->
+    <string name="qr_error_no_profile">Kein Profil zum Exportieren.</string>
+    <string name="qr_error_load_failed">Profil konnte nicht geladen werden.</string>
+    <string name="qr_error_encode_failed">QR-Kodierung fehlgeschlagen: %1$s</string>
+    <string name="qr_error_bitmap_failed">QR-Darstellung fehlgeschlagen.</string>
+
+    <!-- Save / Share action stubs — implemented in Lot 14.2. -->
+    <string name="qr_action_stub_save_lot14">In Galerie speichern — kommt in Lot 14.2 🐢</string>
+    <string name="qr_action_stub_share_lot14">Teilen — kommt in Lot 14.2 🐢</string>
+
+</resources>

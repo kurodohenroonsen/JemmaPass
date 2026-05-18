@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_pillar_tile_stub.xml — same shape as view_pillar_tile.xml but with
+    visual lock state (alpha 0.55 + lock badge instead of count). Used 4
+    times for the stub pillars (conditions, immunizations, procedures,
+    devices). Tap → opens fragment_pillar_stub explaining the IPS resource.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp">
+
+        <TextView
+            android:id="@+id/pillar_tile_stub_emoji"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.55"
+            android:gravity="center"
+            android:textSize="24sp"
+            tools:text="🩺" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_gravity="bottom|end"
+            android:src="@android:drawable/ic_lock_lock"
+            app:tint="@color/jemma_text_muted" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/pillar_tile_stub_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:alpha="0.7"
+        android:textColor="@color/jemma_text"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        tools:text="Cond." />
+
+</LinearLayout>

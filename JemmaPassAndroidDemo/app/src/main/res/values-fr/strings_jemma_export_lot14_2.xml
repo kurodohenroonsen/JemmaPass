@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_export_lot14_2.xml — Lot 14.2 (PHASE 14)
+
+    Strings ajoutées pour :
+      • les tabs des 3 channels (Pruned / Text / FHIR)
+      • le sélecteur de langue (FR / EN / JA) pour Channel 2
+      • le bouton play/pause du slideshow FHIR
+      • le bouton copy (clipboard) dans la title bar
+      • les Toasts feedback (copied / nothing-to-copy)
+-->
+<resources>
+
+    <!-- Tabs des 3 channels d'export. -->
+    <string name="qr_tab_pruned">📦 Compact</string>
+    <string name="qr_tab_text">🌐 Texte</string>
+    <string name="qr_tab_fhir">🏥 FHIR</string>
+
+    <!-- Sélecteur de langue (Channel 2 Text uniquement). -->
+    <string name="qr_lang_fr">🇫🇷 FR</string>
+    <string name="qr_lang_en">🇬🇧 EN</string>
+    <string name="qr_lang_ja">🇯🇵 JA</string>
+
+    <!-- Slideshow play/pause (Channel 3 FHIR multi-frame). -->
+    <string name="qr_play_pause">Lecture / pause du slideshow</string>
+
+    <!-- Copy clipboard (title bar). -->
+    <string name="qr_action_copy">Copier</string>
+    <string name="qr_copy_done">📋 Copié — %1$d caractères</string>
+    <string name="qr_copy_empty">Rien à copier (encode pas encore prêt).</string>
+    <string name="qr_copy_failed">Échec de la copie.</string>
+
+    <!-- Export PDF (title bar). -->
+    <string name="qr_action_pdf">Export PDF</string>
+
+    <!-- Format chip labels. -->
+    <string name="qr_format_chip_pruned">📦 _j2 · %1$dB · %2$s</string>
+    <string name="qr_format_chip_text">🌐 Texte %1$s · %2$dB · %3$s</string>
+    <string name="qr_format_chip_fhir">🏥 FHIR R4 · %1$dB · %2$s</string>
+    <string name="qr_frame_one">1 frame</string>
+    <string name="qr_frame_many">%1$d frames</string>
+
+</resources>

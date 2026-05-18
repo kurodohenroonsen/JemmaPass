@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="allergy_form_label_type">FHIR タイプ</string>
+    <string name="allergy_form_type_allergy">⚡ アレルギー</string>
+    <string name="allergy_form_type_intolerance">⚠️ 不耐症</string>
+
+    <string name="allergy_form_label_category">カテゴリ</string>
+    <string name="allergy_form_cat_food">🍴 食物</string>
+    <string name="allergy_form_cat_medication">💊 薬物</string>
+    <string name="allergy_form_cat_environment">🌿 環境</string>
+    <string name="allergy_form_cat_biologic">🧬 生物</string>
+
+    <string name="allergy_form_label_onset">発症日</string>
+    <string name="allergy_form_onset_hint">タップして日付を選択</string>
+    <string name="allergy_form_onset_pick_title">アレルギーの発覚日</string>
+    <string name="allergy_form_onset_clear_desc">日付を消去</string>
+
+    <string name="allergy_form_label_reaction">観察された反応</string>
+    <string name="allergy_form_reaction_hint">タップして選択 (蕁麻疹、アナフィラキシー…)</string>
+    <string name="allergy_form_reaction_picker_title">反応の症状</string>
+    <string name="allergy_form_reaction_clear_desc">反応を消去</string>
+    <string name="allergy_form_reaction_sev_mild">🟢 軽度</string>
+    <string name="allergy_form_reaction_sev_moderate">🟡 中等度</string>
+    <string name="allergy_form_reaction_sev_severe">🔴 重度</string>
+</resources>

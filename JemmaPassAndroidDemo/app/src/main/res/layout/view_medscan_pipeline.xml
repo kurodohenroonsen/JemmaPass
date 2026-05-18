@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_medscan_pipeline.xml — JEMMA Pass · v2.6.1
+
+    Inflated by PatientDetailFragment into the patient_scan_result_container
+    FrameLayout after the rescuer taps "📸 Scanner un médicament". Drives
+    the killer demo step-by-step rendering :
+
+      ┌─────────────────────────────────────────────┐
+      │ 🧠 Jemma analyse                            │
+      │ ┌─────────────────────────────────────────┐ │
+      │ │ 📷 Scan du blister      ✅  0.5s        │ │
+      │ │ 🔤 OCR (JA + latin)     🔄  …           │ │
+      │ │ 🔎 Identification       ⏳              │ │
+      │ │ 🚨 Vérification         ⏳              │ │
+      │ └─────────────────────────────────────────┘ │
+      │ ┌─────────────────────────────────────────┐ │
+      │ │ 🚨 ALERTE                               │ │
+      │ │ Pénicilline détectée vs allergie de    │ │
+      │ │ Kurodo (class:J01C) — NE PAS DONNER     │ │
+      │ │                       [Détails] [Fermer]│ │
+      │ └─────────────────────────────────────────┘ │
+      └─────────────────────────────────────────────┘
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/medscan_panel_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/medscan_panel_bg"
+    android:padding="12dp">
+
+    <!-- Header row : title + close X -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/medscan_header_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/medscan_header"
+            android:textColor="@color/jemma_text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/medscan_header_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#94A3B8"
+            android:textSize="12sp"
+            android:layout_marginEnd="8dp"
+            tools:text="· 1.2s" />
+
+        <TextView
+            android:id="@+id/medscan_btn_close"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:text="✕"
+            android:textColor="#94A3B8"
+            android:textSize="18sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+    </LinearLayout>
+
+    <!-- Step rows added dynamically by the Fragment -->
+    <LinearLayout
+        android:id="@+id/medscan_steps_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp" />
+
+    <!-- Verdict banner — hidden until a verdict is settled -->
+    <FrameLayout
+        android:id="@+id/medscan_verdict_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/medscan_verdict_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:background="@drawable/medscan_verdict_bg_neutral">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/medscan_verdict_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/jemmapass_icon"
+                    android:visibility="gone"
+                    android:importantForAccessibility="no" />
+
+                <TextView
+                    android:id="@+id/medscan_verdict_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="🚨 ALERTE — Allergie pénicilline" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/medscan_verdict_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                tools:text="Pénicilline (J01CA) croise classe bêta-lactam de Augmentin (J01CR02). NE PAS DONNER." />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

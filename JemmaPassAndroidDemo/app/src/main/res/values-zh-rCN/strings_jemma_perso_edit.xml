@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_jemma_perso_edit.xml · zh-CN
+  Note: gender glyphs (♂ ♀ ⚧ ⊘) kept identical across locales to avoid
+  AAPT2 reference issues (no leading '?').
+-->
+<resources>
+
+    <!-- Toolbar / hero -->
+    <string name="perso_edit_title">患者身份</string>
+    <string name="perso_edit_hero_title">身份</string>
+    <string name="perso_edit_hero_subtitle">FHIR Patient · IPS · 4 个活跃支柱</string>
+
+    <!-- Sections -->
+    <string name="perso_section_name">姓名</string>
+    <string name="perso_section_gender">性别</string>
+    <string name="perso_section_birth_date">出生日期</string>
+    <string name="perso_section_nationality">国籍</string>
+    <string name="perso_section_blood_type">血型</string>
+
+    <!-- Field labels -->
+    <string name="perso_label_given_name">名</string>
+    <string name="perso_label_family_name">姓</string>
+    <string name="perso_label_birth_date_hint">点击选择日期</string>
+    <string name="perso_label_nationality_hint">点击选择国家</string>
+
+    <!-- Gender toggle (mono-line, no '?' which AAPT2 parses as ?attr/) -->
+    <string name="perso_gender_m">♂ 男</string>
+    <string name="perso_gender_f">♀ 女</string>
+    <string name="perso_gender_o">⚧ 其他</string>
+    <string name="perso_gender_u">⊘ 未知</string>
+
+    <!-- Pickers -->
+    <string name="perso_blood_type_pick_title">血型</string>
+    <string name="perso_nationality_pick_title">国家 / 国籍</string>
+    <string name="perso_birth_date_pick_title">出生日期</string>
+    <string name="perso_pick_chevron">›</string>
+    <string name="perso_nationality_dash">—</string>
+    <string name="perso_blood_type_dash">—</string>
+
+    <!-- Save -->
+    <string name="perso_save_button">💾  保存</string>
+    <string name="perso_saved_created">档案已创建 ✓</string>
+    <string name="perso_saved_updated">档案已更新 ✓</string>
+
+    <!-- Validation errors -->
+    <string name="perso_validation_name_required">至少需要填写姓或名</string>
+    <string name="perso_validation_birth_required">出生日期为必填项 (IPS)</string>
+    <string name="perso_validation_nationality_format">国籍须为 ISO-3166 alpha-2 格式（如 BE、JP）</string>
+
+</resources>

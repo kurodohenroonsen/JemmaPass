@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_perso_edit_ips.xml · DE -->
+<resources>
+
+    <!-- ─── Section "Postal address" ─── -->
+    <string name="perso_section_address">📮  Postanschrift</string>
+    <string name="perso_address_hint">Vollständige Anschrift</string>
+    <string name="perso_address_helper">z. B. Rue de la Paix 12, 5660 Couvin, Belgien</string>
+
+    <!-- ─── Section "Patient telecom" ─── -->
+    <string name="perso_section_telecom">📞  Kontaktdaten des Patienten</string>
+    <string name="perso_telecom_helper">Telefon und E-Mail des Patienten selbst (getrennt von Notfallkontakten)</string>
+    <string name="perso_telecom_phone_hint">Telefon</string>
+    <string name="perso_telecom_email_hint">E-Mail</string>
+
+    <!-- ─── Section "Identifier" ─── -->
+    <string name="perso_section_identifier">🆔  Nationale Kennung</string>
+    <string name="perso_identifier_hint">Personalausweisnummer</string>
+    <string name="perso_identifier_helper">z. B. Melderegisternummer, Sozialversicherungsnummer, Personalausweisnummer</string>
+
+</resources>

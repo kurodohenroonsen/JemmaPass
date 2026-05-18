@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_export_lot14_2.xml · DE -->
+<resources>
+
+    <!-- 3 export channel tabs. -->
+    <string name="qr_tab_pruned">📦 Kompakt</string>
+    <string name="qr_tab_text">🌐 Text</string>
+    <string name="qr_tab_fhir">🏥 FHIR</string>
+
+    <!-- Language selector (Channel 2 Text only). -->
+    <string name="qr_lang_fr">🇫🇷 FR</string>
+    <string name="qr_lang_en">🇬🇧 EN</string>
+    <string name="qr_lang_ja">🇯🇵 JA</string>
+
+    <!-- Slideshow play/pause (Channel 3 FHIR multi-frame). -->
+    <string name="qr_play_pause">Slideshow abspielen / pausieren</string>
+
+    <!-- Copy clipboard (title bar). -->
+    <string name="qr_action_copy">Kopieren</string>
+    <string name="qr_copy_done">📋 Kopiert — %1$d Zeichen</string>
+    <string name="qr_copy_empty">Nichts zu kopieren (Encoder noch nicht bereit).</string>
+    <string name="qr_copy_failed">Kopieren fehlgeschlagen.</string>
+
+    <!-- Export PDF (title bar). -->
+    <string name="qr_action_pdf">PDF exportieren</string>
+
+    <!-- Format chip labels. -->
+    <string name="qr_format_chip_pruned">📦 _j2 · %1$dB · %2$s</string>
+    <string name="qr_format_chip_text">🌐 Text %1$s · %2$dB · %3$s</string>
+    <string name="qr_format_chip_fhir">🏥 FHIR R4 · %1$dB · %2$s</string>
+    <string name="qr_frame_one">1 Frame</string>
+    <string name="qr_frame_many">%1$d Frames</string>
+
+</resources>

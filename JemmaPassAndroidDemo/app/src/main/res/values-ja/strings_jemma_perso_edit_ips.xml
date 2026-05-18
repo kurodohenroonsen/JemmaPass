@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="perso_section_address">📮  住所</string>
+    <string name="perso_address_hint">完全な住所</string>
+    <string name="perso_address_helper">例: 〒107-0052 東京都港区赤坂1-2-3</string>
+
+    <string name="perso_section_telecom">📞  患者の連絡先</string>
+    <string name="perso_telecom_helper">患者本人の電話番号とメール (緊急連絡先とは別)</string>
+    <string name="perso_telecom_phone_hint">電話番号</string>
+    <string name="perso_telecom_email_hint">メールアドレス</string>
+
+    <string name="perso_section_identifier">🆔  本人確認番号</string>
+    <string name="perso_identifier_hint">ID番号</string>
+    <string name="perso_identifier_helper">例: マイナンバー、保険証番号など</string>
+</resources>

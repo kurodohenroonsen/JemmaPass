@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_blindage.xml (JA) — JEMMA Pass · v2.6.0 · L_BLINDAGE
+-->
+<resources>
+
+    <!-- ═══ Cross-Check Alert Dialog ═══ -->
+
+    <string name="xchk_title_medication">%1$s %2$s ：%3$s</string>
+    <string name="xchk_title_allergy">%1$s %2$s ：%3$s</string>
+
+    <string name="xchk_severity_major">重大</string>
+    <string name="xchk_severity_moderate">中程度</string>
+    <string name="xchk_severity_minor">軽度</string>
+    <string name="xchk_severity_unknown">不明</string>
+    <string name="xchk_severity_info">情報</string>
+
+    <string name="xchk_section_allergies">⚕ アレルギー衝突：</string>
+    <string name="xchk_section_ddi">⚕ 薬物相互作用：</string>
+    <string name="xchk_section_drug_disease">⚕ 疾患による禁忌：</string>
+    <string name="xchk_section_allergy_vs_meds">⚕ 既存の薬で衝突するもの：</string>
+
+    <string name="xchk_allergy_line">%1$s × %2$s（%3$s）</string>
+    <string name="xchk_ddi_line">[%1$s] %2$s × %3$s</string>
+    <string name="xchk_dd_line">[%1$s] %2$s × %3$s</string>
+    <string name="xchk_allergy_med_line">%1$s × %2$s（%3$s）</string>
+    <string name="xchk_alt_atc">💡 代替薬 ATC：%1$s</string>
+
+    <string name="xchk_matched_code">コード一致</string>
+    <string name="xchk_matched_name">名前一致</string>
+    <string name="xchk_matched_class">ATC クラス %1$s 経由</string>
+
+    <string name="xchk_button_save_anyway">それでも保存</string>
+    <string name="xchk_button_cancel">キャンセル</string>
+    <string name="xchk_button_save_anyway_a11y">それでも保存、臨床リスクのある操作</string>
+    <string name="xchk_button_cancel_a11y">キャンセルしてフォームに戻る、変更は保存されません</string>
+    <string name="xchk_a11y_role">臨床安全アラート</string>
+
+    <!-- ═══ Phone validation ═══ -->
+
+    <string name="phone_validation_too_short">電話番号が短すぎます（最小7桁）</string>
+    <string name="phone_validation_too_long">電話番号が長すぎます（最大18桁）</string>
+    <string name="phone_validation_invalid_chars">電話番号に無効な文字が含まれています</string>
+    <string name="phone_validation_missing_prefix">国際プレフィックスがありません（例：+32、+33、+81）</string>
+    <string name="phone_validation_will_normalize">保存形式：%1$s</string>
+
+    <!-- ═══ Date validation ═══ -->
+
+    <string name="date_validation_format">日付は YYYY-MM-DD 形式で入力してください</string>
+    <string name="date_validation_future">日付は未来にできません</string>
+    <string name="date_validation_too_old">150年以上前の日付です</string>
+
+    <!-- ═══ Patient form ═══ -->
+
+    <string name="perso_email_validation">メール形式が無効です</string>
+    <string name="perso_birthdate_tap_to_pick">タップして生年月日を選択</string>
+    <string name="perso_a11y_birthdate_picker">生年月日選択、現在 %1$s</string>
+    <string name="perso_a11y_gender_toggle">性別 %1$s、%2$s</string>
+    <string name="perso_a11y_blood_type_picker">血液型選択、現在 %1$s</string>
+    <string name="perso_a11y_nationality_picker">国籍選択、現在 %1$s</string>
+
+    <!-- ═══ Contact form ═══ -->
+
+    <string name="contact_form_phone_normalized">電話番号を正規化：%1$s</string>
+    <string name="contact_form_duplicate_warning">「%1$s」という連絡先が既に存在します。更新しますか？</string>
+    <string name="contact_form_duplicate_update">更新</string>
+    <string name="contact_form_duplicate_add_new">新規追加</string>
+    <string name="contact_form_duplicate_cancel">キャンセル</string>
+    <string name="contact_form_a11y_relation_picker">関係選択、現在 %1$s</string>
+    <string name="contact_form_a11y_phone_hint">電話番号、国際形式推奨</string>
+
+    <!-- ═══ Allergy form ═══ -->
+
+    <string name="allergy_form_xchk_in_progress">薬との衝突を確認中…</string>
+    <string name="allergy_form_xchk_clean">現在の薬と衝突はありません。</string>
+    <string name="allergy_form_notes_limit_warning">メモは500文字まで</string>
+    <string name="allergy_form_a11y_substance_picker">物質選択、現在 %1$s</string>
+    <string name="allergy_form_a11y_reaction_picker">反応選択、現在 %1$s</string>
+    <string name="allergy_form_a11y_severity_toggle">重症度 %1$s、%2$s</string>
+    <string name="allergy_form_a11y_status_toggle">状態 %1$s、%2$s</string>
+    <string name="allergy_form_a11y_category_toggle">カテゴリ %1$s、%2$s</string>
+    <string name="allergy_form_a11y_type_toggle">種類 %1$s、%2$s</string>
+
+    <!-- ═══ Medication form ═══ -->
+
+    <string name="medication_form_xchk_in_progress">プロファイルとの相互作用を確認中…</string>
+    <string name="medication_form_xchk_clean">現在のプロファイルと相互作用はありません。</string>
+    <string name="medication_form_dose_unit_hint">一般的な単位：mg、g、mcg、mL、IU、錠、カプセル</string>
+    <string name="medication_form_timing_chip_qd">1日1回</string>
+    <string name="medication_form_timing_chip_bid">1日2回</string>
+    <string name="medication_form_timing_chip_tid">1日3回</string>
+    <string name="medication_form_timing_chip_qid">1日4回</string>
+    <string name="medication_form_timing_chip_prn">頓服</string>
+    <string name="medication_form_timing_chip_qhs">就寝時</string>
+    <string name="medication_form_a11y_substance_picker">薬選択、現在 %1$s</string>
+    <string name="medication_form_a11y_route_toggle">投与経路 %1$s、%2$s</string>
+    <string name="medication_form_a11y_status_picker">状態選択、現在 %1$s</string>
+    <string name="medication_form_a11y_effective_picker">開始日選択、現在 %1$s</string>
+    <string name="medication_form_a11y_reason_picker">理由選択、現在 %1$s</string>
+
+    <!-- ═══ Accessibility helpers ═══ -->
+
+    <string name="a11y_state_selected">選択中</string>
+    <string name="a11y_state_not_selected">未選択</string>
+    <string name="a11y_state_empty">空</string>
+    <string name="a11y_action_open_picker">選択ダイアログを開く</string>
+    <string name="a11y_action_clear">値を消去</string>
+    <string name="a11y_action_pick_date">日付選択ダイアログを開く</string>
+
+</resources>

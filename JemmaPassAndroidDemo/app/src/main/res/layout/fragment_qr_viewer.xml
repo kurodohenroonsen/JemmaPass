@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_qr_viewer.xml — Lot 14.2 (PHASE 14)
+
+    Refonte de la vue QR pour exposer les 3 channels du HTML legacy :
+      • PRUNED (`_j2:<base64>`) — Channel 1, depuis Lot 14.1
+      • TEXT   (texte multilingue FR/EN/JA) — NEW Channel 2
+      • FHIR   (R4 Bundle, slideshow multi-frame) — NEW Channel 3
+
+    Structure :
+      ┌──────────────────────────────────────────────┐
+      │ ← Generated QR                          📋  │  ← copy menu
+      ├──────────────────────────────────────────────┤
+      │ [📦 Pruned] [🌐 Texte] [🏥 FHIR]            │  ← tabs (toggle)
+      │ [🇫🇷] [🇬🇧] [🇯🇵]   (visible si TEXT actif) │
+      │ Format chip : Pruned _j2 · 520B · 1 frame    │
+      │ ┌────────────────────────────────────────┐   │
+      │ │           [ QR IMAGE ]                 │   │
+      │ └────────────────────────────────────────┘   │
+      │      [⏮]  3 / 12  [⏭]   [▶/⏸]               │  ← play/pause FHIR
+      │      [💾 Save]  [📤 Share]                   │
+      └──────────────────────────────────────────────┘
+
+    Les boutons Save / Share restent stubs au Lot 14.2 (toast). Le
+    bouton 📋 Copy est wiré et fonctionnel (clipboard manager Android).
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/qr_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/menu_qr_viewer"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/qr_viewer_title"
+            app:titleTextColor="@color/jemma_primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Tabs : Pruned / Text / FHIR -->
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/qr_channel_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/qr_tab_pruned"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/qr_tab_pruned"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/qr_tab_text"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/qr_tab_text"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/qr_tab_fhir"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/qr_tab_fhir"
+                    android:textSize="12sp" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- Lang chips (visible uniquement quand tab Text actif). -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/qr_lang_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:visibility="gone"
+                app:singleLine="true"
+                app:singleSelection="true"
+                tools:visibility="visible">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/qr_lang_fr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/qr_lang_fr"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/qr_lang_en"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/qr_lang_en"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/qr_lang_ja"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/qr_lang_ja"
+                    android:textSize="14sp" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Format info chip. -->
+            <TextView
+                android:id="@+id/qr_format_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_pill_count"
+                android:fontFamily="monospace"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/jemma_primary"
+                android:textSize="11sp"
+                tools:text="Pruned _j2 · 520B · 1 frame" />
+
+            <!-- QR container — fixed aspect-ratio card. -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white">
+
+                    <ImageView
+                        android:id="@+id/qr_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/qr_image_cd"
+                        android:layout_margin="20dp"
+                        android:scaleType="fitCenter"
+                        tools:background="@android:color/black"
+                        tools:minHeight="320dp" />
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Multi-frame nav + play/pause (FHIR slideshow). -->
+            <LinearLayout
+                android:id="@+id/qr_frame_nav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageButton
+                    android:id="@+id/qr_btn_prev_frame"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/qr_prev_frame"
+                    android:src="@android:drawable/ic_media_previous"
+                    app:tint="@color/jemma_primary" />
+
+                <TextView
+                    android:id="@+id/qr_frame_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:fontFamily="monospace"
+                    android:textColor="@color/jemma_text"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="3 / 12" />
+
+                <ImageButton
+                    android:id="@+id/qr_btn_next_frame"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/qr_next_frame"
+                    android:src="@android:drawable/ic_media_next"
+                    app:tint="@color/jemma_primary" />
+
+                <!-- 🆕 Lot 14.2 — play/pause pour le slideshow FHIR. -->
+                <ImageButton
+                    android:id="@+id/qr_btn_play_pause"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/qr_play_pause"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="@color/jemma_primary" />
+            </LinearLayout>
+
+            <!-- Save / Share action buttons (toujours stubs au Lot 14.2). -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/qr_btn_save"
+                    style="@style/JemmaTextButton"
+                    android:layout_marginEnd="6dp"
+                    android:text="@string/qr_btn_save"
+                    app:icon="@android:drawable/ic_menu_save" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/qr_btn_share"
+                    style="@style/JemmaPrimaryButton"
+                    android:text="@string/qr_btn_share"
+                    app:icon="@android:drawable/ic_menu_share" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    dimens_jemma_profile_detail.xml — v2.2.16.4
+    Dimensions used by ProfileDetailFragment when it dynamically creates
+    TextView children for the allergies / medications / conditions /
+    alerts lists.
+-->
+<resources>
+    <dimen name="profile_detail_item_h_padding">12dp</dimen>
+    <dimen name="profile_detail_item_v_padding">8dp</dimen>
+</resources>

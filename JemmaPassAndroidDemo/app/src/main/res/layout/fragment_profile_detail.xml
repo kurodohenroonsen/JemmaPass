@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_profile_detail.xml — v2.2.16.4
+
+    Detail screen for a single profile. The Fragment hydrates the raw
+    JemmaProfileJ via JemmaProfileHydrator and populates this view.
+
+    Layout structure :
+
+        ┌─ AppBarLayout ─────────────────────────────┐
+        │  Toolbar (back button + name)              │
+        ├────────────────────────────────────────────┤
+        │  ScrollView                                │
+        │   ├─ Header (name, birth, blood)           │
+        │   ├─ Alert banner (red if Major DDI)       │
+        │   ├─ Allergies section                     │
+        │   ├─ Medications section                   │
+        │   ├─ Conditions section                    │
+        │   └─ Alerts section (DDI, allergy×med)     │
+        └────────────────────────────────────────────┘
+
+    The "list" containers are LinearLayouts that the Fragment populates
+    dynamically with TextView children (one per allergy/med/condition/alert).
+
+    `profile_detail_loading` is a centered ProgressBar shown while the
+    hydration coroutine is running (typically <100ms but can spike if KB
+    re-validates after a reload).
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/profile_detail_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/menu_profile_detail"
+            app:navigationIcon="@android:drawable/ic_menu_revert"
+            app:title="@string/profile_detail_screen_title"
+            app:titleTextColor="@color/jemma_primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Loading state (centered spinner). -->
+    <ProgressBar
+        android:id="@+id/profile_detail_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/jemma_primary"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <!-- Content (initially gone, shown once hydration completes). -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/profile_detail_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ════════════════════════════════════════════════════
+                 🆕 Lot 14.5c12 — Section "Piliers du profil" déplacée
+                 EN HAUT (entre toolbar et nom Kurodo) et rendue
+                 collapsable : seule la 1ère ligne est visible par défaut,
+                 tap sur le header chevron pour montrer/cacher le reste.
+
+                 Réordonnement Row 1 pour la démo :
+                   1. Patient (active)
+                   2. Allergies (active)
+                   3. Médicaments (active)
+                   4. Contacts d'urgence (STUB pour la démo — view_pillar_tile_stub
+                      avec cadenas + alpha 0.55 ; le tap ouvre la fiche FHIR
+                      style Vaccinations via PillarStubFragment).
+
+                 Le toggle visibility est porté par le Fragment dans
+                 onViewCreated (tap sur profile_detail_pillars_header).
+            ════════════════════════════════════════════════════ -->
+            <LinearLayout
+                android:id="@+id/profile_detail_pillars_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <!-- Header cliquable : titre + chevron. -->
+                <LinearLayout
+                    android:id="@+id/profile_detail_pillars_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:minHeight="44dp"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/profile_detail_pillars_title"
+                            android:textColor="@color/jemma_primary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/profile_detail_pillars_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:text="@string/profile_detail_pillars_subtitle"
+                            android:textColor="@color/jemma_text_muted"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/profile_detail_pillars_chevron"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:importantForAccessibility="no"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="4dp"
+                        android:text="▾"
+                        android:textColor="@color/jemma_primary"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <!-- ═══ Row 1 · TOUJOURS VISIBLE — Patient · Allergies · Médicaments · Contacts (stub) ═══ -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="6dp">
+                    <include
+                        android:id="@+id/profile_detail_tile_patient"
+                        layout="@layout/view_pillar_tile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                    <include
+                        android:id="@+id/profile_detail_tile_allergies"
+                        layout="@layout/view_pillar_tile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                    <include
+                        android:id="@+id/profile_detail_tile_medications"
+                        layout="@layout/view_pillar_tile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                    <!-- Contacts → STUB pour la démo (cadenas + alpha + tap = fiche FHIR). -->
+                    <include
+                        android:id="@+id/profile_detail_tile_contacts"
+                        layout="@layout/view_pillar_tile_stub"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <!-- ═══ Container collapsible — Rows 2 à 5 (visibility=gone par défaut) ═══ -->
+                <LinearLayout
+                    android:id="@+id/profile_detail_pillars_extra"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <!-- Row 2 · stubs -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp">
+                        <include
+                            android:id="@+id/profile_detail_tile_conditions"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <include
+                            android:id="@+id/profile_detail_tile_pastproblems"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <include
+                            android:id="@+id/profile_detail_tile_immunizations"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <include
+                            android:id="@+id/profile_detail_tile_procedures"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <!-- Row 3 · stubs -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp">
+                        <include
+                            android:id="@+id/profile_detail_tile_devices"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <include
+                            android:id="@+id/profile_detail_tile_functional"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <include
+                            android:id="@+id/profile_detail_tile_pregnancy"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <include
+                            android:id="@+id/profile_detail_tile_results"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <!-- Row 4 · stubs -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp">
+                        <include
+                            android:id="@+id/profile_detail_tile_advancedirectives"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <include
+                            android:id="@+id/profile_detail_tile_consents"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <include
+                            android:id="@+id/profile_detail_tile_goals"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <include
+                            android:id="@+id/profile_detail_tile_encounters"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <!-- Row 5 · stubs (2 tiles + 2 spacers) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp">
+                        <include
+                            android:id="@+id/profile_detail_tile_occupational"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <include
+                            android:id="@+id/profile_detail_tile_providers"
+                            layout="@layout/view_pillar_tile_stub"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ─── HEADER ─── -->
+            <TextView
+                android:id="@+id/profile_detail_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/jemma_primary"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:text="👤  Haru Nakamura" />
+
+            <TextView
+                android:id="@+id/profile_detail_meta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/jemma_text_secondary"
+                android:textSize="14sp"
+                tools:text="📅 1956-02-05 · 🩸 A+" />
+
+            <!-- ─── ALERT BANNER (red if major) ─── -->
+            <TextView
+                android:id="@+id/profile_detail_alert_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@color/jemma_alert_red_bg"
+                android:padding="12dp"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:text="⚠ 1 interaction MAJEURE détectée"
+                tools:visibility="visible" />
+
+            <!-- ─── ALLERGIES ─── -->
+            <LinearLayout
+                android:id="@+id/profile_detail_allergies_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/profile_detail_allergies_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="🩹 ALLERGIES (5)" />
+
+                <LinearLayout
+                    android:id="@+id/profile_detail_allergies_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <!-- ─── MEDICATIONS ─── -->
+            <LinearLayout
+                android:id="@+id/profile_detail_medications_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/profile_detail_medications_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="💊 MÉDICAMENTS (6)" />
+
+                <LinearLayout
+                    android:id="@+id/profile_detail_medications_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <!-- ─── CONDITIONS ─── -->
+            <LinearLayout
+                android:id="@+id/profile_detail_conditions_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/profile_detail_conditions_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="🩺 CONDITIONS (1)" />
+
+                <LinearLayout
+                    android:id="@+id/profile_detail_conditions_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <!-- ─── ALERTS ─── -->
+            <LinearLayout
+                android:id="@+id/profile_detail_alerts_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="40dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_detail_alerts_title"
+                    android:textColor="@color/jemma_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/profile_detail_alerts_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <!-- 🆕 Lot 14.5c12 — La section "Piliers du profil" a été déplacée
+                 en haut, juste après le HEADER name/meta. Voir ci-dessus. -->
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

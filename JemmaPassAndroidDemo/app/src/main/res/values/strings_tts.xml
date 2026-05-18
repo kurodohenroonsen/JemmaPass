@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tts_safe">No interactions detected.</string>
+
+    <string name="tts_major_allergy">Danger. Known allergy to %1$s. Do not administer.</string>
+    <string name="tts_major_ddi">Danger. Major interaction with %1$s. Do not administer.</string>
+    <string name="tts_major_condition">Danger. Contraindicated due to %1$s. Do not administer.</string>
+
+    <string name="tts_moderate_allergy">Caution. Cross-reactive allergy with %1$s. Consult a physician.</string>
+    <string name="tts_moderate_ddi">Caution. Moderate interaction with %1$s. Consult a physician.</string>
+    <string name="tts_moderate_condition">Caution. Caution due to %1$s. Consult a physician.</string>
+
+    <string name="tts_minor">Minor interaction noted with %1$s.</string>
+</resources>

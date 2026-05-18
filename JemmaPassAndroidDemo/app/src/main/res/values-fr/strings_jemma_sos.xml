@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    🆕 L1 v2.5.0 — JEMMA SOS notification strings (français).
+-->
+<resources>
+
+    <!-- Canal notification -->
+    <string name="jemma_sos_notif_channel_name">JEMMA SOS Beacon</string>
+    <string name="jemma_sos_notif_channel_description">JEMMA SOS Beacon — service de sécurité d\'urgence</string>
+
+    <!-- Diffusion active -->
+    <string name="jemma_sos_notif_title_broadcasting">🆘 SOS Beacon ACTIF</string>
+    <string name="jemma_sos_notif_text_broadcasting">Profil médical diffusé aux secouristes proches</string>
+    <string name="jemma_sos_notif_bigtext_broadcasting">Ton profil médical est diffusé aux secouristes proches via Bluetooth. Tape « ⏸ Stop » pour arrêter la diffusion.</string>
+    <string name="jemma_sos_notif_action_stop_broadcast">⏸ Stop diffusion</string>
+
+    <!-- Inactif (service prêt mais pas en diffusion) -->
+    <string name="jemma_sos_notif_title_idle">🐢 JEMMA prêt</string>
+    <string name="jemma_sos_notif_text_idle">Mode SOS activé — prêt à diffuser ton profil</string>
+    <string name="jemma_sos_notif_bigtext_idle">Mode SOS activé. Tape « 🆘 Diffuser » pour broadcaster ton profil médical d\'urgence aux secouristes équipés de JEMMA dans ton entourage.</string>
+    <string name="jemma_sos_notif_action_start_broadcast">🆘 Diffuser</string>
+
+    <!-- Toujours présent -->
+    <string name="jemma_sos_notif_action_disable">Désactiver</string>
+
+</resources>

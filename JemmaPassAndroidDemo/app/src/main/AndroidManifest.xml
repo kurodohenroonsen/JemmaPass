@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright 2025 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 🆕 L2 v2.5.1 — Removed legacy `package="be.heyman.android.jemmapassdemo"`
+         attribute which AGP no longer supports and was emitting :
+           "Setting the namespace via the package attribute in the source
+            AndroidManifest.xml is no longer supported, and the value is ignored."
+         The applicationId/namespace is read from build.gradle.kts.
+    -->
+
+    <uses-sdk
+        android:minSdkVersion="31"
+        android:compileSdkVersion ="35"
+        android:targetSdkVersion="35" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.apps.aicore.service.BIND_SERVICE" />
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         JEMMA : Firebase / FCM removed for privacy.
+         The original Edge Gallery declared :
+           - <uses-permission name="...c2dm.permission.RECEIVE" />
+           - <uses-permission name="...providers.gsf.permission.READ_GSERVICES" />
+           - <uses-permission name="...permission.GET_ACCOUNTS" />
+         All removed — JEMMA does not phone home.
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         JEMMA-specific permissions (Livraison_demo_permissions_1.2.0)
+
+         5 user-facing groups, 7 underlying runtime permissions on Android 13+ :
+           1. Camera        (already declared above by Google)
+           2. Microphone    (already declared above by Google as RECORD_AUDIO)
+           3. Bluetooth     (3 perms below — SCAN / ADVERTISE / CONNECT)
+           4. Location      (1 perm below — ACCESS_FINE_LOCATION)
+           5. Notifications (already declared above by Google as POST_NOTIFICATIONS)
+
+         The PermissionsFragment chains the 7 prompts in order at first launch
+         and blocks the user on this screen until all 5 cards are GRANTED.
+         If any required permission is denied, the demo is non-functional.
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- Bluetooth — JEMMA mesh SOS (Nearby Connections P2P_CLUSTER).
+         All 3 are runtime-prompted on Android 12+. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+        tools:targetApi="31" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE"
+        tools:targetApi="31" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"
+        tools:targetApi="31" />
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         🆕 v2.5.6.3 — WIFI permissions required by Nearby Connections
+         P2P_CLUSTER strategy (play-services-nearby 19.x).
+
+         Without these, all startDiscovery / startAdvertising* calls fail
+         immediately with ApiException 8032 MISSING_PERMISSION_ACCESS_WIFI_STATE
+         (verified empirically in the 05:48 mesh test logs — 9× rejections
+         in 14 seconds on the victim Samsung).
+
+         Plan A androidhtml had these declared from day one ; they were
+         silently dropped at the Plan A → Plan B port. Trap #16 in handoff.
+
+         • ACCESS_WIFI_STATE    : query WiFi connectivity state (Nearby
+                                  uses it to negotiate the best transport)
+         • CHANGE_WIFI_STATE    : start a P2P group (Nearby may upgrade
+                                  the connection from BLE → WiFi Direct)
+         • NEARBY_WIFI_DEVICES  : Android 13+ permission for WiFi-based
+                                  proximity scanning. Marked with
+                                  `usesPermissionFlags="neverForLocation"`
+                                  so it doesn't re-prompt location.
+         ═══════════════════════════════════════════════════════════════════ -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="33" />
+
+    <!-- Legacy BT permissions, only needed pre-API 31. We keep them with
+         a maxSdkVersion guard so the user is not prompted twice on modern
+         devices but the demo still installs on Android 11. -->
+    <uses-permission android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:maxSdkVersion="30" />
+
+    <!-- GPS — embedded in SOS chunks so rescuers find the victim on the radar. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- Foreground service variant for SOS broadcaster (location-bound, API 34+). -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"
+        tools:targetApi="34" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"
+        tools:targetApi="34" />
+
+    <!-- Vibration feedback when SOS chunk arrives (rescuer mode). -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Read photo from gallery — alternative to camera capture for medication
+         box scan (Android 13+ scoped storage). -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"
+        tools:targetApi="33" />
+
+    <!-- BLE hardware feature — declared as not-required so the app still
+         installs on devices without BLE (it just can't use the SOS demo). -->
+    <uses-feature android:name="android.hardware.bluetooth_le"
+        android:required="false" />
+    <!-- ═════ end JEMMA permissions ═════════════════════════════════════════ -->
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.camera.flash"
+        android:required="false" />
+
+    <application
+        android:name=".JemmaApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="${appIcon}"
+        android:label="JemmaAppDemo"
+        android:roundIcon="${appIcon}"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Gallery"
+        tools:targetApi="31">
+
+        <!--
+          ═══════════════════════════════════════════════════════════════════
+          JEMMA : Neutralize FirebaseInitProvider that may be merged in via
+          a transitive AAR dependency. The W/FirebaseApp warning at boot
+          ("Default FirebaseApp failed to initialize") comes from this
+          provider trying to bootstrap with no google-services.json.
+          tools:node="remove" tells the manifest merger to drop it entirely.
+          Also removes FirebaseInitProvider for play-services-measurement-api.
+          ═══════════════════════════════════════════════════════════════════
+        -->
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:authorities="${applicationId}.firebaseinitprovider"
+            tools:node="remove" />
+
+        <!--
+          ═══════════════════════════════════════════════════════════════════
+          JEMMA MainActivity — single Activity / multi Fragment, host of
+          nav_graph.xml. dest_permissions is the start destination, blocks
+          access to dest_profiles until all 5 mandatory permissions are
+          granted. Auto-skip on subsequent launches if everything is good.
+          ═══════════════════════════════════════════════════════════════════
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Jemma"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="uiMode"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          Edge Gallery's original MainActivity is kept for backward compat
+          with their deep-link scheme but is NO LONGER the launcher entry.
+          The MAIN/LAUNCHER intent-filter has been removed ; the VIEW filter
+          is preserved so deep links com.google.ai.edge.gallery://... still
+          work for whoever depends on them. JEMMA does not depend on it.
+        -->
+        <activity
+            android:name="com.google.ai.edge.gallery.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Gallery.SplashScreen"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="uiMode"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="com.google.ai.edge.gallery" />
+            </intent-filter>
+        </activity>
+
+        <!-- Set themes for activities that are used for viewing open source licenses -->
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Gallery.OssLicenses" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Gallery.OssLicenses" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false"
+            tools:node="merge">
+        </service>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             🆕 L1 v2.5.0 — JEMMA SOS Foreground Service.
+
+             The lock-screen / status-bar notification host that keeps
+             the SOS broadcast alive when the user backgrounds the app
+             (or even when the screen is locked, in a real emergency).
+
+             foregroundServiceType="connectedDevice|location" :
+               • connectedDevice  → BLE advertising (Nearby Connections
+                 P2P_CLUSTER) is a "connected device" workload on API 34+.
+               • location         → The GPS guard (≤ 100 m accuracy) is
+                 read continuously while broadcasting so the rescuer
+                 sees the freshest victim position on the radar.
+
+             Both types are required-permissions on Android 14 ; the
+             corresponding FOREGROUND_SERVICE_* permissions are already
+             declared in <uses-permission> at the top of this manifest.
+
+             exported="false" : nothing outside our app needs to bind.
+             ═══════════════════════════════════════════════════════════════ -->
+        <service
+            android:name=".sos.JemmaSosService"
+            android:foregroundServiceType="connectedDevice|location"
+            android:exported="false" />
+
+        <!-- 🆕 v2.6.2a.3 — Task shutdown hook.
+             ═══════════════════════════════════════════════════════════════
+             A passive Service whose ONLY job is to be alive when the user
+             swipes the app from recents, so that `onTaskRemoved` fires and
+             we can call `RadarController.sosStop() + radarStop()` BEFORE
+             Android kills the process. Without this, the Nearby Connections
+             broadcasts continue to advertise/discover for ~30+ seconds
+             after the swipe and other devices in the mesh keep relaying
+             stale chunks.
+
+             android:stopWithTask="false" is ESSENTIAL — it tells Android
+             to KEEP the service alive past the task's removal so we get
+             our onTaskRemoved callback. Without it, Android stops the
+             service before firing the hook and we miss the event.
+             ═══════════════════════════════════════════════════════════════ -->
+        <service
+            android:name=".sos.JemmaTaskShutdownService"
+            android:exported="false"
+            android:stopWithTask="false" />
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             🆕 JEMMA Emergency Widget (Lockscreen / Home)
+             ═══════════════════════════════════════════════════════════════ -->
+        <receiver
+            android:name=".sos.JemmaEmergencyWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/jemma_emergency_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".sos.JemmaWidgetEmergencyService"
+            android:foregroundServiceType="connectedDevice"
+            android:exported="false" />
+
+        <!-- For Firebase Analytics. -->
+        <receiver
+            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <service android:name="com.google.android.gms.measurement.AppMeasurementService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             JEMMA : Firebase Cloud Messaging service removed for privacy.
+             Originally :
+               <service android:name=".GalleryFcmMessagingService" ...>
+                 <intent-filter>
+                   <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                 </intent-filter>
+               </service>
+               <meta-data
+                 android:name="com.google.firebase.messaging.default_notification_channel_id"
+                 android:value="gallery_high_priority_push_channel" />
+             ═══════════════════════════════════════════════════════════════ -->
+
+        <uses-native-library android:name="libvndksupport.so" android:required="false"/>
+        <uses-native-library android:name="libOpenCL.so" android:required="false"/>
+        <uses-native-library android:name="libcdsprpc.so" android:required="false" />
+        <uses-native-library android:name="libedgetpu_litert.so" android:required="false" />
+    </application>
+
+</manifest>

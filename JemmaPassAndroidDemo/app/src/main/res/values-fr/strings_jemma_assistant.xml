@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_assistant.xml — French (fr).
+    Traduction des clés EN par défaut. Tutoiement (convention JEMMA).
+-->
+<resources>
+
+    <!-- ─── Bottom sheet : choix du mode d'entrée ─── -->
+    <string name="assistant_sheet_title_medications">Ajouter un médicament</string>
+    <string name="assistant_sheet_title_allergies">Ajouter une allergie</string>
+    <string name="assistant_sheet_title_contacts">Ajouter un contact</string>
+    <string name="assistant_sheet_title_conditions">Ajouter une pathologie</string>
+    <string name="assistant_sheet_title_generic">Ajouter une entrée</string>
+
+    <string name="assistant_section_header">Assistant Jemma</string>
+    <string name="assistant_section_header_cd">Section Assistant Jemma, avec quatre modes d\'entrée.</string>
+
+    <string name="assistant_mode_photo">Scanner un médicament</string>
+    <string name="assistant_mode_photo_sub">Une boîte de médicament à la fois</string>
+    <string name="assistant_mode_photo_cd">Scanner un médicament. Utilise la caméra pour photographier une seule boîte de médicament. L\'assistant extrait et structure les données. Seul mode actif pendant la démo du concours.</string>
+
+    <string name="assistant_mode_livescan">Scanner un document</string>
+    <string name="assistant_mode_livescan_sub">Ordonnance, carnet vaccinal…</string>
+    <string name="assistant_mode_livescan_cd">Scanner un document multi-pages comme une ordonnance ou un carnet vaccinal. Indisponible pour la démo.</string>
+
+    <string name="assistant_mode_voice">Dicter à voix haute</string>
+    <string name="assistant_mode_voice_sub">Parle naturellement, l\'assistant structure.</string>
+    <string name="assistant_mode_voice_cd">Dicter à voix haute. Parle naturellement, l\'assistant transcrit et structure ce que tu dis.</string>
+
+    <string name="assistant_mode_text">Coller ou écrire du texte</string>
+    <string name="assistant_mode_text_sub">Depuis un mail, un PDF, un SMS…</string>
+    <string name="assistant_mode_text_cd">Coller ou écrire du texte libre. Pratique pour du contenu copié depuis un mail, un PDF ou un SMS.</string>
+
+    <string name="assistant_sheet_divider_or">— ou —</string>
+    <string name="assistant_sheet_manual">Saisir manuellement</string>
+    <string name="assistant_sheet_manual_cd">Saisir manuellement. Ouvre le formulaire classique sans assistant.</string>
+
+    <!-- ─── Banner CTA Patient (fragment_perso_edit) ─── -->
+    <string name="assistant_patient_banner_title">Remplir avec l\'Assistant Jemma</string>
+    <string name="assistant_patient_banner_sub">Photo d\'une carte d\'identité, passeport, carte vitale, ou voix.</string>
+    <string name="assistant_patient_banner_cd">Appel à l\'action : remplir le formulaire d\'identité avec l\'Assistant Jemma. Touche pour démarrer.</string>
+
+    <!-- ─── Écran d'orchestration du pipeline ─── -->
+    <string name="assistant_pipeline_title_medications">Assistant · Médicaments</string>
+    <string name="assistant_pipeline_title_allergies">Assistant · Allergies</string>
+    <string name="assistant_pipeline_title_contacts">Assistant · Contacts</string>
+    <string name="assistant_pipeline_title_patient">Assistant · Identité</string>
+    <string name="assistant_pipeline_title_conditions">Assistant · Pathologies</string>
+    <string name="assistant_pipeline_title_generic">Assistant Jemma</string>
+
+    <string name="assistant_capture_preview_cd">Aperçu de l\'image capturée.</string>
+    <string name="assistant_capture_empty">Aucune capture pour le moment</string>
+    <string name="assistant_capture_empty_cd">Aucune capture pour le moment. Touche le bouton caméra ou colle du texte pour démarrer.</string>
+
+    <string name="assistant_step_1_title">1 · Extraction du texte (OCR)</string>
+    <string name="assistant_step_2_title">2 · Compréhension (Gemma 4)</string>
+    <string name="assistant_step_3_title">3 · Recherche (Base clinique)</string>
+    <string name="assistant_step_4_title">4 · Validation (Jemma Vision)</string>
+
+    <string name="assistant_step_status_waiting">En attente</string>
+    <string name="assistant_step_status_running">En cours…</string>
+    <string name="assistant_step_status_done">Terminé</string>
+    <string name="assistant_step_status_error">Erreur — touche pour réessayer</string>
+
+    <string name="assistant_step_announce_running">Étape %1$d démarrée : %2$s</string>
+    <string name="assistant_step_announce_done">Étape %1$d terminée : %2$s</string>
+    <string name="assistant_step_announce_error">Étape %1$d échouée : %2$s</string>
+
+    <string name="assistant_pipeline_btn_cancel">Annuler</string>
+    <string name="assistant_pipeline_btn_preview">Aperçu</string>
+    <string name="assistant_pipeline_btn_preview_cd">Ouvre le formulaire pré-rempli pour vérifier et enregistrer.</string>
+    <string name="assistant_pipeline_disclaimer">⚠ L\'assistant pré-remplit le formulaire. Vérifie systématiquement chaque champ avant d\'enregistrer.</string>
+
+    <!-- ─── Stubs assistant-only (14 piliers IPS inactifs) ─── -->
+    <string name="assistant_stub_title_vaccinations">Vaccinations</string>
+    <string name="assistant_stub_title_procedures">Procédures</string>
+    <string name="assistant_stub_title_devices">Dispositifs</string>
+    <string name="assistant_stub_title_past_problems">Antécédents</string>
+    <string name="assistant_stub_title_functional">Statut fonctionnel</string>
+    <string name="assistant_stub_title_pregnancy">Grossesse</string>
+    <string name="assistant_stub_title_results">Résultats de laboratoire</string>
+    <string name="assistant_stub_title_advance_directives">Directives anticipées</string>
+    <string name="assistant_stub_title_consents">Consentements</string>
+    <string name="assistant_stub_title_goals">Objectifs de soins</string>
+    <string name="assistant_stub_title_encounters">Rencontres / visites</string>
+    <string name="assistant_stub_title_occupational">Données professionnelles</string>
+    <string name="assistant_stub_title_providers">Équipe de soins</string>
+    <string name="assistant_stub_title_conditions">Pathologies actives</string>
+
+    <string name="assistant_stub_pitch">Ce pilier est piloté par l\'Assistant.</string>
+    <string name="assistant_stub_pitch_sub">Scanne, dicte ou colle — Jemma structure tout seul.</string>
+    <string name="assistant_stub_btn_scan">📸 Scanner</string>
+    <string name="assistant_stub_btn_voice">🎤 Dicter</string>
+    <string name="assistant_stub_btn_text">⌨️ Texte</string>
+    <string name="assistant_stub_btn_scan_cd">Scanner un document lié à ce pilier.</string>
+    <string name="assistant_stub_btn_voice_cd">Dicter le contenu de ce pilier.</string>
+    <string name="assistant_stub_btn_text_cd">Saisir ou coller le contenu texte de ce pilier.</string>
+
+    <!-- ─── Toasts (preview design uniquement au Lot 14.3) ─── -->
+    <string name="assistant_toast_design_preview">Lot 14.3 — aperçu design uniquement · le branchement arrive au Lot 14.4. 🐢</string>
+
+    <!-- ─── 🆕 Lot 14.4 — Écran preview batch (fiche multi-médocs) ─── -->
+    <string name="assistant_multi_title">%1$d médicaments détectés</string>
+    <string name="assistant_multi_subtitle">Décoche les entrées que tu ne veux pas enregistrer.</string>
+    <string name="assistant_multi_select_all">Tout sélectionner</string>
+    <string name="assistant_multi_unselect_all">Tout désélectionner</string>
+    <string name="assistant_multi_save_n">Enregistrer %1$d</string>
+    <string name="assistant_multi_save_none">Aucune entrée sélectionnée</string>
+    <string name="assistant_multi_row_resolved_atc">ATC %1$s · %2$s</string>
+    <string name="assistant_multi_row_resolved_none">⚠ Code non résolu</string>
+    <string name="assistant_multi_row_check_cd">Coche ou décoche %1$s pour l\'inclure dans la sauvegarde par lot.</string>
+    <string name="assistant_multi_empty_title">Aucun médicament détecté</string>
+    <string name="assistant_multi_empty_sub">Essaie une photo plus nette ou colle le texte manuellement.</string>
+
+    <!-- ─── 🆕 Lot 14.5a — Picker source photo (Caméra vs Galerie) ─── -->
+    <string name="assistant_photo_source_title">D\'où vient la photo ?</string>
+    <string name="assistant_photo_source_camera">📷 Prendre une photo</string>
+    <string name="assistant_photo_source_gallery">🖼️ Choisir dans la galerie</string>
+    <string name="assistant_photo_source_cancel">Annuler</string>
+    <string name="assistant_photo_permission_camera_denied">Permission caméra refusée. Essaie la galerie à la place.</string>
+    <string name="assistant_photo_capture_failed">Échec de la capture photo.</string>
+
+    <!-- ─── 🆕 Lot 14.5a — Step OCR (japonais : kanji + hiragana + katakana + latin) ─── -->
+    <string name="assistant_step_ocr_running">Lecture du texte (JP + Latin)…</string>
+    <string name="assistant_step_ocr_done_chars">%1$d caractères · %2$d blocs · %3$d ms</string>
+    <string name="assistant_step_ocr_done_preview">Extrait : %1$s</string>
+    <string name="assistant_step_ocr_empty">Aucun texte détecté. Essaie une photo plus nette.</string>
+    <string name="assistant_step_ocr_failed">OCR échoué : %1$s</string>
+    <string name="assistant_step_pending_lot_14_5b">En attente du branchement Gemma + KB (Lot 14.5b)</string>
+
+    <!-- ─── 🆕 Lot 14.5b — Document Scanner + multi-pages ─── -->
+    <string name="assistant_pages_chip_single">1 page</string>
+    <string name="assistant_pages_chip_plural">%1$d pages</string>
+    <string name="assistant_pages_chip_position">Page %1$d / %2$d</string>
+    <string name="assistant_step_ocr_running_page">Lecture page %1$d / %2$d (JP + Latin)…</string>
+    <string name="assistant_step_ocr_done_multipage">%1$d pages · %2$d caractères · %3$d blocs · %4$d ms</string>
+    <string name="assistant_step_pending_lot_14_5c">En attente du branchement Gemma + KB (Lot 14.5c)</string>
+
+    <!-- ─── 🆕 Lot 14.5c — Étapes Gemma + KB + save batch ─── -->
+    <string name="assistant_step_gemma_running">Identification par Gemma en cours…</string>
+    <string name="assistant_step_kb_running">Résolution dans la base clinique…</string>
+    <string name="assistant_step_vision_running">Validation visuelle par Jemma Vision en cours…</string>
+    <string name="assistant_step_vision_failed">Validation visuelle échouée : %1$s</string>
+    <string name="assistant_step_gemma_failed">Extraction Gemma échouée : %1$s</string>
+    <string name="assistant_step_no_candidates">Gemma n\'a rien identifié. Essaie une photo plus nette.</string>
+    <string name="assistant_save_no_profile">Pas de profil actif pour enregistrer.</string>
+    <string name="assistant_save_success">%1$d médicament(s) ajouté(s).</string>
+    <!-- 🔧 Lot 14.5c4b hotfix -->
+    <string name="assistant_save_failed">Échec de l\'enregistrement : %1$s</string>
+    <!-- ─── 🆕 Lot 14.5c3 — Multi-preview row : skipped + page label ─── -->
+    <string name="assistant_multi_row_skipped">❌ Non identifié</string>
+    <!-- 🔧 Lot 14.5c4b hotfix -->
+    <string name="assistant_multi_row_page_n">Page %1$d</string>
+    <!-- ─── 🆕 Lot 14.5c4 — Cross-check alertes dans le multi-preview ─── -->
+    <plurals name="assistant_alerts_header">
+        <item quantity="one">⚠️ %1$d alerte clinique détectée</item>
+        <item quantity="other">⚠️ %1$d alertes cliniques détectées</item>
+    </plurals>
+    <string name="assistant_alerts_subtitle_with_majors">%1$d majeure(s) · %2$d modérée(s) · profil virtuel après ajout</string>
+    <string name="assistant_alerts_subtitle_no_majors">%1$d modérée(s) · profil virtuel après ajout</string>
+
+    <!-- ─── 🆕 Lot 14.5c7 — Vulgariser une alerte via Gemma ─── -->
+    <string name="assistant_alert_btn_vulgarise">✨ Expliquer simplement</string>
+    <string name="assistant_alert_btn_vulgarising">✨ Explication en cours…</string>
+    <string name="assistant_alert_btn_relancer">🔄 Relancer</string>
+    <string name="assistant_alert_vulgarise_header">✨ Expliqué simplement :</string>
+    <string name="assistant_alert_vulgarise_failed">⚠️ Impossible de vulgariser cette alerte. Tape le bouton pour réessayer.</string>
+
+    <!-- 🆕 Lot 14.5c11 — Badge "démo" sur le mode actif (Scanner un médicament).
+         Les autres modes du sheet sont grisés (alpha 0.35) pour la démo du
+         concours JEMMA. Le badge orange marque le seul mode utilisable. -->
+    <string name="assistant_mode_demo_badge">démo</string>
+    <string name="assistant_mode_demo_badge_cd">Mode actif pour la démo du concours JEMMA</string>
+    <string name="assistant_mode_disabled_demo_toast">Indisponible dans la démo du concours</string>
+    <!-- 🆕 Lot 14.5c14 — Message Toast quand l'user choisit "Dicter à voix
+         haute" sur le sheet Allergies : pipeline non encore branché, fallback
+         vers le form manuel. -->
+    <string name="allergies_voice_pipeline_soon">🎤 Pipeline voix bientôt disponible — passe par le form manuel pour l\'instant.</string>
+
+    <!-- 🆕 Lot 14.5c15 — Sub-text contextuel allergies pour le mode "Scanner
+         un document" (carte allergies, rapports d'IgE, prick test, etc.). -->
+    <string name="assistant_mode_livescan_sub_allergies">Carte des allergies, rapport de tests, IgE…</string>
+</resources>

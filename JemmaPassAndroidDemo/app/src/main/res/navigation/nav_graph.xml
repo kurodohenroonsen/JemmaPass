@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    nav_graph.xml — Single-Activity navigation graph. The Fragment classes
+    are NOT yet implemented (we only ship layouts in this build) ; the
+    `android:name` attribute uses placeholder names that resolve when the
+    matching Fragment subclasses are added later.
+-->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/dest_permissions">
+
+    <!--
+        Onboarding sequence on first launch :
+            permissions → splash → home
+
+        On subsequent launches the PermissionsFragment auto-skips to splash
+        immediately if all 5 required permissions are already granted.
+    -->
+    <fragment
+        android:id="@+id/dest_permissions"
+        android:name="be.heyman.android.jemmapassdemo.ui.permissions.PermissionsFragment"
+        android:label="Permissions"
+        tools:layout="@layout/fragment_permissions">
+        <action
+            android:id="@+id/action_permissions_to_profiles"
+            app:destination="@id/dest_profiles"
+            app:popUpTo="@id/dest_permissions"
+            app:popUpToInclusive="true" />
+        <!--
+            v2.2.10 : alternative auto-route when permissions are OK but the
+            preflight is not yet complete (no Gemma model AND/OR no KB on
+            disk). The user lands on Settings to download the missing pieces
+            instead of being teased with an empty Profiles screen.
+        -->
+        <action
+            android:id="@+id/action_permissions_to_settings"
+            app:destination="@id/dest_settings"
+            app:popUpTo="@id/dest_permissions"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!--
+        dest_profiles is the new home of the app after permissions. Replaces
+        dest_home in the bottom nav and as the post-permissions destination.
+        Hosts the active-profile rich card (with embedded pillars grid) +
+        the list of other profiles + FAB to create new profiles.
+    -->
+    <fragment
+        android:id="@+id/dest_profiles"
+        android:name="be.heyman.android.jemmapassdemo.ui.profiles.ProfilesFragment"
+        android:label="@string/profiles_title"
+        tools:layout="@layout/fragment_profiles">
+        <action
+            android:id="@+id/action_profiles_to_perso"
+            app:destination="@id/dest_perso" />
+        <action
+            android:id="@+id/action_profiles_to_contacts"
+            app:destination="@id/dest_contacts" />
+        <action
+            android:id="@+id/action_profiles_to_allergies"
+            app:destination="@id/dest_allergies" />
+        <action
+            android:id="@+id/action_profiles_to_medications"
+            app:destination="@id/dest_medications" />
+        <action
+            android:id="@+id/action_profiles_to_pillar_stub"
+            app:destination="@id/dest_pillar_stub" />
+        <action
+            android:id="@+id/action_profiles_to_export"
+            app:destination="@id/dest_export_hub" />
+        <action
+            android:id="@+id/action_profiles_to_sos"
+            app:destination="@id/dest_sos_broadcast" />
+        <action
+            android:id="@+id/action_profiles_to_settings"
+            app:destination="@id/dest_settings" />
+        <!-- v2.3.0a — QR import scan -->
+        <action
+            android:id="@+id/action_profiles_to_qr_import"
+            app:destination="@id/dest_qr_import_scan" />
+        <!-- v2.2.16.4 — Profile detail (rich card) -->
+        <action
+            android:id="@+id/action_profiles_to_detail"
+            app:destination="@id/dest_profile_detail" />
+        <!-- 🆕 L4 v2.5.4 — IPS Pillars Gallery -->
+        <action
+            android:id="@+id/action_profiles_to_gallery"
+            app:destination="@id/dest_pillars_gallery" />
+    </fragment>
+
+    <!-- 🆕 L4 v2.5.4 — Standalone gallery exposing the 18 IPS pillars
+         as clickable tiles. Each tile navigates to dest_pillar_stub
+         with the matching `pillarKey` argument. -->
+    <fragment
+        android:id="@+id/dest_pillars_gallery"
+        android:name="be.heyman.android.jemmapassdemo.ui.profiles.PillarsGalleryFragment"
+        android:label="@string/gallery_title"
+        tools:layout="@layout/fragment_pillars_gallery">
+        <action
+            android:id="@+id/action_gallery_to_pillar_stub"
+            app:destination="@id/dest_pillar_stub" />
+        <!-- 🆕 v2.6.0 L5 — Active pillar routing : patient → perso edit -->
+        <action
+            android:id="@+id/action_gallery_to_perso"
+            app:destination="@id/dest_perso" />
+        <!-- 🆕 v2.6.0 L5b — Active pillar routing : contacts → contacts edit -->
+        <action
+            android:id="@+id/action_gallery_to_contacts"
+            app:destination="@id/dest_contacts" />
+        <!-- 🆕 v2.6.0 L5c — Active pillar routing : allergies → allergies edit -->
+        <action
+            android:id="@+id/action_gallery_to_allergies"
+            app:destination="@id/dest_allergies" />
+        <!-- 🆕 v2.6.0 L5d — Active pillar routing : medications → medications edit -->
+        <action
+            android:id="@+id/action_gallery_to_medications"
+            app:destination="@id/dest_medications" />
+    </fragment>
+
+    <!--
+        v2.3.0a — QR import scanner. CameraX + ML Kit Barcode. Decodes
+        `_j 1.2` payloads (compressed `_j2:...` or legacy JSON) and shows
+        a confirmation dialog. Persistence lands in v2.3.0b.
+    -->
+    <fragment
+        android:id="@+id/dest_qr_import_scan"
+        android:name="be.heyman.android.jemmapassdemo.ui.profiles.import_qr.QrImportScanFragment"
+        android:label="@string/qr_import_title"
+        tools:layout="@layout/fragment_qr_import_scan" />
+
+    <!--
+        dest_splash + dest_home are KEPT in the graph for now (no breaking
+        changes to existing layouts/fragments) but are no longer reachable
+        from the normal flow. We'll remove them in a later cleanup once the
+        Kotlin migration to dest_profiles is complete.
+    -->
+
+    <fragment
+        android:id="@+id/dest_splash"
+        android:name="be.heyman.android.jemmapassdemo.ui.splash.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splash_to_home"
+            app:destination="@id/dest_home"
+            app:popUpTo="@id/dest_splash"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_home"
+        android:name="be.heyman.android.jemmapassdemo.ui.home.HomeFragment"
+        android:label="@string/nav_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_perso"
+            app:destination="@id/dest_perso" />
+        <action
+            android:id="@+id/action_home_to_contacts"
+            app:destination="@id/dest_contacts" />
+        <action
+            android:id="@+id/action_home_to_allergies"
+            app:destination="@id/dest_allergies" />
+        <action
+            android:id="@+id/action_home_to_medications"
+            app:destination="@id/dest_medications" />
+        <action
+            android:id="@+id/action_home_to_pillar_stub"
+            app:destination="@id/dest_pillar_stub" />
+        <action
+            android:id="@+id/action_home_to_export"
+            app:destination="@id/dest_export_hub" />
+        <action
+            android:id="@+id/action_home_to_sos"
+            app:destination="@id/dest_sos_broadcast" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_perso"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.perso.PatientEditFragment"
+        android:label="@string/perso_edit_title"
+        tools:layout="@layout/fragment_perso_edit">
+        <!-- 🆕 v2.6.0 L5 — profileId arg : null = create-new, non-null = edit
+             existing. PillarsGalleryFragment passes the current profile id;
+             a future "create new profile" entry point can navigate with null. -->
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <!-- 🆕 Lot 14.5c35 — true if we should consume the PatientHandoff
+             (i.e. we just came back from the patient vision pipeline). -->
+        <argument
+            android:name="consumeHandoff"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <!-- 🆕 Lot 14.4 — Action sortante depuis le banner CTA "Assistant Jemma"
+             en tête de fragment_perso_edit. -->
+        <action
+            android:id="@+id/action_perso_to_assistant_pipeline"
+            app:destination="@id/dest_assistant_pipeline" />
+        <!-- 🆕 Lot 14.5c35 — patient vision pipeline (photo → OCR → Gemma). -->
+        <action
+            android:id="@+id/action_perso_to_patient_pipeline"
+            app:destination="@id/dest_patient_pipeline" />
+        <!-- 🆕 Lot 14.5c40 — patient voice chat (STT → Gemma → handoff). -->
+        <action
+            android:id="@+id/action_perso_to_patient_chat"
+            app:destination="@id/dest_patient_chat" />
+    </fragment>
+
+    <!-- 🆕 Lot 14.5c35 — Patient vision pipeline screen. Receives imageUris
+         (joined by '|') + profileId, runs OCR + MRZ + Gemma extraction,
+         then navigates back to dest_perso with consumeHandoff=true. -->
+    <fragment
+        android:id="@+id/dest_patient_pipeline"
+        android:name="be.heyman.android.jemmapassdemo.ui.assistant.AssistantPatientPipelineFragment"
+        android:label="@string/assistant_patient_title"
+        tools:layout="@layout/fragment_assistant_patient_pipeline">
+        <argument
+            android:name="imageUris"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_patient_pipeline_to_perso"
+            app:destination="@id/dest_perso"
+            app:popUpTo="@id/dest_perso"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- 🆕 Lot 14.5c40 — Patient voice chat screen. STT (SpeechRecognizer) →
+         Gemma 4 with PatientAgentTools (setGivenName + setBirthDate) →
+         handoff + popUpTo dest_perso (consumeHandoff=true). -->
+    <fragment
+        android:id="@+id/dest_patient_chat"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.perso.chat.PatientChatFragment"
+        android:label="@string/patient_chat_title"
+        tools:layout="@layout/fragment_patient_chat">
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_patient_chat_to_perso"
+            app:destination="@id/dest_perso"
+            app:popUpTo="@id/dest_perso"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_contacts"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.contacts.ContactsEditFragment"
+        android:label="@string/contacts_edit_title"
+        tools:layout="@layout/fragment_contacts_edit">
+        <!-- 🆕 v2.6.0 L5b — profileId arg : null = use currentProfileId, else
+             load the named profile. PillarsGalleryFragment passes the current
+             profile id from the repository. -->
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_allergies"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.allergies.AllergiesEditFragment"
+        android:label="@string/allergies_edit_title"
+        tools:layout="@layout/fragment_allergies_edit">
+        <!-- 🆕 v2.6.0 L5c — profileId arg : null = use currentProfileId, else
+             load the named profile. ProfileDetailFragment + PillarsGallery
+             passe le current profile id. -->
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <!-- 🆕 Lot 14.5c16 — Action vers le chat allergies (STT+Gemma+TTS)
+             quand l'user choisit "Dicter à voix haute" dans le sheet. -->
+        <action
+            android:id="@+id/action_allergies_to_chat"
+            app:destination="@id/dest_allergies_chat" />
+    </fragment>
+
+    <!-- 🆕 Lot 14.5c16 — Chat allergies avec pipeline vocal complet. -->
+    <fragment
+        android:id="@+id/dest_allergies_chat"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.allergies.chat.AllergiesChatFragment"
+        android:label="@string/allergies_chat_title"
+        tools:layout="@layout/fragment_allergies_chat">
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_medications"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.medications.MedicationsEditFragment"
+        android:label="@string/medications_edit_title"
+        tools:layout="@layout/fragment_medications_edit">
+        <!-- 🆕 v2.6.0 L5d — profileId arg : null = use currentProfileId, else
+             load the named profile. ProfileDetailFragment + PillarsGallery
+             passe le current profile id. -->
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <!-- 🆕 Lot 14.5a — Action sortante vers le pipeline d'assistant
+             après photo capture (caméra ou galerie). Arguments : pillar=
+             MEDICATIONS, mode=photo, imageUri=content://... -->
+        <action
+            android:id="@+id/action_medications_to_assistant_pipeline"
+            app:destination="@id/dest_assistant_pipeline" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_med_scan"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.medications.MedScanFragment"
+        android:label="@string/medscan_title"
+        tools:layout="@layout/dialog_med_scan" />
+
+    <fragment
+        android:id="@+id/dest_pillar_stub"
+        android:name="be.heyman.android.jemmapassdemo.ui.stubs.PillarStubFragment"
+        android:label="@string/stub_title_default"
+        tools:layout="@layout/fragment_pillar_stub">
+        <argument
+            android:name="pillarKey"
+            app:argType="string"
+            android:defaultValue="conditions" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_export_hub"
+        android:name="be.heyman.android.jemmapassdemo.ui.export.ExportHubFragment"
+        android:label="@string/export_title"
+        tools:layout="@layout/fragment_export_hub">
+        <action
+            android:id="@+id/action_export_to_qr"
+            app:destination="@id/dest_qr_viewer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_qr_viewer"
+        android:name="be.heyman.android.jemmapassdemo.ui.export.QrViewerFragment"
+        android:label="@string/qr_viewer_title"
+        tools:layout="@layout/fragment_qr_viewer">
+        <argument
+            android:name="formatKey"
+            app:argType="string"
+            android:defaultValue="pruned" />
+        <!-- 🆕 Lot 14.1 — profileId est désormais requis quand on arrive
+             depuis ProfileDetailFragment (action_detail_to_qr_viewer).
+             Nullable=true + default=@null pour rester compatible avec
+             les callers historiques (ExportHubFragment) qui passeront
+             le profileId via leur propre arg plumbing au Lot 14.x. -->
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+    <!--
+        🆕 L3 v2.5.2 — `dest_radar` is now the SOS/Rescue *hub* fragment
+        which auto-opens the ModeSelectionBottomSheet on view created.
+        The bottom-nav still points here (id preserved) ; the user picks
+        either SOS or Rescue and we navigate from there.
+    -->
+    <fragment
+        android:id="@+id/dest_radar"
+        android:name="be.heyman.android.jemmapassdemo.ui.radar.SosRescueHubFragment"
+        android:label="@string/sos_rescue_hub_title"
+        tools:layout="@layout/fragment_sos_rescue_hub">
+        <action
+            android:id="@+id/action_hub_to_radar_rescuer"
+            app:destination="@id/dest_radar_rescuer" />
+        <action
+            android:id="@+id/action_hub_to_sos_broadcast"
+            app:destination="@id/dest_sos_broadcast" />
+    </fragment>
+
+    <!--
+        🆕 L3 v2.5.2 — the actual rescuer-mode radar (Plan A's radar
+        overlay equivalent). Reached via the SOS/Rescue hub when the
+        user picks the "⛑️ Rescue" card in the bottom sheet.
+    -->
+    <fragment
+        android:id="@+id/dest_radar_rescuer"
+        android:name="be.heyman.android.jemmapassdemo.ui.radar.RadarFragment"
+        android:label="@string/radar_rescuer_title"
+        tools:layout="@layout/fragment_radar">
+        <action
+            android:id="@+id/action_radar_to_patient"
+            app:destination="@id/dest_patient_detail" />
+        <!--
+            🆕 v2.5.10 — Tap "📷 SCAN QR" → open the dedicated rescue
+            scanner that injects the decoded `_j 1.2` profile into the
+            mesh broadcast via RadarController.injectExternalVictim().
+        -->
+        <action
+            android:id="@+id/action_radar_to_rescue_qr_scan"
+            app:destination="@id/dest_rescue_qr_scan" />
+    </fragment>
+
+    <!--
+        🆕 v2.5.10 — Dedicated QR scanner for rescuer mode. Same camera
+        + ML Kit pipeline as dest_qr_import_scan, but on scan success
+        the decoded profile is broadcast through the mesh instead of
+        being saved to the local profiles repository.
+    -->
+    <fragment
+        android:id="@+id/dest_rescue_qr_scan"
+        android:name="be.heyman.android.jemmapassdemo.ui.radar.RescueQrScanFragment"
+        android:label="@string/rescue_qr_title"
+        tools:layout="@layout/fragment_qr_import_scan" />
+
+    <fragment
+        android:id="@+id/dest_patient_detail"
+        android:name="be.heyman.android.jemmapassdemo.ui.radar.PatientDetailFragment"
+        android:label="@string/patient_title"
+        tools:layout="@layout/fragment_patient_detail">
+        <argument
+            android:name="peerSid"
+            app:argType="string" />
+        <!--
+            🆕 v2.6.2 — Live OCR scan flow remplaçant GmsDocumentScanner.
+            Le Fragment ouvre CameraX + ML Kit streaming, fait du
+            FTS5 lookup en live sur la KB DIAMOND, puis (Lot 4) handoff
+            vers MedScanController.startWithImage() avant navigateUp.
+        -->
+        <action
+            android:id="@+id/action_patient_to_live_scan"
+            app:destination="@id/dest_jemma_live_scan" />
+    </fragment>
+
+    <!--
+        🆕 v2.6.2 — Live medication scan destination.
+        navArg `peerSid` : 4-char SID de la victime, repris depuis
+        PatientDetailFragment pour reconstruire le snapshot et faire
+        le handoff vers MedScanController.
+    -->
+    <fragment
+        android:id="@+id/dest_jemma_live_scan"
+        android:name="be.heyman.android.jemmapassdemo.ai.livescan.JemmaLiveScanFragment"
+        android:label="@string/livescan_title"
+        tools:layout="@layout/fragment_jemma_live_scan">
+        <argument
+            android:name="peerSid"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_sos_broadcast"
+        android:name="be.heyman.android.jemmapassdemo.ui.radar.SosBroadcastFragment"
+        android:label="@string/sos_title"
+        tools:layout="@layout/fragment_sos_broadcast" />
+
+    <fragment
+        android:id="@+id/dest_settings"
+        android:name="be.heyman.android.jemmapassdemo.ui.settings.SettingsFragment"
+        android:label="@string/settings_title"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_benchmark"
+            app:destination="@id/dest_benchmark" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_benchmark"
+        android:name="be.heyman.android.jemmapassdemo.ui.settings.BenchmarkFragment"
+        android:label="@string/benchmark_title"
+        tools:layout="@layout/fragment_benchmark" />
+
+    <!--
+        v2.2.16.4 — Rich profile detail (post-import view). Loads a single
+        profile via ProfilesRepository, hydrates it via JemmaProfileHydrator
+        (KB cross-checks for DDI / allergy×med / drug×disease), and renders
+        the result with localized displays + alert banners + bottom sheets
+        for each clinical alert.
+
+        Required argument : profileId (the file-name-without-extension of
+        the {id}.json in externalFilesDir/profiles).
+    -->
+    <fragment
+        android:id="@+id/dest_profile_detail"
+        android:name="be.heyman.android.jemmapassdemo.ui.profiles.detail.ProfileDetailFragment"
+        android:label="@string/profile_detail_screen_title"
+        tools:layout="@layout/fragment_profile_detail">
+        <argument
+            android:name="profileId"
+            app:argType="string" />
+        <!-- 🆕 v2.6.0c L5 — Pillars grid actions sortantes de la page détail.
+             Chaque tile cliquable navigue vers le bon fragment :
+                ⛑️ active patient/contacts → leurs fragments d'édition dédiés
+                ⛑️ stubs (14) → dest_pillar_stub partagé. -->
+        <action
+            android:id="@+id/action_detail_to_perso"
+            app:destination="@id/dest_perso" />
+        <action
+            android:id="@+id/action_detail_to_contacts"
+            app:destination="@id/dest_contacts" />
+        <!-- 🆕 v2.6.0 L5c — Active pillar: allergies edit -->
+        <action
+            android:id="@+id/action_detail_to_allergies"
+            app:destination="@id/dest_allergies" />
+        <!-- 🆕 v2.6.0 L5d — Active pillar: medications edit -->
+        <action
+            android:id="@+id/action_detail_to_medications"
+            app:destination="@id/dest_medications" />
+        <action
+            android:id="@+id/action_detail_to_pillar_stub"
+            app:destination="@id/dest_pillar_stub" />
+        <!-- 🆕 Lot 14.1 — bouton 📤 Export dans la title bar du
+             ProfileDetail nav directement vers QrViewerFragment avec
+             formatKey="pruned" (Channel 1 du HTML legacy). -->
+        <action
+            android:id="@+id/action_detail_to_qr_viewer"
+            app:destination="@id/dest_qr_viewer" />
+    </fragment>
+    <!-- ─── 🆕 Lot 14.3 — Assistant Jemma destinations ─────────────────────
+         Pipeline d'orchestration partagé (toutes les sources d'entrée
+         OCR/Gemma/KB convergent ici), plus un fragment réutilisable pour
+         les 14 piliers IPS stubs.
+
+         Pas encore d'actions entrantes ici — au Lot 14.4 on câblera
+         depuis les Fragments existants (MedicationsEdit, AllergiesEdit,
+         ContactsEdit, PerSoEdit, PillarsFragment) en ajoutant des
+         <action> sur leurs destinations respectives. -->
+    <fragment
+        android:id="@+id/dest_assistant_pipeline"
+        android:name="be.heyman.android.jemmapassdemo.ui.assistant.AssistantPipelineFragment"
+        android:label="@string/assistant_pipeline_title_generic"
+        tools:layout="@layout/fragment_assistant_pipeline">
+        <argument
+            android:name="pillar"
+            app:argType="string"
+            android:defaultValue="GENERIC" />
+        <argument
+            android:name="mode"
+            app:argType="string"
+            android:defaultValue="photo" />
+        <!-- 🆕 Lot 14.5b — URIs des pages scannées (Document Scanner peut
+             produire 1 à 20 pages). String concaténé par '|' pour
+             transit Bundle simple. Le fragment fait split puis Uri.parse. -->
+        <argument
+            android:name="imageUris"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <!-- 🆕 Lot 14.4 — Action vers multi-preview quand le pipeline
+             détecte plusieurs items (typique fiche de traitement). -->
+        <action
+            android:id="@+id/action_pipeline_to_multi_preview"
+            app:destination="@id/dest_assistant_multi_preview" />
+    </fragment>
+
+    <!-- 🆕 Lot 14.4 — Multi-preview screen : N médocs détectés, cochables. -->
+    <fragment
+        android:id="@+id/dest_assistant_multi_preview"
+        android:name="be.heyman.android.jemmapassdemo.ui.assistant.AssistantMultiPreviewFragment"
+        android:label="@string/assistant_pipeline_title_medications"
+        tools:layout="@layout/fragment_assistant_multi_preview" />
+
+    <fragment
+        android:id="@+id/dest_pillar_assistant"
+        android:name="be.heyman.android.jemmapassdemo.ui.assistant.PillarAssistantFragment"
+        android:label="@string/assistant_stub_title_vaccinations"
+        tools:layout="@layout/fragment_pillar_assistant">
+        <argument
+            android:name="pillar"
+            app:argType="string"
+            android:defaultValue="VACCINATIONS" />
+        <!-- Action interne pour ouvrir le pipeline depuis le stub. -->
+        <action
+            android:id="@+id/action_pillar_assistant_to_pipeline"
+            app:destination="@id/dest_assistant_pipeline" />
+    </fragment>
+
+</navigation>

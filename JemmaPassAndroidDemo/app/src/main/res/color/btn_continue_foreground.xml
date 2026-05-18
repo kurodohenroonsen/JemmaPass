@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    btn_continue_foreground.xml — text + icon color for the "Continuer"
+    button on fragment_permissions.
+
+    Why both text AND icon : if we only dim the background, the white
+    "Continuer" label and the white ▶ play icon stay vivid and the button
+    still reads as actionable. Keeping background, text AND icon all
+    state-aware ensures the "disabled" look is unambiguous.
+
+    Hex used :
+      • #FFFFFF      = pure white when enabled
+      • #80FFFFFF    = white at 50% opacity when disabled (still readable
+                       on the muted slate background, no contrast issue)
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_enabled="false"
+        android:color="#80FFFFFF" />
+    <item
+        android:color="#FFFFFFFF" />
+</selector>

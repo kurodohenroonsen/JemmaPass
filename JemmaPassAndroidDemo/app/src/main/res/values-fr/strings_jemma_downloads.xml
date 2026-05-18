@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_downloads.xml — version FR.
+    Voir le fichier values/strings_jemma_downloads.xml pour les commentaires
+    détaillés (en EN par convention).
+-->
+<resources>
+
+    <!-- ═════ Aggregate "Préparer la démo" status line ═════ -->
+    <string name="dl_step_template">Étape %1$d / %2$d</string>
+    <string name="dl_bytes_template">%1$s / %2$s</string>
+    <string name="dl_rate_template">%1$s/s</string>
+    <string name="dl_eta_min_template">~%1$d min</string>
+    <string name="dl_eta_sec_template">~%1$d s</string>
+    <string name="dl_eta_hour_template">~%1$d h %2$d min</string>
+
+    <string name="dl_done_label">✓ Démo prête</string>
+    <string name="dl_failed_template">Téléchargement échoué : %1$s</string>
+    <string name="dl_paused_label">En pause</string>
+    <string name="dl_idle_label">Non démarré</string>
+
+    <string name="dl_current_template">En cours : %1$s</string>
+
+    <!-- ═════ Per-model card status pill ═════ -->
+    <string name="dl_pill_not_downloaded">Non téléchargé</string>
+    <string name="dl_pill_partial">Partiel</string>
+    <string name="dl_pill_downloading">En cours</string>
+    <string name="dl_pill_succeeded">✓ Téléchargé</string>
+    <string name="dl_pill_active">★ Actif</string>
+    <string name="dl_pill_failed">⚠ Échec</string>
+
+    <!-- Action buttons -->
+    <string name="dl_btn_download">Télécharger</string>
+    <string name="dl_btn_pause">Pause</string>
+    <string name="dl_btn_resume">Reprendre</string>
+    <string name="dl_btn_retry">Réessayer</string>
+    <string name="dl_btn_activate">Activer</string>
+    <string name="dl_btn_already_active">Déjà actif</string>
+
+    <!-- Confirm dialog -->
+    <string name="dl_delete_confirm_title">Supprimer ce téléchargement ?</string>
+    <string name="dl_delete_confirm_message">%1$s (%2$s) sera supprimé de cet appareil. Tu peux le retélécharger à tout moment depuis Réglages.</string>
+    <string name="dl_delete_confirm_btn_yes">Supprimer</string>
+    <string name="dl_delete_confirm_btn_no">Annuler</string>
+
+    <!-- ═════ Preflight detail lines ═════ -->
+    <string name="preflight_perms_detail_template">%1$d / %2$d accordées</string>
+    <string name="preflight_model_detail_active_template">%1$s · %2$s · actif</string>
+    <string name="preflight_model_detail_none">Pas encore téléchargé</string>
+    <string name="preflight_kb_detail_template">%1$s</string>
+    <string name="preflight_kb_detail_none">Pas encore téléchargée</string>
+
+    <plurals name="preflight_profile_detail_count">
+        <item quantity="zero">Aucun profil</item>
+        <item quantity="one">%d profil</item>
+        <item quantity="other">%d profils</item>
+    </plurals>
+
+    <string name="preflight_storage_detail_template">%1$s libres</string>
+
+    <!-- ═════ Storage / network warnings ═════ -->
+    <string name="dl_low_storage_title">Espace de stockage insuffisant</string>
+    <string name="dl_low_storage_message">Le téléchargement nécessite %1$s mais seulement %2$s sont libres sur cet appareil. Libère de l\'espace et réessaie.</string>
+    <string name="dl_low_storage_btn_ok">OK</string>
+
+    <string name="dl_no_network_title">Pas de réseau</string>
+    <string name="dl_no_network_message">JEMMA ne peut pas joindre jemmapass.net. Vérifie le Wi-Fi ou les données mobiles.</string>
+
+    <string name="dl_metered_warning_title">Téléchargement en données mobiles</string>
+    <string name="dl_metered_warning_message">Tu n\'es pas en Wi-Fi. Télécharger %1$s en données mobiles peut entraîner des frais. Continuer quand même ?</string>
+    <string name="dl_metered_warning_btn_continue">Continuer</string>
+    <string name="dl_metered_warning_btn_wait">Attendre le Wi-Fi</string>
+
+</resources>

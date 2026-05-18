@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · TH · 2026-05-17 -->
+    <string name="bottom_nav_profiles">โปรไฟล์</string>
+    <string name="bottom_nav_radar">เรดาร์</string>
+    <string name="bottom_nav_settings">การตั้งค่า</string>
+    <string name="bottom_nav_sos_rescue">SOS/กู้ภัย</string>
+
+    <string name="sos_rescue_hub_title">SOS / กู้ภัย</string>
+    <string name="sos_rescue_hub_subtitle">เลือกโหมดเพื่อดำเนินการต่อ: ส่ง SOS ในฐานะผู้ประสบภัย หรือสแกนผู้ประสบภัยในฐานะผู้กู้ภัย</string>
+    <string name="sos_rescue_hub_open_button">เลือกโหมด</string>
+
+    <string name="mode_select_title">เลือกบทบาทของคุณ</string>
+    <string name="mode_select_sos_title">SOS · ฉันต้องการความช่วยเหลือ</string>
+    <string name="mode_select_sos_subtitle">กระจายโปรไฟล์ทางการแพทย์ของฉันไปยังผู้กู้ภัยที่อยู่ใกล้เคียงผ่านเครือข่ายบลูทูธ</string>
+    <string name="mode_select_rescuer_title">กู้ภัย · ฉันต้องการช่วยเหลือ</string>
+    <string name="mode_select_rescuer_subtitle">สแกนสัญญาณ SOS และคัดกรองผู้ประสบภัยบนเรดาร์สด</string>
+
+    <string name="radar_btn_hide">ซ่อน</string>
+    <string name="radar_btn_scan_qr">สแกน QR</string>
+    <string name="radar_btn_start">📡 เริ่มเรดาร์</string>
+    <string name="radar_btn_stop">หยุด</string>
+    <string name="l3_radar_btn_stop">🛑 หยุดเรดาร์</string>
+
+    <string name="sos_broadcast_title">🆘 การกระจาย SOS</string>
+    <string name="sos_broadcast_subtitle">บริการเบื้องหน้าคงไอคอนหน้าจอล็อกและหมุนเวียนชิ้นส่วน BLE</string>
+    <string name="sos_btn_start">เริ่ม\nSOS</string>
+    <string name="sos_btn_stop">หยุด\nSOS</string>
+    <string name="sos_btn_toggle">🔄 สลับการกระจาย</string>
+    <string name="sos_btn_pause_broadcast">🔇 หยุดการกระจาย BLE ชั่วคราว</string>
+    <string name="sos_btn_resume_broadcast">🔊 ดำเนินการกระจาย BLE ต่อ</string>
+    <string name="l3_sos_btn_start">🆘 เปิดใช้งาน SOS</string>
+    <string name="l3_sos_btn_stop">🛑 ปิดใช้งาน SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">สร้างบิตแมปไม่สำเร็จ</string>
+    <string name="qr_save_file_failed">สร้างไฟล์ภาพไม่สำเร็จ</string>
+    <string name="qr_save_success">บันทึก QR โค้ดลงในแกลเลอรีแล้ว</string>
+    <string name="qr_save_write_failed">เกิดข้อผิดพลาดในการบันทึก: %1$s</string>
+    <string name="pdf_export_in_progress">กำลังสร้าง PDF ประหยัดหมึก…</string>
+    <string name="pdf_export_failed">สร้าง PDF ไม่สำเร็จ</string>
+    <string name="share_jemma_pass_title">แชร์ Jemma Pass</string>
+    <string name="scanner_unavailable">เครื่องสแกนไม่พร้อมใช้งาน: %1$s</string>
+</resources>

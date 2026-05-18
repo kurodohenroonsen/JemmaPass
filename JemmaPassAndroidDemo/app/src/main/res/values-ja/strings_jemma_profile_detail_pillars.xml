@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_detail_pillars_title">🩺  プロファイルの柱</string>
+    <string name="profile_detail_pillars_subtitle">柱をタップして編集。アクティブな柱 4 つ、残り 14 は今後対応予定。</string>
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_profiles.xml (JA) — v2.2.16.5
+-->
+<resources>
+
+    <!-- ProfileListAdapter / item_profile_summary card -->
+    <string name="profile_card_allergies_count">🩹 アレルギー %1$d 件</string>
+    <string name="profile_card_medications_count">💊 処方薬 %1$d 件</string>
+    <string name="profile_card_conditions_count">🩺 既往症 %1$d 件</string>
+
+    <!-- ProfileDetailFragment header / banner -->
+    <string name="profile_detail_screen_title">プロフィール</string>
+    <string name="profile_detail_birthdate">📅 %1$s</string>
+    <string name="profile_detail_blood">🩸 %1$s</string>
+    <string name="profile_detail_alert_banner_major">⚠ 重大な相互作用 %1$d 件を検出</string>
+    <string name="profile_detail_alert_banner_other">⚠ その他の警告を検出</string>
+    <string name="profile_detail_load_failed">プロフィールを読み込めませんでした。</string>
+
+    <!-- Section titles -->
+    <string name="profile_detail_allergies_title">🩹 アレルギー (%1$d)</string>
+    <string name="profile_detail_medications_title">💊 処方薬 (%1$d)</string>
+    <string name="profile_detail_conditions_title">🩺 既往症 (%1$d)</string>
+    <string name="profile_detail_alerts_title">⚡ 警告</string>
+    <!-- v2.2.16.5 : 警告タップで詳細表示の発見性ヒント -->
+    <string name="profile_detail_alerts_hint">詳細を表示するには警告をタップ</string>
+
+    <!-- Criticality labels -->
+    <string name="profile_detail_criticality_high">高</string>
+    <string name="profile_detail_criticality_low">低</string>
+    <string name="profile_detail_criticality_unknown">不明</string>
+
+    <!-- Allergy alert dialog -->
+    <string name="profile_detail_allergy_alert_title">⚠ アレルギー警告</string>
+    <string name="profile_detail_allergy_alert_msg">患者は <b>%1$s</b> にアレルギーがありますが、<b>%2$s</b> が処方されています。</string>
+    <string name="profile_detail_allergy_match_label">一致: %1$s</string>
+
+    <!-- DDI bottom sheet labels -->
+    <string name="profile_detail_ddi_severity_label">重症度</string>
+    <string name="profile_detail_ddi_mechanism_label">作用機序</string>
+    <string name="profile_detail_ddi_description_label">説明</string>
+    <string name="profile_detail_ddi_management_label">対処</string>
+    <string name="profile_detail_ddi_alternative_label">代替薬</string>
+
+    <!-- Drug × disease alert dialog -->
+    <string name="profile_detail_ddsi_title">⚠ 薬物 × 既往症の禁忌</string>
+    <string name="profile_detail_ddsi_severity_label">重症度: %1$s</string>
+
+    <!-- Generic close button -->
+    <string name="profile_detail_dialog_close">閉じる</string>
+
+    <!-- v2.2.16.5 : Long-press menu actions on profile cards -->
+    <string name="profile_long_press_menu_title">%1$s — 操作</string>
+    <string name="profile_action_set_current">⭐ 現在のプロフィールに設定</string>
+    <string name="profile_action_delete">🗑 プロフィールを削除</string>
+
+    <!-- v2.2.16.5 : Delete confirmation dialog -->
+    <string name="delete_confirm_title">プロフィールを削除しますか？</string>
+    <string name="delete_confirm_message">本当に %1$s を削除しますか？この操作は取り消せません。</string>
+    <string name="delete_confirm_action">削除</string>
+    <string name="delete_cancel_action">キャンセル</string>
+
+    <!-- v2.2.16.5 : Toasts -->
+    <string name="profile_set_current_toast">⭐ %1$s を現在のプロフィールに設定しました</string>
+    <string name="profile_deleted_toast">🗑 %1$s を削除しました</string>
+    <string name="qr_import_updated_template">プロフィールは既に存在します — %1$s を更新しました</string>
+
+</resources>

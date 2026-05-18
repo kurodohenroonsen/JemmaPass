@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_settings.xml — supplementary strings for SettingsFragment
+    binding (livraison 2.2.0). Kept in a separate file to avoid touching
+    the existing strings_jemma.xml from previous deliveries.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- KB boot/validation state (per user choice 2.A) -->
+    <string name="kb_boot_validating">Initializing knowledge base…</string>
+    <string name="kb_boot_failed_template">KB initialization failed : %1$s</string>
+    <string name="kb_card_btn_reload">Reload</string>
+    <string name="kb_card_validating_label">Validating SQLite + FTS5…</string>
+
+    <!-- Wipe confirmation (Settings privacy section) -->
+    <string name="wipe_all_confirm_title">Wipe all data?</string>
+    <string name="wipe_all_confirm_message">This deletes all profiles, downloaded models, the knowledge base, and any cached data. The app returns to a fresh state. This cannot be undone.</string>
+    <string name="wipe_all_confirm_btn_yes">Wipe everything</string>
+    <string name="wipe_all_confirm_btn_no">Cancel</string>
+    <string name="wipe_all_done_toast">All data wiped.</string>
+
+    <!-- Demo personas seed (Settings demo data section) -->
+    <string name="seed_personas_done_toast">Kurodo, Misako and Haru profiles created.</string>
+    <string name="seed_personas_disabled_toast">Profile seeding will be available in a later delivery.</string>
+
+    <!-- Toast feedback for tap actions on cards -->
+    <string name="toast_model_activated_template">%1$s activated</string>
+    <string name="toast_model_deleted_template">%1$s deleted</string>
+    <string name="toast_kb_reloaded">Knowledge base reloaded</string>
+
+    <!-- 🆕 v4.1 FIX #3 — Inference accelerator toggle -->
+    <string name="settings_accelerator_title">Inference accelerator</string>
+    <string name="settings_accelerator_subtitle">GPU is faster but may crash on some devices. CPU is slower but always works.</string>
+    <string name="settings_accelerator_gpu">GPU (faster)</string>
+    <string name="settings_accelerator_cpu">CPU (stable)</string>
+    <string name="settings_accelerator_changed_reload">Accelerator changed. Model will reload on next use.</string>
+
+</resources>

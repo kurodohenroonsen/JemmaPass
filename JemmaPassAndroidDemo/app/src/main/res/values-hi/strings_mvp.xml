@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · HI · 2026-05-17 -->
+    <string name="bottom_nav_profiles">प्रोफ़ाइल</string>
+    <string name="bottom_nav_radar">रडार</string>
+    <string name="bottom_nav_settings">सेटिंग्स</string>
+    <string name="bottom_nav_sos_rescue">SOS/बचाव</string>
+
+    <string name="sos_rescue_hub_title">SOS / बचाव</string>
+    <string name="sos_rescue_hub_subtitle">जारी रखने के लिए एक मोड चुनें: पीड़ित के रूप में SOS भेजें, या बचावकर्ता के रूप में पीड़ितों को स्कैन करें।</string>
+    <string name="sos_rescue_hub_open_button">मोड चुनें</string>
+
+    <string name="mode_select_title">अपनी भूमिका चुनें</string>
+    <string name="mode_select_sos_title">SOS · मुझे मदद चाहिए</string>
+    <string name="mode_select_sos_subtitle">ब्लूटूथ मेश के माध्यम से आस-पास के बचावकर्ताओं को मेरी मेडिकल प्रोफ़ाइल प्रसारित करता है।</string>
+    <string name="mode_select_rescuer_title">बचाव · मैं मदद करना चाहता हूँ</string>
+    <string name="mode_select_rescuer_subtitle">SOS प्रसारणों को स्कैन करें और लाइव रडार पर पीड़ितों की त्रिज प्रक्रिया करें।</string>
+
+    <string name="radar_btn_hide">छिपाएँ</string>
+    <string name="radar_btn_scan_qr">QR स्कैन करें</string>
+    <string name="radar_btn_start">📡 रडार शुरू करें</string>
+    <string name="radar_btn_stop">रोकें</string>
+    <string name="l3_radar_btn_stop">🛑 रडार बंद करें</string>
+
+    <string name="sos_broadcast_title">🆘 SOS प्रसारण</string>
+    <string name="sos_broadcast_subtitle">अग्रभूमि सेवा लॉक-स्क्रीन आइकन रखती है और BLE चंक्स को घुमाती है।</string>
+    <string name="sos_btn_start">SOS\nशुरू</string>
+    <string name="sos_btn_stop">SOS\nरोकें</string>
+    <string name="sos_btn_toggle">🔄 प्रसारण टॉगल करें</string>
+    <string name="sos_btn_pause_broadcast">🔇 BLE प्रसारण रोकें</string>
+    <string name="sos_btn_resume_broadcast">🔊 BLE प्रसारण फिर से शुरू करें</string>
+    <string name="l3_sos_btn_start">🆘 SOS सक्रिय करें</string>
+    <string name="l3_sos_btn_stop">🛑 SOS निष्क्रिय करें</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">बिटमैप बनाने में विफल</string>
+    <string name="qr_save_file_failed">इमेज फ़ाइल बनाने में विफल</string>
+    <string name="qr_save_success">QR कोड गैलरी में सहेजा गया</string>
+    <string name="qr_save_write_failed">सहेजने में त्रुटि: %1$s</string>
+    <string name="pdf_export_in_progress">इको-इंक PDF बना रहा है…</string>
+    <string name="pdf_export_failed">PDF बनाने में विफल</string>
+    <string name="share_jemma_pass_title">Jemma Pass साझा करें</string>
+    <string name="scanner_unavailable">स्कैनर उपलब्ध नहीं: %1$s</string>
+</resources>

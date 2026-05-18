@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_assistant.xml — Lot 14.3 (PHASE 14)
+    English default. Translated in values-fr/ and values-ja/.
+
+    Scope : the Jemma Assistant pipeline UI strings (bottom sheet input
+    picker, pipeline orchestration screen, pillar-assistant stubs).
+    Pipeline = OCR → Gemma 4 → KB resolution → form pre-fill.
+
+    Accessibility note : every visible string has a TalkBack-friendly
+    counterpart. `*_cd` = content description, `*_announce` = live
+    region announcement, `*_hint` = subtext below a heading.
+-->
+<resources>
+
+    <!-- ─── Bottom sheet: pick input mode (Médicaments / Allergies / Contacts FAB) ─── -->
+    <string name="assistant_sheet_title_medications">Add a medication</string>
+    <string name="assistant_sheet_title_allergies">Add an allergy</string>
+    <string name="assistant_sheet_title_contacts">Add a contact</string>
+    <string name="assistant_sheet_title_conditions">Add a condition</string>
+    <string name="assistant_sheet_title_generic">Add an entry</string>
+
+    <string name="assistant_section_header">Jemma Assistant</string>
+    <string name="assistant_section_header_cd">Jemma Assistant section, with four input modes.</string>
+
+    <string name="assistant_mode_photo">Scan one medication</string>
+    <string name="assistant_mode_photo_sub">One medication box at a time</string>
+    <string name="assistant_mode_photo_cd">Scan one medication. Use the camera to photograph a single medication box. The assistant extracts and structures the data. Only mode active during the demo.</string>
+
+    <string name="assistant_mode_livescan">Scan a document</string>
+    <string name="assistant_mode_livescan_sub">Prescription, vaccine record…</string>
+    <string name="assistant_mode_livescan_cd">Scan a multi-page document like a prescription or a vaccine record. Disabled in the demo.</string>
+
+    <string name="assistant_mode_voice">Dictate</string>
+    <string name="assistant_mode_voice_sub">Speak naturally, the assistant structures.</string>
+    <string name="assistant_mode_voice_cd">Dictate by voice. Speak naturally and the assistant structures what you said.</string>
+
+    <string name="assistant_mode_text">Paste or type text</string>
+    <string name="assistant_mode_text_sub">From an email, a PDF, an SMS…</string>
+    <string name="assistant_mode_text_cd">Paste or type free text. Useful for content copied from an email, a PDF or an SMS.</string>
+
+    <string name="assistant_sheet_divider_or">— or —</string>
+    <string name="assistant_sheet_manual">Enter manually</string>
+    <string name="assistant_sheet_manual_cd">Enter manually. Opens the classic form without the assistant.</string>
+
+    <!-- ─── Patient CTA banner (in fragment_perso_edit) ─── -->
+    <string name="assistant_patient_banner_title">Fill with the Jemma Assistant</string>
+    <string name="assistant_patient_banner_sub">Photo of an ID, passport, health card, or voice.</string>
+    <string name="assistant_patient_banner_cd">Call to action: fill the identity form with the Jemma Assistant. Tap to start.</string>
+
+    <!-- ─── Pipeline orchestration screen ─── -->
+    <string name="assistant_pipeline_title_medications">Assistant · Medications</string>
+    <string name="assistant_pipeline_title_allergies">Assistant · Allergies</string>
+    <string name="assistant_pipeline_title_contacts">Assistant · Contacts</string>
+    <string name="assistant_pipeline_title_patient">Assistant · Identity</string>
+    <string name="assistant_pipeline_title_conditions">Assistant · Conditions</string>
+    <string name="assistant_pipeline_title_generic">Jemma Assistant</string>
+
+    <string name="assistant_capture_preview_cd">Preview of the captured image.</string>
+    <string name="assistant_capture_empty">No capture yet</string>
+    <string name="assistant_capture_empty_cd">No capture yet. Tap the camera or paste button to start.</string>
+
+    <string name="assistant_step_1_title">1 · Text extraction (OCR)</string>
+    <string name="assistant_step_2_title">2 · Understanding (Gemma 4)</string>
+    <string name="assistant_step_3_title">3 · Search (Clinical KB)</string>
+    <string name="assistant_step_4_title">4 · Validation (Jemma Vision)</string>
+
+    <string name="assistant_step_status_waiting">Waiting</string>
+    <string name="assistant_step_status_running">Running…</string>
+    <string name="assistant_step_status_done">Done</string>
+    <string name="assistant_step_status_error">Error — tap to retry</string>
+
+    <string name="assistant_step_announce_running">Step %1$d started: %2$s</string>
+    <string name="assistant_step_announce_done">Step %1$d completed: %2$s</string>
+    <string name="assistant_step_announce_error">Step %1$d failed: %2$s</string>
+
+    <string name="assistant_pipeline_btn_cancel">Cancel</string>
+    <string name="assistant_pipeline_btn_preview">Preview</string>
+    <string name="assistant_pipeline_btn_preview_cd">Open the pre-filled form to review and save.</string>
+    <string name="assistant_pipeline_disclaimer">⚠ The assistant pre-fills the form. Always check every field before saving.</string>
+
+    <!-- ─── Pillar assistant stubs (the 14 inactive pillars) ─── -->
+    <string name="assistant_stub_title_vaccinations">Vaccinations</string>
+    <string name="assistant_stub_title_procedures">Procedures</string>
+    <string name="assistant_stub_title_devices">Devices</string>
+    <string name="assistant_stub_title_past_problems">Past problems</string>
+    <string name="assistant_stub_title_functional">Functional status</string>
+    <string name="assistant_stub_title_pregnancy">Pregnancy</string>
+    <string name="assistant_stub_title_results">Lab results</string>
+    <string name="assistant_stub_title_advance_directives">Advance directives</string>
+    <string name="assistant_stub_title_consents">Consents</string>
+    <string name="assistant_stub_title_goals">Care goals</string>
+    <string name="assistant_stub_title_encounters">Encounters</string>
+    <string name="assistant_stub_title_occupational">Occupational data</string>
+    <string name="assistant_stub_title_providers">Care team</string>
+    <string name="assistant_stub_title_conditions">Active problems</string>
+
+    <string name="assistant_stub_pitch">This pillar is powered by the Assistant.</string>
+    <string name="assistant_stub_pitch_sub">Scan, dictate, or paste — Jemma structures automatically.</string>
+    <string name="assistant_stub_btn_scan">📸 Scan</string>
+    <string name="assistant_stub_btn_voice">🎤 Dictate</string>
+    <string name="assistant_stub_btn_text">⌨️ Text</string>
+    <string name="assistant_stub_btn_scan_cd">Scan a document related to this pillar.</string>
+    <string name="assistant_stub_btn_voice_cd">Dictate the content of this pillar.</string>
+    <string name="assistant_stub_btn_text_cd">Type or paste the text content of this pillar.</string>
+
+    <!-- ─── Toasts (preview at Lot 14.3, real action plumbing at Lot 14.4+) ─── -->
+    <string name="assistant_toast_design_preview">Lot 14.3 — design preview only · plumbing arrives in Lot 14.4. 🐢</string>
+
+    <!-- ─── 🆕 Lot 14.4 — Multi-preview screen (treatment sheet with N drugs) ─── -->
+    <string name="assistant_multi_title">%1$d medications detected</string>
+    <string name="assistant_multi_subtitle">Uncheck the entries you don\'t want to save.</string>
+    <string name="assistant_multi_select_all">Select all</string>
+    <string name="assistant_multi_unselect_all">Unselect all</string>
+    <string name="assistant_multi_save_n">Save %1$d</string>
+    <string name="assistant_multi_save_none">No entry selected</string>
+    <string name="assistant_multi_row_resolved_atc">ATC %1$s · %2$s</string>
+    <string name="assistant_multi_row_resolved_none">⚠ Code not resolved</string>
+    <string name="assistant_multi_row_check_cd">Check or uncheck %1$s to include it in the batch save.</string>
+    <string name="assistant_multi_empty_title">No medication detected</string>
+    <string name="assistant_multi_empty_sub">Try a clearer photo or paste text manually.</string>
+
+    <!-- ─── 🆕 Lot 14.5a — Photo source picker (Camera vs Gallery) ─── -->
+    <string name="assistant_photo_source_title">Where does the photo come from?</string>
+    <string name="assistant_photo_source_camera">📷 Take a photo</string>
+    <string name="assistant_photo_source_gallery">🖼️ Pick from gallery</string>
+    <string name="assistant_photo_source_cancel">Cancel</string>
+    <string name="assistant_photo_permission_camera_denied">Camera permission denied. Try the gallery instead.</string>
+    <string name="assistant_photo_capture_failed">Failed to capture the photo.</string>
+
+    <!-- ─── 🆕 Lot 14.5a — OCR step (Japanese: kanji + hiragana + katakana + latin) ─── -->
+    <string name="assistant_step_ocr_running">Reading text (JP + Latin)…</string>
+    <string name="assistant_step_ocr_done_chars">%1$d characters · %2$d blocks · %3$d ms</string>
+    <string name="assistant_step_ocr_done_preview">First snippet: %1$s</string>
+    <string name="assistant_step_ocr_empty">No text detected. Try a sharper photo.</string>
+    <string name="assistant_step_ocr_failed">OCR failed: %1$s</string>
+    <string name="assistant_step_pending_lot_14_5b">Waiting for Gemma + KB plumbing (Lot 14.5b)</string>
+
+    <!-- ─── 🆕 Lot 14.5b — Document Scanner + multi-pages ─── -->
+    <string name="assistant_pages_chip_single">1 page</string>
+    <string name="assistant_pages_chip_plural">%1$d pages</string>
+    <string name="assistant_pages_chip_position">Page %1$d / %2$d</string>
+    <string name="assistant_step_ocr_running_page">Reading page %1$d / %2$d (JP + Latin)…</string>
+    <string name="assistant_step_ocr_done_multipage">%1$d pages · %2$d characters · %3$d blocks · %4$d ms</string>
+    <string name="assistant_step_pending_lot_14_5c">Waiting for Gemma + KB plumbing (Lot 14.5c)</string>
+
+    <!-- ─── 🆕 Lot 14.5c — Gemma + KB step bodies + batch save ─── -->
+    <string name="assistant_step_gemma_running">Asking Gemma to identify drugs…</string>
+    <string name="assistant_step_kb_running">Resolving in clinical knowledge base…</string>
+    <string name="assistant_step_vision_running">Confirming matches with Jemma Vision…</string>
+    <string name="assistant_step_vision_failed">Vision verification failed: %1$s</string>
+    <string name="assistant_step_gemma_failed">Gemma extraction failed: %1$s</string>
+    <string name="assistant_step_no_candidates">Gemma found no candidates. Try a sharper photo.</string>
+    <string name="assistant_save_no_profile">No active profile to save to.</string>
+    <string name="assistant_save_success">%1$d medication(s) added.</string>
+    <!-- 🔧 Lot 14.5c4b hotfix — re-injecté (perdu lors d'un str_replace au 14.5c4) -->
+    <string name="assistant_save_failed">Save failed: %1$s</string>
+    <!-- ─── 🆕 Lot 14.5c3 — Multi-preview row : skipped + page label ─── -->
+    <string name="assistant_multi_row_skipped">❌ Not identified</string>
+    <!-- 🔧 Lot 14.5c4b hotfix — re-injecté (perdu lors d'un str_replace au 14.5c4) -->
+    <string name="assistant_multi_row_page_n">Page %1$d</string>
+    <!-- ─── 🆕 Lot 14.5c4 — Cross-check alerts in multi-preview ─── -->
+    <plurals name="assistant_alerts_header">
+        <item quantity="one">⚠️ %1$d clinical alert detected</item>
+        <item quantity="other">⚠️ %1$d clinical alerts detected</item>
+    </plurals>
+    <string name="assistant_alerts_subtitle_with_majors">%1$d major · %2$d moderate · virtual profile after addition</string>
+    <string name="assistant_alerts_subtitle_no_majors">%1$d moderate · virtual profile after addition</string>
+
+    <!-- ─── 🆕 Lot 14.5c7 — Vulgarise alert via Gemma ─── -->
+    <string name="assistant_alert_btn_vulgarise">✨ Explain simply</string>
+    <string name="assistant_alert_btn_vulgarising">✨ Explaining…</string>
+    <string name="assistant_alert_btn_relancer">🔄 Regenerate</string>
+    <string name="assistant_alert_vulgarise_header">✨ In plain words:</string>
+    <string name="assistant_alert_vulgarise_failed">⚠️ Couldn\'t simplify this alert. Tap the button to retry.</string>
+
+    <!-- 🆕 Lot 14.5c11 — Demo badge -->
+    <string name="assistant_mode_demo_badge">demo</string>
+    <string name="assistant_mode_demo_badge_cd">Active mode for the JEMMA hackathon demo</string>
+    <string name="assistant_mode_disabled_demo_toast">Unavailable in the hackathon demo</string>
+    <!-- 🆕 Lot 14.5c14 — Voice pipeline coming soon -->
+    <string name="allergies_voice_pipeline_soon">🎤 Voice pipeline coming soon — please use the manual form for now.</string>
+
+    <!-- 🆕 Lot 14.5c15 — Allergy-specific sub-text for the "Scan document" mode. -->
+    <string name="assistant_mode_livescan_sub_allergies">Allergy card, test report, IgE results…</string>
+</resources>

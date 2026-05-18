@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="livescan_title">薬剤ライブスキャン</string>
+    <string name="livescan_perm_missing">📷 ライブスキャンにはカメラの許可が必要です</string>
+    <string name="livescan_victim_not_found">⚠️ 被災者プロファイルが見つかりません</string>
+
+    <string name="livescan_hint_searching">🐢 薬の箱にカメラを向けてください…</string>
+    <string name="livescan_hint_accumulating">🔍 %1$d フレーム · %2$d コード · %3$d でトリガー</string>
+    <string name="livescan_hint_identifying">🧠 Gemma vision で薬剤識別中…</string>
+    <string name="livescan_hint_crosschecking">🩺 %1$s (%2$s) を患者と照合中…</string>
+
+    <string name="livescan_verdict_safe">相互作用は検出されませんでした</string>
+    <string name="livescan_explain_waiting">🧠 Gemma が説明を準備中…</string>
+    <string name="livescan_safe_alt">🟢 安全な代替薬：%1$s (%2$s)</string>
+    <string name="livescan_no_safe_found">安全な代替薬が見つかりません · %1$d 候補テスト済み</string>
+    <string name="livescan_no_safe_banner">⚠️ 禁忌薬剤 · 安全な代替薬なし</string>
+    <string name="livescan_no_safe_advise">医師に相談することをお勧めします。</string>
+
+    <!-- 🆕 FIX4 -->
+    <string name="livescan_cancel_button">✕ スキャンをキャンセル</string>
+    <string name="livescan_panel_phase_identifying">🧠 Gemma が薬剤を識別中…</string>
+    <string name="livescan_panel_phase_crosschecking">🩺 患者との照合中…</string>
+    <string name="livescan_panel_close">閉じる</string>
+
+    <!-- 🆕 FIX7 — 審査員向け詳細ゾーン -->
+    <string name="livescan_panel_zone_ocr">👁  ML Kit OCR 入力</string>
+    <string name="livescan_panel_zone_kb">🔍 KB FTS5 候補</string>
+    <string name="livescan_panel_zone_gemma">🧠 Gemma vision 判定</string>
+    <string name="livescan_panel_zone_xcheck">🩺 SQL 照合 · DDInter 2.0</string>
+    <string name="livescan_panel_zone_stream">📡 Gemma 説明 (streaming)</string>
+</resources>

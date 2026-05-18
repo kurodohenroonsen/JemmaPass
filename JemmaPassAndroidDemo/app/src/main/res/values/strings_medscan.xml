@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Panel header -->
+    <string name="medscan_header">🧠 Jemma analysing…</string>
+
+    <!-- Step labels -->
+    <string name="medscan_step_scan">Scan the blister</string>
+    <string name="medscan_step_ocr">OCR (JA + Latin)</string>
+    <string name="medscan_step_gemma">Gemma reasoning</string>
+    <string name="medscan_step_identify">Identify drug</string>
+    <string name="medscan_step_check">Cross-check profile</string>
+
+    <!-- Step details -->
+    <string name="medscan_detail_image_captured">Image captured</string>
+    <string name="medscan_detail_ocr_empty">No text detected</string>
+    <string name="medscan_detail_gemma_thinking">🧠 Analysing OCR text…</string>
+    <!-- %1$d = count, %2$s = candidates list -->
+    <string name="medscan_detail_gemma_candidates">%1$d candidates: %2$s</string>
+    <string name="medscan_detail_gemma_no_candidates">Gemma could not propose any candidate</string>
+    <!-- %1$d = candidates count -->
+    <string name="medscan_detail_kb_no_hit">No KB match for %1$d Gemma candidates</string>
+    <!-- 🆕 2.6.2a.1 — KB matched but no ATC code -->
+    <!-- %1$s = comma-separated KB hit display names -->
+    <string name="medscan_detail_kb_orphan_only">KB matched (%1$s) but no ATC code → no cross-check possible</string>
+    <!-- %1$s = display, %2$s = ATC, %3$s = matched_via -->
+    <string name="medscan_detail_identified">%1$s · ATC %2$s · matched %3$s</string>
+    <!-- %1$d = tried count -->
+    <string name="medscan_detail_not_identified">No KB match after %1$d attempts</string>
+    <string name="medscan_detail_skipped">Skipped (no candidate)</string>
+    <!-- %1$s = display, %2$s = matched_via -->
+    <string name="medscan_detail_identified_no_atc">%1$s — matched %2$s, but no ATC</string>
+    <string name="medscan_detail_no_atc_skip">Skipped — no ATC for the cross-check</string>
+    <!-- %1$d = allergy hits, %2$d = DDI hits, %3$d = drug-disease hits -->
+    <string name="medscan_detail_check_summary">Allergies: %1$d · DDIs: %2$d · Conditions: %3$d</string>
+
+    <!-- Verdict titles -->
+    <string name="medscan_verdict_major_title">🚨 MAJOR — Do not administer</string>
+    <string name="medscan_verdict_moderate_title">⚠️ MODERATE — Use caution</string>
+    <string name="medscan_verdict_minor_title">⚠️ MINOR — Note in chart</string>
+    <string name="medscan_verdict_clean_title">✅ CLEAN — No documented collision</string>
+    <string name="medscan_verdict_not_identified_title">❓ Drug not identified</string>
+    <string name="medscan_verdict_failed_title">❌ Scan failed</string>
+
+    <!-- Verdict bodies -->
+    <!-- %1$s = allergy display, %2$s = candidate display, %3$s = matched_on -->
+    <string name="medscan_verdict_body_allergy">
+        Allergy “%1$s” collides with %2$s (matched %3$s).
+    </string>
+    <!-- %1$s = candidate, %2$s = existing med, %3$s = severity, %4$s = mechanism -->
+    <string name="medscan_verdict_body_ddi">
+        %1$s × %2$s — %3$s interaction (%4$s).
+    </string>
+    <!-- %1$s = candidate, %2$s = condition, %3$s = severity -->
+    <string name="medscan_verdict_body_dz">
+        %1$s contraindicated for “%2$s” — %3$s.
+    </string>
+    <!-- %1$s = severity hint -->
+    <string name="medscan_verdict_body_generic">%1$s collision detected. Tap details for full report.</string>
+
+    <!-- Verdict reasons (not identified / no ATC / Gemma / KB) -->
+    <string name="medscan_verdict_not_identified_reason">OCR text did not match any drug in the KB.</string>
+    <!-- %1$s = candidate display -->
+    <string name="medscan_verdict_no_atc_reason">%1$s identified but missing ATC code — KB enrichment needed.</string>
+    <string name="medscan_verdict_gemma_no_candidates">Gemma could not extract any drug candidate from the OCR. Try a clearer photo.</string>
+    <string name="medscan_verdict_kb_no_hit">Gemma proposed candidates but the KB does not know any of them.</string>
+    <!-- 🆕 2.6.2a.1 — KB hit found but no ATC -->
+    <!-- %1$s = display names -->
+    <string name="medscan_verdict_kb_orphan_only">KB found %1$s but with no ATC code attached. Cross-check needs an ATC — KB enrichment required.</string>
+
+    <!-- Doc-scanner launch errors -->
+    <string name="medscan_error_scanner_unavailable">Document scanner unavailable on this device.</string>
+    <string name="medscan_error_image_unavailable">Captured image is unreadable.</string>
+
+    <!-- Buttons -->
+    <string name="medscan_btn_details">Details</string>
+    <string name="medscan_btn_close">Close</string>
+</resources>

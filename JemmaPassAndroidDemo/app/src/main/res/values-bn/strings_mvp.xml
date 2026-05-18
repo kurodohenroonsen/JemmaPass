@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · BN · 2026-05-17 -->
+    <string name="bottom_nav_profiles">প্রোফাইল</string>
+    <string name="bottom_nav_radar">রাডার</string>
+    <string name="bottom_nav_settings">সেটিংস</string>
+    <string name="bottom_nav_sos_rescue">SOS/উদ্ধার</string>
+
+    <string name="sos_rescue_hub_title">SOS / উদ্ধার</string>
+    <string name="sos_rescue_hub_subtitle">চালিয়ে যেতে একটি মোড বেছে নিন: ক্ষতিগ্রস্ত হিসেবে SOS পাঠান, বা উদ্ধারকারী হিসেবে ক্ষতিগ্রস্তদের স্ক্যান করুন।</string>
+    <string name="sos_rescue_hub_open_button">মোড নির্বাচন করুন</string>
+
+    <string name="mode_select_title">আপনার ভূমিকা নির্বাচন করুন</string>
+    <string name="mode_select_sos_title">SOS · আমার সাহায্য দরকার</string>
+    <string name="mode_select_sos_subtitle">ব্লুটুথ মেশের মাধ্যমে কাছাকাছি উদ্ধারকারীদের কাছে আমার মেডিকেল প্রোফাইল প্রেরণ করে।</string>
+    <string name="mode_select_rescuer_title">উদ্ধার · আমি সাহায্য করতে চাই</string>
+    <string name="mode_select_rescuer_subtitle">SOS সম্প্রচার স্ক্যান করুন এবং একটি লাইভ রাডারে ক্ষতিগ্রস্তদের ট্রায়াজ করুন।</string>
+
+    <string name="radar_btn_hide">লুকান</string>
+    <string name="radar_btn_scan_qr">QR স্ক্যান</string>
+    <string name="radar_btn_start">📡 রাডার শুরু</string>
+    <string name="radar_btn_stop">বন্ধ</string>
+    <string name="l3_radar_btn_stop">🛑 রাডার বন্ধ করুন</string>
+
+    <string name="sos_broadcast_title">🆘 SOS সম্প্রচার</string>
+    <string name="sos_broadcast_subtitle">ফোরগ্রাউন্ড সার্ভিস লক-স্ক্রীন আইকন ধরে রাখে এবং BLE চাঙ্ক ঘোরায়।</string>
+    <string name="sos_btn_start">SOS\nশুরু</string>
+    <string name="sos_btn_stop">SOS\nবন্ধ</string>
+    <string name="sos_btn_toggle">🔄 সম্প্রচার টগল করুন</string>
+    <string name="sos_btn_pause_broadcast">🔇 BLE সম্প্রচার বিরতি</string>
+    <string name="sos_btn_resume_broadcast">🔊 BLE সম্প্রচার পুনরায় শুরু</string>
+    <string name="l3_sos_btn_start">🆘 SOS সক্রিয় করুন</string>
+    <string name="l3_sos_btn_stop">🛑 SOS নিষ্ক্রিয় করুন</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">বিটম্যাপ তৈরি করতে ব্যর্থ</string>
+    <string name="qr_save_file_failed">ছবি ফাইল তৈরি করতে ব্যর্থ</string>
+    <string name="qr_save_success">QR কোড গ্যালারিতে সংরক্ষিত হয়েছে</string>
+    <string name="qr_save_write_failed">সংরক্ষণ ত্রুটি: %1$s</string>
+    <string name="pdf_export_in_progress">ইকো-ইঙ্ক PDF তৈরি হচ্ছে…</string>
+    <string name="pdf_export_failed">PDF তৈরি করতে ব্যর্থ</string>
+    <string name="share_jemma_pass_title">Jemma Pass শেয়ার করুন</string>
+    <string name="scanner_unavailable">স্ক্যানার উপলব্ধ নয়: %1$s</string>
+</resources>

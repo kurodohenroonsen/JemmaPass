@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · DE · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Profile</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Einstellungen</string>
+    <string name="bottom_nav_sos_rescue">SOS/Rettung</string>
+
+    <string name="sos_rescue_hub_title">SOS / Rettung</string>
+    <string name="sos_rescue_hub_subtitle">Wählen Sie einen Modus: Senden Sie ein SOS als Opfer oder suchen Sie Opfer als Retter.</string>
+    <string name="sos_rescue_hub_open_button">Modus wählen</string>
+
+    <string name="mode_select_title">Rolle wählen</string>
+    <string name="mode_select_sos_title">SOS · Ich brauche Hilfe</string>
+    <string name="mode_select_sos_subtitle">Sendet mein medizinisches Profil über Bluetooth-Mesh an Retter in der Nähe.</string>
+    <string name="mode_select_rescuer_title">Rettung · Ich möchte helfen</string>
+    <string name="mode_select_rescuer_subtitle">SOS-Sendungen erfassen und Opfer live im Radar triagieren.</string>
+
+    <string name="radar_btn_hide">Verbergen</string>
+    <string name="radar_btn_scan_qr">QR scannen</string>
+    <string name="radar_btn_start">📡 RADAR STARTEN</string>
+    <string name="radar_btn_stop">Stopp</string>
+    <string name="l3_radar_btn_stop">🛑 RADAR STOPPEN</string>
+
+    <string name="sos_broadcast_title">🆘 SOS-Sendung</string>
+    <string name="sos_broadcast_subtitle">Vordergrunddienst hält das Sperrbildschirm-Symbol und rotiert BLE-Chunks.</string>
+    <string name="sos_btn_start">SOS\nSTARTEN</string>
+    <string name="sos_btn_stop">SOS\nSTOPPEN</string>
+    <string name="sos_btn_toggle">🔄 SENDUNG UMSCHALTEN</string>
+    <string name="sos_btn_pause_broadcast">🔇 BLE-Sendung pausieren</string>
+    <string name="sos_btn_resume_broadcast">🔊 BLE-Sendung fortsetzen</string>
+    <string name="l3_sos_btn_start">🆘 SOS AKTIVIEREN</string>
+    <string name="l3_sos_btn_stop">🛑 SOS DEAKTIVIEREN</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Bitmap-Erzeugung fehlgeschlagen</string>
+    <string name="qr_save_file_failed">Bilddatei konnte nicht erstellt werden</string>
+    <string name="qr_save_success">QR-Code in die Galerie gespeichert</string>
+    <string name="qr_save_write_failed">Speicherfehler: %1$s</string>
+    <string name="pdf_export_in_progress">Eco-Tinten-PDF wird erstellt…</string>
+    <string name="pdf_export_failed">PDF-Erstellung fehlgeschlagen</string>
+    <string name="share_jemma_pass_title">Jemma Pass teilen</string>
+    <string name="scanner_unavailable">Scanner nicht verfügbar: %1$s</string>
+</resources>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    dialog_allergy_edit.xml — AllergyEditDialog (BottomSheetDialogFragment).
+
+    Form for AllergyIntolerance fields + an embedded DebugConsoleView that
+    streams every step of the AllergyExtractPipeline (when invoked from voice
+    or image entry points). Visible "DEBUG À MORT" so the demo proves the
+    LiteRT-LM pipeline is real, not faked.
+
+    Phases shown live :
+      1️⃣  AUDIO/IMAGE captured (size, duration)
+      2️⃣  TRANSCRIPTION / OCR (model, latency)
+      3️⃣  GEMMA EXTRACT (prompt, tokens in/out, JSON output)
+      4️⃣  KB RESOLVE (FTS5 query, top hits, picked SNOMED)
+      5️⃣  SAVE (Room insert id)
+-->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/jemma_surface">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/allergy_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/allergy_dialog_title_new"
+            android:textColor="@color/jemma_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Nouvelle allergie" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="monospace"
+            android:text="@string/allergy_dialog_ips_type"
+            android:textColor="@color/jemma_text_muted"
+            android:textSize="10sp" />
+
+        <!-- Substance with autocomplete on KB FTS5 -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/JemmaTextInputLayout"
+            android:layout_marginTop="14dp"
+            android:hint="@string/allergy_field_substance"
+            app:helperText="@string/allergy_field_substance_hint">
+            <AutoCompleteTextView
+                android:id="@+id/allergy_field_substance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:completionThreshold="2"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- SNOMED code (read-only — picked from autocomplete or KB resolve) -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/JemmaTextInputLayout"
+            android:hint="@string/allergy_field_snomed"
+            app:startIconDrawable="@android:drawable/ic_menu_info_details">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/allergy_field_snomed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:focusable="false"
+                android:textColor="@color/jemma_primary"
+                tools:text="91936005" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Severity (mild / moderate / severe) -->
+        <TextView
+            style="@style/JemmaFieldLabel"
+            android:text="@string/allergy_field_severity" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/allergy_severity_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/allergy_severity_mild"
+                style="@style/JemmaSegmentButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/allergy_severity_mild" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/allergy_severity_moderate"
+                style="@style/JemmaSegmentButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/allergy_severity_moderate" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/allergy_severity_severe"
+                style="@style/JemmaSegmentButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/allergy_severity_severe" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <!-- Reaction (free text or dictate) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="top"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/JemmaTextInputLayout"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/allergy_field_reaction">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/allergy_field_reaction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:lines="3" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/allergy_field_reaction_voice"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_voice_btn"
+                android:contentDescription="@string/voice_input_cd"
+                android:src="@android:drawable/ic_btn_speak_now"
+                app:tint="@color/jemma_primary" />
+        </LinearLayout>
+
+        <!-- DEBUG CONSOLE — visible when entry came from voice or image pipeline -->
+        <View style="@style/JemmaDivider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="monospace"
+                android:text="@string/debug_console_label"
+                android:textColor="@color/jemma_accent"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/allergy_debug_toggle"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/debug_console_toggle"
+                android:src="@android:drawable/arrow_down_float"
+                app:tint="@color/jemma_text_muted" />
+        </LinearLayout>
+
+        <!-- ScrollView containing the live debug log. Replaces the placeholder
+             when AllergyExtractPipeline.run() is invoked. -->
+        <ScrollView
+            android:id="@+id/allergy_debug_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_debug_console"
+            android:padding="8dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+            <TextView
+                android:id="@+id/allergy_debug_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textColor="@color/jemma_accent"
+                android:textSize="10sp"
+                tools:text="[t=0001ms] 🎙 audio captured (12.4 KB, 3.2s)\n[t=0420ms] 🤖 transcribe → 'je suis allergique à la pénicilline'\n[t=0890ms] 🤖 extract → {substance:'pénicilline'}\n[t=1102ms] 📚 KB FTS5 → 91936005 (Penicillin allergy)\n[t=1108ms] ✅ SAVE allergy_id=42" />
+        </ScrollView>
+
+        <!-- Action buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/allergy_btn_delete"
+                style="@style/JemmaTextButton"
+                android:textColor="@color/jemma_danger"
+                android:text="@string/btn_delete"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/allergy_btn_cancel"
+                style="@style/JemmaTextButton"
+                android:text="@string/btn_cancel" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/allergy_btn_save"
+                style="@style/JemmaPrimaryButton"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/btn_save" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  view_livescan_pipeline.xml — JEMMA Pass · Live Scan v4 · UX-COLLAPSE
+
+  🆕 v4.2 UX-COLLAPSE — chaque zone est maintenant une CardView avec
+  un header cliquable (chevron ▼/▶) qui toggle visibility du content.
+  Permet aux juges de voir le détail step-by-step pendant le pipeline,
+  puis de plier les zones une fois terminées pour ne garder que le verdict.
+
+  Caret streaming "▮" qui clignote pendant Phase D pour montrer que le
+  LLM est en train de générer en direct (visible token par token).
+
+  Auto-scroll du NestedScrollView au bas à chaque update streaming.
+
+  Zones :
+    👁  Zone OCR brut (frames camera ML Kit)
+    🔍 Zone KB FTS5 candidats trouvés
+    🧠 Zone Gemma identification + reason
+    🩺 Zone SQL cross-check + verdict + TTS verbal
+    📡 Zone Gemma streaming explanation (texte progressif)
+-->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="#0F172A"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/livescan_panel_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <!-- ─── Header : drug name + close ──────────────────────── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/livescan_panel_header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    tools:text="💊 Acetylsalicylic acid (B01AC06)" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/livescan_panel_btn_close"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/livescan_panel_close"
+                    app:icon="@android:drawable/ic_menu_close_clear_cancel"
+                    app:iconTint="#E2E8F0" />
+
+            </LinearLayout>
+
+            <!-- ─── Banner état (couleur dynamique selon state) ─────── -->
+            <TextView
+                android:id="@+id/livescan_panel_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:background="#1E40AF"
+                tools:text="🧠 Gemma identifie le médicament…" />
+
+            <!-- ═══════════════════════════════════════════════════════
+                 🆕 UX-COLLAPSE — 5 zones collapsables avec chevron
+                 ═══════════════════════════════════════════════════════ -->
+
+            <!-- 👁 Zone 1 : OCR ML Kit brut -->
+            <LinearLayout
+                android:id="@+id/livescan_zone_ocr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/livescan_zone_ocr_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="4dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/livescan_zone_ocr_chevron"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:text="▼"
+                        android:textColor="#FBBF24"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/livescan_panel_zone_ocr"
+                        android:textColor="#FBBF24"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/livescan_zone_ocr_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:padding="8dp"
+                    android:background="#1F2937"
+                    android:textColor="#FCD34D"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"
+                    tools:text='Frame 0: "SEDERGINE FORTE | ACIDE…"\nFrame 1: "10 COMPRIMES…"' />
+
+            </LinearLayout>
+
+            <!-- 🔍 Zone 2 : KB FTS5 candidats -->
+            <LinearLayout
+                android:id="@+id/livescan_zone_kb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/livescan_zone_kb_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="4dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/livescan_zone_kb_chevron"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:text="▼"
+                        android:textColor="#86EFAC"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/livescan_panel_zone_kb"
+                        android:textColor="#86EFAC"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/livescan_zone_kb_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:padding="8dp"
+                    android:background="#1F2937"
+                    android:textColor="#86EFAC"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"
+                    tools:text="B01AC06 acetylsalicylic acid\nN02BE01 paracetamol\nB03BA01 heme iron" />
+
+            </LinearLayout>
+
+            <!-- 🧠 Zone 3 : Gemma identification + reason -->
+            <LinearLayout
+                android:id="@+id/livescan_zone_gemma"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/livescan_zone_gemma_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="4dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/livescan_zone_gemma_chevron"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:text="▼"
+                        android:textColor="#C4B5FD"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/livescan_panel_zone_gemma"
+                        android:textColor="#C4B5FD"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05" />
+
+                    <!-- 🆕 v4.2 UX-B1-STREAM — caret clignotant pendant Phase B1 -->
+                    <TextView
+                        android:id="@+id/livescan_zone_gemma_cursor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="▮"
+                        android:textColor="#C4B5FD"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/livescan_zone_gemma_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:padding="8dp"
+                    android:background="#1F2937"
+                    android:textColor="#DDD6FE"
+                    android:textSize="12sp"
+                    tools:text='🔒 B01AC06\nReason: "The package clearly shows SEDERGINE FORTE…"' />
+
+            </LinearLayout>
+
+            <!-- 🩺 Zone 4 : Cross-check verdict + badges + TTS -->
+            <LinearLayout
+                android:id="@+id/livescan_zone_xcheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/livescan_zone_xcheck_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="4dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/livescan_zone_xcheck_chevron"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:text="▼"
+                        android:textColor="#FCA5A5"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/livescan_panel_zone_xcheck"
+                        android:textColor="#FCA5A5"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/livescan_zone_xcheck_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="4dp">
+
+                    <LinearLayout
+                        android:id="@+id/livescan_panel_badges"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <TextView
+                        android:id="@+id/livescan_zone_tts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:padding="8dp"
+                        android:background="#1F2937"
+                        android:textColor="#FECACA"
+                        android:textSize="12sp"
+                        android:textStyle="italic"
+                        tools:text='🔊 "Danger. Interaction majeure avec Sertraline."' />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 📡 Zone 5 : Gemma streaming explanation -->
+            <LinearLayout
+                android:id="@+id/livescan_zone_stream"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/livescan_zone_stream_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="4dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/livescan_zone_stream_chevron"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:text="▼"
+                        android:textColor="#7DD3FC"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/livescan_panel_zone_stream"
+                        android:textColor="#7DD3FC"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05" />
+
+                    <!-- 🆕 UX-COLLAPSE — caret clignotant pendant streaming actif -->
+                    <TextView
+                        android:id="@+id/livescan_zone_stream_cursor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="▮"
+                        android:textColor="#7DD3FC"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/livescan_zone_stream_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/livescan_panel_stream"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:background="#1F2937"
+                        android:textColor="#E0F2FE"
+                        android:textSize="13sp"
+                        android:lineSpacingExtra="2dp"
+                        tools:text="L'interaction majeure identifiée concerne l'association d'acide acétylsalicylique…" />
+
+                    <TextView
+                        android:id="@+id/livescan_panel_safe_alt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:padding="10dp"
+                        android:background="#15803D"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        tools:text="🟢 Safe alternative: paracétamol (N02BE01)" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.cardview.widget.CardView>

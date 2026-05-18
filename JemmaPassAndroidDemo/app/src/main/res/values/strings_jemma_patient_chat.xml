@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="patient_chat_title">🪪 Patient · Voice</string>
+    <string name="patient_chat_draft_card_title">Captured data</string>
+    <string name="patient_chat_draft_given_name_fmt">👤 First name: %1$s</string>
+    <string name="patient_chat_draft_gender_fmt">⚥ Sex: %1$s</string>
+    <string name="patient_chat_draft_birth_date_fmt">📅 Birth date: %1$s</string>
+
+    <string name="patient_chat_greeting">Hi! Tell me your first name, your sex, and your date of birth.</string>
+
+    <string name="patient_chat_input_hint">Say your first name, sex and birth date…</string>
+    <string name="patient_chat_mic_cd">Activate microphone</string>
+
+    <string name="patient_chat_status_loading">⏳ Loading…</string>
+    <string name="patient_chat_status_idle">🎤 Your turn</string>
+    <string name="patient_chat_status_recording">🛑 Listening… tap to stop</string>
+    <string name="patient_chat_status_thinking">🤔 Jemma is thinking…</string>
+    <string name="patient_chat_status_done">✅ Captured — back to form</string>
+
+    <string name="patient_chat_extract_failed">Sorry, I did not catch that. Can you repeat your first name, sex and date of birth?</string>
+    <string name="patient_chat_extract_error_fmt">Jemma error: %1$s</string>
+
+    <string name="patient_chat_mic_perm_needed">Microphone permission needed.</string>
+    <string name="patient_chat_stt_unsupported">Speech recognition is not available on this device.</string>
+    <string name="patient_chat_stt_error_fmt">STT error: %1$s</string>
+
+</resources>

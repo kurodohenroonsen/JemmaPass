@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_blindage.xml (FR) — JEMMA Pass · v2.6.0 · L_BLINDAGE
+-->
+<resources>
+
+    <!-- ═══ Cross-Check Alert Dialog ═══ -->
+
+    <string name="xchk_title_medication">%1$s %2$s : %3$s</string>
+    <string name="xchk_title_allergy">%1$s %2$s : %3$s</string>
+
+    <string name="xchk_severity_major">Majeur</string>
+    <string name="xchk_severity_moderate">Modéré</string>
+    <string name="xchk_severity_minor">Mineur</string>
+    <string name="xchk_severity_unknown">Inconnu</string>
+    <string name="xchk_severity_info">Information</string>
+
+    <string name="xchk_section_allergies">⚕ Collision avec allergie :</string>
+    <string name="xchk_section_ddi">⚕ Interactions médicamenteuses :</string>
+    <string name="xchk_section_drug_disease">⚕ Contre-indication selon condition :</string>
+    <string name="xchk_section_allergy_vs_meds">⚕ Médicaments existants qui poseraient problème :</string>
+
+    <string name="xchk_allergy_line">%1$s × %2$s (%3$s)</string>
+    <string name="xchk_ddi_line">[%1$s] %2$s × %3$s</string>
+    <string name="xchk_dd_line">[%1$s] %2$s × %3$s</string>
+    <string name="xchk_allergy_med_line">%1$s × %2$s (%3$s)</string>
+    <string name="xchk_alt_atc">💡 Alternative ATC suggérée : %1$s</string>
+
+    <string name="xchk_matched_code">code exact</string>
+    <string name="xchk_matched_name">par nom</string>
+    <string name="xchk_matched_class">via classe ATC %1$s</string>
+
+    <string name="xchk_button_save_anyway">Sauver quand même</string>
+    <string name="xchk_button_cancel">Annuler</string>
+    <string name="xchk_button_save_anyway_a11y">Sauver quand même, action avec risque clinique</string>
+    <string name="xchk_button_cancel_a11y">Annuler et revenir au formulaire, aucune modification sauvegardée</string>
+    <string name="xchk_a11y_role">Alerte de sécurité clinique</string>
+
+    <!-- ═══ Phone validation ═══ -->
+
+    <string name="phone_validation_too_short">Numéro trop court (minimum 7 chiffres)</string>
+    <string name="phone_validation_too_long">Numéro trop long (maximum 18 chiffres)</string>
+    <string name="phone_validation_invalid_chars">Le numéro contient des caractères invalides</string>
+    <string name="phone_validation_missing_prefix">Préfixe international manquant (ex : +32, +33, +81)</string>
+    <string name="phone_validation_will_normalize">Sera sauvegardé en : %1$s</string>
+
+    <!-- ═══ Date validation ═══ -->
+
+    <string name="date_validation_format">Date au format AAAA-MM-JJ</string>
+    <string name="date_validation_future">La date ne peut pas être dans le futur</string>
+    <string name="date_validation_too_old">Date il y a plus de 150 ans</string>
+
+    <!-- ═══ Patient form additions ═══ -->
+
+    <string name="perso_email_validation">Format d\'email invalide</string>
+    <string name="perso_birthdate_tap_to_pick">Touche pour choisir la date de naissance</string>
+    <string name="perso_a11y_birthdate_picker">Sélecteur de date de naissance, actuellement %1$s</string>
+    <string name="perso_a11y_gender_toggle">Genre %1$s, %2$s</string>
+    <string name="perso_a11y_blood_type_picker">Sélecteur de groupe sanguin, actuellement %1$s</string>
+    <string name="perso_a11y_nationality_picker">Sélecteur de nationalité, actuellement %1$s</string>
+
+    <!-- ═══ Contact form additions ═══ -->
+
+    <string name="contact_form_phone_normalized">Téléphone normalisé : %1$s</string>
+    <string name="contact_form_duplicate_warning">Un contact nommé « %1$s » existe déjà. Mettre à jour ?</string>
+    <string name="contact_form_duplicate_update">Mettre à jour</string>
+    <string name="contact_form_duplicate_add_new">Ajouter en plus</string>
+    <string name="contact_form_duplicate_cancel">Annuler</string>
+    <string name="contact_form_a11y_relation_picker">Sélecteur de relation, actuellement %1$s</string>
+    <string name="contact_form_a11y_phone_hint">Numéro de téléphone, format international recommandé</string>
+
+    <!-- ═══ Allergy form additions ═══ -->
+
+    <string name="allergy_form_xchk_in_progress">Vérification des conflits avec tes médicaments…</string>
+    <string name="allergy_form_xchk_clean">Aucun conflit avec tes médicaments actuels.</string>
+    <string name="allergy_form_notes_limit_warning">Notes limitées à 500 caractères</string>
+    <string name="allergy_form_a11y_substance_picker">Sélecteur de substance, actuellement %1$s</string>
+    <string name="allergy_form_a11y_reaction_picker">Sélecteur de réaction, actuellement %1$s</string>
+    <string name="allergy_form_a11y_severity_toggle">Sévérité %1$s, %2$s</string>
+    <string name="allergy_form_a11y_status_toggle">Statut %1$s, %2$s</string>
+    <string name="allergy_form_a11y_category_toggle">Catégorie %1$s, %2$s</string>
+    <string name="allergy_form_a11y_type_toggle">Type %1$s, %2$s</string>
+
+    <!-- ═══ Medication form additions ═══ -->
+
+    <string name="medication_form_xchk_in_progress">Vérification des interactions avec ton profil…</string>
+    <string name="medication_form_xchk_clean">Aucune interaction détectée avec ton profil actuel.</string>
+    <string name="medication_form_dose_unit_hint">Unités courantes : mg, g, mcg, mL, IU, comprimé, capsule</string>
+    <string name="medication_form_timing_chip_qd">1×/jour</string>
+    <string name="medication_form_timing_chip_bid">BID (2×)</string>
+    <string name="medication_form_timing_chip_tid">TID (3×)</string>
+    <string name="medication_form_timing_chip_qid">QID (4×)</string>
+    <string name="medication_form_timing_chip_prn">Si besoin</string>
+    <string name="medication_form_timing_chip_qhs">Coucher</string>
+    <string name="medication_form_a11y_substance_picker">Sélecteur de médicament, actuellement %1$s</string>
+    <string name="medication_form_a11y_route_toggle">Voie %1$s, %2$s</string>
+    <string name="medication_form_a11y_status_picker">Sélecteur de statut, actuellement %1$s</string>
+    <string name="medication_form_a11y_effective_picker">Sélecteur de date effective, actuellement %1$s</string>
+    <string name="medication_form_a11y_reason_picker">Sélecteur de raison, actuellement %1$s</string>
+
+    <!-- ═══ Accessibility helpers ═══ -->
+
+    <string name="a11y_state_selected">sélectionné</string>
+    <string name="a11y_state_not_selected">non sélectionné</string>
+    <string name="a11y_state_empty">vide</string>
+    <string name="a11y_action_open_picker">ouvre le sélecteur</string>
+    <string name="a11y_action_clear">efface la valeur</string>
+    <string name="a11y_action_pick_date">ouvre le sélecteur de date</string>
+
+</resources>

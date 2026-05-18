@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="medication_form_label_status">Status</string>
+    <string name="medication_form_status_hint">Tap to choose</string>
+    <string name="medication_form_status_pick_title">FHIR MedicationStatement status</string>
+
+    <string name="medication_form_label_effective">Start of intake</string>
+    <string name="medication_form_effective_hint">Tap to pick a date</string>
+    <string name="medication_form_effective_pick_title">Date of intake start</string>
+    <string name="medication_form_effective_clear_desc">Clear date</string>
+
+    <string name="medication_form_label_reason_code">Structured indication (Condition)</string>
+    <string name="medication_form_reason_code_hint">Tap to pick a condition</string>
+    <string name="medication_form_reason_code_picker_title">Medical indication</string>
+    <string name="medication_form_reason_code_clear_desc">Clear indication</string>
+</resources>

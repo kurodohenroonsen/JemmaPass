@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · RU · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Профили</string>
+    <string name="bottom_nav_radar">Радар</string>
+    <string name="bottom_nav_settings">Настройки</string>
+    <string name="bottom_nav_sos_rescue">SOS/Спасение</string>
+
+    <string name="sos_rescue_hub_title">SOS / Спасение</string>
+    <string name="sos_rescue_hub_subtitle">Выберите режим: отправьте SOS как пострадавший или ищите пострадавших как спасатель.</string>
+    <string name="sos_rescue_hub_open_button">Выбрать режим</string>
+
+    <string name="mode_select_title">Выберите свою роль</string>
+    <string name="mode_select_sos_title">SOS · Мне нужна помощь</string>
+    <string name="mode_select_sos_subtitle">Передаёт мой медицинский профиль спасателям поблизости через сеть Bluetooth.</string>
+    <string name="mode_select_rescuer_title">Спасение · Я хочу помочь</string>
+    <string name="mode_select_rescuer_subtitle">Сканируйте передачи SOS и сортируйте пострадавших на радаре в реальном времени.</string>
+
+    <string name="radar_btn_hide">Скрыть</string>
+    <string name="radar_btn_scan_qr">Сканировать QR</string>
+    <string name="radar_btn_start">📡 ЗАПУСТИТЬ РАДАР</string>
+    <string name="radar_btn_stop">Стоп</string>
+    <string name="l3_radar_btn_stop">🛑 ОСТАНОВИТЬ РАДАР</string>
+
+    <string name="sos_broadcast_title">🆘 Передача SOS</string>
+    <string name="sos_broadcast_subtitle">Служба переднего плана удерживает иконку на экране блокировки и чередует BLE-чанки.</string>
+    <string name="sos_btn_start">ЗАПУСК\nSOS</string>
+    <string name="sos_btn_stop">СТОП\nSOS</string>
+    <string name="sos_btn_toggle">🔄 ПЕРЕКЛЮЧИТЬ ПЕРЕДАЧУ</string>
+    <string name="sos_btn_pause_broadcast">🔇 Приостановить BLE-передачу</string>
+    <string name="sos_btn_resume_broadcast">🔊 Возобновить BLE-передачу</string>
+    <string name="l3_sos_btn_start">🆘 АКТИВИРОВАТЬ SOS</string>
+    <string name="l3_sos_btn_stop">🛑 ОТКЛЮЧИТЬ SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Не удалось создать растровое изображение</string>
+    <string name="qr_save_file_failed">Не удалось создать файл изображения</string>
+    <string name="qr_save_success">QR-код сохранён в галерею</string>
+    <string name="qr_save_write_failed">Ошибка сохранения: %1$s</string>
+    <string name="pdf_export_in_progress">Создаётся эко-чернильный PDF…</string>
+    <string name="pdf_export_failed">Не удалось создать PDF</string>
+    <string name="share_jemma_pass_title">Поделиться Jemma Pass</string>
+    <string name="scanner_unavailable">Сканер недоступен: %1$s</string>
+</resources>

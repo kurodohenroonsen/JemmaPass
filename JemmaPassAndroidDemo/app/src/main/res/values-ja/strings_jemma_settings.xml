@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_settings.xml — version JA.
+-->
+<resources>
+
+    <!-- KB ブート状態 -->
+    <string name="kb_boot_validating">ナレッジベースを初期化しています…</string>
+    <string name="kb_boot_failed_template">KB 初期化失敗 : %1$s</string>
+    <string name="kb_card_btn_reload">再読込</string>
+    <string name="kb_card_validating_label">SQLite + FTS5 を検証中…</string>
+
+    <!-- 全消去 -->
+    <string name="wipe_all_confirm_title">すべてのデータを消去しますか?</string>
+    <string name="wipe_all_confirm_message">すべてのプロフィール、ダウンロード済みモデル、ナレッジベース、キャッシュが削除されます。アプリは初期状態に戻ります。この操作は元に戻せません。</string>
+    <string name="wipe_all_confirm_btn_yes">すべて消去</string>
+    <string name="wipe_all_confirm_btn_no">キャンセル</string>
+    <string name="wipe_all_done_toast">すべてのデータが消去されました。</string>
+
+    <!-- デモペルソナ -->
+    <string name="seed_personas_done_toast">クロド、美砂子、春のプロフィールを作成しました。</string>
+    <string name="seed_personas_disabled_toast">ペルソナのシードは後続リリースで提供予定です。</string>
+
+    <!-- Toast -->
+    <string name="toast_model_activated_template">%1$s を有効化しました</string>
+    <string name="toast_model_deleted_template">%1$s を削除しました</string>
+    <string name="toast_kb_reloaded">ナレッジベースを再読込しました</string>
+
+    <!-- 🆕 v4.1 FIX #3 — 推論アクセラレーターの切り替え -->
+    <string name="settings_accelerator_title">推論アクセラレーター</string>
+    <string name="settings_accelerator_subtitle">GPU は高速ですが一部の端末でクラッシュする可能性があります。CPU は遅いですが常に動作します。</string>
+    <string name="settings_accelerator_gpu">GPU (高速)</string>
+    <string name="settings_accelerator_cpu">CPU (安定)</string>
+    <string name="settings_accelerator_changed_reload">アクセラレーターを変更しました。次回使用時にモデルが再読込されます。</string>
+
+</resources>

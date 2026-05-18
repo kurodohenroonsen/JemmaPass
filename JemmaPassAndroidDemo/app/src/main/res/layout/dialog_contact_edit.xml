@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    dialog_contact_edit.xml — used by ContactEditDialog (BottomSheetDialogFragment).
+    Maps to IPS RelatedPerson resource. Voice button next to the name field
+    so the user can dictate it.
+-->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/jemma_surface">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/contact_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_dialog_title_new"
+            android:textColor="@color/jemma_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Nouveau contact" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="monospace"
+            android:text="@string/contact_dialog_ips_type"
+            android:textColor="@color/jemma_text_muted"
+            android:textSize="10sp" />
+
+        <!-- Name + voice mic next to it -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/JemmaTextInputLayout"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/contact_field_name">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contact_field_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/contact_field_name_voice"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_voice_btn"
+                android:contentDescription="@string/voice_input_cd"
+                android:src="@android:drawable/ic_btn_speak_now"
+                app:tint="@color/jemma_primary" />
+        </LinearLayout>
+
+        <!-- Relationship (RelatedPerson.relationship — v3-RoleCode) -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/JemmaTextInputLayout"
+            android:hint="@string/contact_field_relationship"
+            app:endIconMode="dropdown_menu">
+            <AutoCompleteTextView
+                android:id="@+id/contact_field_relationship"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                tools:text="Conjoint" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Phone -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/JemmaTextInputLayout"
+            android:hint="@string/contact_field_phone"
+            app:startIconDrawable="@android:drawable/ic_menu_call">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/contact_field_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Email (optional) -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/JemmaTextInputLayout"
+            android:hint="@string/contact_field_email"
+            app:startIconDrawable="@android:drawable/ic_dialog_email">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/contact_field_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Preferred language for emergency comms -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/JemmaTextInputLayout"
+            android:hint="@string/contact_field_language"
+            app:endIconMode="dropdown_menu">
+            <AutoCompleteTextView
+                android:id="@+id/contact_field_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                tools:text="🇯🇵 Japonais (ja)" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Action buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/contact_btn_delete"
+                style="@style/JemmaTextButton"
+                android:textColor="@color/jemma_danger"
+                android:text="@string/btn_delete"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/contact_btn_cancel"
+                style="@style/JemmaTextButton"
+                android:text="@string/btn_cancel" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/contact_btn_save"
+                style="@style/JemmaPrimaryButton"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/btn_save" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

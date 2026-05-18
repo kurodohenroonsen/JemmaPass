@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_phase_row.xml — single phase row for the MedScan pipeline UI.
+    Included 5 times in dialog_med_scan.xml. Each row has a status icon, phase
+    title, payload preview text, and elapsed-ms badge.
+
+    Status icons (set by Fragment based on PhaseState enum) :
+      ⏳ pending  → ic_menu_more (alpha 0.4)
+      ⚙️ running → animated rotation drawable
+      ✅ ok       → ic_menu_compass (green tint)
+      ❌ error    → ic_menu_close_clear_cancel (red tint)
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/phase_row_status_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:alpha="0.4"
+        android:src="@android:drawable/ic_menu_more"
+        app:tint="@color/jemma_text_muted"
+        tools:alpha="1.0"
+        tools:src="@android:drawable/ic_menu_compass" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/phase_row_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/jemma_text"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            tools:text="📷 Capture (DocumentScanner)" />
+
+        <TextView
+            android:id="@+id/phase_row_payload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textColor="@color/jemma_text_muted"
+            android:textSize="10sp"
+            android:visibility="gone"
+            tools:text="124 KB · 1024×1366"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/phase_row_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:textColor="@color/jemma_primary"
+        android:textSize="11sp"
+        android:visibility="gone"
+        tools:text="89 ms"
+        tools:visibility="visible" />
+
+</LinearLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_jemma_perso_edit_ips.xml — v2.6.0g · L5e
+  Ajouts pour les champs IPS Patient mustSupport :
+    Patient.address, Patient.telecom, Patient.identifier
+-->
+<resources>
+
+    <!-- ─── Section "Adresse postale" ─────────────────── -->
+    <string name="perso_section_address">📮  Adresse postale</string>
+    <string name="perso_address_hint">Adresse complète</string>
+    <string name="perso_address_helper">Ex: Rue de la Paix 12, 5660 Couvin, Belgique</string>
+
+    <!-- ─── Section "Télécom du patient" ──────────────── -->
+    <string name="perso_section_telecom">📞  Coordonnées du patient</string>
+    <string name="perso_telecom_helper">Téléphone et email du patient lui-même (distinct des contacts d\'urgence)</string>
+    <string name="perso_telecom_phone_hint">Téléphone</string>
+    <string name="perso_telecom_email_hint">Email</string>
+
+    <!-- ─── Section "Identifiant" ─────────────────────── -->
+    <string name="perso_section_identifier">🆔  Identifiant national</string>
+    <string name="perso_identifier_hint">Numéro de carte d\'identité</string>
+    <string name="perso_identifier_helper">Ex: numéro registre national, n° sécurité sociale, n° carte d\'identité</string>
+
+</resources>

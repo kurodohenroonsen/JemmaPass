@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_blindage.xml — JEMMA Pass · Plan B · v2.6.0 · L_BLINDAGE
+  
+  Toutes les strings introduites par le lot blindage des 4 forms :
+  - Cross-check alert dialog
+  - Validation messages
+  - Accessibilité TalkBack
+  
+  À ajouter à values/, values-fr/, values-ja/.
+-->
+<resources>
+
+    <!-- ═══ Cross-Check Alert Dialog ═══ -->
+
+    <string name="xchk_title_medication">%1$s %2$s : %3$s</string>
+    <string name="xchk_title_allergy">%1$s %2$s : %3$s</string>
+
+    <string name="xchk_severity_major">Major</string>
+    <string name="xchk_severity_moderate">Moderate</string>
+    <string name="xchk_severity_minor">Minor</string>
+    <string name="xchk_severity_unknown">Unknown</string>
+    <string name="xchk_severity_info">Information</string>
+
+    <string name="xchk_section_allergies">⚕ Allergy collision:</string>
+    <string name="xchk_section_ddi">⚕ Drug-Drug Interactions:</string>
+    <string name="xchk_section_drug_disease">⚕ Drug × Condition contraindication:</string>
+    <string name="xchk_section_allergy_vs_meds">⚕ Existing medications that would conflict:</string>
+
+    <string name="xchk_allergy_line">%1$s × %2$s (%3$s)</string>
+    <string name="xchk_ddi_line">[%1$s] %2$s × %3$s</string>
+    <string name="xchk_dd_line">[%1$s] %2$s × %3$s</string>
+    <string name="xchk_allergy_med_line">%1$s × %2$s (%3$s)</string>
+    <string name="xchk_alt_atc">💡 Alternative ATC suggested: %1$s</string>
+
+    <string name="xchk_matched_code">exact code match</string>
+    <string name="xchk_matched_name">name match</string>
+    <string name="xchk_matched_class">via ATC class %1$s</string>
+
+    <string name="xchk_button_save_anyway">Save anyway</string>
+    <string name="xchk_button_cancel">Cancel</string>
+    <!-- TalkBack-specific labels (with extra context for screen reader) -->
+    <string name="xchk_button_save_anyway_a11y">Save anyway, action with clinical risk</string>
+    <string name="xchk_button_cancel_a11y">Cancel and return to form, no change saved</string>
+    <string name="xchk_a11y_role">Clinical safety alert</string>
+
+    <!-- ═══ Phone validation messages ═══ -->
+
+    <string name="phone_validation_too_short">Phone number too short (minimum 7 digits)</string>
+    <string name="phone_validation_too_long">Phone number too long (maximum 18 digits)</string>
+    <string name="phone_validation_invalid_chars">Phone contains invalid characters</string>
+    <string name="phone_validation_missing_prefix">Missing international prefix (e.g. +32, +33, +81)</string>
+    <string name="phone_validation_will_normalize">Will be saved as %1$s</string>
+
+    <!-- ═══ Date validation (used by Patient + Allergy + Medication) ═══ -->
+
+    <string name="date_validation_format">Date must be YYYY-MM-DD format</string>
+    <string name="date_validation_future">Date cannot be in the future</string>
+    <string name="date_validation_too_old">Date is more than 150 years ago</string>
+
+    <!-- ═══ Patient form additions ═══ -->
+
+    <string name="perso_email_validation">Invalid email format</string>
+    <string name="perso_birthdate_tap_to_pick">Tap to pick birth date</string>
+    <string name="perso_a11y_birthdate_picker">Birth date picker, currently %1$s</string>
+    <string name="perso_a11y_gender_toggle">%1$s gender, %2$s</string>
+    <string name="perso_a11y_blood_type_picker">Blood type picker, currently %1$s</string>
+    <string name="perso_a11y_nationality_picker">Nationality picker, currently %1$s</string>
+
+    <!-- ═══ Contact form additions ═══ -->
+
+    <string name="contact_form_phone_normalized">Phone normalized: %1$s</string>
+    <string name="contact_form_duplicate_warning">A contact named "%1$s" already exists. Update existing?</string>
+    <string name="contact_form_duplicate_update">Update existing</string>
+    <string name="contact_form_duplicate_add_new">Add as new</string>
+    <string name="contact_form_duplicate_cancel">Cancel</string>
+    <string name="contact_form_a11y_relation_picker">Relation picker, currently %1$s</string>
+    <string name="contact_form_a11y_phone_hint">Phone number, prefer international format with country prefix</string>
+
+    <!-- ═══ Allergy form additions ═══ -->
+
+    <string name="allergy_form_xchk_in_progress">Checking against your medications…</string>
+    <string name="allergy_form_xchk_clean">No conflicts with your current medications.</string>
+    <string name="allergy_form_notes_limit_warning">Notes limited to 500 characters</string>
+    <string name="allergy_form_a11y_substance_picker">Substance picker, currently %1$s</string>
+    <string name="allergy_form_a11y_reaction_picker">Reaction picker, currently %1$s</string>
+    <string name="allergy_form_a11y_severity_toggle">%1$s severity, %2$s</string>
+    <string name="allergy_form_a11y_status_toggle">%1$s status, %2$s</string>
+    <string name="allergy_form_a11y_category_toggle">%1$s category, %2$s</string>
+    <string name="allergy_form_a11y_type_toggle">%1$s type, %2$s</string>
+
+    <!-- ═══ Medication form additions ═══ -->
+
+    <string name="medication_form_xchk_in_progress">Checking interactions with your profile…</string>
+    <string name="medication_form_xchk_clean">No interactions detected with your current profile.</string>
+    <string name="medication_form_dose_unit_hint">Common units: mg, g, mcg, mL, IU, tablet, capsule</string>
+    <string name="medication_form_timing_chip_qd">1x/day</string>
+    <string name="medication_form_timing_chip_bid">BID (2×)</string>
+    <string name="medication_form_timing_chip_tid">TID (3×)</string>
+    <string name="medication_form_timing_chip_qid">QID (4×)</string>
+    <string name="medication_form_timing_chip_prn">PRN (as needed)</string>
+    <string name="medication_form_timing_chip_qhs">QHS (bedtime)</string>
+    <string name="medication_form_a11y_substance_picker">Drug picker, currently %1$s</string>
+    <string name="medication_form_a11y_route_toggle">%1$s route, %2$s</string>
+    <string name="medication_form_a11y_status_picker">Status picker, currently %1$s</string>
+    <string name="medication_form_a11y_effective_picker">Effective date picker, currently %1$s</string>
+    <string name="medication_form_a11y_reason_picker">Reason code picker, currently %1$s</string>
+
+    <!-- ═══ Accessibility helpers ═══ -->
+
+    <string name="a11y_state_selected">selected</string>
+    <string name="a11y_state_not_selected">not selected</string>
+    <string name="a11y_state_empty">empty</string>
+    <string name="a11y_action_open_picker">opens picker</string>
+    <string name="a11y_action_clear">clears value</string>
+    <string name="a11y_action_pick_date">opens date picker</string>
+
+</resources>

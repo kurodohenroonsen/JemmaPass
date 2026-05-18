@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_sos_rescue.xml (EN) — JEMMA Pass · v2.5.6
+    Fusion v2.5.5.2 baseline + v2.5.6 additions (SALT codes, my-salt card,
+    stop button, triage bottom sheet).
+-->
+<resources>
+
+    <!-- ════════ v2.5.2.1 baseline (preserved) ════════ -->
+
+    <string name="bottom_nav_sos_rescue">SOS/Rescue</string>
+    <string name="sos_rescue_hub_title">SOS / Rescue</string>
+    <string name="sos_rescue_hub_subtitle">Pick a mode to continue: send an SOS as a victim, or scan for victims as a rescuer.</string>
+    <string name="sos_rescue_hub_open_button">Choose mode</string>
+    <string name="mode_select_title">Pick your role</string>
+    <string name="mode_select_sos_title">SOS · I need help</string>
+    <string name="mode_select_sos_subtitle">Broadcast my medical profile to nearby rescuers via Bluetooth mesh.</string>
+    <string name="mode_select_rescuer_title">Rescue · I want to help</string>
+    <string name="mode_select_rescuer_subtitle">Scan for SOS broadcasts and triage victims on a live radar.</string>
+
+    <string name="radar_rescuer_title">📡 Rescuer Radar</string>
+    <string name="radar_rescuer_subtitle">Discovery + advertising via Google Nearby Connections (P2P_CLUSTER).</string>
+    <string name="radar_btn_start">📡 START RADAR</string>
+    <string name="l3_radar_btn_stop">🛑 STOP RADAR</string>
+    <string name="radar_l3_disclaimer">L3 v2.5.2 placeholder (obsolete in v2.5.6).</string>
+
+    <string name="sos_broadcast_title">🆘 SOS Broadcast</string>
+    <string name="sos_broadcast_subtitle">Foreground service holds the lock-screen icon and rotates BLE chunks.</string>
+    <string name="l3_sos_btn_start">🆘 ACTIVATE SOS</string>
+    <string name="sos_btn_toggle">🔄 TOGGLE BROADCAST</string>
+    <string name="l3_sos_btn_stop">🛑 DEACTIVATE SOS</string>
+    <string name="sos_l3_disclaimer">L3 v2.5.2 placeholder (obsolete in v2.5.6).</string>
+
+    <!-- ════════ v2.5.5 + v2.5.5.2 additions ════════ -->
+
+    <string name="sos_badge_idle">◉ Inactive</string>
+    <string name="sos_badge_paused">◉ Paused</string>
+    <string name="sos_badge_active_unknown">◉ Active</string>
+    <string name="sos_badge_active_green">◉ Active · Green</string>
+    <string name="sos_badge_active_yellow">◉ Active · Yellow</string>
+    <string name="sos_badge_active_red">◉ Active · Critical</string>
+
+    <string name="sos_elapsed">%1$02d:%2$02d</string>
+
+    <string name="sos_profile_label">Profile broadcasted</string>
+    <string name="sos_no_profile_selected">No profile selected</string>
+
+    <string name="sos_criticality_label">Triage criticality</string>
+    <string name="crit_unknown">Unknown</string>
+    <string name="crit_green">Green</string>
+    <string name="crit_yellow">Yellow</string>
+    <string name="crit_red">Critical</string>
+    <string name="crit_unknown_short">⚪ Unknown</string>
+    <string name="crit_green_short">🟢 Green</string>
+    <string name="crit_yellow_short">🟡 Yellow</string>
+    <string name="crit_red_short">🔴 Critical</string>
+
+    <string name="sos_btn_pause_broadcast">🔇 Pause BLE broadcast</string>
+    <string name="sos_btn_resume_broadcast">🔊 Resume BLE broadcast</string>
+
+    <string name="sos_err_no_profile">⚠ No profile selected. Go to the Profiles tab and select one first.</string>
+    <string name="sos_err_start_failed">⚠ Could not start SOS: %1$s</string>
+
+    <string name="sos_rescuers_label">Rescuers detected</string>
+    <string name="sos_rescuers_count">%d detected</string>
+    <string name="sos_rescuers_empty">No rescuer nearby yet. Keep broadcasting — they will appear when in range.</string>
+    <string name="rescuer_anon">Rescuer</string>
+
+    <string name="radar_header_count">%d victim(s) detected</string>
+    <string name="radar_gps_locked">GPS · %1$.5f, %2$.5f</string>
+    <string name="radar_gps_pending">GPS pending…</string>
+    <string name="radar_empty_state">No SOS beacon nearby.\nThe radar is listening.</string>
+    <string name="radar_victims_section_title">Victims</string>
+    <string name="victim_anon">Anonymous victim</string>
+    <string name="victim_no_gps_rssi">No GPS · RSSI %d dBm</string>
+    <string name="victim_counts_format">⚠️ %1$d allergies · 💊 %2$d medications</string>
+    <string name="victim_seen_now">just now</string>
+    <string name="victim_seen_secs">seen %ds ago</string>
+    <string name="victim_seen_mins">seen %d min ago</string>
+
+    <string name="sos_radar_label">Around me</string>
+    <string name="sos_radar_empty">Nothing detected on the radar yet.</string>
+
+    <!-- ════════ v2.5.6 additions ════════ -->
+
+    <!-- General state pill -->
+    <string name="sos_state_broadcasting">◉ BROADCASTING</string>
+
+    <!-- My SALT card (large card at top showing the status rescuers gave me) -->
+    <string name="sos_my_salt_section">My triage status</string>
+    <string name="sos_my_salt_format">Status: %1$s</string>
+    <string name="sos_my_salt_none">Not yet triaged</string>
+    <string name="sos_my_salt_none_desc">Rescuers haven\'t evaluated me yet. Stay calm and wait.</string>
+
+    <!-- Other victims list on the SOS screen -->
+    <string name="sos_victims_label">Other victims around</string>
+    <string name="sos_victims_count">%d detected</string>
+    <string name="sos_victims_empty">No other victim detected.</string>
+
+    <!-- SALT codes — labels + descriptions -->
+    <string name="salt_wait_label">WAIT</string>
+    <string name="salt_wait_desc">Awaiting evaluation (low priority)</string>
+    <string name="salt_eval_label">EVAL</string>
+    <string name="salt_eval_desc">Under active evaluation</string>
+    <string name="salt_stab_label">STAB</string>
+    <string name="salt_stab_desc">Stabilized — no immediate intervention</string>
+    <string name="salt_help_label">HELP</string>
+    <string name="salt_help_desc">Needs help right now</string>
+    <string name="salt_evac_label">EVAC</string>
+    <string name="salt_evac_desc">Ready for evacuation</string>
+    <string name="salt_dcd_label">DCD</string>
+    <string name="salt_dcd_desc">Deceased</string>
+
+    <!-- Triage bottom sheet -->
+    <string name="triage_sheet_title">Triage SALT</string>
+    <string name="triage_current_status">%1$s Current: %2$s</string>
+    <string name="triage_btn_cancel">Cancel</string>
+    <string name="triage_btn_cancel_deceased">↺ Cancel deceased (revival)</string>
+    <string name="triage_confirm_title">Confirm transition</string>
+    <string name="triage_confirm_msg">Mark %3$s as %1$s %2$s ?\n\nThis transition is semi-irreversible.</string>
+    <string name="triage_confirm_yes">Confirm</string>
+    <string name="triage_confirm_no">Cancel</string>
+
+</resources>

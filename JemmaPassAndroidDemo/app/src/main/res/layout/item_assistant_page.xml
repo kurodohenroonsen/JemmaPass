@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_assistant_page.xml — Lot 14.5b1 (PHASE 14)
+
+    Une page (ImageView pleine largeur) dans le RecyclerView horizontal
+    qui sert de pager swipeable pour les N pages scannées.
+
+    Le layout_width=match_parent garantit qu'avec PagerSnapHelper, chaque
+    item occupe 100 percent de la viewport → effet swipe-snap propre.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/page_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/assistant_capture_preview_cd"
+        android:scaleType="fitCenter" />
+
+</FrameLayout>

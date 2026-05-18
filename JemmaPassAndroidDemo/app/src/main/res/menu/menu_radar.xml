@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_radar_mode_rescuer"
+        android:title="@string/menu_radar_mode_rescuer"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_radar_mode_sos"
+        android:title="@string/menu_radar_mode_sos"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_radar_diagnostics"
+        android:title="@string/menu_radar_diagnostics"
+        app:showAsAction="never" />
+
+</menu>

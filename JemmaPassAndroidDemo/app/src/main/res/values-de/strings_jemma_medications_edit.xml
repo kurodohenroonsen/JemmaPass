@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Medications edit fragment · DE ─── -->
+    <string name="medications_edit_title">Medikamente</string>
+    <string name="medications_edit_hero_title">Medikamente</string>
+    <string name="medications_fab_add_desc">Medikament hinzufügen</string>
+
+    <string name="medications_empty_default">Noch keine Medikamente. Tippe auf die +-Schaltfläche, um eines hinzuzufügen.</string>
+    <string name="medications_empty_no_profile">Erstelle zuerst das Patientenprofil, bevor du Medikamente hinzufügst.</string>
+    <string name="medications_unnamed">dieses Medikament</string>
+
+    <plurals name="medications_count">
+        <item quantity="zero">Keine Medikamente</item>
+        <item quantity="one">%d Medikament</item>
+        <item quantity="other">%d Medikamente</item>
+    </plurals>
+
+    <string name="medications_saved">Medikamente aktualisiert ✓</string>
+
+    <string name="medications_delete_title">🗑 Dieses Medikament löschen?</string>
+    <string name="medications_delete_message">%1$s endgültig löschen?</string>
+    <string name="medications_delete_cancel">Abbrechen</string>
+    <string name="medications_delete_confirm">🗑 Löschen</string>
+
+    <!-- ─── Medication form bottom sheet ─── -->
+    <string name="medication_form_title_create">💊  Medikament hinzufügen</string>
+    <string name="medication_form_title_edit">💊  Medikament bearbeiten</string>
+
+    <string name="medication_form_label_substance">Wirkstoff (ATC / RxNorm)</string>
+    <string name="medication_form_label_dose_value">Dosis</string>
+    <string name="medication_form_label_dose_unit">Einheit</string>
+    <string name="medication_form_label_timing">Häufigkeit</string>
+    <string name="medication_form_timing_helper">z. B. 1×/Tag, 2×/Tag, wöchentlich…</string>
+    <string name="medication_form_label_route">Verabreichungsweg</string>
+    <string name="medication_form_label_reason">Indikation</string>
+    <string name="medication_form_reason_helper">Warum diese Behandlung (z. B. Hypertonie)</string>
+
+    <string name="medication_form_substance_hint">Tippen, um nach einem Medikament zu suchen</string>
+    <string name="medication_form_substance_picker_title">Medikament (DIAMOND KB)</string>
+
+    <string name="medication_form_route_oral">💊 Oral</string>
+    <string name="medication_form_route_injection">💉 IV/IM</string>
+    <string name="medication_form_route_topical">🧴 Topisch</string>
+    <string name="medication_form_route_subcutaneous">🩹 SC</string>
+
+    <string name="medication_form_cancel">Abbrechen</string>
+    <string name="medication_form_save">💾  Speichern</string>
+
+    <string name="medication_form_validation_substance">Wähle zuerst ein Medikament</string>
+    <string name="medication_form_validation_dose">Ungültige Dosis (muss eine positive Zahl sein)</string>
+
+    <!-- ─── KB drug picker dialog ─── -->
+    <string name="drug_picker_search_hint">🔎 Nach einem Medikament suchen (DE, EN, ATC…)</string>
+    <string name="drug_picker_status_hint">Mindestens 2 Zeichen zum Suchen eingeben</string>
+    <string name="drug_picker_status_searching">🔎 Suche läuft…</string>
+    <string name="drug_picker_status_count">%d Ergebnis(se)</string>
+    <string name="drug_picker_status_empty">Keine Ergebnisse. Anderen Begriff versuchen.</string>
+    <string name="drug_picker_status_error">Fehler in der Wissensbank</string>
+    <string name="drug_picker_cancel">Abbrechen</string>
+
+</resources>

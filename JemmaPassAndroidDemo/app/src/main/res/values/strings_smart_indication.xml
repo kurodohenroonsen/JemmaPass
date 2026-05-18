@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_smart_indication.xml — JEMMA Pass · v2.6.0 · L_PHASE11
+
+  Strings for the section headers in KbConditionPicker when used with
+  atcCode (smart-suggest mode).
+-->
+<resources>
+
+    <string name="condition_picker_section_suggested">💊 Suggested for this drug</string>
+    <string name="condition_picker_section_all">All diagnoses</string>
+
+</resources>

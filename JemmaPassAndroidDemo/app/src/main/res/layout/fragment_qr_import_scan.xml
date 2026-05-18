@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_qr_import_scan.xml — v2.3.0a
+
+    Layout fullscreen pour le scan QR. PreviewView CameraX en arrière-plan,
+    overlay de hint en haut, et un bouton "Annuler" en bas pour revenir.
+
+    Pas de fancy radar visuel dans cette livraison — on garde simple. Le
+    radar avec viseur centré + indicateurs de chunks reçus arrivera en
+    2.3.0b avec le multi-QR.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/qr_preview_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:scaleType="fillCenter"
+        app:implementationMode="performance" />
+
+    <!-- Hint en haut, fond semi-transparent -->
+    <TextView
+        android:id="@+id/qr_hint_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:padding="16dp"
+        android:background="#88000000"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:text="@string/qr_import_hint"
+        tools:text="Cadrez le QR _j 1.2 du profile JEMMA" />
+
+    <!-- Frame center (visual reticle) — 280×280 dp avec coins coupés -->
+    <View
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="center"
+        android:background="@drawable/qr_import_reticle"
+        tools:ignore="ContentDescription" />
+
+    <!-- Bouton Annuler en bas -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/qr_cancel_btn"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:text="@android:string/cancel"
+        android:textColor="@android:color/white"
+        app:strokeColor="@android:color/white"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</FrameLayout>

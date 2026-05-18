@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.3.0a — QR import flow -->
+    <string name="qr_import_title">Importer un profil JEMMA</string>
+    <string name="qr_import_hint">Cadrez le QR code _j 1.2 émis par JemmaPass</string>
+    <string name="qr_import_perm_missing">Permission caméra requise pour scanner.</string>
+
+    <string name="qr_import_confirm_title">Profil détecté 🐢</string>
+    <string name="qr_import_confirm_action">Importer</string>
+    <string name="qr_import_cancel_action">Annuler</string>
+
+    <string name="qr_import_error_title">QR non lisible</string>
+    <string name="qr_import_error_message_template">Le QR code ne contient pas un profil JEMMA valide.\n\nDétail : %1$s</string>
+
+    <string name="qr_import_done_template">Profil « %1$s » prêt (la persistence arrive en v2.3.0b).</string>
+
+    <!-- Profile screen entry point -->
+    <string name="profiles_action_import_qr">Importer un profil par QR</string>
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · IT · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Profili</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Impostazioni</string>
+    <string name="bottom_nav_sos_rescue">SOS/Soccorso</string>
+
+    <string name="sos_rescue_hub_title">SOS / Soccorso</string>
+    <string name="sos_rescue_hub_subtitle">Scegli una modalità per continuare: invia un SOS come vittima, o cerca vittime come soccorritore.</string>
+    <string name="sos_rescue_hub_open_button">Scegli modalità</string>
+
+    <string name="mode_select_title">Scegli il tuo ruolo</string>
+    <string name="mode_select_sos_title">SOS · Ho bisogno di aiuto</string>
+    <string name="mode_select_sos_subtitle">Trasmette il mio profilo medico ai soccorritori vicini tramite mesh Bluetooth.</string>
+    <string name="mode_select_rescuer_title">Soccorso · Voglio aiutare</string>
+    <string name="mode_select_rescuer_subtitle">Scansiona le trasmissioni SOS e gestisci le vittime in un radar live.</string>
+
+    <string name="radar_btn_hide">Nascondi</string>
+    <string name="radar_btn_scan_qr">Scansiona QR</string>
+    <string name="radar_btn_start">📡 AVVIA RADAR</string>
+    <string name="radar_btn_stop">Stop</string>
+    <string name="l3_radar_btn_stop">🛑 FERMA RADAR</string>
+
+    <string name="sos_broadcast_title">🆘 Trasmissione SOS</string>
+    <string name="sos_broadcast_subtitle">Il servizio in primo piano mantiene l\'icona di blocco e ruota i chunk BLE.</string>
+    <string name="sos_btn_start">AVVIA\nSOS</string>
+    <string name="sos_btn_stop">FERMA\nSOS</string>
+    <string name="sos_btn_toggle">🔄 ATTIVA/DISATTIVA TRASMISSIONE</string>
+    <string name="sos_btn_pause_broadcast">🔇 Pausa trasmissione BLE</string>
+    <string name="sos_btn_resume_broadcast">🔊 Riprendi trasmissione BLE</string>
+    <string name="l3_sos_btn_start">🆘 ATTIVA SOS</string>
+    <string name="l3_sos_btn_stop">🛑 DISATTIVA SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Errore nella generazione del bitmap</string>
+    <string name="qr_save_file_failed">Errore nella creazione del file immagine</string>
+    <string name="qr_save_success">Codice QR salvato nella galleria</string>
+    <string name="qr_save_write_failed">Errore di salvataggio: %1$s</string>
+    <string name="pdf_export_in_progress">Generazione PDF Eco-Inchiostro…</string>
+    <string name="pdf_export_failed">Generazione PDF fallita</string>
+    <string name="share_jemma_pass_title">Condividi il Jemma Pass</string>
+    <string name="scanner_unavailable">Scanner non disponibile: %1$s</string>
+</resources>

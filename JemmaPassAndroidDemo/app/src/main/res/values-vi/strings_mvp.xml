@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- L7 MVP demo strings · VI · 2026-05-17 -->
+    <string name="bottom_nav_profiles">Hồ sơ</string>
+    <string name="bottom_nav_radar">Radar</string>
+    <string name="bottom_nav_settings">Cài đặt</string>
+    <string name="bottom_nav_sos_rescue">SOS/Cứu hộ</string>
+
+    <string name="sos_rescue_hub_title">SOS / Cứu hộ</string>
+    <string name="sos_rescue_hub_subtitle">Chọn chế độ để tiếp tục: gửi SOS với tư cách nạn nhân, hoặc quét nạn nhân với tư cách người cứu hộ.</string>
+    <string name="sos_rescue_hub_open_button">Chọn chế độ</string>
+
+    <string name="mode_select_title">Chọn vai trò của bạn</string>
+    <string name="mode_select_sos_title">SOS · Tôi cần giúp đỡ</string>
+    <string name="mode_select_sos_subtitle">Phát sóng hồ sơ y tế của tôi đến những người cứu hộ gần đó qua mạng Bluetooth.</string>
+    <string name="mode_select_rescuer_title">Cứu hộ · Tôi muốn giúp đỡ</string>
+    <string name="mode_select_rescuer_subtitle">Quét các phát sóng SOS và phân loại nạn nhân trên radar trực tiếp.</string>
+
+    <string name="radar_btn_hide">Ẩn</string>
+    <string name="radar_btn_scan_qr">Quét QR</string>
+    <string name="radar_btn_start">📡 BẬT RADAR</string>
+    <string name="radar_btn_stop">Dừng</string>
+    <string name="l3_radar_btn_stop">🛑 DỪNG RADAR</string>
+
+    <string name="sos_broadcast_title">🆘 Phát sóng SOS</string>
+    <string name="sos_broadcast_subtitle">Dịch vụ chạy nền giữ biểu tượng màn hình khóa và xoay các chunk BLE.</string>
+    <string name="sos_btn_start">BẬT\nSOS</string>
+    <string name="sos_btn_stop">TẮT\nSOS</string>
+    <string name="sos_btn_toggle">🔄 BẬT/TẮT PHÁT SÓNG</string>
+    <string name="sos_btn_pause_broadcast">🔇 Tạm dừng phát sóng BLE</string>
+    <string name="sos_btn_resume_broadcast">🔊 Tiếp tục phát sóng BLE</string>
+    <string name="l3_sos_btn_start">🆘 KÍCH HOẠT SOS</string>
+    <string name="l3_sos_btn_stop">🛑 TẮT SOS</string>
+
+    <!-- L6 cleanup strings -->
+    <string name="qr_save_bitmap_failed">Không thể tạo bitmap</string>
+    <string name="qr_save_file_failed">Không thể tạo tệp hình ảnh</string>
+    <string name="qr_save_success">Mã QR đã lưu vào thư viện</string>
+    <string name="qr_save_write_failed">Lỗi lưu: %1$s</string>
+    <string name="pdf_export_in_progress">Đang tạo PDF Tiết Kiệm Mực…</string>
+    <string name="pdf_export_failed">Tạo PDF thất bại</string>
+    <string name="share_jemma_pass_title">Chia sẻ Jemma Pass</string>
+    <string name="scanner_unavailable">Máy quét không khả dụng: %1$s</string>
+</resources>

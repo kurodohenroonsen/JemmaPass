@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Contacts edit fragment ─────────────────── -->
+    <string name="contacts_edit_title">Contacts d\'urgence</string>
+    <string name="contacts_edit_hero_title">Contacts</string>
+    <string name="contacts_fab_add_desc">Ajouter un contact</string>
+
+    <!-- Empty states -->
+    <string name="contacts_empty_default">Aucun contact pour le moment. Touche le bouton + pour en ajouter un.</string>
+    <string name="contacts_empty_no_profile">Crée d\'abord le profil patient avant d\'ajouter des contacts.</string>
+    <string name="contacts_unnamed">ce contact</string>
+
+    <!-- Count -->
+    <plurals name="contacts_count">
+        <item quantity="zero">Aucun contact</item>
+        <item quantity="one">%d contact</item>
+        <item quantity="other">%d contacts</item>
+    </plurals>
+
+    <!-- Save toast -->
+    <string name="contacts_saved">Contacts mis à jour ✓</string>
+
+    <!-- Delete confirm -->
+    <string name="contacts_delete_title">🗑 Supprimer ce contact ?</string>
+    <string name="contacts_delete_message">Supprimer définitivement %1$s ?</string>
+    <string name="contacts_delete_cancel">Annuler</string>
+    <string name="contacts_delete_confirm">🗑 Supprimer</string>
+
+    <!-- ─── Contact form bottom sheet ──────────────── -->
+    <string name="contact_form_title_create">📞  Ajouter un contact</string>
+    <string name="contact_form_title_edit">📞  Modifier le contact</string>
+
+    <string name="contact_form_label_name">Nom du contact</string>
+    <string name="contact_form_label_relation">Lien</string>
+    <string name="contact_form_label_phone">Téléphone</string>
+    <string name="contact_form_label_email">Email</string>
+    <string name="contact_form_label_address">Adresse</string>
+
+    <string name="contact_form_relation_hint">Toucher pour choisir un lien</string>
+    <string name="contact_form_relation_picker_title">Lien avec le patient</string>
+
+    <string name="contact_form_cancel">Annuler</string>
+    <string name="contact_form_save">💾  Enregistrer</string>
+
+    <!-- Validation -->
+    <string name="contact_form_validation_name">Le nom du contact est requis</string>
+    <string name="contact_form_validation_at_least_one">Renseigne au moins un téléphone, un email ou une adresse</string>
+    <string name="contact_form_validation_email">Format d\'email invalide</string>
+
+    <!-- ─── IPS code picker dialog (générique) ─────── -->
+    <string name="ips_picker_search_hint">🔎  Rechercher…</string>
+    <string name="ips_picker_count">%d résultat(s)</string>
+    <string name="ips_picker_cancel">Annuler</string>
+
+</resources>

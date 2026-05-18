@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_kb_condition_picker.xml · zh-CN -->
+<resources>
+    <string name="condition_picker_search_hint">🔎 搜索症状 / 表现（中文、英文、SNOMED…）</string>
+    <string name="condition_picker_status_hint">至少输入 2 个字符（荨麻疹、过敏反应、水肿…）</string>
+</resources>

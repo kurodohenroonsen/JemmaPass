@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_kb_condition_picker.xml — v2.6.0h -->
+<resources>
+    <string name="condition_picker_search_hint">🔎 Cherche un symptôme / manifestation (FR, EN, SNOMED…)</string>
+    <string name="condition_picker_status_hint">Tape au moins 2 caractères (urticaire, anaphylaxie, œdème…)</string>
+</resources>

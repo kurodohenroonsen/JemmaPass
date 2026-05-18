@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_kb_condition_picker.xml · NL -->
+<resources>
+    <string name="condition_picker_search_hint">🔎 Zoek een symptoom / manifestatie (NL, EN, SNOMED…)</string>
+    <string name="condition_picker_status_hint">Typ minstens 2 tekens (urticaria, anafylaxie, oedeem…)</string>
+</resources>

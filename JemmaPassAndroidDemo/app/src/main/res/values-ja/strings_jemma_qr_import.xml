@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.3.0a — QR import flow (日本語) -->
+    <string name="qr_import_title">JEMMAプロフィールをインポート</string>
+    <string name="qr_import_hint">JemmaPassが発行した _j 1.2 QRコードを枠内に</string>
+    <string name="qr_import_perm_missing">スキャンにはカメラの許可が必要です。</string>
+
+    <string name="qr_import_confirm_title">プロフィールを検出しました 🐢</string>
+    <string name="qr_import_confirm_action">インポート</string>
+    <string name="qr_import_cancel_action">キャンセル</string>
+
+    <string name="qr_import_error_title">QR読み取り不能</string>
+    <string name="qr_import_error_message_template">QRコードに有効なJEMMAプロフィールが含まれていません。\n\n詳細: %1$s</string>
+
+    <string name="qr_import_done_template">プロフィール「%1$s」準備完了 (永続化はv2.3.0b)</string>
+
+    <string name="profiles_action_import_qr">QRでプロフィールをインポート</string>
+</resources>

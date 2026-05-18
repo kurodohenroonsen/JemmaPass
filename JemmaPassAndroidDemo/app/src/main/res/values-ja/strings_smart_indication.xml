@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="condition_picker_section_suggested">💊 この薬の推奨適応症</string>
+    <string name="condition_picker_section_all">すべての診断</string>
+</resources>

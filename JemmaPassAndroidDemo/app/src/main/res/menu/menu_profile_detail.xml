@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    menu_profile_detail.xml — Lot 14.1 (PHASE 14)
+
+    Menu de la toolbar de fragment_profile_detail.xml.
+
+    Items (de gauche à droite, toujours visibles) :
+      • menu_profile_detail_export — share icon → ouvre QrViewerFragment
+        avec le profile id courant + format=pruned. Channel 1 PRUNED
+        (`_j2:<base64>`) — l'équivalent du bouton 📤 de jemma_export_modal.js
+        côté HTML.
+
+    Note : ic_menu_share (système Android) est utilisé volontairement
+    plutôt qu'un drawable custom — match les conventions des autres
+    menus du projet (menu_profiles.xml utilise aussi ic_menu_camera /
+    ic_menu_preferences système).
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_profile_detail_export"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="@string/profile_detail_action_export"
+        app:showAsAction="always"
+        app:iconTint="@color/jemma_primary" />
+
+</menu>

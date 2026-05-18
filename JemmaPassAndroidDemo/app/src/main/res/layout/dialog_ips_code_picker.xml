@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  dialog_ips_code_picker.xml — Custom view pour IpsCodePickerDialog.
+
+  🆕 L_HERO_BAR — Ajout d'une rangée de toggle-chips de filtrage par
+  catégorie (ALL · 🍴 · 💊 · 🌿 · 🧬 · 🩹), affichée uniquement quand
+  le picker reçoit un mapping code→category non-vide (via newInstance
+  avec codeToCategory).
+
+  Structure :
+    EditText search en haut
+    [optional] HorizontalScrollView avec chips de catégorie
+    Count text "N items"
+    ListView scrollable (occupy max height available)
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="8dp">
+
+    <EditText
+        android:id="@+id/picker_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/ips_picker_search_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1" />
+
+    <!-- 🆕 L_HERO_BAR — Toggle chips de filtrage par catégorie. -->
+    <!-- Visible only when picker has a categories map. -->
+    <HorizontalScrollView
+        android:id="@+id/picker_categories_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:scrollbars="none"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/picker_categories_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/picker_cat_all"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ips_picker_cat_all"
+                android:textSize="12sp"
+                android:minHeight="36dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/picker_cat_food"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🍴"
+                android:textSize="14sp"
+                android:minHeight="36dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:contentDescription="@string/ips_picker_cat_food_desc" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/picker_cat_medication"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💊"
+                android:textSize="14sp"
+                android:minHeight="36dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:contentDescription="@string/ips_picker_cat_medication_desc" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/picker_cat_environment"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌿"
+                android:textSize="14sp"
+                android:minHeight="36dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:contentDescription="@string/ips_picker_cat_environment_desc" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/picker_cat_biologic"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🧬"
+                android:textSize="14sp"
+                android:minHeight="36dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:contentDescription="@string/ips_picker_cat_biologic_desc" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/picker_cat_unknown"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🩹"
+                android:textSize="14sp"
+                android:minHeight="36dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:contentDescription="@string/ips_picker_cat_unknown_desc" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/picker_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="#94A3B8"
+        android:textSize="12sp"
+        tools:text="39 items" />
+
+    <ListView
+        android:id="@+id/picker_list"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:choiceMode="singleChoice"
+        android:divider="#334155"
+        android:dividerHeight="1dp" />
+
+</LinearLayout>

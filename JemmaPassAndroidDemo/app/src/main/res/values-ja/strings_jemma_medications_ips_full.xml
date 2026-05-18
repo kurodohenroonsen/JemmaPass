@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="medication_form_label_status">服薬状況</string>
+    <string name="medication_form_status_hint">タップして選択</string>
+    <string name="medication_form_status_pick_title">FHIR MedicationStatement ステータス</string>
+
+    <string name="medication_form_label_effective">服用開始日</string>
+    <string name="medication_form_effective_hint">タップして日付を選択</string>
+    <string name="medication_form_effective_pick_title">服用開始日を選択</string>
+    <string name="medication_form_effective_clear_desc">日付を消去</string>
+
+    <string name="medication_form_label_reason_code">構造化適応症 (Condition)</string>
+    <string name="medication_form_reason_code_hint">タップして病態を選択</string>
+    <string name="medication_form_reason_code_picker_title">医学的適応</string>
+    <string name="medication_form_reason_code_clear_desc">適応を消去</string>
+</resources>

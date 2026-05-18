@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_perso_edit_ips_full.xml · NL -->
+<resources>
+
+    <!-- Section header IPS-FULL -->
+    <string name="perso_section_ips_header">— Volledige IPS-conformiteit —</string>
+
+    <!-- 📮 Postal address (structured) -->
+    <string name="perso_address_line_hint">Straat / nummer / extra regels</string>
+    <string name="perso_address_line_helper">Bv. Rue de la Paix 12 (kan meerdere regels zijn)</string>
+    <string name="perso_address_city_hint">Stad</string>
+    <string name="perso_address_postal_hint">Postcode</string>
+    <string name="perso_address_country_hint">Land (ISO-2)</string>
+    <string name="perso_address_country_pick_title">Kies land van verblijf</string>
+    <string name="perso_address_use_pick_title">Gebruik van het adres</string>
+    <string name="perso_address_use_label_prefix">Gebruik:</string>
+
+    <!-- 🆔 Identifier -->
+    <string name="perso_identifier_system_pick_title">Type identificatienummer</string>
+    <string name="perso_identifier_system_label_prefix">Systeem:</string>
+    <string name="perso_identifier_value_hint">Nummer</string>
+
+    <!-- 👨‍⚕️ General practitioner -->
+    <string name="perso_section_gp">👨‍⚕️  Huisarts</string>
+    <string name="perso_gp_hint">Naam van de arts</string>
+    <string name="perso_gp_helper">FHIR Patient.generalPractitioner — voer de volledige naam van de huisarts in</string>
+
+    <!-- 🌐 Preferred language -->
+    <string name="perso_section_language">🌐  Voorkeurstaal</string>
+    <string name="perso_language_pick_title">Voorkeurstaal kiezen</string>
+
+    <!-- Pickers -->
+    <string name="perso_pick_hint">Tik om te kiezen</string>
+
+</resources>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_chat_msg_jemma.xml — Lot 14.5c18
+
+    Bubble Jemma (sombre) alignée à gauche avec avatar 🤖. ConstraintLayout
+    pour wrap propre + caret "▮" inline visible pendant le streaming.
+
+    Le caret est ajouté inline dans la bubble (suit le dernier mot). Pour
+    le positionnement on utilise un Flow horizontal — mais c'est lourd.
+    Plus simple : le TextView bubble contient le texte + caret en suffixe
+    quand streaming=true. Géré côté Adapter.bind().
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="12dp"
+    android:paddingEnd="48dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <ImageView
+        android:id="@+id/chat_msg_jemma_avatar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="6dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/jemmapass_icon"
+        app:layout_constraintBottom_toBottomOf="@id/chat_msg_bubble"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/chat_msg_bubble" />
+
+    <TextView
+        android:id="@+id/chat_msg_bubble"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_chat_bubble_jemma"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/jemma_text"
+        android:textSize="15sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/chat_msg_jemma_avatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_default="wrap"
+        tools:text="OK, allergie à la pénicilline, sévère, notée. Est-ce que vous pouvez me dire si cette réaction est active ou si elle est passée ?" />
+
+    <!-- Caret invisible — désormais inline dans le texte du bubble. Conservé
+         pour la compat avec l'ancien ChatAdapter qui faisait findViewById. -->
+    <TextView
+        android:id="@+id/chat_msg_caret"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

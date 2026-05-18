@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_pillar_assistant.xml — Lot 14.3 (PHASE 14)
+
+    Stub assistant-only pour les 14 piliers IPS inactifs (vaccinations,
+    procédures, dispositifs, antécédents, statut fonctionnel, grossesse,
+    résultats labo, directives anticipées, consentements, objectifs de
+    soins, rencontres, données pro, équipe de soins, pathologies).
+
+    Le fragment hôte (PillarAssistantFragment) populate :
+      • le titre (selon le pilier passé en argument)
+      • l'icône (selon le pilier)
+      • le sous-titre éventuel
+
+    Structure :
+      ┌──────────────────────────────────────────────┐
+      │ ← 💉 Vaccinations                            │
+      ├──────────────────────────────────────────────┤
+      │                                              │
+      │                  💉                          │
+      │           (icône XL du pilier)               │
+      │                                              │
+      │       Ce pilier est piloté par               │
+      │           l'Assistant Jemma.                 │
+      │                                              │
+      │     Scanne, dicte ou colle — Jemma           │
+      │     structure automatiquement.               │
+      │                                              │
+      │   ┌────────┐ ┌─────────┐ ┌────────┐          │
+      │   │ 📸     │ │ 🎤      │ │ ⌨️     │          │
+      │   │ Scan   │ │ Dicter  │ │ Texte  │          │
+      │   └────────┘ └─────────┘ └────────┘          │
+      │                                              │
+      └──────────────────────────────────────────────┘
+
+    Accessibilité TalkBack :
+    - L'icône XL du pilier = importantForAccessibility=no (décoratif)
+    - Le titre du pilier dans la toolbar = heading
+    - Le pitch + sub-pitch = lecture continue (focusable=false sur les
+      TextViews simples pour ne pas ajouter du noise)
+    - Les 3 buttons ≥ 48dp + contentDescription explicite
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/pillar_assistant_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/assistant_stub_title_vaccinations"
+            app:titleTextColor="@color/jemma_primary"
+            tools:title="@string/assistant_stub_title_vaccinations" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Spacer top -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+            <!-- Icon XL du pilier (set par fragment selon ARG_PILLAR) -->
+            <TextView
+                android:id="@+id/pillar_assistant_emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:textSize="76sp"
+                tools:text="💉" />
+
+            <!-- Pitch principal -->
+            <TextView
+                android:id="@+id/pillar_assistant_pitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingTop="20dp"
+                android:text="@string/assistant_stub_pitch"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                android:textColor="@color/jemma_text"
+                android:textSize="20sp" />
+
+            <!-- Pitch sub -->
+            <TextView
+                android:id="@+id/pillar_assistant_pitch_sub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="@string/assistant_stub_pitch_sub"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="14sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="28dp" />
+
+            <!-- 3 actions row : Scan / Voice / Text -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/pillar_assistant_btn_scan"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/assistant_stub_btn_scan_cd"
+                    android:minHeight="56dp"
+                    android:text="@string/assistant_stub_btn_scan"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/pillar_assistant_btn_voice"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/assistant_stub_btn_voice_cd"
+                    android:minHeight="56dp"
+                    android:text="@string/assistant_stub_btn_voice"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/pillar_assistant_btn_text"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/assistant_stub_btn_text_cd"
+                    android:minHeight="56dp"
+                    android:text="@string/assistant_stub_btn_text"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  strings_jemma_perso_edit.xml — Strings du form FHIR Patient IPS (FR par défaut)
+
+  🆕 v2.6.0b HOTFIX v2 — Le '?' au début d'un string est INTERPRÉTÉ par AAPT2
+  comme l'opérateur de référence vers un theme attribute (style ?attr/...).
+  Donc "? —" devient "?attr/ —" qui n'existe pas → build failure.
+
+  Fix v2 : remplacer le glyphe '?' par 'U' (Unknown FHIR code) ou autre
+  caractère unicode safe. Pas d'échappement backslash car Android lit
+  les strings comme XML d'abord, le \? n'est pas reconnu.
+
+  Solution retenue : utiliser des glyphes Unicode directement parlants
+  qui correspondent au code FHIR administrative-gender :
+    M = male       → ♂ M
+    F = female     → ♀ F
+    O = other      → ⚧ O
+    U = unknown    → ⊘ U   (cercle barré, sans ambiguïté)
+-->
+<resources>
+
+    <!-- Toolbar / hero -->
+    <string name="perso_edit_title">Identité du patient</string>
+    <string name="perso_edit_hero_title">Identité</string>
+    <string name="perso_edit_hero_subtitle">FHIR Patient · IPS · 4 piliers actifs</string>
+
+    <!-- Sections -->
+    <string name="perso_section_name">Nom et prénom</string>
+    <string name="perso_section_gender">Genre</string>
+    <string name="perso_section_birth_date">Date de naissance</string>
+    <string name="perso_section_nationality">Nationalité</string>
+    <string name="perso_section_blood_type">Groupe sanguin</string>
+
+    <!-- Field labels -->
+    <string name="perso_label_given_name">Prénom (given name)</string>
+    <string name="perso_label_family_name">Nom de famille (family name)</string>
+    <string name="perso_label_birth_date_hint">Toucher pour choisir une date</string>
+    <string name="perso_label_nationality_hint">Toucher pour choisir un pays</string>
+
+    <!-- Gender toggle (mono-line, no '?' which AAPT2 parses as ?attr/) -->
+    <string name="perso_gender_m">♂ H</string>
+    <string name="perso_gender_f">♀ F</string>
+    <string name="perso_gender_o">⚧ A</string>
+    <string name="perso_gender_u">⊘ U</string>
+
+    <!-- Pickers -->
+    <string name="perso_blood_type_pick_title">Groupe sanguin</string>
+    <string name="perso_nationality_pick_title">Pays / nationalité</string>
+    <string name="perso_birth_date_pick_title">Date de naissance</string>
+    <string name="perso_pick_chevron">›</string>
+    <string name="perso_nationality_dash">—</string>
+    <string name="perso_blood_type_dash">—</string>
+
+    <!-- Save -->
+    <string name="perso_save_button">💾  Enregistrer</string>
+    <string name="perso_saved_created">Profil créé ✓</string>
+    <string name="perso_saved_updated">Profil mis à jour ✓</string>
+
+    <!-- Validation errors -->
+    <string name="perso_validation_name_required">Au moins un prénom ou nom de famille est requis</string>
+    <string name="perso_validation_birth_required">Date de naissance requise (IPS)</string>
+    <string name="perso_validation_nationality_format">Nationalité au format ISO-3166 alpha-2 (ex: BE, JP)</string>
+
+</resources>

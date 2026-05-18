@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="perso_edit_title">Patient Identity</string>
+    <string name="perso_edit_hero_title">Identity</string>
+    <string name="perso_edit_hero_subtitle">FHIR Patient · IPS · 4 active pillars</string>
+
+    <string name="perso_section_name">Name</string>
+    <string name="perso_section_gender">Gender</string>
+    <string name="perso_section_birth_date">Birth date</string>
+    <string name="perso_section_nationality">Nationality</string>
+    <string name="perso_section_blood_type">Blood type</string>
+
+    <string name="perso_label_given_name">Given name</string>
+    <string name="perso_label_family_name">Family name</string>
+    <string name="perso_label_birth_date_hint">Tap to pick a date</string>
+    <string name="perso_label_nationality_hint">Tap to pick a country</string>
+
+    <string name="perso_gender_m">♂ M</string>
+    <string name="perso_gender_f">♀ F</string>
+    <string name="perso_gender_o">⚧ O</string>
+    <string name="perso_gender_u">⊘ U</string>
+
+    <string name="perso_blood_type_pick_title">Blood type</string>
+    <string name="perso_nationality_pick_title">Country / nationality</string>
+    <string name="perso_birth_date_pick_title">Birth date</string>
+    <string name="perso_pick_chevron">›</string>
+    <string name="perso_nationality_dash">—</string>
+    <string name="perso_blood_type_dash">—</string>
+
+    <string name="perso_save_button">💾  Save</string>
+    <string name="perso_saved_created">Profile created ✓</string>
+    <string name="perso_saved_updated">Profile updated ✓</string>
+
+    <string name="perso_validation_name_required">At least one given or family name is required</string>
+    <string name="perso_validation_birth_required">Birth date required (IPS)</string>
+    <string name="perso_validation_nationality_format">Nationality must be ISO-3166 alpha-2 (e.g. BE, JP)</string>
+</resources>

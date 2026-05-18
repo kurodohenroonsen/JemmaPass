@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    btn_continue_background.xml — ColorStateList for the "Continuer" button
+    on fragment_permissions.
+
+    The button has android:enabled bound to allGranted. Without this list
+    the MaterialButton kept its app:backgroundTint=jemma_accent (orange)
+    even when disabled, giving the false impression that it was active and
+    tappable. With this list :
+
+      • enabled=true  → orange jemma_accent  (call-to-action, ready to go)
+      • enabled=false → muted slate           (clearly inactive)
+
+    Order matters : the LAST wins for state_enabled=false (no qualifier).
+    Material Button uses this through app:backgroundTint, which automatically
+    handles the state mapping when the value is a CSL instead of a flat color.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_enabled="false"
+        android:color="@color/jemma_text_muted" />
+    <item
+        android:color="@color/jemma_accent" />
+</selector>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_pillars_gallery.xml — JEMMA Pass · L4 v2.5.4
+    Standalone gallery of all 18 IPS pillars. Reachable from the
+    Profiles toolbar via the "🩺 IPS Pillars" menu item.
+
+    Grid : 5 rows × 4 columns (last row has 2 spacers).
+    Row 1 : patient · contacts · allergies · medications     (active variant)
+    Row 2 : conditions · pastProblems · immunizations · procedures
+    Row 3 : devices · functional · pregnancy · results
+    Row 4 : advanceDirectives · consents · goals · encounters
+    Row 5 : occupational · providers · ⊘ · ⊘
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/gallery_toolbar_back"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@android:drawable/ic_menu_revert"
+            app:title="@string/gallery_title"
+            app:titleTextColor="@color/jemma_primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:padding="12dp"
+                android:text="@string/gallery_subtitle"
+                android:textColor="@color/jemma_text_muted"
+                android:textSize="12sp" />
+
+            <!-- ═══ Row 1 · ACTIVE pillars ═══ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="6dp">
+                <include
+                    android:id="@+id/gallery_tile_patient"
+                    layout="@layout/view_pillar_tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_contacts"
+                    layout="@layout/view_pillar_tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_allergies"
+                    layout="@layout/view_pillar_tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_medications"
+                    layout="@layout/view_pillar_tile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- ═══ Row 2 · stubs ═══ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="6dp">
+                <include
+                    android:id="@+id/gallery_tile_conditions"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_pastproblems"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_immunizations"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_procedures"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- ═══ Row 3 · stubs ═══ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="6dp">
+                <include
+                    android:id="@+id/gallery_tile_devices"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_functional"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_pregnancy"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_results"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- ═══ Row 4 · stubs ═══ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="6dp">
+                <include
+                    android:id="@+id/gallery_tile_advance"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_consents"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_goals"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_encounters"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- ═══ Row 5 · stubs (2 + 2 spacers) ═══ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="6dp">
+                <include
+                    android:id="@+id/gallery_tile_occupational"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <include
+                    android:id="@+id/gallery_tile_providers"
+                    layout="@layout/view_pillar_tile_stub"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

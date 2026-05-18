@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_perso_edit_ips_full.xml · zh-CN -->
+<resources>
+
+    <!-- Section header IPS-FULL -->
+    <string name="perso_section_ips_header">— 完整 IPS 合规 —</string>
+
+    <!-- 📮 Postal address (structured) -->
+    <string name="perso_address_line_hint">街道 / 门牌号 / 附加行</string>
+    <string name="perso_address_line_helper">例如：Rue de la Paix 12（可多行）</string>
+    <string name="perso_address_city_hint">城市</string>
+    <string name="perso_address_postal_hint">邮政编码</string>
+    <string name="perso_address_country_hint">国家 (ISO-2)</string>
+    <string name="perso_address_country_pick_title">选择居住国家</string>
+    <string name="perso_address_use_pick_title">地址用途</string>
+    <string name="perso_address_use_label_prefix">用途：</string>
+
+    <!-- 🆔 Identifier -->
+    <string name="perso_identifier_system_pick_title">身份证号类型</string>
+    <string name="perso_identifier_system_label_prefix">系统：</string>
+    <string name="perso_identifier_value_hint">号码</string>
+
+    <!-- 👨‍⚕️ General practitioner -->
+    <string name="perso_section_gp">👨‍⚕️  家庭医生</string>
+    <string name="perso_gp_hint">医生姓名</string>
+    <string name="perso_gp_helper">FHIR Patient.generalPractitioner — 请输入家庭医生的全名</string>
+
+    <!-- 🌐 Preferred language -->
+    <string name="perso_section_language">🌐  首选语言</string>
+    <string name="perso_language_pick_title">选择首选语言</string>
+
+    <!-- Pickers -->
+    <string name="perso_pick_hint">点击以选择</string>
+
+</resources>

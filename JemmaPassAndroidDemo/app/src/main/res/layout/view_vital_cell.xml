@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_vital_cell.xml — single mini-cell used 4 times in fragment_patient_detail.xml
+    (sex / age / blood / triage). Label uppercase 9sp + value bold 14sp on a
+    rounded card background.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_vital_cell"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/vital_cell_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/jemma_text_muted"
+        android:textSize="9sp"
+        android:textStyle="bold"
+        tools:text="SEXE" />
+
+    <TextView
+        android:id="@+id/vital_cell_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/jemma_text"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="♀" />
+
+</LinearLayout>

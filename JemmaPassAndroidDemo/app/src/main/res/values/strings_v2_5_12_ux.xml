@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_v2_5_12_ux.xml — labels for the v2.5.12 UX refonte.
+    The two list headers are the only new pieces of i18n needed —
+    everything else (toolbar titles) is composed programmatically
+    from emojis + numbers and doesn't go through string resources.
+-->
+<resources>
+    <string name="radar_list_header">Around me</string>
+    <string name="sos_list_header">Around me</string>
+</resources>

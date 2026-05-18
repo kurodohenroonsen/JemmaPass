@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_export_hub.xml — 4 export formats for the active profile :
+
+      1. PRUNED      _j 1.2 IPS minimal  ~1.5-3 KB  → 1 QR
+      2. TEXT_LANG   text-rich + lang     ~5-8 KB   → 1-2 QR
+      3. FULL FHIR   IPS R4 multi-frame   ~30-80 KB → 5-15 QRs
+      4. JSON RAW    raw JSON dump        varies     → file save
+
+    Each card shows : icon, title, format spec, byte estimate, primary action.
+    The cards are fixed-content (no RecyclerView) since the 4 formats are
+    static.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jemma_bg">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jemma_surface">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/export_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/export_title"
+            app:subtitle="@string/export_subtitle"
+            app:titleTextColor="@color/jemma_primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Active profile recap -->
+            <TextView
+                android:id="@+id/export_active_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_pill_count"
+                android:padding="10dp"
+                android:textColor="@color/jemma_primary"
+                android:textSize="12sp"
+                tools:text="Profil actif : Kurodo · 2 allergies · 3 médocs" />
+
+            <TextView
+                style="@style/JemmaSectionHeader"
+                android:layout_marginTop="20dp"
+                android:text="@string/export_section_formats" />
+
+            <!-- Card 1 — Pruned _j 1.2 -->
+            <include
+                android:id="@+id/export_card_pruned"
+                layout="@layout/view_export_format_card" />
+
+            <!-- Card 2 — Text + lang -->
+            <include
+                android:id="@+id/export_card_text_lang"
+                layout="@layout/view_export_format_card" />
+
+            <!-- Card 3 — Full FHIR multi-frame -->
+            <include
+                android:id="@+id/export_card_full_fhir"
+                layout="@layout/view_export_format_card" />
+
+            <!-- Card 4 — JSON raw -->
+            <include
+                android:id="@+id/export_card_json"
+                layout="@layout/view_export_format_card" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

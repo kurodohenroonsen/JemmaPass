@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Default verdict card background — slate grey. The Fragment swaps this
+     for medscan_verdict_bg_major / _moderate / _minor / _clean as needed,
+     OR tints this one programmatically. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#475569" />
+    <corners android:radius="8dp" />
+</shape>

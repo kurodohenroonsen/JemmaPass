@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_v2_5_10_rescue_qr.xml — JEMMA Pass · v2.5.10
+    Rescue-mode QR scanner : opens from RadarFragment via "📷 Scan QR",
+    decodes a `_j 1.2` / `_j2:` payload, then re-broadcasts the scanned
+    victim through the mesh (RadarController.injectExternalVictim).
+-->
+<resources>
+
+    <!-- RescueQrScanFragment toolbar + hint -->
+    <string name="rescue_qr_title">Scan victim QR</string>
+    <string name="rescue_qr_hint">Point at a JEMMA paper QR badge to relay its profile to nearby rescuers via the mesh.</string>
+
+    <!-- Confirmation dialog after a successful decode -->
+    <string name="rescue_qr_confirm_title">Relay this victim?</string>
+    <string name="rescue_qr_confirm_relay_explain">Will be broadcast through the mesh so every nearby rescuer sees this victim with full medical data.</string>
+    <string name="rescue_qr_confirm_action">📡 Relay to mesh</string>
+
+    <!-- Result toasts -->
+    <string name="rescue_qr_relayed_template">📡 %1$s is now being relayed</string>
+    <string name="rescue_qr_relay_error_template">❌ Relay failed: %1$s</string>
+
+</resources>

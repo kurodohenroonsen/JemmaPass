@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  colors_blindage.xml — JEMMA Pass · v2.6.0 · L_BLINDAGE
+  
+  Couleurs spécifiques au lot blindage : warning destructive button,
+  validation feedback.
+-->
+<resources>
+
+    <!-- Destructive button color for "Save anyway" — WCAG AAA contrast on white -->
+    <color name="xchk_destructive">#C62828</color>
+
+    <!-- Soft warning (orange) for moderate alerts -->
+    <color name="xchk_warning_moderate">#E65100</color>
+
+    <!-- Info blue for informational hints -->
+    <color name="xchk_info">#1565C0</color>
+
+    <!-- Validation OK -->
+    <color name="form_validation_ok">#2E7D32</color>
+
+</resources>

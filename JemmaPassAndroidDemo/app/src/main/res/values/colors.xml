@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    JEMMA color palette.
+
+    Brand : turtle green primary + amber accent (signals warm/caring).
+    Surface tones : near-black background + slightly-lighter card.
+    Severity scale : red (high) / amber (medium) / green (low) — used by
+    AllergyIntolerance.severity, MedicationStatement DDI severity, and the
+    SALT triage codes.
+-->
+<resources>
+
+    <!-- Brand -->
+    <color name="jemma_primary">#10B981</color>
+    <color name="jemma_primary_dark">#0E9F70</color>
+    <color name="jemma_primary_25">#4010B981</color>
+    <color name="jemma_accent">#F59E0B</color>
+
+    <!-- Surfaces -->
+    <color name="jemma_bg">#0F172A</color>
+    <color name="jemma_surface">#1E293B</color>
+    <color name="jemma_card_active">#1E293B</color>
+    <color name="jemma_card_stub">#15203A</color>
+
+    <!-- Text -->
+    <color name="jemma_text">#F1F5F9</color>
+    <color name="jemma_text_muted">#94A3B8</color>
+
+    <!-- Status -->
+    <color name="jemma_danger">#DC2626</color>
+    <color name="jemma_warning">#F59E0B</color>
+    <color name="jemma_success">#10B981</color>
+
+    <!-- Severity scale (allergies, DDI, triage) -->
+    <color name="severity_high">#DC2626</color>
+    <color name="severity_medium">#F59E0B</color>
+    <color name="severity_low">#10B981</color>
+
+    <!-- SALT triage colors (matched to SaltCode.colorHex in mesh/triage) -->
+    <color name="salt_wait">#94A3B8</color>
+    <color name="salt_eval">#F59E0B</color>
+    <color name="salt_stab">#10B981</color>
+    <color name="salt_help">#DC2626</color>
+    <color name="salt_evac">#3B82F6</color>
+    <color name="salt_dcd">#000000</color>
+
+    <!-- Note : jemma_bottom_nav_tint is defined as a state-list selector
+         in res/color/jemma_bottom_nav_tint.xml (not as a flat color here). -->
+
+</resources>

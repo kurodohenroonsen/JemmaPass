@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    colors_jemma_profile_detail.xml — v2.2.16.4
+
+    Adds two text colors that `item_profile_summary.xml` and
+    `fragment_profile_detail.xml` reference. Kept in a separate file so
+    we don't conflict with existing colors.xml in case it's also being
+    edited by another delivery.
+-->
+<resources>
+    <!-- Primary readable text on dark surface (high contrast). -->
+    <color name="jemma_text_primary">#E2E8F0</color>
+    <!-- Secondary text (lighter, for metadata lines). -->
+    <color name="jemma_text_secondary">#94A3B8</color>
+    <!-- Red banner background for major alerts. -->
+    <color name="jemma_alert_red_bg">#DC2626</color>
+</resources>

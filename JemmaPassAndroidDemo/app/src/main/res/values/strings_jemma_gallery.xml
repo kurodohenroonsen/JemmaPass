@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings_jemma_gallery.xml — JEMMA Pass · L4 v2.5.4
+    Strings dedicated to the IPS Pillars Gallery feature.
+    Kept in a separate file to avoid clobbering strings_jemma.xml or
+    strings_jemma_pillars.xml when shipping.
+-->
+<resources>
+    <string name="gallery_menu_label">IPS Pillars</string>
+    <string name="gallery_title">🩺 IPS Pillars</string>
+    <string name="gallery_subtitle">The 18 IPS resource types of an International Patient Summary. Tap any tile to inspect its FHIR R4 structure, fields and code systems.</string>
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_perso_edit_ips_full.xml — v2.6.0i · IPS-FULL Patient -->
+<resources>
+
+    <!-- Hero subtitle -->
+
+    <!-- Section header IPS-FULL -->
+    <string name="perso_section_ips_header">— Conformité IPS complète —</string>
+
+    <!-- 📮 Adresse postale (structurée) -->
+    <string name="perso_address_line_hint">Rue / numéro / lignes additionnelles</string>
+    <string name="perso_address_line_helper">Ex: Rue de la Paix 12 (peut être multi-ligne)</string>
+    <string name="perso_address_city_hint">Ville</string>
+    <string name="perso_address_postal_hint">Code postal</string>
+    <string name="perso_address_country_hint">Pays (ISO-2)</string>
+    <string name="perso_address_country_pick_title">Choisir le pays de résidence</string>
+    <string name="perso_address_use_pick_title">Usage de l\'adresse</string>
+    <string name="perso_address_use_label_prefix">Usage :</string>
+
+    <!-- 📞 Coordonnées (telecom) — strings déjà partiellement définis dans _ips.xml -->
+
+    <!-- 🆔 Identifiant -->
+    <string name="perso_identifier_system_pick_title">Type d\'identifiant</string>
+    <string name="perso_identifier_system_label_prefix">Système :</string>
+    <string name="perso_identifier_value_hint">Numéro</string>
+
+    <!-- 👨‍⚕️ Médecin traitant -->
+    <string name="perso_section_gp">👨‍⚕️  Médecin traitant</string>
+    <string name="perso_gp_hint">Nom du médecin</string>
+    <string name="perso_gp_helper">FHIR Patient.generalPractitioner — saisir le nom complet du médecin traitant</string>
+
+    <!-- 🌐 Langue préférée -->
+    <string name="perso_section_language">🌐  Langue préférée</string>
+    <string name="perso_language_pick_title">Choisir la langue préférée</string>
+
+    <!-- Pickers -->
+    <string name="perso_pick_hint">Toucher pour choisir</string>
+
+</resources>

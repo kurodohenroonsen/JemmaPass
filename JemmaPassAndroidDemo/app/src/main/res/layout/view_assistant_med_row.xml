@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    view_assistant_med_row.xml — Lot 14.4 (PHASE 14)
+
+    Une ligne de la liste preview batch dans
+    fragment_assistant_multi_preview.xml.
+
+    Layout :
+      ┌──────────────────────────────────────────────┐
+      │ ☑  💊  BURINEX COMP 20 × 5MG              ▸ │
+      │       1× / semaine · OD                      │
+      │       ATC C03CA01 · Furosemide              │
+      └──────────────────────────────────────────────┘
+
+    États visuels :
+      - Checked = normal
+      - Unchecked = greyé légèrement
+      - "Code non résolu" = footer en orange ⚠
+
+    Accessibilité TalkBack : le LinearLayout root porte un
+    contentDescription dynamique (set par le fragment selon le médoc)
+    pour que TalkBack annonce "Coche ou décoche Burinex pour l'inclure".
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/med_row_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:minHeight="64dp"
+    android:orientation="horizontal"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <!-- Checkbox (Material, includes ripple) -->
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/med_row_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:clickable="false"
+        android:focusable="false"
+        android:importantForAccessibility="no"
+        tools:checked="true" />
+
+    <!-- Pill emoji (décoratif). -->
+    <TextView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="6dp"
+        android:gravity="center"
+        android:importantForAccessibility="no"
+        android:text="💊"
+        android:textSize="20sp" />
+
+    <!-- Texte principal (3 lignes : nom, dose+timing, ATC). -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:importantForAccessibility="no"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/med_row_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/jemma_text"
+            android:textSize="14sp"
+            tools:text="BURINEX COMP 20 × 5MG" />
+
+        <TextView
+            android:id="@+id/med_row_dose_timing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:textColor="@color/jemma_text_muted"
+            android:textSize="12sp"
+            tools:text="1× / semaine · OD" />
+
+        <TextView
+            android:id="@+id/med_row_atc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:paddingTop="3dp"
+            android:textColor="@color/jemma_primary"
+            android:textSize="11sp"
+            tools:text="ATC C03CA01 · Furosemide" />
+    </LinearLayout>
+
+    <!-- Thumbnail nested in CardView for nice rounded corners -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/med_row_thumbnail_card"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:visibility="gone"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="0dp"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/med_row_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:src="@android:drawable/ic_menu_gallery" />
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
