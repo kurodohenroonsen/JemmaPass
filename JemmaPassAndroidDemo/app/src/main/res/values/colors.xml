@@ -15,6 +15,7 @@
     <color name="jemma_primary_dark">#0E9F70</color>
     <color name="jemma_primary_25">#4010B981</color>
     <color name="jemma_accent">#F59E0B</color>
+    <color name="jemma_electric_blue">#3B82F6</color>
 
     <!-- Surfaces -->
     <color name="jemma_bg">#0F172A</color>

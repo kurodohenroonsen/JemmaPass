@@ -185,7 +185,7 @@
     <string name="settings_section_privacy">Confidentialité</string>
     <string name="settings_lang_hint">Langue</string>
     <string name="settings_kb_redownload">Re-télécharger la KB</string>
-    <string name="settings_btn_seed_personas">Créer les profils Kurodo, Misako, Haru</string>
+    <string name="settings_btn_seed_personas">Créer les profils Kurodo, Kamekichi, Haru</string>
     <string name="settings_privacy_text">Toutes les données sont stockées localement (Room) et ne quittent jamais votre téléphone, sauf si vous générez un QR ou activez le SOS BLE. Aucune télémétrie. Aucun cloud.</string>
     <string name="settings_btn_wipe">Effacer toutes les données</string>
     <string name="settings_btn_benchmark">Comparer E2B vs E4B (benchmark)</string>
@@ -291,7 +291,7 @@
     <string name="model_stat_decode">DÉCODE</string>
 
     <!-- Demo personas -->
-    <string name="settings_demo_personas_intro">Crée les profils de Kurodo (pèlerin Henro belge, allergique aux pénicillines et au poisson), Misako (son épouse japonaise, 69 ans) et Haru (réfugiée de Shikoku, 80 ans, sous warfarine). Utilisés pour reproduire le scénario de catastrophe.</string>
+    <string name="settings_demo_personas_intro">Crée les profils de Kurodo (pèlerin Henro belge, allergique aux pénicillines et au poisson), Kamekichi (sauveteur mesh offline de 46 ans) et Haru (réfugiée de Shikoku, 80 ans, sous warfarine). Utilisés pour reproduire le scénario de catastrophe.</string>
 
     <!-- Credits -->
     <string name="settings_credits">Basé sur Google AI Edge Gallery · Apache 2.0 · litert-lm 0.10.1 · Propulsé par Gemma 4</string>
@@ -323,7 +323,7 @@
     <string name="profiles_cta_qr_title">Scanner un QR code</string>
     <string name="profiles_cta_qr_subtitle">Détection automatique de 3 formats. Le format texte+langue utilise Gemma 4 pour analyser des résumés de santé en texte libre vers FHIR.</string>
     <string name="profiles_cta_personas_title">Personas démo</string>
-    <string name="profiles_cta_personas_subtitle">Créer les profils Kurodo, Misako et Haru pour reproduire le scénario de catastrophe.</string>
+    <string name="profiles_cta_personas_subtitle">Créer les profils Kurodo, Kamekichi et Haru pour reproduire le scénario de catastrophe.</string>
 
     <!-- Sections in the recycler -->
     <string name="profiles_section_active">PROFIL ACTIF</string>

@@ -157,7 +157,7 @@ class ProfilesFragment : Fragment() {
                         R.string.seed_personas_done_toast,
                         Toast.LENGTH_SHORT,
                     ).show()
-                } catch (e: Exception) {
+                } catch (e: Throwable) {
                     Log.e(TAG, "Failed to seed profiles", e)
                     Toast.makeText(
                         requireContext(),

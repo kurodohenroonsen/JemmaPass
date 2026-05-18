@@ -202,7 +202,7 @@
     <string name="settings_section_privacy">Privacy</string>
     <string name="settings_lang_hint">Language</string>
     <string name="settings_kb_redownload">Re-download the KB</string>
-    <string name="settings_btn_seed_personas">Create Kurodo, Misako and Haru profiles</string>
+    <string name="settings_btn_seed_personas">Create Kurodo, Kamekichi and Haru profiles</string>
     <string name="settings_privacy_text">All data is stored locally (Room) and never leaves your phone, except when you generate a QR or activate the BLE SOS. No telemetry. No cloud.</string>
     <string name="settings_btn_wipe">Wipe all data</string>
     <string name="settings_btn_benchmark">Compare E2B vs E4B (benchmark)</string>
@@ -308,7 +308,7 @@
     <string name="model_stat_decode">DECODE</string>
 
     <!-- Demo personas -->
-    <string name="settings_demo_personas_intro">Seed Kurodo (Belgian Henro pilgrim, penicillin allergy + fish allergy), Misako (his Japanese wife, age 69) and Haru (80yo Shikoku evacuee on warfarin). Used to reproduce the disaster narrative.</string>
+    <string name="settings_demo_personas_intro">Seed Kurodo (Belgian Henro pilgrim, penicillin allergy + fish allergy), Kamekichi (46yo Japanese offline mesh rescuer) and Haru (80yo Shikoku evacuee on warfarin). Used to reproduce the disaster narrative.</string>
 
     <!-- Credits -->
     <string name="settings_credits">Built on Google AI Edge Gallery · Apache 2.0 · litert-lm 0.10.1 · Powered by Gemma 4</string>
@@ -340,7 +340,7 @@
     <string name="profiles_cta_qr_title">Scan a QR code</string>
     <string name="profiles_cta_qr_subtitle">Auto-detects 3 formats. The text+lang format uses Gemma 4 to parse free-text health summaries into FHIR.</string>
     <string name="profiles_cta_personas_title">Demo personas</string>
-    <string name="profiles_cta_personas_subtitle">Seed Kurodo, Misako and Haru profiles to reproduce the disaster narrative.</string>
+    <string name="profiles_cta_personas_subtitle">Seed Kurodo, Kamekichi and Haru profiles to reproduce the disaster narrative.</string>
 
     <!-- Sections in the recycler -->
     <string name="profiles_section_active">ACTIVE PROFILE</string>

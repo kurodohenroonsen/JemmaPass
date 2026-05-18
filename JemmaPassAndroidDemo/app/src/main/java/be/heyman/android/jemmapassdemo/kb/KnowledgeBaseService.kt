@@ -41,6 +41,7 @@
 package be.heyman.android.jemmapassdemo.kb
 
 import android.util.Log
+import java.util.Locale
 import io.requery.android.database.sqlite.SQLiteDatabase
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -542,13 +543,14 @@ class KnowledgeBaseService @Inject constructor(
         // ORDER BY severity ranks Major before Moderate before Minor so
         // worst-case wins even if the same pair has multiple facts.
         val sql = """
-            SELECT severity, mechanism_category, description_en, management_en, alternative_atc,
-                   drug_a_atc, drug_b_atc
-            FROM $viewName
-            WHERE (drug_a_atc = ? AND drug_b_atc = ?)
-               OR (drug_a_atc = ? AND drug_b_atc = ?)
+            SELECT d.severity, d.mechanism_category, d.description_en, d.management_en, d.alternative_atc,
+                   d.drug_a_atc, d.drug_b_atc, h.name_en, h.name_fr
+            FROM $viewName d
+            LEFT JOIN atc_hierarchy h ON h.atc_code = d.alternative_atc
+            WHERE (d.drug_a_atc = ? AND d.drug_b_atc = ?)
+               OR (d.drug_a_atc = ? AND d.drug_b_atc = ?)
             ORDER BY
-                CASE severity
+                CASE d.severity
                     WHEN 'Major'    THEN 1
                     WHEN 'Moderate' THEN 2
                     WHEN 'Minor'    THEN 3
@@ -571,9 +573,16 @@ class KnowledgeBaseService @Inject constructor(
                 val mech = c.getStringOrNull(1)
                 val desc = c.getStringOrNull(2)
                 val mgmt = c.getStringOrNull(3)
-                val alt = c.getStringOrNull(4)
+                val rawAlt = c.getStringOrNull(4)
                 val drugA = c.getStringOrNull(5) ?: a
                 val drugB = c.getStringOrNull(6) ?: b
+                val altEn = c.getStringOrNull(7)
+                val altFr = c.getStringOrNull(8)
+                val altName = if (Locale.getDefault().language == "fr" && !altFr.isNullOrBlank()) altFr else altEn
+                val alt = if (!rawAlt.isNullOrBlank()) {
+                    if (!altName.isNullOrBlank()) "$rawAlt - $altName" else rawAlt
+                } else null
+
                 Log.i(
                     TAG,
                     "[t=${System.currentTimeMillis()}] 🩹 queryDDI($a×$b · $viewName) → ${sev.label} · $mech in ${durMs}ms"

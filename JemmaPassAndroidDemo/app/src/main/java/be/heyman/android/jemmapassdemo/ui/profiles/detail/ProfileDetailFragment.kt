@@ -561,6 +561,34 @@ class ProfileDetailFragment : Fragment() {
     // Alert formatters & detail dialogs
     // ──────────────────────────────────────────────────────────────────────
 
+    private fun formatMechanismLabel(mech: String?): String? {
+        if (mech.isNullOrBlank()) return null
+        val lang = Locale.getDefault().language
+        return when (mech) {
+            "PD_Synergistic" -> {
+                if (lang == "fr") "Synergie (Effets cumulatifs)"
+                else "Synergism (Additive effects)"
+            }
+            "PD_Antagonistic" -> {
+                if (lang == "fr") "Antagonisme (Effets opposés)"
+                else "Antagonism (Opposing effects)"
+            }
+            "PK_Metabolism_CYP" -> {
+                if (lang == "fr") "Métabolisme (Voie CYP)"
+                else "Metabolism (CYP pathway)"
+            }
+            "PK_Absorption" -> {
+                if (lang == "fr") "Altération de l'absorption"
+                else "Altered absorption"
+            }
+            "PK_Excretion" -> {
+                if (lang == "fr") "Altération de l'élimination"
+                else "Altered excretion"
+            }
+            else -> mech
+        }
+    }
+
     private fun formatDdiAlertSummary(ddi: DdiAlert): CharSequence = buildSpannedString {
         val color = severityColor(ddi.severity)
         color(color) {
@@ -571,9 +599,10 @@ class ProfileDetailFragment : Fragment() {
         append("${ddi.medicationA.displayLocalized}  ×  ${ddi.medicationB.displayLocalized}")
         append("   ")
         color(color) { append("›") }
-        if (!ddi.mechanism.isNullOrBlank()) {
+        val mechLabel = formatMechanismLabel(ddi.mechanism)
+        if (!mechLabel.isNullOrBlank()) {
             append("\n    ")
-            append(ddi.mechanism)
+            append(mechLabel)
         }
     }
 
@@ -606,9 +635,10 @@ class ProfileDetailFragment : Fragment() {
             append("📋 ${getString(R.string.profile_detail_ddi_severity_label)}: ")
             append(ddi.severity.label)
             append("\n\n")
-            if (!ddi.mechanism.isNullOrBlank()) {
+            val mechLabel = formatMechanismLabel(ddi.mechanism)
+            if (!mechLabel.isNullOrBlank()) {
                 append("⚙ ${getString(R.string.profile_detail_ddi_mechanism_label)}: ")
-                append(ddi.mechanism)
+                append(mechLabel)
                 append("\n\n")
             }
             if (!ddi.description.isNullOrBlank()) {
@@ -636,6 +666,7 @@ class ProfileDetailFragment : Fragment() {
                 mechanism = ddi.mechanism,
                 description = ddi.description,
                 cacheKey = "DDI|${listOf<String>(ddi.medicationA.atcCode ?: "", ddi.medicationB.atcCode ?: "").sorted().joinToString("|")}",
+                alternative = ddi.alternativeAtc,
             ),
         )
     }
@@ -763,7 +794,7 @@ class ProfileDetailFragment : Fragment() {
         val vulgariseText = TextView(context).apply {
             visibility = View.GONE
             textSize = 13.5f
-            setTextColor(resources.getColor(R.color.jemma_text, context.theme))
+            setTextColor(resources.getColor(R.color.jemma_electric_blue, context.theme))
             setLineSpacing(0f, 1.3f)
             typeface = android.graphics.Typeface.create(typeface, android.graphics.Typeface.ITALIC)
         }
@@ -1207,7 +1238,7 @@ class ProfileDetailFragment : Fragment() {
         }
 
         val infoScroll = android.widget.ScrollView(myContext).apply {
-            layoutParams = android.widget.LinearLayout.LayoutParams(-1, 0, 1f)
+            layoutParams = android.widget.LinearLayout.LayoutParams(-1, -2)
         }
         val infoContainer = android.widget.LinearLayout(myContext).apply {
             orientation = android.widget.LinearLayout.VERTICAL
@@ -1217,10 +1248,9 @@ class ProfileDetailFragment : Fragment() {
 
         val vulgariseBtn = MaterialButton(myContext, null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
             text = getString(R.string.assistant_alert_btn_vulgarise)
-            setIconResource(R.drawable.jemmapass_icon)
             setPadding(dp(16), dp(8), dp(16), dp(8))
         }
-        root.addView(vulgariseBtn, android.widget.LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(16) })
+        infoContainer.addView(vulgariseBtn, android.widget.LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(16) })
 
         val vulgariseHeaderRow = android.widget.LinearLayout(myContext).apply {
             orientation = android.widget.LinearLayout.HORIZONTAL
@@ -1228,14 +1258,26 @@ class ProfileDetailFragment : Fragment() {
             visibility = View.GONE
             setPadding(0, dp(12), 0, 0)
         }
-        val jemmaAvatar = android.widget.ImageView(myContext).apply {
-            setImageResource(R.drawable.jemmapass_icon)
-            val size = dp(20)
-            layoutParams = android.widget.LinearLayout.LayoutParams(size, size).apply {
-                marginEnd = dp(6)
+        
+        // Circular Avatar Badge matching Jemma live verification style
+        val avatarCard = com.google.android.material.card.MaterialCardView(myContext).apply {
+            radius = dp(12).toFloat()
+            cardElevation = 0f
+            setCardBackgroundColor(android.graphics.Color.parseColor("#1A0D9688"))
+            strokeColor = android.graphics.Color.parseColor("#800D9688")
+            strokeWidth = dp(1)
+            layoutParams = android.widget.LinearLayout.LayoutParams(dp(24), dp(24)).apply {
+                marginEnd = dp(8)
             }
         }
-        vulgariseHeaderRow.addView(jemmaAvatar)
+        val jemmaAvatar = android.widget.ImageView(myContext).apply {
+            setImageResource(R.drawable.jemmapass_icon)
+            scaleType = android.widget.ImageView.ScaleType.CENTER_INSIDE
+            setPadding(dp(3), dp(3), dp(3), dp(3))
+            layoutParams = android.widget.FrameLayout.LayoutParams(-1, -1)
+        }
+        avatarCard.addView(jemmaAvatar)
+        vulgariseHeaderRow.addView(avatarCard)
         val vulgariseHeader = TextView(myContext).apply {
             text = getString(R.string.assistant_alert_vulgarise_header)
             textSize = 12f
@@ -1254,16 +1296,16 @@ class ProfileDetailFragment : Fragment() {
         }
         vulgariseHeaderRow.addView(vulgariseHeader, android.widget.LinearLayout.LayoutParams(0, -2, 1f))
         vulgariseHeaderRow.addView(playBtn)
-        root.addView(vulgariseHeaderRow)
+        infoContainer.addView(vulgariseHeaderRow)
 
         val vulgariseText = TextView(myContext).apply {
             visibility = View.GONE
             textSize = 13.5f
-            setTextColor(resources.getColor(R.color.jemma_text, myContext.theme))
+            setTextColor(resources.getColor(R.color.jemma_electric_blue, myContext.theme))
             setLineSpacing(0f, 1.3f)
             typeface = android.graphics.Typeface.create(typeface, android.graphics.Typeface.ITALIC)
         }
-        root.addView(vulgariseText)
+        infoContainer.addView(vulgariseText)
 
         val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(myContext)
             .setView(root)
@@ -1302,7 +1344,7 @@ class ProfileDetailFragment : Fragment() {
                     vulgariseHeaderRow.visibility = View.VISIBLE
                     vulgariseText.visibility = View.VISIBLE
                     vulgariseText.text = ""
-                    launchMedicationVulgarise(vCtx, vulgariseText, vulgariseBtn)
+                    launchMedicationVulgarise(vCtx, vulgariseText, vulgariseBtn, vulgariseHeaderRow)
                 }
 
                 playBtn.setOnClickListener {
@@ -1493,31 +1535,60 @@ class ProfileDetailFragment : Fragment() {
     private fun launchMedicationVulgarise(
         vCtx: MedicationVulgariseContext,
         target: TextView,
-        btn: MaterialButton
+        btn: MaterialButton,
+        headerRow: View,
     ) {
-        val lang = Locale.getDefault().language
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Default) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val anchor = view ?: return@launch
+            val lang = Locale.getDefault().language
+
+            // 1. Check cache first (fast path)
+            btn.isEnabled = false
+            btn.text = getString(R.string.assistant_alert_btn_vulgarising)
+            val cached = vulgariseRepo.get(vCtx.cacheKey, lang)
+            if (cached != null) {
+                headerRow.visibility = View.VISIBLE
+                target.visibility = View.VISIBLE
+                target.text = cached
+                btn.isEnabled = true
+                btn.text = getString(R.string.assistant_alert_btn_relancer)
+                return@launch
+            }
+
+            // 2. Slow path: Gemma
             val stream = tts.startStream(lang)
-            val appender = ThrottledTextAppender(requireView(), target, ttsStream = stream)
+            val appender = ThrottledTextAppender(anchor, target, ttsStream = stream)
             
             try {
-                val reply = gemma.ask(
-                    prompt = vCtx.toUserPrompt(),
-                    systemInstruction = buildMedicationSystemPrompt(),
-                    onPartial = { appender.append(it) }
-                )
+                val tStart = System.currentTimeMillis()
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] ✨ medication vulgarise · atc=${vCtx.atcCode}")
+                
+                val reply = withContext(Dispatchers.Default) {
+                    gemma.ask(
+                        prompt = vCtx.toUserPrompt(),
+                        systemInstruction = buildMedicationSystemPrompt(),
+                        onPartial = { appender.append(it) }
+                    )
+                }
                 appender.cancelUI()
-                withContext(Dispatchers.Main) {
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] ✨ medication vulgarise done · ${System.currentTimeMillis() - tStart}ms")
+                
+                if (isAdded && target.isAttachedToWindow) {
                     target.text = reply
-                    btn.isEnabled = true
-                    btn.text = getString(R.string.assistant_alert_btn_relancer)
-                    vulgariseRepo.save(vCtx.cacheKey, lang, reply)
                 }
                 appender.end()
-            } catch (e: Exception) {
-                Log.e(TAG, "Medication vulgarisation failed", e)
+
+                // Save to cache
+                vulgariseRepo.save(vCtx.cacheKey, lang, reply)
+
+                if (isAdded && btn.isAttachedToWindow) {
+                    btn.isEnabled = true
+                    btn.text = getString(R.string.assistant_alert_btn_relancer)
+                }
+            } catch (e: Throwable) {
                 appender.cancel()
-                withContext(Dispatchers.Main) {
+                Log.e(TAG, "Medication vulgarisation failed", e)
+                if (isAdded && target.isAttachedToWindow) {
                     target.text = "Error: ${e.localizedMessage}"
                     btn.isEnabled = true
                     btn.text = getString(R.string.assistant_alert_btn_relancer)

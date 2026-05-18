@@ -112,6 +112,36 @@ class ProfilesRepository @Inject constructor(
     private suspend fun ensureInitialScan() {
         if (!initialScanDone) {
             initialScanDone = true
+
+            // 🆕 Seed demo profiles only if they do not exist to prevent losing user modifications on restart
+            try {
+                val demoProfiles = be.heyman.android.jemmapassdemo.qr.JemmaPersonasSeeder.getDemoProfiles()
+                for (demo in demoProfiles) {
+                    val id = demo.sid ?: continue
+                    val file = File(profilesDir, "$id.json")
+                    
+                    if (!file.exists()) {
+                        // Seed the JSON file on the device if it doesn't exist
+                        file.writeText(profileAdapter.toJson(demo))
+                        
+                        // Pre-hydrate and generate the FHIR IPS JSON too
+                        try {
+                            val hydrated = hydrator.hydrate(demo)
+                            val fhirJson = be.heyman.android.jemmapassdemo.qr.JemmaFhirBundleBuilder.build(hydrated)
+                            val fhirFile = File(profilesDir, "$id.fhir.json")
+                            fhirFile.writeText(fhirJson)
+                            Log.d(TAG, "⭐ Seeded demo profile files for $id")
+                        } catch (ex: Throwable) {
+                            Log.e(TAG, "⚠️ Failed to pre-generate FHIR IPS for demo $id : ${ex.message}")
+                        }
+                    } else {
+                        Log.d(TAG, "⭐ Demo profile $id already exists on disk. Skipping seeding to preserve user modifications.")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "⚠️ Failed to seed demo profiles: ${e.message}", e)
+            }
+
             rescanFromDisk()
         }
     }
@@ -155,7 +185,7 @@ class ProfilesRepository @Inject constructor(
                 val fhirJson = be.heyman.android.jemmapassdemo.qr.JemmaFhirBundleBuilder.build(hydrated)
                 fhirFile.writeText(fhirJson)
                 Log.i(TAG, "[t=${System.currentTimeMillis()}] 🏥 IPS FHIR profile saved for $id (${fhirJson.length} bytes)")
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 Log.e(TAG, "⚠️ Failed to generate FHIR IPS for $id : ${e.message}", e)
                 // We don't fail the whole save because the core profile is saved.
             }

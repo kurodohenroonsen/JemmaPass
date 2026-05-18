@@ -17,20 +17,16 @@ object JemmaPersonasSeeder {
                 gn = "Kurodo",
                 fn = "Henro",
                 gs = "M",
-                bd = "1968-04-12",
+                bd = "1979-04-04",
                 nat = "BE",
                 bt = "A+",
                 adr = "Rue de la Paix 12, 5660 Couvin, Belgique",
-                tel = "+32-470-XX-XX-XX",
-                eml = "kurodo@henro.be",
                 idn = "BE-680412-123-45",
                 lang = "fr-FR",
                 ct = listOf(
                     JContact(
-                        n = "Misako Kudoro",
-                        r = "spouse",
-                        p = "+32-478-45-45-45",
-                        e = "misako@example.com",
+                        n = "Kamekichi",
+                        r = "friend",
                         adr = "75 Avenue Louise, Bruxelles"
                     )
                 )
@@ -66,63 +62,27 @@ object JemmaPersonasSeeder {
                     category = "environment"
                 )
             ),
-            md = listOf(
-                JMedication(
-                    c = "C09AA02",
-                    t = "Enalapril 10mg",
-                    r = "O",
-                    v = "1",
-                    u = "tab",
-                    rs = "Daily",
-                    rc = "I10",
-                    displayLabel = "Hypertension treatment · 高血圧症治療",
-                    codeSystem = "http://www.whocc.no/atc",
-                    status = "active"
-                ),
-                JMedication(
-                    c = "B01AC06",
-                    t = "Aspirin 100mg",
-                    r = "O",
-                    v = "1",
-                    u = "tab",
-                    rs = "Daily",
-                    rc = "I25",
-                    displayLabel = "Cardioprotection · 心保護",
-                    codeSystem = "http://www.whocc.no/atc",
-                    status = "active"
-                )
-            ),
-            cn = listOf(
-                JCondition(
-                    c = "I10",
-                    d = "Essential hypertension",
-                    st = "A",
-                    displayLabel = "高血圧症 · Hypertension"
-                )
-            )
+            md = emptyList(),
+            cn = emptyList()
         )
 
-        val misako = JemmaProfileJ(
+        val kamekichi = JemmaProfileJ(
             j = "1.2",
-            sid = "demo_misako",
+            sid = "demo_kamekichi",
             p = JPatient(
-                gn = "Misako",
-                fn = "Henroonsen",
-                gs = "F",
-                bd = "1957-08-15",
+                gn = "Kamekichi",
+                fn = "",
+                gs = "M",
+                bd = "2000-05-20",
                 nat = "JP",
-                bt = "AB+",
+                bt = "B+",
                 adr = "75 Avenue Louise, Bruxelles, Belgique",
-                tel = "+32-478-45-45-45",
-                eml = "misako@example.com",
                 idn = "BE-570815-987-65",
                 lang = "ja-JP",
                 ct = listOf(
                     JContact(
                         n = "Kurodo Henro",
-                        r = "spouse",
-                        p = "+32-470-XX-XX-XX",
-                        e = "kurodo@henro.be",
+                        r = "friend",
                         adr = "Rue de la Paix 12, 5660 Couvin"
                     )
                 )
@@ -136,6 +96,24 @@ object JemmaPersonasSeeder {
                     displayLabel = "ラテックスアレルギー · Allergie au latex",
                     codeSystem = "http://snomed.info/sct",
                     category = "environment"
+                ),
+                JAllergy(
+                    c = "91936005",
+                    s = "H",
+                    st = "A",
+                    d = "Allergy to penicillin",
+                    displayLabel = "ペニシリンアレルギー · Allergie à la pénicilline",
+                    codeSystem = "http://snomed.info/sct",
+                    category = "medication"
+                ),
+                JAllergy(
+                    c = "91935009",
+                    s = "H",
+                    st = "A",
+                    d = "Allergy to peanuts",
+                    displayLabel = "ピーナッツアレルギー · Allergie aux arachides",
+                    codeSystem = "http://snomed.info/sct",
+                    category = "food"
                 )
             ),
             md = listOf(
@@ -150,16 +128,53 @@ object JemmaPersonasSeeder {
                     displayLabel = "Beta-blocker for hypertension · 高血圧用ベータ遮断薬",
                     codeSystem = "http://www.whocc.no/atc",
                     status = "active"
+                ),
+                JMedication(
+                    c = "B01AA03",
+                    t = "Warfarin 5mg",
+                    r = "O",
+                    v = "5",
+                    u = "mg",
+                    rs = "Daily",
+                    displayLabel = "Anticoagulant · ワーファリン",
+                    codeSystem = "http://www.whocc.no/atc",
+                    status = "active"
+                ),
+                JMedication(
+                    c = "M01AE01",
+                    t = "Ibuprofen 400mg",
+                    r = "O",
+                    v = "400",
+                    u = "mg",
+                    rs = "TID PRN pain",
+                    displayLabel = "NSAID pain relief · イブプロフェン",
+                    codeSystem = "http://www.whocc.no/atc",
+                    status = "active"
+                ),
+                JMedication(
+                    c = "G04BE03",
+                    t = "Sildenafil 50mg",
+                    r = "O",
+                    v = "50",
+                    u = "mg",
+                    rs = "PRN",
+                    displayLabel = "Erectile dysfunction treatment · シルデナフィル",
+                    codeSystem = "http://www.whocc.no/atc",
+                    status = "active"
+                ),
+                JMedication(
+                    c = "C01DA08",
+                    t = "Isosorbide Dinitrate 20mg",
+                    r = "O",
+                    v = "20",
+                    u = "mg",
+                    rs = "BID",
+                    displayLabel = "Angina pectoris prevention · 硝酸イソソルビド",
+                    codeSystem = "http://www.whocc.no/atc",
+                    status = "active"
                 )
             ),
-            cn = listOf(
-                JCondition(
-                    c = "I10",
-                    d = "Essential hypertension",
-                    st = "A",
-                    displayLabel = "高血圧症 · Hypertension"
-                )
-            )
+            cn = emptyList()
         )
 
         val haru = JemmaProfileJ(
@@ -173,8 +188,6 @@ object JemmaPersonasSeeder {
                 nat = "JP",
                 bt = "O+",
                 adr = "Aomori, Japan",
-                tel = "+81-90-XXXX-XXXX",
-                eml = "haru@tanaka.jp",
                 idn = "JP-12345678",
                 lang = "ja-JP"
             ),
@@ -227,16 +240,9 @@ object JemmaPersonasSeeder {
                     status = "active"
                 )
             ),
-            cn = listOf(
-                JCondition(
-                    c = "I50.9",
-                    d = "Congestive heart failure",
-                    st = "A",
-                    displayLabel = "うっ血性心不全 · Insuffisance cardiaque"
-                )
-            )
+            cn = emptyList()
         )
 
-        return listOf(kurodo, misako, haru)
+        return listOf(kurodo, kamekichi, haru)
     }
 }

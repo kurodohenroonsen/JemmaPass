@@ -27,6 +27,7 @@
 package be.heyman.android.jemmapassdemo.kb
 
 import android.util.Log
+import java.util.Locale
 import be.heyman.android.jemmapassdemo.qr.JAllergy
 import be.heyman.android.jemmapassdemo.qr.JEntryGeneric
 import be.heyman.android.jemmapassdemo.qr.JMedication
@@ -276,11 +277,13 @@ class JemmaProfileHydrator @Inject constructor(
         // One query : grab every Major/Moderate row where BOTH sides are
         // among the profile's ATCs.
         val sql = """
-            SELECT drug_a_atc, drug_b_atc, severity, mechanism_category,
-                   description_en, management_en, alternative_atc
-            FROM v_ddi_emergency
-            WHERE drug_a_atc IN ($placeholders)
-              AND drug_b_atc IN ($placeholders)
+            SELECT d.drug_a_atc, d.drug_b_atc, d.severity, d.mechanism_category,
+                   d.description_en, d.management_en, d.alternative_atc,
+                   h.name_en, h.name_fr
+            FROM v_ddi_emergency d
+            LEFT JOIN atc_hierarchy h ON h.atc_code = d.alternative_atc
+            WHERE d.drug_a_atc IN ($placeholders)
+              AND d.drug_b_atc IN ($placeholders)
         """.trimIndent()
 
         val alerts = mutableListOf<DdiAlert>()
@@ -304,6 +307,14 @@ class JemmaProfileHydrator @Inject constructor(
                         for (medB in medsB) {
                             if (medA === medB) continue
                             val sev = DDIResult.Severity.fromString(c.getStringOrNull(2))
+                            val rawAlt = c.getStringOrNull(6)
+                            val altEn = c.getStringOrNull(7)
+                            val altFr = c.getStringOrNull(8)
+                            val altName = if (Locale.getDefault().language == "fr" && !altFr.isNullOrBlank()) altFr else altEn
+                            val alternativeDisplay = if (!rawAlt.isNullOrBlank()) {
+                                if (!altName.isNullOrBlank()) "$rawAlt - $altName" else rawAlt
+                            } else null
+
                             alerts.add(
                                 DdiAlert(
                                     medicationA = medA,
@@ -312,7 +323,7 @@ class JemmaProfileHydrator @Inject constructor(
                                     mechanism = c.getStringOrNull(3),
                                     description = c.getStringOrNull(4),
                                     management = c.getStringOrNull(5),
-                                    alternativeAtc = c.getStringOrNull(6),
+                                    alternativeAtc = alternativeDisplay,
                                     fuzzyMatch = false,
                                 )
                             )

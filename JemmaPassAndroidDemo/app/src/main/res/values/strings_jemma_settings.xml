@@ -20,7 +20,7 @@
     <string name="wipe_all_done_toast">All data wiped.</string>
 
     <!-- Demo personas seed (Settings demo data section) -->
-    <string name="seed_personas_done_toast">Kurodo, Misako and Haru profiles created.</string>
+    <string name="seed_personas_done_toast">Kurodo, Kamekichi and Haru profiles created.</string>
     <string name="seed_personas_disabled_toast">Profile seeding will be available in a later delivery.</string>
 
     <!-- Toast feedback for tap actions on cards -->

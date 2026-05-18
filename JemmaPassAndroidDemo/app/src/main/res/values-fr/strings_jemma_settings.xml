@@ -18,7 +18,7 @@
     <string name="wipe_all_done_toast">Toutes les données ont été effacées.</string>
 
     <!-- Demo personas seed -->
-    <string name="seed_personas_done_toast">Profils Kurodo, Misako et Haru créés.</string>
+    <string name="seed_personas_done_toast">Profils Kurodo, Kamekichi et Haru créés.</string>
     <string name="seed_personas_disabled_toast">Le seed des personas sera disponible dans une livraison ultérieure.</string>
 
     <!-- Toasts -->

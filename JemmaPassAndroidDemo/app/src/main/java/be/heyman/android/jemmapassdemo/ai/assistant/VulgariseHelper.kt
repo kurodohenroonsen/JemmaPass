@@ -30,6 +30,8 @@ data class AlertVulgariseContext(
     val description: String?,
     /** 🆕 Lot 14.5c16 — Unique key for persistence (e.g. "DDI|R06AX29|N06AB06"). */
     val cacheKey: String,
+    /** 🆕 Optional suggested therapeutic class or drug alternative (e.g. "B01A - ANTITHROMBOTIC AGENTS"). */
+    val alternative: String? = null,
 ) {
     /** Construit le user prompt envoyé à Gemma. */
     fun toUserPrompt(): String {
@@ -44,7 +46,12 @@ data class AlertVulgariseContext(
             append("Severity: $severity\n")
             if (!mechanism.isNullOrBlank()) append("Mechanism: $mechanism\n")
             if (!description.isNullOrBlank()) append("Clinical description: $description\n")
-            append("\nExplain this clearly to an adult patient who has no medical background. Describe what each medicine normally does, the specific medical reason why combining them is a concern, what could happen in the body, and what practical steps to take. Ensure the medical concepts are accurate but easy to grasp. End with a one-line reminder to consult a doctor or pharmacist.\n\n")
+            if (!alternative.isNullOrBlank()) append("Suggested safer alternative class/medication: $alternative\n")
+            append("\nExplain this clearly to an adult patient who has no medical background. Describe what each medicine normally does, the specific medical reason why combining them is a concern, what could happen in the body, and what practical steps to take. ")
+            if (!alternative.isNullOrBlank()) {
+                append("If a suggested alternative class/medication is provided, mention it clearly in your explanation as a potential option they should discuss with their doctor, without prescribing it directly. ")
+            }
+            append("Ensure the medical concepts are accurate but easy to grasp. End with a one-line reminder to consult a doctor or pharmacist.\n\n")
             // 🆕 Lot 14.5c9 — Directive langue en bas aussi.
             append("⚠️ FINAL REMINDER: Your ENTIRE answer MUST be in $deviceLang. Start your first sentence in $deviceLang. Do not use any English (unless $deviceLang IS English).")
         }

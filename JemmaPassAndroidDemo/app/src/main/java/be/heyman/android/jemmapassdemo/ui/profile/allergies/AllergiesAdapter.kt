@@ -87,6 +87,7 @@ class AllergiesAdapter(
 
         val code = a.c
         if (!code.isNullOrBlank()) {
+            b.allergyRowSubstance.tag = code
             scope.launch {
                 val resolved = translations.get(code, lang)
                 if (!resolved.isNullOrBlank()) {
@@ -97,7 +98,6 @@ class AllergiesAdapter(
                     }
                 }
             }
-            b.allergyRowSubstance.tag = code
         } else {
             b.allergyRowSubstance.tag = null
         }

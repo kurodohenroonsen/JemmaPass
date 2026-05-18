@@ -311,6 +311,7 @@ class AssistantMultiPreviewFragment : Fragment(R.layout.fragment_assistant_multi
             mechanism = a.hit.mechanism,
             description = a.hit.description,
             cacheKey = "DDI|${listOf<String>(a.hit.candidateAtc, a.hit.existingMedAtc).sorted().joinToString("|")}",
+            alternative = a.hit.alternativeAtc,
         )
         is NewAlert.DrugDisease -> AlertVulgariseContext(
             kind = "drug_disease",
@@ -404,7 +405,7 @@ class AssistantMultiPreviewFragment : Fragment(R.layout.fragment_assistant_multi
         val vulgariseText = TextView(ctx).apply {
             visibility = View.GONE
             textSize = 13f
-            setTextColor(resources.getColor(R.color.jemma_text, ctx.theme))
+            setTextColor(resources.getColor(R.color.jemma_electric_blue, ctx.theme))
             setLineSpacing(0f, 1.25f)
             setPadding(0, 0, 0, 0)
             typeface = android.graphics.Typeface.create(typeface, android.graphics.Typeface.ITALIC)
@@ -547,6 +548,34 @@ class AssistantMultiPreviewFragment : Fragment(R.layout.fragment_assistant_multi
     /** [AlertVulgariseContext] est défini dans
      *  `ai/assistant/VulgariseHelper.kt`. Plus de class locale ici. */
 
+    private fun formatMechanismLabel(mech: String?): String? {
+        if (mech.isNullOrBlank()) return null
+        val lang = Locale.getDefault().language
+        return when (mech) {
+            "PD_Synergistic" -> {
+                if (lang == "fr") "Synergie (Effets cumulatifs)"
+                else "Synergism (Additive effects)"
+            }
+            "PD_Antagonistic" -> {
+                if (lang == "fr") "Antagonisme (Effets opposés)"
+                else "Antagonism (Opposing effects)"
+            }
+            "PK_Metabolism_CYP" -> {
+                if (lang == "fr") "Métabolisme (Voie CYP)"
+                else "Metabolism (CYP pathway)"
+            }
+            "PK_Absorption" -> {
+                if (lang == "fr") "Altération de l'absorption"
+                else "Altered absorption"
+            }
+            "PK_Excretion" -> {
+                if (lang == "fr") "Altération de l'élimination"
+                else "Altered excretion"
+            }
+            else -> mech
+        }
+    }
+
     private fun formatAlert(a: NewAlert): String {
         val triggerName = a.triggeredBy.displayName()
         val lang = resources.configuration.locales[0].language
@@ -575,7 +604,7 @@ class AssistantMultiPreviewFragment : Fragment(R.layout.fragment_assistant_multi
             }
             is NewAlert.Ddi -> {
                 val sev = if (a.hit.severity == CrossSeverity.MAJOR) "🟥" else "🟧"
-                val desc = a.hit.description?.take(120) ?: a.hit.mechanism ?: "interaction"
+                val desc = a.hit.description?.take(120) ?: formatMechanismLabel(a.hit.mechanism) ?: "interaction"
                 "$sev $triggerName × ${a.hit.existingMedDisplay}\n   → $desc"
             }
             is NewAlert.DrugDisease -> {
