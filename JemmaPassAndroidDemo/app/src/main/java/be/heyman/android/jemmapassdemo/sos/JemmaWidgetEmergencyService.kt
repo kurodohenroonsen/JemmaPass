@@ -27,6 +27,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.Locale
+import java.io.File
+import android.location.Location
+import android.location.LocationManager
 
 /**
  * Service de premier plan (Foreground) pour le Widget d'Urgence Jemma.
@@ -132,6 +135,7 @@ class JemmaWidgetEmergencyService : Service(), TextToSpeech.OnInitListener {
         startForeground(NOTIFICATION_ID, buildNotification())
         
         startSosLoops()
+        startSosBroadcastHelper()
         
         if (ttsReady) {
             speak()
@@ -329,12 +333,103 @@ class JemmaWidgetEmergencyService : Service(), TextToSpeech.OnInitListener {
         Log.i(TAG, "onDestroy")
         isRunning = false
         JemmaEmergencyWidget.updateAllWidgets(this)
+        
+        if (JemmaSosService.isRunning) {
+            try {
+                val stopSosIntent = Intent(this, JemmaSosService::class.java).apply {
+                    action = JemmaSosService.ACTION_STOP
+                }
+                startService(stopSosIntent)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to stop SOS service from widget emergency onDestroy", e)
+            }
+        }
+        
         serviceJob.cancel()
         setTorchModeSafe(false)
         tts?.stop()
         tts?.shutdown()
         wakeLock?.let {
             if (it.isHeld) it.release()
+        }
+    }
+
+    private fun startSosBroadcastHelper() {
+        try {
+            val prefs = getSharedPreferences("jemma_profiles_prefs", Context.MODE_PRIVATE)
+            val currentId = prefs.getString("currentProfileId", null)
+            if (currentId.isNullOrBlank()) {
+                Log.w(TAG, "startSosBroadcastHelper: no current profile ID found")
+                return
+            }
+            val profilesDir = File(getExternalFilesDir(null), "profiles")
+            val file = File(profilesDir, "$currentId.json")
+            if (!file.exists()) {
+                Log.w(TAG, "startSosBroadcastHelper: profile file does not exist: ${file.absolutePath}")
+                return
+            }
+            val rawJson = file.readText()
+            val displayName = try {
+                val o = org.json.JSONObject(rawJson)
+                val p = o.optJSONObject("p")
+                val gn = p?.optString("gn", "")?.trim().orEmpty()
+                val fn = p?.optString("fn", "")?.trim().orEmpty()
+                listOf(gn, fn).filter { it.isNotBlank() }
+                    .joinToString(" ").take(16).ifBlank { "JEMMA" }
+            } catch (e: Exception) {
+                "JEMMA"
+            }
+
+            val langCode = try {
+                Locale.getDefault().language.take(2)
+            } catch (e: Exception) {
+                "en"
+            }
+
+            var latE6 = 0
+            var lonE6 = 0
+            try {
+                val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                val providers = listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)
+                var best: Location? = null
+                for (p in providers) {
+                    if (lm.isProviderEnabled(p)) {
+                        val loc = lm.getLastKnownLocation(p)
+                        if (loc != null && (best == null || loc.time > best.time)) {
+                            best = loc
+                        }
+                    }
+                }
+                if (best != null) {
+                    latE6 = (best.latitude * 1e6).toInt()
+                    lonE6 = (best.longitude * 1e6).toInt()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to get location for widget SOS activation", e)
+            }
+
+            JemmaSosService.configureBroadcast(
+                profileJson = rawJson,
+                latE6 = latE6,
+                lonE6 = lonE6,
+                name = displayName,
+                criticality = 0,
+                flags = 0,
+                langCode = langCode
+            )
+            JemmaSosService.persistConfig(this)
+
+            val startSosIntent = Intent(this, JemmaSosService::class.java).apply {
+                action = JemmaSosService.ACTION_START_BROADCAST
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(startSosIntent)
+            } else {
+                startService(startSosIntent)
+            }
+            Log.i(TAG, "✓ JemmaSosService started & broadcast configured from widget")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to start SOS broadcast from widget", e)
         }
     }
 

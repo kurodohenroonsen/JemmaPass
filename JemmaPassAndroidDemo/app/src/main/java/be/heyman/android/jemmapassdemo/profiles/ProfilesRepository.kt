@@ -206,6 +206,12 @@ class ProfilesRepository @Inject constructor(
         if (_currentIdFlow.value == null && _profilesFlow.value.size == 1) {
             setCurrentInternal(id)
             Log.i(TAG, "[t=${System.currentTimeMillis()}] ⭐ auto-set first profile as current : $id")
+        } else if (id == _currentIdFlow.value) {
+            try {
+                be.heyman.android.jemmapassdemo.sos.JemmaEmergencyWidget.updateAllWidgets(context)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to update widgets after saving current profile", e)
+            }
         }
 
         SaveResult(id, alreadyExisted)
@@ -308,6 +314,11 @@ class ProfilesRepository @Inject constructor(
         prefs.edit { putString(KEY_CURRENT_PROFILE_ID, id) }
         _currentIdFlow.value = id
         Log.i(TAG, "[t=${System.currentTimeMillis()}] ⭐ setCurrent($id)")
+        try {
+            be.heyman.android.jemmapassdemo.sos.JemmaEmergencyWidget.updateAllWidgets(context)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to update widgets after setting current profile", e)
+        }
     }
 
     /**

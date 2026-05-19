@@ -78,6 +78,7 @@ class JemmaSosService : Service() {
         const val ACTION_START = "be.heyman.jemma.sos.START"
         const val ACTION_STOP = "be.heyman.jemma.sos.STOP"
         const val ACTION_TOGGLE_BROADCAST = "be.heyman.jemma.sos.TOGGLE"
+        const val ACTION_START_BROADCAST = "be.heyman.jemma.sos.START_BROADCAST"
 
         // 🆕 L44.16.12 — payload extras for the broadcast
         const val EXTRA_PROFILE_JSON = "be.heyman.jemma.sos.PROFILE_JSON"
@@ -317,6 +318,19 @@ class JemmaSosService : Service() {
                 // 🆕 L44.15.2 — refresh any widget instances
                 // 🚧 L1 v2.5.0 — JemmaSosAppWidget skipped in port (homescreen widget out of scope) — JemmaSosAppWidget.refreshAll(this)
             }
+            ACTION_START_BROADCAST -> {
+                if (!isRunning) {
+                    startForegroundWithNotification(broadcasting = true)
+                    activateMediaSession()
+                    isRunning = true
+                }
+                if (!isBroadcasting) {
+                    isBroadcasting = true
+                    updateNotification(broadcasting = true)
+                }
+                startBleBroadcast()
+                startNearbyVictimBroadcast()
+            }
             ACTION_STOP -> {
                 Log.i(TAG, "✓ SOS service STOPPING")
                 deactivateMediaSession()
@@ -326,6 +340,18 @@ class JemmaSosService : Service() {
                 stopSelf()
                 // 🆕 L44.15.2 — refresh widget so it returns to idle state
                 // 🚧 L1 v2.5.0 — JemmaSosAppWidget skipped in port (homescreen widget out of scope) — JemmaSosAppWidget.refreshAll(this)
+                
+                // Stop JemmaWidgetEmergencyService as well
+                if (JemmaWidgetEmergencyService.isRunning) {
+                    try {
+                        val stopWidgetIntent = Intent(this, JemmaWidgetEmergencyService::class.java).apply {
+                            setAction(JemmaWidgetEmergencyService.ACTION_STOP_EMERGENCY)
+                        }
+                        startService(stopWidgetIntent)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to stop widget emergency service", e)
+                    }
+                }
             }
             ACTION_TOGGLE_BROADCAST -> {
                 // 🆕 L44.15.2 — TOGGLE may arrive directly from the
@@ -387,6 +413,18 @@ class JemmaSosService : Service() {
         deactivateMediaSession()
         isRunning = false
         isBroadcasting = false
+        
+        if (JemmaWidgetEmergencyService.isRunning) {
+            try {
+                val stopWidgetIntent = Intent(this, JemmaWidgetEmergencyService::class.java).apply {
+                    setAction(JemmaWidgetEmergencyService.ACTION_STOP_EMERGENCY)
+                }
+                startService(stopWidgetIntent)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to stop widget emergency service from onDestroy", e)
+            }
+        }
+        
         super.onDestroy()
     }
 
