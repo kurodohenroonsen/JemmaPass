@@ -191,4 +191,5 @@
     <string name="assistant_ai_engine_hardware">⚡ Engine: %1$s</string>
     <string name="model_name_e2b">Gemma E2B (Lite)</string>
     <string name="model_name_e4b">Gemma E4B (Premium)</string>
+    <string name="assistant_ocr_downloading_error">Waiting for Google Play Services to download the OCR model. Please try again in a few seconds.</string>
 </resources>

@@ -335,9 +335,14 @@ class AssistantPipelineFragment : Fragment(R.layout.fragment_assistant_pipeline)
             }
         } catch (e: Throwable) {
             Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ OCR failed", e)
+            val errorMsg = if (e.message?.contains("Waiting for the text optional module", ignoreCase = true) == true) {
+                getString(R.string.assistant_ocr_downloading_error)
+            } else {
+                getString(R.string.assistant_step_ocr_failed, e.message ?: e::class.java.simpleName)
+            }
             markStepError(
                 view, R.id.assistant_step_1,
-                getString(R.string.assistant_step_ocr_failed, e.message ?: e::class.java.simpleName),
+                errorMsg,
             )
             return
         }

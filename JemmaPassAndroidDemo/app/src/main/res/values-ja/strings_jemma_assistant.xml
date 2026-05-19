@@ -183,4 +183,5 @@
     <string name="assistant_ai_engine_hardware">⚡ エンジン: %1$s</string>
     <string name="model_name_e2b">Gemma E2B（軽量版）</string>
     <string name="model_name_e4b">Gemma E4B（高性能版）</string>
+    <string name="assistant_ocr_downloading_error">Google Play 開発者サービスによる OCR モデルのダウンロードを待機しています。数秒後に再試行してください。</string>
 </resources>

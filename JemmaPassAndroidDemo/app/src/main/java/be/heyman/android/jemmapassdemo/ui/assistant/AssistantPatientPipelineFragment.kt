@@ -274,7 +274,12 @@ class AssistantPatientPipelineFragment :
             sb.toString()
         } catch (e: Exception) {
             Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ OCR failed", e)
-            markStepError(view, R.id.patient_step_2, e.message ?: "OCR error")
+            val errorMsg = if (e.message?.contains("Waiting for the text optional module", ignoreCase = true) == true) {
+                getString(R.string.assistant_ocr_downloading_error)
+            } else {
+                e.message ?: "OCR error"
+            }
+            markStepError(view, R.id.patient_step_2, errorMsg)
             return
         }
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 📝 OCR combined len=${ocrCombined.length} across $nImages image(s) :\n$ocrCombined")

@@ -204,9 +204,14 @@ class MedScanController @Inject constructor(
             runOcrWithBackoff(imageUri, lang)
         } catch (e: Exception) {
             Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ OCR failed after all retries", e)
-            mark(StepKey.OCR_TEXT, StepLifecycle.FAIL, detail = e.message,
+            val errorMsg = if (e.message?.contains("Waiting for the text optional module", ignoreCase = true) == true) {
+                appContext.getString(R.string.assistant_ocr_downloading_error)
+            } else {
+                e.message ?: "OCR error"
+            }
+            mark(StepKey.OCR_TEXT, StepLifecycle.FAIL, detail = errorMsg,
                 durationMs = System.currentTimeMillis() - tOcr)
-            settleVerdict(Verdict.Failed(StepKey.OCR_TEXT, e.message ?: "OCR error"), tStart)
+            settleVerdict(Verdict.Failed(StepKey.OCR_TEXT, errorMsg), tStart)
             return
         }
         val ocrSummary = ocrText

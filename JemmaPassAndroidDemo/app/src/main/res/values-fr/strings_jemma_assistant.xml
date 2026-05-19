@@ -188,4 +188,5 @@
     <string name="assistant_ai_engine_hardware">⚡ Moteur : %1$s</string>
     <string name="model_name_e2b">Gemma E2B (Légère)</string>
     <string name="model_name_e4b">Gemma E4B (Premium)</string>
+    <string name="assistant_ocr_downloading_error">Attente du téléchargement du modèle OCR par Google Play Services. Veuillez réessayer dans quelques secondes.</string>
 </resources>

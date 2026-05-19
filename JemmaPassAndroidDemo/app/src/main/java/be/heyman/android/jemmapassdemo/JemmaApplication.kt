@@ -29,6 +29,7 @@ import android.app.Application
 import android.util.Log
 import be.heyman.android.jemmapassdemo.kb.KnowledgeBaseManager
 import be.heyman.android.jemmapassdemo.radar.RadarController
+import be.heyman.android.jemmapassdemo.ai.ocr.OcrModuleWarmer
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -54,6 +55,8 @@ class JemmaApplication : Application() {
         // 🆕 v2.5.1 — RadarController exposed so Application.onCreate
         // can force its instantiation at boot for runtime diagnostics.
         fun radarController(): RadarController
+        // 🆕 Force OcrModuleWarmer instantiation at boot to trigger optional module pre-warm
+        fun ocrModuleWarmer(): OcrModuleWarmer
     }
 
     override fun onCreate() {
@@ -70,6 +73,10 @@ class JemmaApplication : Application() {
             // ─── KB validation (existing v2.2.0 behavior) ─────────────
             entryPoint.knowledgeBaseManager().ensureInitialized()
             Log.d(TAG, "[t=${System.currentTimeMillis()}] 📋 KB ensureInitialized triggered")
+
+            // ─── 🆕 Warm up ML Kit OCR optional module ──────────────────────
+            val ocrWarmer = entryPoint.ocrModuleWarmer()
+            Log.d(TAG, "[t=${System.currentTimeMillis()}] 🔤 OcrModuleWarmer resolved, prewarm initiated")
 
             // ─── 🆕 v2.5.1 — Force RadarController init ──────────────
             // Resolving the singleton runs its init { … } block. The
