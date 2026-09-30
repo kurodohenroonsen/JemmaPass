@@ -1,0 +1,11 @@
+http://snomed.info/sct||19697
+urn:umls||760485
+urn:umls|Chemical_Allergen|232744
+urn:umls|Condition|69523
+urn:umls|Device|14048
+urn:umls|Food|2856
+urn:umls|Medication|135541
+urn:umls|Mineral|3498
+urn:umls|Procedure|51470
+urn:umls|Protein_Allergen|162465
+urn:umls|Vitamin_DFI|124
