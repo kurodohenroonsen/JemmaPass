@@ -27,6 +27,7 @@
     <string name="device_form_label_code">器械</string>
     <string name="device_form_code_hint">点击选择器械…</string>
     <string name="device_form_code_clear_desc">清除</string>
+    <string name="device_form_search_hint">🔎 搜索器械（中文、英文、SNOMED…）</string>
     <string name="device_form_code_picker_title">选择器械</string>
     <string name="device_form_label_text">或输入器械名称</string>
     <string name="device_form_text_helper">自由文本，仅在上方未选择时使用</string>

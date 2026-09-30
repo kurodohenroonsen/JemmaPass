@@ -100,6 +100,10 @@ class KbDrugPickerDialog : DialogFragment() {
         private const val ARG_SUGGEST_CODES = "suggest_codes"
         private const val ARG_SUGGEST_DISPLAYS = "suggest_displays"
         private const val ARG_SUGGEST_SYSTEM = "suggest_system"
+        /** Optional per-suggestion search keys (aliases in every language) — parallel to ARG_SUGGEST_CODES. */
+        private const val ARG_SUGGEST_SEARCH = "suggest_search"
+        /** Optional hint for the search field (defaults to the medication hint). */
+        private const val ARG_SEARCH_HINT = "search_hint"
         const val CATEGORY_MEDICATION = "Medication"
         const val CATEGORY_PROCEDURE = "Procedure"
         const val CATEGORY_DEVICE = "Device"
@@ -119,6 +123,8 @@ class KbDrugPickerDialog : DialogFragment() {
             category: String,
             suggestions: List<Pair<String, String>> = emptyList(),
             suggestionsSystem: String = "http://snomed.info/sct",
+            suggestionsSearch: List<String> = emptyList(),
+            searchHint: String? = null,
         ): KbDrugPickerDialog {
             return KbDrugPickerDialog().apply {
                 arguments = Bundle().apply {
@@ -128,6 +134,8 @@ class KbDrugPickerDialog : DialogFragment() {
                     putStringArray(ARG_SUGGEST_CODES, suggestions.map { it.first }.toTypedArray())
                     putStringArray(ARG_SUGGEST_DISPLAYS, suggestions.map { it.second }.toTypedArray())
                     putString(ARG_SUGGEST_SYSTEM, suggestionsSystem)
+                    putStringArray(ARG_SUGGEST_SEARCH, suggestionsSearch.toTypedArray())
+                    putString(ARG_SEARCH_HINT, searchHint)
                 }
             }
         }
@@ -135,6 +143,8 @@ class KbDrugPickerDialog : DialogFragment() {
 
     private var category: String = CATEGORY_MEDICATION
     private val suggestions = mutableListOf<PickedDrug>()
+    /** Normalised (NFD, no diacritics, lowercase) search key per suggestion — same index as [suggestions]. */
+    private val suggestionKeys = mutableListOf<String>()
 
     @Inject
     lateinit var kb: KnowledgeBaseService
@@ -163,9 +173,13 @@ class KbDrugPickerDialog : DialogFragment() {
         val suggestSystem = args.getString(ARG_SUGGEST_SYSTEM) ?: "http://snomed.info/sct"
         val suggestCodes = args.getStringArray(ARG_SUGGEST_CODES) ?: emptyArray()
         val suggestDisplays = args.getStringArray(ARG_SUGGEST_DISPLAYS) ?: emptyArray()
+        val suggestSearch = args.getStringArray(ARG_SUGGEST_SEARCH) ?: emptyArray()
         suggestions.clear()
+        suggestionKeys.clear()
         suggestCodes.indices.forEach { i ->
-            suggestions.add(PickedDrug(code = suggestCodes[i], display = suggestDisplays.getOrElse(i) { suggestCodes[i] }, system = suggestSystem))
+            val display = suggestDisplays.getOrElse(i) { suggestCodes[i] }
+            suggestions.add(PickedDrug(code = suggestCodes[i], display = display, system = suggestSystem))
+            suggestionKeys.add(normalizeForPickerSearch(suggestSearch.getOrNull(i)?.takeIf { it.isNotBlank() } ?: "${suggestCodes[i]} $display"))
         }
 
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 📋 picker open · title='$title' · lang=$lang · category=$category · suggestions=${suggestions.size}")
@@ -175,6 +189,7 @@ class KbDrugPickerDialog : DialogFragment() {
         val searchEdit = view.findViewById<EditText>(R.id.drug_picker_search)
         val listView = view.findViewById<ListView>(R.id.drug_picker_list)
         val statusText = view.findViewById<TextView>(R.id.drug_picker_status)
+        args.getString(ARG_SEARCH_HINT)?.takeIf { it.isNotBlank() }?.let { searchEdit.hint = it }
 
         adapter = ArrayAdapter(ctx, android.R.layout.simple_list_item_1, mutableListOf())
         listView.adapter = adapter
@@ -267,7 +282,28 @@ class KbDrugPickerDialog : DialogFragment() {
                     Log.i(TAG, "[t=${System.currentTimeMillis()}] 💊 dose enrichment · " +
                         "atcs=${atcCodes.size} · matched=${doseMap.size}")
 
+                    val generic = category != CATEGORY_MEDICATION
+
+                    // Generic pickers (sprint 2 — device QA cycle 4) : the curated catalog entries
+                    // that match the query come FIRST (they carry FR/JA labels and emoji), then the
+                    // KB hits, de-duplicated by (system, code) and by label — UMLS returns several
+                    // CUIs with the same primary display ("Appendectomy" ×2, "Fistulization…" ×3).
+                    val needle = normalizeForPickerSearch(query)
+                    val curatedHits = if (generic && needle.isNotBlank()) {
+                        suggestions.filterIndexed { i, _ -> suggestionKeys.getOrElse(i) { "" }.contains(needle) }
+                    } else emptyList()
+
+                    // Localised labels for SNOMED-mapped hits (ips_valuesets_translations, one query).
+                    val snomedCodes = if (generic) filtered.mapNotNull { it.snomedCode?.takeIf { c -> c.isNotBlank() } } else emptyList()
+                    val localized = if (snomedCodes.isNotEmpty() && lang.lowercase().take(2) != "en") {
+                        kb.getLocalizedDisplays(snomedCodes, KnowledgeBaseService.SYSTEM_SNOMED, lang.lowercase().take(2))
+                    } else emptyMap()
+
                     currentResults.clear()
+                    currentResults.addAll(curatedHits)
+                    val seenCodes = curatedHits.map { it.system to it.code }.toMutableSet()
+                    val seenLabels = curatedHits.map { normalizeForPickerSearch(it.display.substringAfter("  ").trim()) }.toMutableSet()
+                    var deduped = 0
                     filtered.forEach { concept ->
                         // Re-find original hit to get the localized display
                         val origHit = result.hits.firstOrNull { it.concept.code == concept.code }
@@ -275,12 +311,21 @@ class KbDrugPickerDialog : DialogFragment() {
                         // IPS pillars (Procedure / Device / Condition) want SNOMED CT : when the
                         // UMLS row carries a `snomed_code` mapping, surface that code instead of
                         // the CUI. Medications keep their native code (ATC enrichment relies on it).
-                        val snomed = concept.snomedCode?.takeIf { it.isNotBlank() && category != CATEGORY_MEDICATION }
+                        val snomed = concept.snomedCode?.takeIf { it.isNotBlank() && generic }
+                        val code = snomed ?: concept.code
+                        val system = if (snomed != null) KnowledgeBaseService.SYSTEM_SNOMED else concept.system
+                        val display = (snomed?.let { localized[it] } ?: origHit?.display ?: concept.primaryDisplay)
+                        if (generic) {
+                            val labelKey = normalizeForPickerSearch(display)
+                            if ((system to code) in seenCodes || labelKey in seenLabels) { deduped++; return@forEach }
+                            seenCodes += system to code
+                            seenLabels += labelKey
+                        }
                         currentResults.add(
                             PickedDrug(
-                                code = snomed ?: concept.code,
-                                display = origHit?.display ?: concept.primaryDisplay,
-                                system = if (snomed != null) KnowledgeBaseService.SYSTEM_SNOMED else concept.system,
+                                code = code,
+                                display = display,
+                                system = system,
                                 atcCode = concept.atcCode,
                                 doseDdd = dose?.doseDdd,
                                 doseUnit = dose?.doseUnit,
@@ -288,6 +333,10 @@ class KbDrugPickerDialog : DialogFragment() {
                                 doseNote = dose?.note,
                             ),
                         )
+                    }
+                    if (generic) {
+                        Log.i(TAG, "[t=${System.currentTimeMillis()}] 🧭 generic picker · curated=${curatedHits.size} · " +
+                            "kb=${filtered.size} · deduped=$deduped · localized=${localized.size}")
                     }
                     val labels = currentResults.map { picked ->
                         // 🆕 PHASE12 — Cache le code IPS pour gagner de la place.

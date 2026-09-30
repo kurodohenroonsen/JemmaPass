@@ -27,6 +27,7 @@
     <string name="device_form_label_code">Device</string>
     <string name="device_form_code_hint">Tap to choose a device…</string>
     <string name="device_form_code_clear_desc">Clear device</string>
+    <string name="device_form_search_hint">🔎 Search for a device (EN, FR, SNOMED…)</string>
     <string name="device_form_code_picker_title">Choose a device</string>
     <string name="device_form_label_text">Or type the device name</string>
     <string name="device_form_text_helper">Free text, used only when no device is picked above</string>

@@ -27,6 +27,7 @@
     <string name="device_form_label_code">Hulpmiddel</string>
     <string name="device_form_code_hint">Tik om een hulpmiddel te kiezen…</string>
     <string name="device_form_code_clear_desc">Hulpmiddel wissen</string>
+    <string name="device_form_search_hint">🔎 Zoek een hulpmiddel (NL, EN, SNOMED…)</string>
     <string name="device_form_code_picker_title">Kies een hulpmiddel</string>
     <string name="device_form_label_text">Of typ de naam van het hulpmiddel</string>
     <string name="device_form_text_helper">Vrije tekst, alleen gebruikt als hierboven geen hulpmiddel is gekozen</string>

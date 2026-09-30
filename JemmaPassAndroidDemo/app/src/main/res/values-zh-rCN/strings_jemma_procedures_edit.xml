@@ -25,6 +25,7 @@
     <string name="procedure_form_label_code">手术/操作</string>
     <string name="procedure_form_code_hint">点击选择手术/操作…</string>
     <string name="procedure_form_code_clear_desc">清除</string>
+    <string name="procedure_form_search_hint">🔎 搜索手术/操作（中文、英文、SNOMED…）</string>
     <string name="procedure_form_code_picker_title">选择手术/操作</string>
     <string name="procedure_form_label_text">或输入手术/操作名称</string>
     <string name="procedure_form_text_helper">自由文本，仅在上方未选择时使用</string>

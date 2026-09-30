@@ -196,6 +196,8 @@ class DeviceFormBottomSheet : BottomSheetDialogFragment() {
                 category = KbDrugPickerDialog.CATEGORY_DEVICE,
                 suggestions = IpsDeviceCatalog.ALL.map { it.code to "${it.emoji}  ${it.pick(lang)}" },
                 suggestionsSystem = IpsDeviceCatalog.CODE_SYSTEM,
+                suggestionsSearch = IpsDeviceCatalog.ALL.map { it.searchAliases() },
+                searchHint = getString(R.string.device_form_search_hint),
             )
             .setOnPicked { picked ->
                 Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ device picked · code=${picked.code} · system=${picked.system} · display='${picked.display}'")

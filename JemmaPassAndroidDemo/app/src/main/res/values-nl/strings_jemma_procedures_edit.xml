@@ -25,6 +25,7 @@
     <string name="procedure_form_label_code">Ingreep</string>
     <string name="procedure_form_code_hint">Tik om een ingreep te kiezen…</string>
     <string name="procedure_form_code_clear_desc">Ingreep wissen</string>
+    <string name="procedure_form_search_hint">🔎 Zoek een ingreep (NL, EN, SNOMED…)</string>
     <string name="procedure_form_code_picker_title">Kies een ingreep</string>
     <string name="procedure_form_label_text">Of typ de naam van de ingreep</string>
     <string name="procedure_form_text_helper">Vrije tekst, alleen gebruikt als hierboven geen ingreep is gekozen</string>

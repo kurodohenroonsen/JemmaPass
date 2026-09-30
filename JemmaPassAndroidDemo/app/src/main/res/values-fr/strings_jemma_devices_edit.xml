@@ -27,6 +27,7 @@
     <string name="device_form_label_code">Dispositif</string>
     <string name="device_form_code_hint">Appuie pour choisir un dispositif…</string>
     <string name="device_form_code_clear_desc">Effacer le dispositif</string>
+    <string name="device_form_search_hint">🔎 Cherche un dispositif (FR, EN, SNOMED…)</string>
     <string name="device_form_code_picker_title">Choisir un dispositif</string>
     <string name="device_form_label_text">Ou saisir le nom du dispositif</string>
     <string name="device_form_text_helper">Texte libre, utilisé seulement si aucun dispositif n’est choisi ci-dessus</string>

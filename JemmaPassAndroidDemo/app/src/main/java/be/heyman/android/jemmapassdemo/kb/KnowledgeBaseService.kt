@@ -1082,6 +1082,45 @@ class KnowledgeBaseService @Inject constructor(
     }
 
     /**
+     * Batch variant of [getLocalizedDisplay] for one code system : one `IN (…)`
+     * query, returns `code → display` for the codes that have a translation in
+     * [lang]. Used by the generic KB picker to localise SNOMED hits (procedures,
+     * devices) without one query per row.
+     */
+    suspend fun getLocalizedDisplays(
+        codes: Collection<String>,
+        system: String,
+        lang: String,
+    ): Map<String, String> = withContext(Dispatchers.IO) {
+        val distinct = codes.filter { it.isNotBlank() }.distinct()
+        if (distinct.isEmpty() || system.isBlank() || lang.isBlank()) return@withContext emptyMap()
+        val db = awaitDb() ?: return@withContext emptyMap()
+        val out = HashMap<String, String>()
+        try {
+            distinct.chunked(200).forEach { chunk ->
+                val placeholders = chunk.joinToString(",") { "?" }
+                db.rawQuery(
+                    """
+                    SELECT code, display
+                    FROM ips_valuesets_translations
+                    WHERE code_system = ? AND lang = ? AND code IN ($placeholders)
+                    """.trimIndent(),
+                    arrayOf(system, lang, *chunk.toTypedArray()),
+                ).use { c ->
+                    while (c.moveToNext()) {
+                        val code = c.getStringOrNull(0) ?: continue
+                        val display = c.getStringOrNull(1) ?: continue
+                        out.putIfAbsent(code, display)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "[t=${System.currentTimeMillis()}] 🌐 getLocalizedDisplays(${distinct.size},$system,$lang) failed : ${e.message}")
+        }
+        out
+    }
+
+    /**
      * Pick the best display string for a [KbConcept] given a UI lang.
      * Tries (in order) :
      *   1. Localized display via `ips_valuesets_translations` (DB-backed,

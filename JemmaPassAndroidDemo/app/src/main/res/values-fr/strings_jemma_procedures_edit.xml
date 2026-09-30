@@ -25,6 +25,7 @@
     <string name="procedure_form_label_code">Intervention</string>
     <string name="procedure_form_code_hint">Appuie pour choisir une intervention…</string>
     <string name="procedure_form_code_clear_desc">Effacer l’intervention</string>
+    <string name="procedure_form_search_hint">🔎 Cherche une intervention (FR, EN, SNOMED…)</string>
     <string name="procedure_form_code_picker_title">Choisir une intervention</string>
     <string name="procedure_form_label_text">Ou saisir le nom de l’intervention</string>
     <string name="procedure_form_text_helper">Texte libre, utilisé seulement si aucune intervention n’est choisie ci-dessus</string>

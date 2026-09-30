@@ -27,6 +27,7 @@
     <string name="device_form_label_code">Gerät</string>
     <string name="device_form_code_hint">Tippe, um ein Gerät zu wählen…</string>
     <string name="device_form_code_clear_desc">Gerät löschen</string>
+    <string name="device_form_search_hint">🔎 Gerät suchen (DE, EN, SNOMED…)</string>
     <string name="device_form_code_picker_title">Gerät wählen</string>
     <string name="device_form_label_text">Oder Gerätenamen eingeben</string>
     <string name="device_form_text_helper">Freitext, nur verwendet, wenn oben kein Gerät gewählt ist</string>

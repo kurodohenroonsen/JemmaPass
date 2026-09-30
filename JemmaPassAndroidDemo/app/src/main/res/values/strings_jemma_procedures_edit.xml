@@ -25,6 +25,7 @@
     <string name="procedure_form_label_code">Procedure</string>
     <string name="procedure_form_code_hint">Tap to choose a procedure…</string>
     <string name="procedure_form_code_clear_desc">Clear procedure</string>
+    <string name="procedure_form_search_hint">🔎 Search for a procedure (EN, FR, SNOMED…)</string>
     <string name="procedure_form_code_picker_title">Choose a procedure</string>
     <string name="procedure_form_label_text">Or type the procedure name</string>
     <string name="procedure_form_text_helper">Free text, used only when no procedure is picked above</string>

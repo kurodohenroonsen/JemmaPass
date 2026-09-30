@@ -25,6 +25,7 @@
     <string name="procedure_form_label_code">Eingriff</string>
     <string name="procedure_form_code_hint">Tippe, um einen Eingriff zu wählen…</string>
     <string name="procedure_form_code_clear_desc">Eingriff löschen</string>
+    <string name="procedure_form_search_hint">🔎 Eingriff suchen (DE, EN, SNOMED…)</string>
     <string name="procedure_form_code_picker_title">Eingriff wählen</string>
     <string name="procedure_form_label_text">Oder Namen des Eingriffs eingeben</string>
     <string name="procedure_form_text_helper">Freitext, nur verwendet, wenn oben kein Eingriff gewählt ist</string>

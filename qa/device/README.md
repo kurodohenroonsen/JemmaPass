@@ -22,6 +22,13 @@ L'agent **architecte** (Claude, via GitHub) lit le rapport et livre les correcti
 5. Les logs publiés sont des sorties brutes de `adb logcat`, jamais éditées à la main :
    le seul traitement autorisé est `qa/device/scrub_logcat.py` (suppression des lignes
    mentionnant un profil non-démo, avec compteur en fin de fichier).
+6. **Intégrité des preuves** : une capture prouve l'étape pendant laquelle elle a été
+   prise. Ne copie/renomme jamais une capture pour illustrer un autre cas ; si une
+   capture manque, rejoue l'étape. Une preuve obtenue « par accident » (par ex. une
+   saisie qui a échoué) se documente comme telle dans le rapport.
+7. **Aucun identifiant matériel** dans ce qui est publié : le script masque déjà le
+   numéro de série dans `adb-devices.txt` ; ne le recopie pas dans `report.md` ni
+   `env.txt` (modèle + version Android suffisent).
 
 ## 1. Préparation
 
@@ -67,6 +74,9 @@ legacy (allergies/médicaments/problèmes) toujours présentes. Options : `--exp
 `ui.py` pilote l'écran via `uiautomator dump` + `input tap` (tous les contrôles ont
 un `resource-id`). Adapte si l'écran diffère, et **note toute déviation** dans le rapport.
 Langue attendue de l'appareil : FR ou EN (les libellés ci-dessous sont donnés en EN / FR).
+Limite connue : `ui.py type` passe par `adb shell input text`, qui ne sait pas saisir
+les caractères non-ASCII (accents, kana) — utilise des chaînes de test ASCII
+(`Operation du genou 1998`) et signale-le si un libellé attendu contient un accent.
 
 Notation : `UI = python3 qa/device/ui.py`, `OUT = dossier de sortie du script`.
 
@@ -317,9 +327,12 @@ Vérifie dans `demo_kurodo.fhir.json` : ressource `Procedure` avec
 `note[0].text`, profil `Procedure-uv-ips` ; section LOINC `47519-4` à 3 références ; dans
 `demo_kurodo.json` `pr[]` a 3 entrées (`c`, `dt`, `d_display`, `d` = note).
 
-**Recherche KB** (picker) : `$UI tap --id picker_search`, taper `appendic` → attendu :
-l'entrée catalogue « Appendectomy » / « Appendicectomie » en tête, puis des résultats KB
-(`terminology_codes.category = 'Procedure'`, FTS5). Capture `105-procedure-kb-search.png`.
+**Recherche KB** (picker) : `$UI tap --id drug_picker_search`, taper `appendic` → attendu :
+l'entrée catalogue « 🔪  Appendectomy » / « 🔪  Appendicectomie » en tête (les alias EN/FR/JA
+et le code sont cherchés), puis des résultats KB (`terminology_codes.category = 'Procedure'`,
+FTS5) **sans doublon** de libellé ni de code, libellés FR quand `ips_valuesets_translations`
+en a un pour le code SNOMED, et le hint du champ = « Cherche une intervention (FR, EN,
+SNOMED…) ». Capture `105-procedure-kb-search.png`.
 Choisir un résultat **KB** (hors catalogue), Save, et noter dans le rapport le `code` et le
 `system` écrits dans le Bundle (attendu : SNOMED `http://snomed.info/sct` quand la KB
 connaît le mapping, sinon `urn:umls` + CUI — les deux sont acceptés, note lequel).

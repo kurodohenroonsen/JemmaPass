@@ -25,6 +25,7 @@
     <string name="procedure_form_label_code">処置・手術</string>
     <string name="procedure_form_code_hint">タップして処置を選択…</string>
     <string name="procedure_form_code_clear_desc">処置をクリア</string>
+    <string name="procedure_form_search_hint">🔎 処置を検索（日本語・英語・SNOMED…）</string>
     <string name="procedure_form_code_picker_title">処置を選択</string>
     <string name="procedure_form_label_text">または処置名を入力</string>
     <string name="procedure_form_text_helper">上で処置が選択されていない場合のみ使用される自由記述</string>

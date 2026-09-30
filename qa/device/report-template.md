@@ -1,6 +1,7 @@
 # Device QA · feat/ips-18-pillars-cleanup · <sha7> · <Pixel 9 · Android 15> · <YYYY-MM-DD HH:MM>
 
 - Exécutant : Antigravity · Hôte : macOS · Langue appareil : <EN|FR|JA>
+- Appareil : <modèle> · Android <version> (jamais de numéro de série)
 - Build : `logs/assemble.log` · Tests JVM : <50 tests, 0 failed> (`logs/unit-tests.log`)
 - Verdict global : **<PASS|FAIL>** — <n> ✅ · <m> ❌ · <k> ⚠️ · <s> ⏭
 

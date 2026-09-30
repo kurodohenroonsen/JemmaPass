@@ -27,6 +27,7 @@
     <string name="device_form_label_code">機器</string>
     <string name="device_form_code_hint">タップして機器を選択…</string>
     <string name="device_form_code_clear_desc">機器をクリア</string>
+    <string name="device_form_search_hint">🔎 機器を検索（日本語・英語・SNOMED…）</string>
     <string name="device_form_code_picker_title">機器を選択</string>
     <string name="device_form_label_text">または機器名を入力</string>
     <string name="device_form_text_helper">上で機器が選択されていない場合のみ使用される自由記述</string>

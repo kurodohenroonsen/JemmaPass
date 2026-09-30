@@ -188,6 +188,8 @@ class ProcedureFormBottomSheet : BottomSheetDialogFragment() {
                 category = KbDrugPickerDialog.CATEGORY_PROCEDURE,
                 suggestions = IpsProcedureCatalog.ALL.map { it.code to "${it.emoji}  ${it.pick(lang)}" },
                 suggestionsSystem = IpsProcedureCatalog.CODE_SYSTEM,
+                suggestionsSearch = IpsProcedureCatalog.ALL.map { it.searchAliases() },
+                searchHint = getString(R.string.procedure_form_search_hint),
             )
             .setOnPicked { picked ->
                 Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ procedure picked · code=${picked.code} · system=${picked.system} · display='${picked.display}'")
