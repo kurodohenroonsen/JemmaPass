@@ -16,7 +16,8 @@
 | T5 QR texte EN/FR | | `screenshots/50-…`, `51-…` | |
 | T6 FHIR + validateur (bonus) | | | |
 | T7 Haru / Kamekichi | | `screenshots/70-…`, `71-…` | |
-| T8 régression rapide (radar, médicaments) | | `logs/logcat-ui.txt` | |
+| T8 chemins alternatifs (texte libre, not-done, ✕, annuler) | | `screenshots/80-…` | |
+| T9 chemins d'erreur (validation, date future, rotation, double-tap) | | `screenshots/90-…`, `logs/logcat-ui.txt` | |
 
 ## Bugs (un bloc par bug)
 

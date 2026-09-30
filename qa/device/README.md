@@ -209,10 +209,35 @@ Fiche Haru : section « 💉 … (3) » (grippe 2025, COVID 2024, PCV 2021), lib
 japonais si l'appareil est en JA. Fiche Kamekichi : pas de section vaccins, tuile
 💉 active avec badge absent (0). Captures `70-haru.png`, `71-kamekichi.png`.
 
-### T8 — Régression rapide hors périmètre (5 min)
+### T8 — Chemins alternatifs du formulaire
 
-Radar SOS : mode Rescue → radar → STOP, sans crash (`AndroidRuntime:E` vide dans
-`adb logcat -d`). Médicaments Haru : ouvrir/fermer. Une ligne par item dans le rapport.
+1. **Vaccin en texte libre** (sans code) : FAB → ne rien choisir dans le picker,
+   saisir `Vaccin du village 1985` dans `immunization_form_text`, laisser la date
+   inconnue, Save. Attendu : carte avec le texte libre et « Date unknown » /
+   « Date inconnue » ; dans `demo_kurodo.fhir.json` la ressource a
+   `vaccineCode.text` sans `coding` et `occurrenceString: "unknown"` ;
+   `verify_profiles.py … --expect demo_kurodo=5` PASS.
+2. **Statut « Not done »** : éditer cette carte → `immunization_form_status_row` →
+   « Not done » / « Non administré » → Save. Attendu : icône 🚫 et statut dans le
+   sous-titre ; `status: "not-done"` dans le Bundle ; `"st":"not-done"` dans `_j.im`.
+3. **Désélection du vaccin** : FAB → choisir un vaccin → ✕ (`immunization_form_vaccine_clear`).
+   Attendu : le champ texte libre réapparaît, le vaccin est vide.
+4. **Annuler** : remplir puis `immunization_form_cancel_btn`. Attendu : aucune carte
+   ajoutée, aucun fichier modifié (`verify` inchangé).
+5. Nettoyage : supprimer la carte « Vaccin du village 1985 » → retour à 4.
+
+### T9 — Chemins d'erreur du formulaire
+
+| Cas | Action | Attendu |
+|---|---|---|
+| Aucun vaccin | FAB → Save direct | toast « Pick a vaccine or type its name » / « Choisis un vaccin ou saisis son nom », formulaire toujours ouvert |
+| Dose 0 | vaccin choisi, `immunization_form_dose_number` = `0`, Save | toast « Dose numbers must be positive whole numbers », focus sur le champ |
+| Dose > série | dose `3`, série `2`, Save | toast « The dose number cannot exceed… », focus sur la série |
+| Date future | ouvrir le sélecteur de date | les jours après aujourd'hui sont désactivés |
+| Rotation / retour | formulaire rempli, rotation de l'écran (ou `adb shell settings put system user_rotation 1` puis `0`) | pas de crash (`AndroidRuntime:E` vide) ; noter si les saisies sont perdues |
+| Double-tap Save | deux taps rapides sur Save | une seule carte créée |
+
+Chaque cas : capture + ligne dans le rapport. Puis `verify_profiles.py … --expect demo_kurodo=4` doit rester PASS.
 
 ## 4. Logcat de fin
 
