@@ -102,14 +102,15 @@ data class IpsImmunization(
 
 /**
  * The FHIR-native pillars carried alongside the legacy `_j`-authored ones.
- * Grows one pillar per sprint (Procedures, Devices, Results, …).
+ * Grows one pillar per sprint (Immunizations, Procedures + Devices, Results, …).
  */
 data class IpsNativePillars(
     val immunizations: List<IpsImmunization> = emptyList(),
     val procedures: List<IpsProcedure> = emptyList(),
     val devices: List<IpsDevice> = emptyList(),
+    val results: List<IpsResult> = emptyList(),
 ) {
-    val isEmpty: Boolean get() = immunizations.isEmpty() && procedures.isEmpty() && devices.isEmpty()
+    val isEmpty: Boolean get() = immunizations.isEmpty() && procedures.isEmpty() && devices.isEmpty() && results.isEmpty()
 
     companion object {
         val EMPTY = IpsNativePillars()
@@ -119,10 +120,12 @@ data class IpsNativePillars(
             im: List<JEntryGeneric>,
             pr: List<JEntryGeneric> = emptyList(),
             dv: List<JEntryGeneric> = emptyList(),
+            rs: List<JEntryGeneric> = emptyList(),
         ): IpsNativePillars = IpsNativePillars(
             immunizations = im.mapIndexed { i, e -> IpsImmunization.fromJEntry(e, i) },
             procedures = pr.mapIndexed { i, e -> IpsProcedure.fromJEntry(e, i) },
             devices = dv.mapIndexed { i, e -> IpsDevice.fromJEntry(e, i) },
+            results = rs.mapIndexed { i, e -> IpsResult.fromJEntry(e, i) },
         )
     }
 }

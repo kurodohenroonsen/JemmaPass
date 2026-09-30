@@ -11,6 +11,9 @@ import be.heyman.android.jemmapassdemo.ips.IpsDevice
 import be.heyman.android.jemmapassdemo.ips.IpsImmunization
 import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
 import be.heyman.android.jemmapassdemo.ips.IpsProcedure
+import be.heyman.android.jemmapassdemo.ips.IpsResult
+import be.heyman.android.jemmapassdemo.ips.IpsResultCategory
+import be.heyman.android.jemmapassdemo.ips.IpsResultInterpretation
 
 object JemmaPersonasSeeder {
 
@@ -61,6 +64,26 @@ object JemmaPersonasSeeder {
                 ),
             ),
             // Kurodo carries no device: the empty-pillar path stays covered by a persona.
+            results = listOf(
+                IpsResult(
+                    id = "rs-kurodo-hba1c-2026", code = "4548-4", system = IpsCodeSystems.LOINC,
+                    display = "Hemoglobin A1c", date = "2026-01-15", value = "5.6", unit = "%",
+                    interpretation = IpsResultInterpretation.NORMAL, refLow = "4", refHigh = "6",
+                    performer = "Laboratoire CHU UCL Namur",
+                ),
+                IpsResult(
+                    id = "rs-kurodo-ldl-2026", code = "2089-1", system = IpsCodeSystems.LOINC,
+                    display = "LDL cholesterol", date = "2026-01-15", value = "131", unit = "mg/dL",
+                    interpretation = IpsResultInterpretation.HIGH, refHigh = "100",
+                    performer = "Laboratoire CHU UCL Namur", note = "Lifestyle advice, recheck in 6 months",
+                ),
+                IpsResult(
+                    id = "rs-kurodo-creat-2026", code = "2160-0", system = IpsCodeSystems.LOINC,
+                    display = "Creatinine (serum/plasma)", date = "2026-01-15", value = "0.9", unit = "mg/dL",
+                    interpretation = IpsResultInterpretation.NORMAL, refLow = "0.7", refHigh = "1.2",
+                    performer = "Laboratoire CHU UCL Namur",
+                ),
+            ),
         )
         SID_HARU -> IpsNativePillars(
             immunizations = listOf(
@@ -101,6 +124,37 @@ object JemmaPersonasSeeder {
                 IpsDevice(
                     id = "dv-haru-hearing-aid-2019", code = "6012004", system = IpsCodeSystems.SNOMED,
                     display = "Hearing aid", manufacturer = "Phonak", date = "2019-06", bodySite = "Both ears",
+                ),
+            ),
+            results = listOf(
+                IpsResult(
+                    id = "rs-haru-potassium-2026", code = "2823-3", system = IpsCodeSystems.LOINC,
+                    display = "Potassium", date = "2026-02-10", value = "4.1", unit = "mmol/L",
+                    interpretation = IpsResultInterpretation.NORMAL, refLow = "3.5", refHigh = "5.1",
+                    performer = "Matsuyama Red Cross Hospital laboratory",
+                ),
+                IpsResult(
+                    id = "rs-haru-hemoglobin-2026", code = "718-7", system = IpsCodeSystems.LOINC,
+                    display = "Hemoglobin", date = "2026-02-10", value = "11.8", unit = "g/dL",
+                    interpretation = IpsResultInterpretation.LOW, refLow = "12", refHigh = "16",
+                    performer = "Matsuyama Red Cross Hospital laboratory",
+                ),
+                IpsResult(
+                    id = "rs-haru-egfr-2026", code = "33914-3", system = IpsCodeSystems.LOINC,
+                    display = "eGFR (MDRD)", date = "2026-02-10", value = "48", unit = "mL/min/{1.73_m2}",
+                    interpretation = IpsResultInterpretation.LOW, refLow = "60",
+                    performer = "Matsuyama Red Cross Hospital laboratory", note = "CKD stage 3a — adjust renally cleared drugs",
+                ),
+                IpsResult(
+                    id = "rs-haru-blood-group", code = "882-1", system = IpsCodeSystems.LOINC,
+                    display = "ABO and Rh blood group", date = "2015-09-01",
+                    valueCode = "278149003", valueCodeSystem = IpsCodeSystems.SNOMED, valueDisplay = "Blood group O Rh(D) positive",
+                    performer = "Matsuyama Red Cross Hospital laboratory",
+                ),
+                IpsResult(
+                    id = "rs-haru-chest-xray-2025", text = "Chest X-ray", date = "2025-12-03",
+                    category = IpsResultCategory.IMAGING, valueText = "Mild cardiomegaly, no pleural effusion",
+                    performer = "Radiology, Matsuyama Red Cross Hospital",
                 ),
             ),
         )

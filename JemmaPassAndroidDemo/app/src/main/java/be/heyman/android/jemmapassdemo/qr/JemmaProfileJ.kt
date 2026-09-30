@@ -358,6 +358,19 @@ data class JEntryGeneric(
     @Json(name = "st") val status: String? = null,
     /** Dose number in a series (immunizations). */
     @Json(name = "dn") val doseNumber: Int? = null,
+    // ── Results (Observation) projection — sprint 3.
+    /** Measured value: number as typed ("5.4"), or the coded / free-text result label. */
+    @Json(name = "v") val value: String? = null,
+    /** UCUM unit code of a numeric value ("mmol/L", "%", "10*3/uL"). */
+    @Json(name = "u") val unit: String? = null,
+    /** v3 ObservationInterpretation code when abnormal or explicit (H, L, HH, LL, N, A, POS, NEG). */
+    @Json(name = "ip") val interpretation: String? = null,
+    /** Reference range as "low-high", "≥low" or "≤high" (same unit as `u`). */
+    @Json(name = "rr") val referenceRange: String? = null,
+    /** Code of a coded value (e.g. SNOMED blood group) when the result is not numeric. */
+    @Json(name = "vc") val valueCode: String? = null,
+    /** Observation category when not the pillar default (results: "laboratory"). */
+    @Json(name = "ct") val category: String? = null,
 )
 
 // ──────────────────────────────────────────────────────────────────────

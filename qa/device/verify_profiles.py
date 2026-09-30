@@ -14,21 +14,25 @@ Checks, for every profile :
   P8  legacy sections (Allergies 48765-2 · Medications 10160-0 · Problems 11450-4) present
       when their `_j` arrays are non-empty
 
-and, for each FHIR-native pillar  💉 im / Immunization · 🏥 pr / Procedure · 📟 dv / DeviceUseStatement(+Device) :
+and, for each FHIR-native pillar  💉 im / Immunization · 🏥 pr / Procedure · 📟 dv / DeviceUseStatement(+Device)
+· 🧪 rs / Observation (results) :
   P4  the `_j.<key>` projection has exactly one entry per resource, same codes (set-wise)
       and same dates (occurrenceDateTime / performedDateTime / timingDateTime ⇄ dt)
-  P4b optional expected count (--expect / --expect-pr / --expect-dv)
+  P4b optional expected count (--expect / --expect-pr / --expect-dv / --expect-rs)
   P5  the Composition has the pillar section (LOINC 11369-6 / 47519-4 / 46264-8) iff there
       are resources, and its entry references are exactly the resource fullUrls
   P6  every resource declares its *-uv-ips profile, references the Patient fullUrl, has a
       status and a date-or-string ; every DeviceUseStatement resolves to a Device entry that
-      itself declares Device-uv-ips and references the Patient
+      itself declares Device-uv-ips and references the Patient ; every results Observation has
+      a category and one value[x] (valueQuantity with UCUM / valueCodeableConcept / valueString)
+      matching the `_j.rs` projection (`v`, `u`)
 
 Optional expectations :
   --expect demo_kurodo=4        (Immunization resources — kept for backward compatibility)
   --expect-im demo_kurodo=4     (same thing, explicit)
   --expect-pr demo_kurodo=2     (Procedure resources)
   --expect-dv demo_haru=2       (DeviceUseStatement resources)
+  --expect-rs demo_kurodo=3     (results Observation resources)
 
 Exit code 0 when everything passes, 1 otherwise. --markdown writes a report table.
 """
@@ -54,8 +58,13 @@ PILLARS = [
     dict(key="dv", emoji="📟", label="DeviceUseStatement", rtype="DeviceUseStatement", loinc="46264-8",
          profile=IPS + "DeviceUseStatement-uv-ips", code_path=None, patient_path="subject",
          date=("timingDateTime",), string=None),
+    dict(key="rs", emoji="🧪", label="Observation", rtype="Observation", loinc="30954-2",
+         profile=IPS + "Observation-results", code_path="code", patient_path="subject",
+         date=("effectiveDateTime",), string=None, profile_prefix=True),
 ]
 PROFILE_DEVICE_UV_IPS = IPS + "Device-uv-ips"
+RESULT_CATEGORIES = ("laboratory", "imaging", "procedure")
+UCUM = "http://unitsofmeasure.org"
 
 
 class Report:
@@ -112,9 +121,35 @@ def resolve_device(bundle, use_statement):
     return None
 
 
+def is_results_observation(r):
+    profiles = (r.get("meta") or {}).get("profile") or []
+    if any("Observation-results" in p for p in profiles):
+        return True
+    cats = [c.get("code") for cc in (r.get("category") or []) for c in (cc.get("coding") or [])]
+    return any(c in RESULT_CATEGORIES for c in cats)
+
+
+def observation_value(r):
+    """(kind, value-as-text, unit) of a results Observation, mirroring IpsResult.valueLabel()."""
+    if "valueQuantity" in r:
+        q = r["valueQuantity"]
+        v = q.get("value")
+        txt = ("%s" % v).rstrip("0").rstrip(".") if isinstance(v, float) else str(v)
+        return "quantity", txt, q.get("code") or q.get("unit")
+    if "valueCodeableConcept" in r:
+        cc = r["valueCodeableConcept"]
+        coding = (cc.get("coding") or [{}])[0]
+        return "coded", coding.get("display") or cc.get("text") or coding.get("code"), None
+    if "valueString" in r:
+        return "string", r["valueString"], None
+    return None, None, None
+
+
 def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
     key, label, loinc = spec["key"], spec["label"], spec["loinc"]
     res_entries = entries_of_type(b, spec["rtype"])
+    if spec["rtype"] == "Observation":
+        res_entries = [e for e in res_entries if is_results_observation(e["resource"])]
     res = [e["resource"] for e in res_entries]
     jarr = j.get(key, []) or []
 
@@ -170,7 +205,8 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
     for r in res:
         prof = (r.get("meta") or {}).get("profile") or []
         pref = (r.get(spec["patient_path"]) or {}).get("reference")
-        if spec["profile"] not in prof:
+        has_profile = any(p.startswith(spec["profile"]) for p in prof) if spec.get("profile_prefix") else spec["profile"] in prof
+        if not has_profile:
             bad.append(f"{r.get('id')}:no-ips-profile")
         if pref != patient_url:
             bad.append(f"{r.get('id')}:patient-ref")
@@ -190,7 +226,17 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
                     bad.append(f"{dev.get('id')}:device-patient-ref")
                 if not (coding_code(dev.get("type")) or (dev.get("type") or {}).get("text") or dev.get("deviceName")):
                     bad.append(f"{dev.get('id')}:device-no-type")
-    what = "profile · patient ref · status · date/string" + (" · Device resolved + Device-uv-ips" if key == "dv" else "")
+        if spec["rtype"] == "Observation":
+            cats = [c.get("code") for cc in (r.get("category") or []) for c in (cc.get("coding") or [])]
+            if not any(c in RESULT_CATEGORIES for c in cats):
+                bad.append(f"{r.get('id')}:no-category")
+            kind, vtxt, unit = observation_value(r)
+            if kind is None:
+                bad.append(f"{r.get('id')}:no-value")
+            elif kind == "quantity" and unit and (r["valueQuantity"].get("system") != UCUM):
+                bad.append(f"{r.get('id')}:unit-not-ucum")
+    what = "profile · patient ref · status · date/string" + (" · Device resolved + Device-uv-ips" if key == "dv" else "") \
+        + (" · category · value[x]" if key == "rs" else "")
     name = f"P6 {label}-uv-ips {what}"
     if res and not bad:
         rep.ok(pid, name)
@@ -201,6 +247,15 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
         n_dev = len(entries_of_type(b, "Device"))
         if n_dev != len(res):
             rep.fail(pid, "P6b one Device per DeviceUseStatement", f"devices={n_dev} statements={len(res)}")
+
+    if key == "rs" and res:
+        # P6c: the projection carries the same values (multiset of "value unit").
+        fhir_vals = sorted(f"{observation_value(r)[1] or ''}|{observation_value(r)[2] or ''}" for r in res)
+        j_vals = sorted(f"{e.get('v') or ''}|{e.get('u') or ''}" for e in jarr)
+        if fhir_vals == j_vals:
+            rep.ok(pid, "P6c `_j.rs` values ⇄ Observation value[x]", f"{len(res)} values")
+        else:
+            rep.fail(pid, "P6c `_j.rs` values ⇄ Observation value[x]", f"fhir={fhir_vals} j={j_vals}")
 
 
 def verify_profile(pid, folder, rep, expected):
@@ -273,6 +328,7 @@ def main():
     ap.add_argument("--expect-im", action="append", default=[], help="<profileId>=<n Immunization>, repeatable")
     ap.add_argument("--expect-pr", action="append", default=[], help="<profileId>=<n Procedure>, repeatable")
     ap.add_argument("--expect-dv", action="append", default=[], help="<profileId>=<n DeviceUseStatement>, repeatable")
+    ap.add_argument("--expect-rs", action="append", default=[], help="<profileId>=<n results Observation>, repeatable")
     ap.add_argument("--only", action="append", default=[], help="restrict to these profile ids (repeatable)")
     ap.add_argument("--markdown", help="write the report table to this file")
     ap.add_argument("--title", default="verify_profiles")
@@ -283,6 +339,7 @@ def main():
     parse_expectations(args.expect + args.expect_im, "im", expectations)
     parse_expectations(args.expect_pr, "pr", expectations)
     parse_expectations(args.expect_dv, "dv", expectations)
+    parse_expectations(args.expect_rs, "rs", expectations)
 
     ids = sorted(p.name[:-5] for p in folder.glob("*.json")
                  if not p.name.endswith(".fhir.json") and p.name != "meta.json")

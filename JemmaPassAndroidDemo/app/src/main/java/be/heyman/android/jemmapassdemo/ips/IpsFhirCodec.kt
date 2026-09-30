@@ -26,12 +26,16 @@ import dev.ohs.fhir.model.r4.FhirR4Json
 import dev.ohs.fhir.model.r4.Immunization
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Meta
+import dev.ohs.fhir.model.r4.Observation
 import dev.ohs.fhir.model.r4.PositiveInt
 import dev.ohs.fhir.model.r4.Procedure
+import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Decimal
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
+import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import java.util.UUID
 
 object IpsFhirCodec {
@@ -53,6 +57,18 @@ object IpsFhirCodec {
     const val PROFILE_DEVICE_UV_IPS =
         "http://hl7.org/fhir/uv/ips/StructureDefinition/Device-uv-ips"
     const val UDI_ISSUER_GS1 = "http://hl7.org/fhir/NamingSystem/gs1-di"
+
+    const val LOINC_SECTION_RESULTS = "30954-2"
+    const val TITLE_SECTION_RESULTS = "Results"
+    const val PROFILE_OBSERVATION_RESULTS_UV_IPS =
+        "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-results-uv-ips"
+    const val PROFILE_OBSERVATION_RESULTS_LABORATORY_UV_IPS =
+        "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-results-laboratory-uv-ips"
+    const val PROFILE_OBSERVATION_RESULTS_RADIOLOGY_UV_IPS =
+        "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-results-radiology-uv-ips"
+    const val SYSTEM_OBSERVATION_CATEGORY = "http://terminology.hl7.org/CodeSystem/observation-category"
+    const val SYSTEM_OBSERVATION_INTERPRETATION = "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+    const val SYSTEM_UCUM = "http://unitsofmeasure.org"
 
     /** Placeholder used by FHIR when the occurrence date is genuinely unknown. */
     const val OCCURRENCE_UNKNOWN = "unknown"
@@ -99,11 +115,27 @@ object IpsFhirCodec {
         }
     }
 
+    /**
+     * Observations of the Results pillar : profile `Observation-results-*` or category
+     * laboratory / imaging / procedure. Vital signs and social history (future pillars)
+     * are left alone.
+     */
+    fun resultsOf(bundle: Bundle): List<IpsResult> =
+        resourcesOf(bundle).filterIsInstance<Observation>().filter { isResultsObservation(it) }.map { fromFhir(it) }
+
+    fun isResultsObservation(o: Observation): Boolean {
+        val profiles = o.meta?.profile?.mapNotNull { it.value }.orEmpty()
+        if (profiles.any { it.contains("Observation-results") }) return true
+        val categories = o.category.flatMap { it.coding }.mapNotNull { it.code?.value }
+        return categories.any { it in IpsResultCategory.ALL }
+    }
+
     /** Every FHIR-native pillar found in a stored Bundle. */
     fun nativeOf(bundle: Bundle): IpsNativePillars = IpsNativePillars(
         immunizations = immunizationsOf(bundle),
         procedures = proceduresOf(bundle),
         devices = devicesOf(bundle),
+        results = resultsOf(bundle),
     )
 
     /** Deterministic `urn:uuid:` for intra-bundle references (stable across rebuilds). */
@@ -121,6 +153,9 @@ object IpsFhirCodec {
 
     fun deviceUrn(profileSid: kotlin.String, deviceEntryId: kotlin.String): kotlin.String =
         stableUrn("$profileSid|Device|$deviceEntryId")
+
+    fun resultUrn(profileSid: kotlin.String, resultId: kotlin.String): kotlin.String =
+        stableUrn("$profileSid|Observation|$resultId")
 
     // ──────────────────────────────────────────────────────────────────────
     // Immunization ⇄ IpsImmunization
@@ -391,6 +426,124 @@ object IpsFhirCodec {
     }
 
     // ──────────────────────────────────────────────────────────────────────
+    // Observation (Results) ⇄ IpsResult
+    // ──────────────────────────────────────────────────────────────────────
+
+    fun fromFhir(o: Observation): IpsResult {
+        val coding = firstCoding(o.code)
+        val code = coding?.code?.value?.takeIf { it.isNotBlank() }
+        val display = coding?.display?.value?.takeIf { it.isNotBlank() }
+        val text = o.code.text?.value?.takeIf { it.isNotBlank() }
+        val category = o.category.flatMap { it.coding }.mapNotNull { it.code?.value }.firstOrNull { it in IpsResultCategory.ALL }
+        val quantity = o.value?.asQuantity()?.value
+        val codedValue = o.value?.asCodeableConcept()?.value
+        val codedCoding = firstCoding(codedValue)
+        val stringValue = o.value?.asString()?.value?.value
+        val range = o.referenceRange.firstOrNull()
+        return IpsResult(
+            id = o.id ?: IpsResult.newId(),
+            code = code,
+            system = coding?.system?.value?.takeIf { it.isNotBlank() } ?: IpsCodeSystems.LOINC,
+            display = display,
+            text = text?.takeIf { it != display },
+            date = o.effective?.asDateTime()?.value?.value?.toString(),
+            status = IpsResultStatus.normalize(o.status.value?.getCode()),
+            category = IpsResultCategory.normalize(category),
+            value = quantity?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
+            unit = (quantity?.code?.value ?: quantity?.unit?.value)?.takeIf { it.isNotBlank() },
+            valueCode = codedCoding?.code?.value?.takeIf { it.isNotBlank() },
+            valueCodeSystem = codedCoding?.system?.value?.takeIf { it.isNotBlank() } ?: IpsCodeSystems.SNOMED,
+            valueDisplay = (codedCoding?.display?.value ?: codedValue?.text?.value)?.takeIf { it.isNotBlank() },
+            valueText = stringValue?.takeIf { it.isNotBlank() },
+            interpretation = IpsResultInterpretation.normalize(o.interpretation.flatMap { it.coding }.firstOrNull()?.code?.value),
+            refLow = range?.low?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
+            refHigh = range?.high?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
+            performer = o.performer.firstOrNull()?.display?.value?.takeIf { it.isNotBlank() },
+            note = o.note.firstOrNull()?.text?.value?.takeIf { it.isNotBlank() },
+        )
+    }
+
+    fun toFhir(rs: IpsResult, patientUrn: kotlin.String): Observation.Builder {
+        val statusCode = try {
+            Observation.ObservationStatus.fromCode(IpsResultStatus.normalize(rs.status))
+        } catch (e: IllegalArgumentException) {
+            Observation.ObservationStatus.Final
+        }
+        val category = IpsResultCategory.normalize(rs.category)
+        val profile = when (category) {
+            IpsResultCategory.IMAGING -> PROFILE_OBSERVATION_RESULTS_RADIOLOGY_UV_IPS
+            IpsResultCategory.LABORATORY -> PROFILE_OBSERVATION_RESULTS_LABORATORY_UV_IPS
+            else -> PROFILE_OBSERVATION_RESULTS_UV_IPS
+        }
+        return Observation.Builder(
+            Enumeration.of(statusCode, null),
+            codeableConcept(rs.code, rs.system ?: IpsCodeSystems.LOINC, rs.display, rs.text),
+        ).apply {
+            id = rs.id
+            meta = ipsMeta(profile)
+            this.category.add(codeableConcept(category, SYSTEM_OBSERVATION_CATEGORY, categoryDisplay(category), null))
+            subject = urnReference(patientUrn)
+            parseFhirDate(rs.date)?.let { effective = Observation.Effective.DateTime(dateTimeBuilder(it).build()) }
+            value = observationValue(rs)
+            IpsResultInterpretation.normalize(rs.interpretation)?.let { ip ->
+                interpretation.add(codeableConcept(ip, SYSTEM_OBSERVATION_INTERPRETATION, interpretationDisplay(ip), null))
+            }
+            val lo = IpsDecimal.normalize(rs.refLow)
+            val hi = IpsDecimal.normalize(rs.refHigh)
+            if (lo != null || hi != null) {
+                referenceRange.add(Observation.ReferenceRange.Builder().apply {
+                    lo?.let { low = quantity(it, rs.unit) }
+                    hi?.let { high = quantity(it, rs.unit) }
+                })
+            }
+            rs.performer?.takeIf { it.isNotBlank() }?.let { performer.add(displayReference(it)) }
+            rs.note?.takeIf { it.isNotBlank() }?.let { note.add(Annotation.Builder(Markdown.Builder().apply { value = it })) }
+        }
+    }
+
+    private fun observationValue(rs: IpsResult): Observation.Value? {
+        val numeric = IpsDecimal.normalize(rs.value)
+        return when {
+            numeric != null -> Observation.Value.Quantity(quantity(numeric, rs.unit).build())
+            !rs.valueCode.isNullOrBlank() ->
+                Observation.Value.CodeableConcept(codeableConcept(rs.valueCode, rs.valueCodeSystem ?: IpsCodeSystems.SNOMED, rs.valueDisplay, null).build())
+            !rs.valueText.isNullOrBlank() -> Observation.Value.String(String.Builder().apply { value = rs.valueText }.build())
+            !rs.value.isNullOrBlank() -> Observation.Value.String(String.Builder().apply { value = rs.value }.build())
+            else -> null
+        }
+    }
+
+    /** UCUM quantity : `value` as an exact decimal, `code` = `unit` = the UCUM code. */
+    private fun quantity(decimal: kotlin.String, ucum: kotlin.String?): Quantity.Builder =
+        Quantity.Builder().apply {
+            value = Decimal.Builder().apply { value = BigDecimal.parseString(decimal) }
+            ucum?.takeIf { it.isNotBlank() }?.let { u ->
+                unit = String.Builder().apply { value = u }
+                system = Uri.Builder().apply { value = SYSTEM_UCUM }
+                code = Code.Builder().apply { value = u }
+            }
+        }
+
+    private fun categoryDisplay(code: kotlin.String): kotlin.String = when (code) {
+        IpsResultCategory.LABORATORY -> "Laboratory"
+        IpsResultCategory.IMAGING -> "Imaging"
+        IpsResultCategory.PROCEDURE -> "Procedure"
+        else -> code
+    }
+
+    private fun interpretationDisplay(code: kotlin.String): kotlin.String = when (code) {
+        IpsResultInterpretation.NORMAL -> "Normal"
+        IpsResultInterpretation.HIGH -> "High"
+        IpsResultInterpretation.LOW -> "Low"
+        IpsResultInterpretation.CRITICAL_HIGH -> "Critical high"
+        IpsResultInterpretation.CRITICAL_LOW -> "Critical low"
+        IpsResultInterpretation.ABNORMAL -> "Abnormal"
+        IpsResultInterpretation.POSITIVE -> "Positive"
+        IpsResultInterpretation.NEGATIVE -> "Negative"
+        else -> code
+    }
+
+    // ──────────────────────────────────────────────────────────────────────
     // Composition sections
     // ──────────────────────────────────────────────────────────────────────
 
@@ -418,6 +571,9 @@ object IpsFhirCodec {
 
     fun deviceSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
         section(TITLE_SECTION_DEVICES, LOINC_SECTION_DEVICES, "History of medical device use", entryUrns)
+
+    fun resultSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
+        section(TITLE_SECTION_RESULTS, LOINC_SECTION_RESULTS, "Relevant diagnostic tests/laboratory data Narrative", entryUrns)
 
     /** Serialise one resource alone (debug / tests). */
     fun encode(resource: Resource): kotlin.String = json.encodeToString(resource)

@@ -86,13 +86,30 @@ carries the IPS free sets — `procedures-snomed-ct-ips-free-set` (6 069),
 presence/absence, radiology, specimen). **No LOINC table**: the Results
 pillar will need an in-app LOINC catalog for common lab observations.
 
-### Checklist for the next pillar (Results, Functional status, Pregnancy…)
+## Sprint 3 — Results 🧪 (foundation)
+
+| Layer            | Results                                                                                   |
+|------------------|-------------------------------------------------------------------------------------------|
+| FHIR             | `Observation` — profile `Observation-results-laboratory-uv-ips` (category `laboratory`), `Observation-results-radiology-uv-ips` (category `imaging`) or `Observation-results-uv-ips`; `status`, `category`, `code` (LOINC, free text allowed), `subject`, `effectiveDateTime`, **one** `value[x]` — `valueQuantity` (exact decimal + UCUM `unit`/`system`/`code`), `valueCodeableConcept` (e.g. SNOMED blood group) or `valueString` —, `interpretation` (v3 ObservationInterpretation), `referenceRange[0].low/high` (same UCUM unit), `performer[0].display`, `note` |
+| Section          | LOINC `30954-2` "Relevant diagnostic tests/laboratory data" → Observation fullUrls         |
+| Domain           | `ips/IpsResult.kt` (`IpsResultStatus`, `IpsResultCategory`, `IpsResultInterpretation`, `IpsDecimal`) |
+| `_j` projection  | `rs[]` — `c, cs (non-LOINC), d_display, d (note), dt, st (non-final), v (value), u (UCUM), ip, rr ("3.5-5.1" / "≥60" / "≤100"), vc (coded value), ct (non-laboratory category)` |
+| Store API        | `loadResults` / `saveResults`                                                             |
+| Catalog          | `pillars/IpsResultCatalog.kt` — 31 embedded LOINC tests with EN/FR/JA labels, default UCUM unit and value kind (the KB has **no LOINC table**), `UNITS` for the unit picker, status / interpretation / category catalogs |
+| Demo data        | Kurodo: HbA1c 5.6 % (N), LDL 131 mg/dL (H), creatinine 0.9 mg/dL · Haru: potassium, hemoglobin 11.8 g/dL (L), eGFR 48 (L), blood group O Rh+ (coded), chest X-ray (imaging, text) |
+| Tests (JVM)      | `test/.../ips/IpsResultCodecTest.kt` (13), `pillars/IpsResultCatalogTest.kt` (4)          |
+| QA kit           | `verify_profiles.py` 🧪 rs (P4/P5/P6 + P6c values ⇄ projection), `--expect-rs`             |
+
+Decimals travel as exact `BigDecimal` (bignum) in the Kotlin FHIR model and as JSON
+numbers on disk (`5.4`, `120.0`); `IpsDecimal.trimZeros` restores the typed text.
+
+### Checklist for the next pillar (Functional status, Pregnancy, Vital signs…)
 
 1. Tests first: FHIR round trip (full / minimal / edge dates / status
    normalisation), Bundle embedding + section wiring, projection contract.
 2. Domain class + `IpsNativePillars` field; `IpsFhirCodec.nativeOf()`.
 3. `JemmaFhirBundleBuilder.build()`: entries + `Composition.section`
-   (Results `30954-2`, Functional status `47420-5`, Pregnancy `10162-6`).
+   (Functional status `47420-5`, Pregnancy `10162-6`, Vital signs `8716-3`).
 4. `ProfilesRepository`: `load<Pillar>` / `save<Pillar>`; projection in
    `writeProfileFiles`; fallback in `readNativePillars`.
 5. UI + wiring + strings (values, en, fr, ja, de, nl, zh-rCN).
