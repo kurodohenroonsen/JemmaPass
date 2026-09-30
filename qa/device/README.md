@@ -19,6 +19,9 @@ L'agent **architecte** (Claude, via GitHub) lit le rapport et livre les correcti
 3. Le rapport est publié sur la branche **`device-reports`** (orpheline), jamais
    sur `feat/ips-18-pillars-cleanup`. Format : §5.
 4. Un bloqueur (build cassé, appareil absent) = rapport partiel publié + arrêt.
+5. Les logs publiés sont des sorties brutes de `adb logcat`, jamais éditées à la main :
+   le seul traitement autorisé est `qa/device/scrub_logcat.py` (suppression des lignes
+   mentionnant un profil non-démo, avec compteur en fin de fichier).
 
 ## 1. Préparation
 
@@ -47,7 +50,7 @@ Le script écrit tout dans `qa/device/out/<sha7>-<horodatage>/` :
 | 2 | `:app:assembleDebug` | `logs/assemble.log` |
 | 3 | `adb install -r -g` (permissions runtime accordées, données conservées) | `logs/install.log` |
 | 4 | sauvegarde de `profiles/`, suppression des seuls fichiers `demo_*` → re-seed | `backup/` (non publié) |
-| 5 | lancement, 15 s, capture, pull de `profiles/`, logcat filtré | `screenshots/01-launch.png`, `files/demo_*.json`, `logs/logcat-seed.txt` |
+| 5 | lancement, 15 s, pull de `profiles/`, logcat filtré puis scrubbé (pas de capture : la liste des profils peut montrer un profil réel) | `files/demo_*.json`, `logs/logcat-seed.txt` |
 | 6 | `verify_profiles.py` — invariants P1…P8 sur les 3 personas, attendu Kurodo=4, Haru=3, Kamekichi=0 | `verify-seed.md`, `steps.md` |
 
 `verify_profiles.py` contrôle : Bundle `document` + Composition en tête, URNs
@@ -152,11 +155,28 @@ $UI screenshot $OUT/screenshots/30-after-edit.png
 ```
 FR : `Modifier la vaccination`. Attendu : toujours 5 cartes (édition = même id, pas de doublon).
 
-Suppression : appui long sur la carte `QA Lab` (`ui.py` ne fait pas d'appui long —
-utilise `adb shell input swipe X Y X Y 1200` sur le centre de la carte, coordonnées via
-`$UI find --text "QA Lab"`), puis bouton **Delete** / **Supprimer**.
+Suppression, **deux chemins** à tester :
+
+a) bouton **Delete** / **Supprimer** du formulaire (nouveau, mode édition) :
 ```
-$UI screenshot $OUT/screenshots/31-delete-dialog.png
+$UI tap --text "QA Lab"
+$UI wait 2
+$UI screenshot $OUT/screenshots/31-form-delete-btn.png
+$UI tap --id immunization_form_delete_btn
+$UI wait 1
+$UI screenshot $OUT/screenshots/32-delete-dialog.png
+$UI tap --text "Delete"
+$UI wait 2
+$UI exists --text "4 immunizations"
+```
+(`tap --text` privilégie désormais le nœud cliquable : le bouton, pas le titre du dialogue.
+FR : `--text "Supprimer"`.)
+
+b) appui long sur une carte, en recréant d'abord une entrée jetable (T2 en 30 s), puis :
+```
+$UI longpress --text "QA-LOT-001"
+$UI wait 1
+$UI screenshot $OUT/screenshots/33-longpress-dialog.png
 $UI tap --text "Delete"
 $UI wait 2
 $UI exists --text "4 immunizations"
@@ -176,25 +196,30 @@ Attendu : PASS (règle « édition locale → le Bundle reste autoritaire »).
 
 ### T5 — Canal QR texte 25 langues
 
-Fiche Kurodo → bouton **Export** (toolbar, `desc` = "Export") → option
-« 📱 QR Codes… » → onglet `qr_tab_text` → chip `qr_lang_en` puis `qr_lang_fr`.
+Fiche Kurodo → bouton **Export** (toolbar, `id` = `menu_profile_detail_export`) → option
+« 📱 QR Codes… » → onglet `qr_tab_text` → chips de langue (créés dynamiquement : cible
+leur `content-description` `qr_lang_<iso>`).
 ```
-$UI tap --desc "Export"
+$UI tap --id menu_profile_detail_export
 $UI tap --text "QR Codes"
 $UI wait 3
 $UI tap --id qr_tab_text
-$UI tap --id qr_lang_en
+$UI tap --desc qr_lang_en
 $UI wait 2
-$UI text --text "IMMUNIZATIONS"
 $UI screenshot $OUT/screenshots/50-qr-text-en.png
-$UI tap --id qr_lang_fr
+$UI tap --desc qr_lang_fr
 $UI wait 2
-$UI text --text "VACCINATIONS"
 $UI screenshot $OUT/screenshots/51-qr-text-fr.png
+$UI tap --desc qr_lang_ja
+$UI wait 2
+$UI screenshot $OUT/screenshots/52-qr-text-ja.png
 ```
-Attendu : le texte du payload (`qr_payload_text`) contient une section
-`💉 [ IMMUNIZATIONS ]` (EN) / `💉 [ VACCINATIONS ]` (FR) avec 4 lignes
-`Tdap — 2022-05-17 · #…`. Note si la section est tronquée par le plafond 2200 octets.
+Preuve : décoder le QR de chaque capture (`python3 -c "import cv2;print(cv2.QRCodeDetector().detectAndDecode(cv2.imread('$OUT/screenshots/50-qr-text-en.png'))[0])"`,
+`pip install opencv-python-headless` si besoin) et coller le texte décodé dans le rapport.
+Attendu : une section `💉 [ IMMUNIZATIONS ]` (EN) / `💉 [ VACCINATIONS ]` (FR) /
+`💉 [ 予防接種 ]` (JA), 4 lignes **triées par date décroissante**
+(`… — 2023-01-20 · #2` en premier), libellés localisés. Note si la section est tronquée
+par le plafond 2200 octets.
 
 ### T6 — Onglet FHIR + validateur (bonus, si réseau)
 
@@ -243,7 +268,11 @@ Chaque cas : capture + ligne dans le rapport. Puis `verify_profiles.py … --exp
 
 ```
 adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROFILE-DETAIL:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
+python3 qa/device/scrub_logcat.py $OUT/logs/logcat-ui.txt
 ```
+Le buffer logcat peut avoir tourné (les tags JEMMA sont bavards) : si le fichier est
+vide, relance la séquence concernée puis re-dumpe immédiatement — ne reconstruis
+jamais un log à la main.
 
 ## 5. Rapport et publication
 

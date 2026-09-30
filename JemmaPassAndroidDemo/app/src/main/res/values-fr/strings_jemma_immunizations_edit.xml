@@ -46,6 +46,7 @@
     <string name="immunization_form_label_note">Note</string>
     <string name="immunization_form_note_helper">Réaction, rappel prévu, contexte de voyage…</string>
     <string name="immunization_form_cancel">Annuler</string>
+    <string name="immunization_form_delete">Supprimer</string>
     <string name="immunization_form_save">Enregistrer</string>
     <string name="immunization_form_validation_vaccine">Choisis un vaccin ou saisis son nom</string>
     <string name="immunization_form_validation_dose">Les numéros de dose doivent être des entiers positifs</string>

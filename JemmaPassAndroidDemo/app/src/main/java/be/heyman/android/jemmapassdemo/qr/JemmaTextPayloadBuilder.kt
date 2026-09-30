@@ -151,7 +151,10 @@ object JemmaTextPayloadBuilder {
             sb = sb,
             icon = "💉",
             title = JemmaTranslations.getLabel(lang, "immunizations_title"),
-            items = hydrated.raw.im,
+            items = hydrated.raw.im.sortedWith(
+                compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
+                    .thenByDescending { it.date ?: "" }
+            ),
             empty = JemmaTranslations.getLabel(lang, "empty"),
             formatter = { im -> formatImmunization(im, lang) },
         )

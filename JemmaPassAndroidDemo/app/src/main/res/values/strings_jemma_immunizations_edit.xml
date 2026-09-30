@@ -48,6 +48,7 @@
     <string name="immunization_form_label_note">Note</string>
     <string name="immunization_form_note_helper">Reaction, booster reminder, travel context…</string>
     <string name="immunization_form_cancel">Cancel</string>
+    <string name="immunization_form_delete">Delete</string>
     <string name="immunization_form_save">Save</string>
     <string name="immunization_form_validation_vaccine">Pick a vaccine or type its name</string>
     <string name="immunization_form_validation_dose">Dose numbers must be positive whole numbers</string>

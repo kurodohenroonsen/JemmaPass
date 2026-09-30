@@ -290,6 +290,9 @@ class QrViewerFragment : Fragment() {
                 id = View.generateViewId()
                 isCheckable = true
                 isChecked = (lang == currentLang)
+                // Stable handle for accessibility services and UI automation
+                // (dynamic ids have no resource name): "qr_lang_en", "qr_lang_fr", …
+                contentDescription = "qr_lang_${lang.isoCode}"
                 
                 // Show flag + language code (e.g. 🇫🇷 FR)
                 text = "${lang.flag} ${lang.name}"

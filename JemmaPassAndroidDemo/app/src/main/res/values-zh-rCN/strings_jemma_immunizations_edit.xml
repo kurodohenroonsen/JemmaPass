@@ -44,6 +44,7 @@
     <string name="immunization_form_label_note">备注</string>
     <string name="immunization_form_note_helper">不良反应、加强针提醒、旅行背景…</string>
     <string name="immunization_form_cancel">取消</string>
+    <string name="immunization_form_delete">删除</string>
     <string name="immunization_form_save">保存</string>
     <string name="immunization_form_validation_vaccine">请选择疫苗或输入其名称</string>
     <string name="immunization_form_validation_dose">剂次必须为正整数</string>

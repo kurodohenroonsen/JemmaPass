@@ -44,6 +44,7 @@
     <string name="immunization_form_label_note">Notitie</string>
     <string name="immunization_form_note_helper">Reactie, geplande herhaling, reiscontext…</string>
     <string name="immunization_form_cancel">Annuleren</string>
+    <string name="immunization_form_delete">Verwijderen</string>
     <string name="immunization_form_save">Opslaan</string>
     <string name="immunization_form_validation_vaccine">Kies een vaccin of typ de naam</string>
     <string name="immunization_form_validation_dose">Dosisnummers moeten positieve gehele getallen zijn</string>

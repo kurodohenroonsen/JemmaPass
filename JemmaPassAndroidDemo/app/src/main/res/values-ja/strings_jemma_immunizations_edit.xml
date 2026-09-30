@@ -46,6 +46,7 @@
     <string name="immunization_form_label_note">メモ</string>
     <string name="immunization_form_note_helper">副反応、追加接種の予定、渡航の背景など</string>
     <string name="immunization_form_cancel">キャンセル</string>
+    <string name="immunization_form_delete">削除</string>
     <string name="immunization_form_save">保存</string>
     <string name="immunization_form_validation_vaccine">ワクチンを選択するか名前を入力してください</string>
     <string name="immunization_form_validation_dose">接種回数は正の整数で入力してください</string>

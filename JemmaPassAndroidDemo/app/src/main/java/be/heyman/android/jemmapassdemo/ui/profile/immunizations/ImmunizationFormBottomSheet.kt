@@ -79,6 +79,8 @@ class ImmunizationFormBottomSheet : BottomSheetDialogFragment() {
         const val ARG_MANUFACTURER = "manufacturer"
         const val ARG_PERFORMER = "performer"
         const val ARG_NOTE = "note"
+        /** Result flag: the user asked to delete the entry identified by ARG_ID. */
+        const val ARG_DELETE = "delete"
 
         private val ISO_DATE_REGEX = Regex("^\\d{4}(-\\d{2}(-\\d{2})?)?$")
 
@@ -185,6 +187,22 @@ class ImmunizationFormBottomSheet : BottomSheetDialogFragment() {
             dismiss()
         }
         binding.immunizationFormSaveBtn.setOnClickListener { trySubmit() }
+
+        // Discoverable alternative to the long-press on the list card.
+        binding.immunizationFormDeleteBtn.visibility =
+            if (mode == ImmunizationFormMode.EDIT) View.VISIBLE else View.GONE
+        binding.immunizationFormDeleteBtn.setOnClickListener {
+            Log.i(TAG, "[t=${System.currentTimeMillis()}] 🗑 delete requested from form · id=${arguments?.getString(ARG_ID)}")
+            setFragmentResult(
+                RESULT_KEY,
+                bundleOf(
+                    ARG_MODE to mode.name,
+                    ARG_ID to arguments?.getString(ARG_ID),
+                    ARG_DELETE to true,
+                ),
+            )
+            dismiss()
+        }
     }
 
     // ─── Vaccine ─────────────────────────────────────────────────────

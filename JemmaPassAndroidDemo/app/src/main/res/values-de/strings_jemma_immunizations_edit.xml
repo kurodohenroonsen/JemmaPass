@@ -44,6 +44,7 @@
     <string name="immunization_form_label_note">Notiz</string>
     <string name="immunization_form_note_helper">Reaktion, Auffrischung, Reisekontext…</string>
     <string name="immunization_form_cancel">Abbrechen</string>
+    <string name="immunization_form_delete">Löschen</string>
     <string name="immunization_form_save">Speichern</string>
     <string name="immunization_form_validation_vaccine">Wähle einen Impfstoff oder gib seinen Namen ein</string>
     <string name="immunization_form_validation_dose">Dosisnummern müssen positive ganze Zahlen sein</string>

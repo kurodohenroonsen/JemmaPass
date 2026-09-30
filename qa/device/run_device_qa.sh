@@ -66,14 +66,14 @@ for id in demo_kurodo demo_haru demo_kamekichi; do
 done
 step_result "4 backup + demo reseed" "✅" "backup in out/backup (not published)"
 
-log "5. Launch, wait for seeding, pull the profiles"
+log "5. Launch, wait for seeding, pull the profiles (no screenshot here: the profiles list may show real profiles)"
 "${ADB[@]}" logcat -c || true
 "${ADB[@]}" shell am start -n "$PKG/.MainActivity" >/dev/null
 sleep 15
-$UI screenshot "$OUT/screenshots/01-launch.png"
 "${ADB[@]}" pull "$DEV_PROFILES" "$OUT/pull/" >/dev/null
 cp "$OUT"/pull/profiles/demo_*.json "$OUT/files/" 2>/dev/null || true
 "${ADB[@]}" logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROFILE-DETAIL:* AndroidRuntime:E > "$OUT/logs/logcat-seed.txt" || true
+python3 "$ROOT/qa/device/scrub_logcat.py" "$OUT/logs/logcat-seed.txt"
 ls -la "$OUT/files" | tee -a "$OUT/logs/run.log"
 
 log "6. verify_profiles.py on the seeded demo personas"

@@ -11,9 +11,9 @@
 | Seed — `verify-seed.md` | ✅ | `verify-seed.md`, `files/demo_kurodo.fhir.json` | |
 | T1 fiche Kurodo (section + tuile badge 4) | | `screenshots/10-…`, `11-…`, `12-…` | |
 | T2 création (picker, date, dose, lot) | | `screenshots/20-…` → `24-…`, `verify-t2.md` | |
-| T3 édition + suppression | | `screenshots/30-…`, `31-…`, `verify-t3.md` | |
+| T3 édition + suppression (bouton du formulaire ET appui long) | | `screenshots/30-…` → `33-…`, `verify-t3.md` | |
 | T4 édition allergie conserve les vaccins | | `verify-t4.md` | |
-| T5 QR texte EN/FR | | `screenshots/50-…`, `51-…` | |
+| T5 QR texte EN/FR/JA (texte décodé du QR collé) | | `screenshots/50-…`, `51-…`, `52-…` | |
 | T6 FHIR + validateur (bonus) | | | |
 | T7 Haru / Kamekichi | | `screenshots/70-…`, `71-…` | |
 | T8 chemins alternatifs (texte libre, not-done, ✕, annuler) | | `screenshots/80-…` | |

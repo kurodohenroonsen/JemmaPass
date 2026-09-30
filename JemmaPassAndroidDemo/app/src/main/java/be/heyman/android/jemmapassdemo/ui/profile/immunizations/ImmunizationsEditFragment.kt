@@ -163,6 +163,13 @@ class ImmunizationsEditFragment : Fragment() {
         val mode = ImmunizationFormMode.valueOf(
             bundle.getString(ImmunizationFormBottomSheet.ARG_MODE) ?: ImmunizationFormMode.CREATE.name,
         )
+        if (bundle.getBoolean(ImmunizationFormBottomSheet.ARG_DELETE, false)) {
+            val targetId = bundle.getString(ImmunizationFormBottomSheet.ARG_ID)
+            val target = immunizations.firstOrNull { it.id == targetId }
+            if (target != null) confirmDelete(target, -1)
+            else Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ delete requested for unknown id=$targetId")
+            return
+        }
         val id = bundle.getString(ImmunizationFormBottomSheet.ARG_ID)?.takeIf { it.isNotBlank() }
             ?: IpsImmunization.newId()
         val code = bundle.getString(ImmunizationFormBottomSheet.ARG_CODE)?.takeIf { it.isNotBlank() }

@@ -7,8 +7,11 @@ Works on the View-based JEMMA screens (every control has a resource-id).
   ui.py dump                          print the visible nodes (text / desc / id / bounds)
   ui.py find  --id immunizations_fab_add
   ui.py tap   --id immunizations_fab_add [--timeout 15]
-  ui.py tap   --text "Kurodo"           (substring, case-insensitive)
+  ui.py tap   --text "Kurodo"           (substring, case-insensitive; a clickable
+                                        match wins over a non-clickable one, e.g.
+                                        a dialog button over its title)
   ui.py tap   --desc "Export"           (content-description)
+  ui.py longpress --text "QA Lab"       (1.2 s press = context action on a card)
   ui.py exists --text "IMMUNIZATIONS (4)" [--timeout 15]   → exit 0/1
   ui.py text  --text "IMMUNIZATIONS"    print every node text containing it
   ui.py type  "influenza"               type into the focused field
@@ -88,13 +91,20 @@ def matches(node, args):
     return bool(args.id or args.text or args.desc)
 
 
-def find_node(args, timeout):
+def find_node(args, timeout, prefer_clickable=False):
     deadline = time.time() + timeout
     while True:
         found = [n for n in nodes() if matches(n, args)]
         if found:
-            if getattr(args, "index", 0) < len(found):
-                return found[args.index]
+            idx = getattr(args, "index", 0) or 0
+            if prefer_clickable and idx == 0:
+                # A dialog title and its button often share the same text :
+                # for a tap, a clickable match beats a non-clickable one.
+                clickable = [n for n in found if n["clickable"]]
+                if clickable:
+                    return clickable[0]
+            if idx < len(found):
+                return found[idx]
             return found[0]
         if time.time() > deadline:
             return None
@@ -119,6 +129,7 @@ def main():
     sub.add_parser("dump")
     selector(sub.add_parser("find"))
     selector(sub.add_parser("tap"))
+    selector(sub.add_parser("longpress"))
     selector(sub.add_parser("exists"))
     p = sub.add_parser("text"); p.add_argument("--text", required=True)
     p = sub.add_parser("type"); p.add_argument("value")
@@ -136,8 +147,8 @@ def main():
             if n["text"] or n["desc"] or n["id"]:
                 print(describe(n))
         return
-    if args.cmd in ("find", "tap", "exists"):
-        n = find_node(args, args.timeout)
+    if args.cmd in ("find", "tap", "longpress", "exists"):
+        n = find_node(args, args.timeout, prefer_clickable=(args.cmd in ("tap", "longpress")))
         if n is None:
             print(f"ui.py: no node matching id={args.id} text={args.text} desc={args.desc}", file=sys.stderr)
             sys.exit(1)
@@ -146,8 +157,12 @@ def main():
         if args.cmd == "exists":
             print("exists:", describe(n)); return
         x, y = n["center"]
-        adb("shell", "input", "tap", str(x), str(y))
-        print(f"tapped ({x},{y}) → {describe(n)}")
+        if args.cmd == "longpress":
+            adb("shell", "input", "swipe", str(x), str(y), str(x), str(y), "1200")
+            print(f"long-pressed ({x},{y}) → {describe(n)}")
+        else:
+            adb("shell", "input", "tap", str(x), str(y))
+            print(f"tapped ({x},{y}) → {describe(n)}")
         time.sleep(0.8)
         return
     if args.cmd == "text":
