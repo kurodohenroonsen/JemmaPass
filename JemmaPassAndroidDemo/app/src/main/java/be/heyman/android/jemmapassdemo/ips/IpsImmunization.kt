@@ -106,15 +106,23 @@ data class IpsImmunization(
  */
 data class IpsNativePillars(
     val immunizations: List<IpsImmunization> = emptyList(),
+    val procedures: List<IpsProcedure> = emptyList(),
+    val devices: List<IpsDevice> = emptyList(),
 ) {
-    val isEmpty: Boolean get() = immunizations.isEmpty()
+    val isEmpty: Boolean get() = immunizations.isEmpty() && procedures.isEmpty() && devices.isEmpty()
 
     companion object {
         val EMPTY = IpsNativePillars()
 
         /** Lossy rebuild from a `_j` profile's generic arrays (imports, legacy files). */
-        fun fromJEntries(im: List<JEntryGeneric>): IpsNativePillars = IpsNativePillars(
+        fun fromJEntries(
+            im: List<JEntryGeneric>,
+            pr: List<JEntryGeneric> = emptyList(),
+            dv: List<JEntryGeneric> = emptyList(),
+        ): IpsNativePillars = IpsNativePillars(
             immunizations = im.mapIndexed { i, e -> IpsImmunization.fromJEntry(e, i) },
+            procedures = pr.mapIndexed { i, e -> IpsProcedure.fromJEntry(e, i) },
+            devices = dv.mapIndexed { i, e -> IpsDevice.fromJEntry(e, i) },
         )
     }
 }

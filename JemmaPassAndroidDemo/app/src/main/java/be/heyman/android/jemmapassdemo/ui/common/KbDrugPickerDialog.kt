@@ -94,18 +94,47 @@ class KbDrugPickerDialog : DialogFragment() {
         private const val TAG = "JEMMA-KB-DRUG-PICKER"
         private const val ARG_TITLE = "title"
         private const val ARG_LANG = "lang"
+        /** KB `terminology_codes.category` to search: "Medication" (default), "Procedure", "Device"… */
+        private const val ARG_CATEGORY = "category"
+        /** Optional curated suggestions shown while the query is empty (parallel arrays). */
+        private const val ARG_SUGGEST_CODES = "suggest_codes"
+        private const val ARG_SUGGEST_DISPLAYS = "suggest_displays"
+        private const val ARG_SUGGEST_SYSTEM = "suggest_system"
+        const val CATEGORY_MEDICATION = "Medication"
+        const val CATEGORY_PROCEDURE = "Procedure"
+        const val CATEGORY_DEVICE = "Device"
         private const val DEBOUNCE_MS = 350L
         private const val MIN_CHARS = 2
 
-        fun newInstance(title: String, lang: String): KbDrugPickerDialog {
+        fun newInstance(title: String, lang: String): KbDrugPickerDialog =
+            newInstance(title, lang, CATEGORY_MEDICATION, emptyList(), "http://snomed.info/sct")
+
+        /**
+         * Generic KB concept picker (sprint 2): same live FTS5 search, restricted to
+         * [category], with [suggestions] (code → display) listed before the user types.
+         */
+        fun newInstance(
+            title: String,
+            lang: String,
+            category: String,
+            suggestions: List<Pair<String, String>> = emptyList(),
+            suggestionsSystem: String = "http://snomed.info/sct",
+        ): KbDrugPickerDialog {
             return KbDrugPickerDialog().apply {
                 arguments = Bundle().apply {
                     putString(ARG_TITLE, title)
                     putString(ARG_LANG, lang)
+                    putString(ARG_CATEGORY, category)
+                    putStringArray(ARG_SUGGEST_CODES, suggestions.map { it.first }.toTypedArray())
+                    putStringArray(ARG_SUGGEST_DISPLAYS, suggestions.map { it.second }.toTypedArray())
+                    putString(ARG_SUGGEST_SYSTEM, suggestionsSystem)
                 }
             }
         }
     }
+
+    private var category: String = CATEGORY_MEDICATION
+    private val suggestions = mutableListOf<PickedDrug>()
 
     @Inject
     lateinit var kb: KnowledgeBaseService
@@ -130,8 +159,16 @@ class KbDrugPickerDialog : DialogFragment() {
         val args = requireArguments()
         val title = args.getString(ARG_TITLE) ?: ""
         val lang = args.getString(ARG_LANG) ?: "en"
+        category = args.getString(ARG_CATEGORY) ?: CATEGORY_MEDICATION
+        val suggestSystem = args.getString(ARG_SUGGEST_SYSTEM) ?: "http://snomed.info/sct"
+        val suggestCodes = args.getStringArray(ARG_SUGGEST_CODES) ?: emptyArray()
+        val suggestDisplays = args.getStringArray(ARG_SUGGEST_DISPLAYS) ?: emptyArray()
+        suggestions.clear()
+        suggestCodes.indices.forEach { i ->
+            suggestions.add(PickedDrug(code = suggestCodes[i], display = suggestDisplays.getOrElse(i) { suggestCodes[i] }, system = suggestSystem))
+        }
 
-        Log.i(TAG, "[t=${System.currentTimeMillis()}] 📋 picker open · title='$title' · lang=$lang")
+        Log.i(TAG, "[t=${System.currentTimeMillis()}] 📋 picker open · title='$title' · lang=$lang · category=$category · suggestions=${suggestions.size}")
 
         val ctx = requireContext()
         val view = LayoutInflater.from(ctx).inflate(R.layout.dialog_kb_drug_picker, null, false)
@@ -143,6 +180,7 @@ class KbDrugPickerDialog : DialogFragment() {
         listView.adapter = adapter
 
         statusText.setText(R.string.drug_picker_status_hint)
+        showSuggestions(statusText)
 
         searchEdit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -154,6 +192,7 @@ class KbDrugPickerDialog : DialogFragment() {
                     adapter.notifyDataSetChanged()
                     currentResults.clear()
                     statusText.setText(R.string.drug_picker_status_hint)
+                    showSuggestions(statusText)
                     return
                 }
                 statusText.setText(R.string.drug_picker_status_searching)
@@ -185,6 +224,17 @@ class KbDrugPickerDialog : DialogFragment() {
             .create()
     }
 
+    /** Curated common entries, listed while the query is empty (generic pickers only). */
+    private fun showSuggestions(statusText: TextView) {
+        if (suggestions.isEmpty()) return
+        currentResults.clear()
+        currentResults.addAll(suggestions)
+        adapter.clear()
+        adapter.addAll(suggestions.map { it.display })
+        adapter.notifyDataSetChanged()
+        statusText.text = getString(R.string.drug_picker_status_count, suggestions.size)
+    }
+
     private fun performSearch(query: String, lang: String, statusText: TextView) {
         currentSearchJob?.cancel()
         currentSearchJob = lifecycleScope.launch {
@@ -197,7 +247,7 @@ class KbDrugPickerDialog : DialogFragment() {
             val result = kb.searchCodes(
                 query = effectiveQuery,
                 lang = lang,
-                categoryFilter = "Medication",
+                categoryFilter = category,
                 maxResults = 40,  // overfetch then script-filter
             )
             when (result) {
@@ -207,8 +257,8 @@ class KbDrugPickerDialog : DialogFragment() {
                     val filtered = filterByScriptForLang(concepts, lang).take(20)
                     val droppedCount = result.hits.size - filtered.size
 
-                    // 🆕 PHASE12 — Batch fetch DDD doses for all ATC codes returned
-                    val atcCodes = filtered.mapNotNull { it.atcCode?.takeIf { it.isNotBlank() } }
+                    // 🆕 PHASE12 — Batch fetch DDD doses for all ATC codes returned (medications only)
+                    val atcCodes = if (category == CATEGORY_MEDICATION) filtered.mapNotNull { it.atcCode?.takeIf { it.isNotBlank() } } else emptyList()
                     val doseMap = if (atcCodes.isNotEmpty()) {
                         kb.batchGetDoseStandards(kbManager, atcCodes)
                     } else {

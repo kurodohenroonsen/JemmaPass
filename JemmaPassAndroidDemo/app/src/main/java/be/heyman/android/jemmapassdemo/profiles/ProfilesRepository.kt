@@ -49,9 +49,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
+import be.heyman.android.jemmapassdemo.ips.IpsDevice
 import be.heyman.android.jemmapassdemo.ips.IpsFhirCodec
 import be.heyman.android.jemmapassdemo.ips.IpsImmunization
 import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
+import be.heyman.android.jemmapassdemo.ips.IpsProcedure
 import be.heyman.android.jemmapassdemo.qr.JemmaFhirBundleBuilder
 import be.heyman.android.jemmapassdemo.qr.JemmaPersonasSeeder
 import be.heyman.android.jemmapassdemo.qr.JemmaProfileJ
@@ -243,34 +245,52 @@ class ProfilesRepository @Inject constructor(
     suspend fun loadImmunizations(id: String): List<IpsImmunization> =
         loadNativePillars(id).immunizations
 
+    suspend fun loadProcedures(id: String): List<IpsProcedure> =
+        loadNativePillars(id).procedures
+
+    suspend fun loadDevices(id: String): List<IpsDevice> =
+        loadNativePillars(id).devices
+
     /**
      * Replace the immunizations of a profile. Returns false when the profile
      * does not exist. Regenerates the Bundle (authoritative) and the `_j`
      * projection, then refreshes the list / widget like [saveProfile].
      */
     suspend fun saveImmunizations(id: String, immunizations: List<IpsImmunization>): Boolean =
-        withContext(Dispatchers.IO) {
-            ensureInitialScan()
-            val profile = loadProfile(id) ?: return@withContext false
-            val current = readNativePillars(id, profile)
-            val native = current.copy(immunizations = immunizations)
-            try {
-                writeProfileFiles(id, profile, native)
-                Log.i(TAG, "[t=${System.currentTimeMillis()}] 💉 saved ${immunizations.size} immunizations for $id")
-            } catch (e: Exception) {
-                Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ saveImmunizations($id) failed : ${e.message}", e)
-                throw e
-            }
-            rescanFromDisk()
-            if (id == _currentIdFlow.value) {
-                try {
-                    be.heyman.android.jemmapassdemo.sos.JemmaEmergencyWidget.updateAllWidgets(context)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to update widgets after saving immunizations", e)
-                }
-            }
-            true
+        saveNativePillars(id, "💉 ${immunizations.size} immunizations") { it.copy(immunizations = immunizations) }
+
+    suspend fun saveProcedures(id: String, procedures: List<IpsProcedure>): Boolean =
+        saveNativePillars(id, "🏥 ${procedures.size} procedures") { it.copy(procedures = procedures) }
+
+    suspend fun saveDevices(id: String, devices: List<IpsDevice>): Boolean =
+        saveNativePillars(id, "📟 ${devices.size} devices") { it.copy(devices = devices) }
+
+    /** Shared write path of the FHIR-native pillar editors. */
+    private suspend fun saveNativePillars(
+        id: String,
+        what: String,
+        update: (IpsNativePillars) -> IpsNativePillars,
+    ): Boolean = withContext(Dispatchers.IO) {
+        ensureInitialScan()
+        val profile = loadProfile(id) ?: return@withContext false
+        val native = update(readNativePillars(id, profile))
+        try {
+            writeProfileFiles(id, profile, native)
+            Log.i(TAG, "[t=${System.currentTimeMillis()}] $what saved for $id")
+        } catch (e: Exception) {
+            Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ saveNativePillars($id, $what) failed : ${e.message}", e)
+            throw e
         }
+        rescanFromDisk()
+        if (id == _currentIdFlow.value) {
+            try {
+                be.heyman.android.jemmapassdemo.sos.JemmaEmergencyWidget.updateAllWidgets(context)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to update widgets after saving $what", e)
+            }
+        }
+        true
+    }
 
     /** Bundle first, `_j` projection as fallback (legacy / freshly imported files). */
     private fun readNativePillars(id: String, profile: JemmaProfileJ): IpsNativePillars {
@@ -283,7 +303,15 @@ class ProfilesRepository @Inject constructor(
                 null
             }
         } else null
-        return fromBundle?.takeIf { !it.isEmpty } ?: IpsNativePillars.fromJEntries(profile.im)
+        val fromJ = IpsNativePillars.fromJEntries(profile.im, profile.pr, profile.dv)
+        if (fromBundle == null) return fromJ
+        // Pillar by pillar: a Bundle written before a pillar went FHIR-native has no
+        // resources for it, while the `_j` array may still carry legacy entries.
+        return IpsNativePillars(
+            immunizations = fromBundle.immunizations.ifEmpty { fromJ.immunizations },
+            procedures = fromBundle.procedures.ifEmpty { fromJ.procedures },
+            devices = fromBundle.devices.ifEmpty { fromJ.devices },
+        )
     }
 
     /**
@@ -295,7 +323,7 @@ class ProfilesRepository @Inject constructor(
      *   • anything else (QR / mesh / legacy imports) → the incoming `_j` arrays
      */
     private fun resolveNativePillars(id: String, profile: JemmaProfileJ, sourceFormat: String): IpsNativePillars {
-        val fromJ = IpsNativePillars.fromJEntries(profile.im)
+        val fromJ = IpsNativePillars.fromJEntries(profile.im, profile.pr, profile.dv)
         return when {
             sourceFormat == SOURCE_DEMO_SEED ->
                 JemmaPersonasSeeder.getDemoNativePillars(id) ?: fromJ
@@ -316,6 +344,8 @@ class ProfilesRepository @Inject constructor(
         val projected = profile.copy(
             sid = id,
             im = native.immunizations.map { it.toJEntry() },
+            pr = native.procedures.map { it.toJEntry() },
+            dv = native.devices.map { it.toJEntry() },
         )
         // 1. `_j` projection (QR / Nearby / legacy screens)
         file.writeText(profileAdapter.toJson(projected))
@@ -324,7 +354,7 @@ class ProfilesRepository @Inject constructor(
             val hydrated = hydrator.hydrate(projected)
             val fhirJson = JemmaFhirBundleBuilder.build(hydrated, native)
             fhirFile.writeText(fhirJson)
-            Log.i(TAG, "[t=${System.currentTimeMillis()}] 🏥 IPS FHIR profile saved for $id (${fhirJson.length} bytes · ${native.immunizations.size} immunizations)")
+            Log.i(TAG, "[t=${System.currentTimeMillis()}] 🏥 IPS FHIR profile saved for $id (${fhirJson.length} bytes · ${native.immunizations.size} immunizations · ${native.procedures.size} procedures · ${native.devices.size} devices)")
         } catch (e: Throwable) {
             Log.e(TAG, "⚠️ Failed to generate FHIR IPS for $id : ${e.message}", e)
         }
@@ -460,6 +490,8 @@ class ProfilesRepository @Inject constructor(
                             medicationsCount = profile.md.size,
                             conditionsCount = profile.cn.size,
                             immunizationsCount = profile.im.size,
+                            proceduresCount = profile.pr.size,
+                            devicesCount = profile.dv.size,
                             lastModifiedMs = f.lastModified(),
                             fileSizeBytes = f.length(),
                         )
@@ -510,6 +542,8 @@ data class ProfileSummary(
     val medicationsCount: Int,
     val conditionsCount: Int,
     val immunizationsCount: Int = 0,
+    val proceduresCount: Int = 0,
+    val devicesCount: Int = 0,
     val lastModifiedMs: Long,
     val fileSizeBytes: Long,
 )

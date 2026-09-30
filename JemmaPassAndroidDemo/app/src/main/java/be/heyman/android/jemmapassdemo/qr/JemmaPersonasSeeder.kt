@@ -7,8 +7,10 @@ import be.heyman.android.jemmapassdemo.qr.JAllergy
 import be.heyman.android.jemmapassdemo.qr.JMedication
 import be.heyman.android.jemmapassdemo.qr.JCondition
 import be.heyman.android.jemmapassdemo.ips.IpsCodeSystems
+import be.heyman.android.jemmapassdemo.ips.IpsDevice
 import be.heyman.android.jemmapassdemo.ips.IpsImmunization
 import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
+import be.heyman.android.jemmapassdemo.ips.IpsProcedure
 
 object JemmaPersonasSeeder {
 
@@ -45,7 +47,20 @@ object JemmaPersonasSeeder {
                     display = "COVID-19 mRNA vaccine", date = "2021-06-11",
                     doseNumber = 2, seriesDoses = 2, lotNumber = "FD0168", manufacturer = "Pfizer-BioNTech",
                 ),
-            )
+            ),
+            procedures = listOf(
+                IpsProcedure(
+                    id = "pr-kurodo-appendectomy-1995", code = "80146002", system = IpsCodeSystems.SNOMED,
+                    display = "Appendectomy", date = "1995-07-12", location = "CHU UCL Namur (Godinne)",
+                    outcome = "Uneventful recovery", note = "Laparoscopic",
+                ),
+                IpsProcedure(
+                    id = "pr-kurodo-colonoscopy-2024", code = "73761001", system = IpsCodeSystems.SNOMED,
+                    display = "Colonoscopy", date = "2024-02-19", performer = "Dr. Lambert, Couvin",
+                    outcome = "Normal — screening", note = "Next screening 2034",
+                ),
+            ),
+            // Kurodo carries no device: the empty-pillar path stays covered by a persona.
         )
         SID_HARU -> IpsNativePillars(
             immunizations = listOf(
@@ -64,7 +79,30 @@ object JemmaPersonasSeeder {
                     display = "COVID-19 mRNA vaccine", date = "2024-11-02",
                     doseNumber = 7, lotNumber = "HG1282", manufacturer = "Pfizer-BioNTech",
                 ),
-            )
+            ),
+            procedures = listOf(
+                IpsProcedure(
+                    id = "pr-haru-cabg-2015", code = "232717009", system = IpsCodeSystems.SNOMED,
+                    display = "Coronary artery bypass graft", date = "2015-09-02",
+                    location = "青森市民病院", bodySite = "Heart", outcome = "Triple bypass, good recovery",
+                ),
+                IpsProcedure(
+                    id = "pr-haru-cesarean-1975", code = "11466000", system = IpsCodeSystems.SNOMED,
+                    display = "Cesarean section", date = "1975",
+                ),
+            ),
+            devices = listOf(
+                IpsDevice(
+                    id = "dv-haru-pacemaker-2021", code = "14106009", system = IpsCodeSystems.SNOMED,
+                    display = "Cardiac pacemaker", udi = "(01)00643169007222(21)PJN1234567",
+                    manufacturer = "Medtronic", model = "Azure XT DR MRI SureScan", serial = "PJN1234567",
+                    date = "2021-03-15", bodySite = "Left pectoral", note = "MRI-conditional",
+                ),
+                IpsDevice(
+                    id = "dv-haru-hearing-aid-2019", code = "6012004", system = IpsCodeSystems.SNOMED,
+                    display = "Hearing aid", manufacturer = "Phonak", date = "2019-06", bodySite = "Both ears",
+                ),
+            ),
         )
         else -> null
     }

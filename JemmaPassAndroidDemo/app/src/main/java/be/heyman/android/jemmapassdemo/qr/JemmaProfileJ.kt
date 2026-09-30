@@ -56,16 +56,16 @@ data class JemmaProfileJ(
     /** Conditions. */
     @Json(name = "cn") val cn: List<JCondition> = emptyList(),
 
-    /** Procedures (procédures médicales passées). */
+    /** Past problems / history of past illness (`pastProblems` pillar). */
     @Json(name = "ph") val ph: List<JEntryGeneric> = emptyList(),
 
     /** Immunisations. */
     @Json(name = "im") val im: List<JEntryGeneric> = emptyList(),
 
-    /** Pregnancies. */
+    /** Procedures — FHIR-native since sprint 2 (projection of `Procedure` resources). */
     @Json(name = "pr") val pr: List<JEntryGeneric> = emptyList(),
 
-    /** Devices (pacemaker, prothèses, etc.). */
+    /** Devices (pacemaker, prothèses, etc.) — FHIR-native since sprint 2 (projection of `DeviceUseStatement`+`Device`). */
     @Json(name = "dv") val dv: List<JEntryGeneric> = emptyList(),
 
     /** Functional status. */

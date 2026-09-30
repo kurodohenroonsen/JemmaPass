@@ -86,6 +86,9 @@ object JemmaFhirBundleBuilder {
         val medRefUrns = hydrated.medications.mapIndexed { i, m -> IpsFhirCodec.stableUrn("$sid|Medication|$i|${m.raw.c.orEmpty()}") }
         val conditionUrns = hydrated.conditions.mapIndexed { i, c -> IpsFhirCodec.stableUrn("$sid|Condition|$i|${c.raw.c.orEmpty()}") }
         val immunizationUrns = native.immunizations.map { im -> IpsFhirCodec.immunizationUrn(sid, im.id) }
+        val procedureUrns = native.procedures.map { pr -> IpsFhirCodec.procedureUrn(sid, pr.id) }
+        val deviceStatementUrns = native.devices.map { dv -> IpsFhirCodec.deviceUseStatementUrn(sid, dv.id) }
+        val deviceUrns = native.devices.map { dv -> IpsFhirCodec.deviceUrn(sid, dv.id) }
 
         val nowIsoBuilder = nowDateTimeBuilder()
 
@@ -335,6 +338,22 @@ object JemmaFhirBundleBuilder {
                 resource = IpsFhirCodec.toFhir(im, patientUrn)
             })
         }
+        native.procedures.forEachIndexed { i, pr ->
+            bundleEntries.add(Bundle.Entry.Builder().apply {
+                fullUrl = Uri.Builder().apply { value = procedureUrns[i] }
+                resource = IpsFhirCodec.toFhir(pr, patientUrn)
+            })
+        }
+        native.devices.forEachIndexed { i, dv ->
+            bundleEntries.add(Bundle.Entry.Builder().apply {
+                fullUrl = Uri.Builder().apply { value = deviceUrns[i] }
+                resource = IpsFhirCodec.toFhirDevice(dv, patientUrn)
+            })
+            bundleEntries.add(Bundle.Entry.Builder().apply {
+                fullUrl = Uri.Builder().apply { value = deviceStatementUrns[i] }
+                resource = IpsFhirCodec.toFhirUseStatement(dv, patientUrn, deviceUrns[i])
+            })
+        }
 
         // 3. Composition Resource
         val sections = listOfNotNull(
@@ -342,6 +361,8 @@ object JemmaFhirBundleBuilder {
             sectionStub("Medications", "10160-0", medStatementUrns, hydrated.medications),
             sectionStub("Problems", "11450-4", conditionUrns, hydrated.conditions),
             IpsFhirCodec.immunizationSection(immunizationUrns),
+            IpsFhirCodec.procedureSection(procedureUrns),
+            IpsFhirCodec.deviceSection(deviceStatementUrns),
         ).map { it.build() }
         
         val composition = Composition.Builder(
