@@ -80,6 +80,8 @@ log "6. verify_profiles.py on the seeded demo personas"
 if python3 "$ROOT/qa/device/verify_profiles.py" "$OUT/pull/profiles" \
      --only demo_kurodo --only demo_haru --only demo_kamekichi \
      --expect demo_kurodo=4 --expect demo_haru=3 --expect demo_kamekichi=0 \
+     --expect-pr demo_kurodo=2 --expect-pr demo_haru=2 --expect-pr demo_kamekichi=0 \
+     --expect-dv demo_kurodo=0 --expect-dv demo_haru=2 --expect-dv demo_kamekichi=0 \
      --title "Seed verification (demo personas)" --markdown "$OUT/verify-seed.md"; then
   step_result "6 verify seed" "✅" "see verify-seed.md"
 else
@@ -87,5 +89,5 @@ else
 fi
 
 log "Done — automated part finished. Continue with the UI protocol (README §3), then re-run:"
-echo "  python3 $ROOT/qa/device/verify_profiles.py <pulled folder> --only demo_kurodo --expect demo_kurodo=<n>"
+echo "  python3 $ROOT/qa/device/verify_profiles.py <pulled folder> --only demo_kurodo --expect demo_kurodo=<n im> --expect-pr demo_kurodo=<n pr> --expect-dv demo_kurodo=<n dv>"
 echo "Report folder: $OUT"

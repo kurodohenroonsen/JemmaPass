@@ -10,16 +10,25 @@ Checks, for every profile :
   P1  both files exist and parse
   P2  Bundle is a `document`, first entry is the Composition, Patient present
   P3  every Bundle.entry has a fullUrl of the form urn:uuid:<UUIDv3>  (deterministic URNs)
-  P4  the `_j.im` projection has exactly one entry per Immunization resource,
-      same codes (set-wise) and same dates (occurrenceDateTime ⇄ dt)
-  P5  the Composition has a section coded LOINC 11369-6 iff there are Immunizations,
-      and its entry references are exactly the Immunization fullUrls
-  P6  every Immunization declares the Immunization-uv-ips profile and a patient reference
-      that resolves to the Patient fullUrl
   P7  `_j` has `_j == "1.2"` and `sid == <file id>`
+  P8  legacy sections (Allergies 48765-2 · Medications 10160-0 · Problems 11450-4) present
+      when their `_j` arrays are non-empty
 
-Optional expectations : --expect demo_kurodo=4 --expect demo_haru=3
-(number of Immunization resources for a given profile id).
+and, for each FHIR-native pillar  💉 im / Immunization · 🏥 pr / Procedure · 📟 dv / DeviceUseStatement(+Device) :
+  P4  the `_j.<key>` projection has exactly one entry per resource, same codes (set-wise)
+      and same dates (occurrenceDateTime / performedDateTime / timingDateTime ⇄ dt)
+  P4b optional expected count (--expect / --expect-pr / --expect-dv)
+  P5  the Composition has the pillar section (LOINC 11369-6 / 47519-4 / 46264-8) iff there
+      are resources, and its entry references are exactly the resource fullUrls
+  P6  every resource declares its *-uv-ips profile, references the Patient fullUrl, has a
+      status and a date-or-string ; every DeviceUseStatement resolves to a Device entry that
+      itself declares Device-uv-ips and references the Patient
+
+Optional expectations :
+  --expect demo_kurodo=4        (Immunization resources — kept for backward compatibility)
+  --expect-im demo_kurodo=4     (same thing, explicit)
+  --expect-pr demo_kurodo=2     (Procedure resources)
+  --expect-dv demo_haru=2       (DeviceUseStatement resources)
 
 Exit code 0 when everything passes, 1 otherwise. --markdown writes a report table.
 """
@@ -29,9 +38,24 @@ import re
 import sys
 from pathlib import Path
 
-LOINC_IMMUNIZATIONS = "11369-6"
-PROFILE_IMMUNIZATION_UV_IPS = "http://hl7.org/fhir/uv/ips/StructureDefinition/Immunization-uv-ips"
 URN_V3 = re.compile(r"^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-3[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
+
+IPS = "http://hl7.org/fhir/uv/ips/StructureDefinition/"
+
+# One row per FHIR-native pillar. `date` lists the accepted date fields (first one wins),
+# `string` the fallback *String field that must be present when there is no date.
+PILLARS = [
+    dict(key="im", emoji="💉", label="Immunization", rtype="Immunization", loinc="11369-6",
+         profile=IPS + "Immunization-uv-ips", code_path="vaccineCode", patient_path="patient",
+         date=("occurrenceDateTime",), string="occurrenceString"),
+    dict(key="pr", emoji="🏥", label="Procedure", rtype="Procedure", loinc="47519-4",
+         profile=IPS + "Procedure-uv-ips", code_path="code", patient_path="subject",
+         date=("performedDateTime",), string="performedString"),
+    dict(key="dv", emoji="📟", label="DeviceUseStatement", rtype="DeviceUseStatement", loinc="46264-8",
+         profile=IPS + "DeviceUseStatement-uv-ips", code_path=None, patient_path="subject",
+         date=("timingDateTime",), string=None),
+]
+PROFILE_DEVICE_UV_IPS = IPS + "Device-uv-ips"
 
 
 class Report:
@@ -63,10 +87,6 @@ def load_json(path):
         return json.load(f)
 
 
-def resources(bundle):
-    return [e.get("resource") for e in bundle.get("entry", []) if e.get("resource")]
-
-
 def entries_of_type(bundle, rtype):
     return [e for e in bundle.get("entry", []) if (e.get("resource") or {}).get("resourceType") == rtype]
 
@@ -78,7 +98,112 @@ def coding_code(cc):
     return None
 
 
-def verify_profile(pid, folder, rep, expected_immunizations=None):
+def resolve_device(bundle, use_statement):
+    """Device referenced by a DeviceUseStatement: by fullUrl first, then by `Device/{id}`."""
+    ref = ((use_statement.get("device") or {}).get("reference")) or ""
+    for e in entries_of_type(bundle, "Device"):
+        if e.get("fullUrl") == ref:
+            return e["resource"]
+    if ref.startswith("Device/"):
+        wanted = ref[len("Device/"):]
+        for e in entries_of_type(bundle, "Device"):
+            if e["resource"].get("id") == wanted:
+                return e["resource"]
+    return None
+
+
+def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
+    key, label, loinc = spec["key"], spec["label"], spec["loinc"]
+    res_entries = entries_of_type(b, spec["rtype"])
+    res = [e["resource"] for e in res_entries]
+    jarr = j.get(key, []) or []
+
+    def res_code(r):
+        if spec["code_path"]:
+            return coding_code(r.get(spec["code_path"])) or ""
+        dev = resolve_device(b, r)
+        return coding_code((dev or {}).get("type")) or ""
+
+    def res_date(r):
+        for f in spec["date"]:
+            if r.get(f):
+                return r[f]
+        return ""
+
+    # P4 projection ⇄ resources
+    codes_fhir = sorted(res_code(r) for r in res)
+    codes_j = sorted(e.get("c") or "" for e in jarr)
+    dates_fhir = sorted(res_date(r) for r in res)
+    dates_j = sorted(e.get("dt") or "" for e in jarr)
+    name = f"P4 `_j.{key}` projection ⇄ {label} resources"
+    if len(res) == len(jarr) and codes_fhir == codes_j and dates_fhir == dates_j:
+        rep.ok(pid, name, f"{len(res)} {key}")
+    else:
+        rep.fail(pid, name, f"fhir={len(res)}/{codes_fhir}/{dates_fhir} j={len(jarr)}/{codes_j}/{dates_j}")
+    if expected is not None:
+        if len(res) == expected:
+            rep.ok(pid, f"P4b expected {expected} {label}")
+        else:
+            rep.fail(pid, f"P4b expected {expected} {label}", f"found {len(res)}")
+
+    # P5 section
+    comp = entries[0]["resource"]
+    sections = comp.get("section", []) or []
+    secs = [s for s in sections if coding_code(s.get("code")) == loinc]
+    urls = sorted(e.get("fullUrl") for e in res_entries)
+    if res:
+        refs = sorted(r.get("reference") for r in (secs[0].get("entry", []) if secs else []))
+        name = f"P5 Composition section {loinc} → {label} fullUrls"
+        if len(secs) == 1 and refs == urls:
+            rep.ok(pid, name, f"{len(refs)} refs")
+        else:
+            rep.fail(pid, name, f"sections={len(secs)} refs={refs} urls={urls}")
+    else:
+        name = f"P5 no {loinc} section when there are no {label}"
+        if not secs:
+            rep.ok(pid, name)
+        else:
+            rep.fail(pid, name, "section present")
+
+    # P6 conformance
+    bad = []
+    for r in res:
+        prof = (r.get("meta") or {}).get("profile") or []
+        pref = (r.get(spec["patient_path"]) or {}).get("reference")
+        if spec["profile"] not in prof:
+            bad.append(f"{r.get('id')}:no-ips-profile")
+        if pref != patient_url:
+            bad.append(f"{r.get('id')}:patient-ref")
+        if not r.get("status"):
+            bad.append(f"{r.get('id')}:no-status")
+        if spec["string"] is not None and not (res_date(r) or r.get(spec["string"])):
+            bad.append(f"{r.get('id')}:no-date-nor-string")
+        if spec["rtype"] == "DeviceUseStatement":
+            dev = resolve_device(b, r)
+            if dev is None:
+                bad.append(f"{r.get('id')}:device-unresolved")
+            else:
+                dprof = (dev.get("meta") or {}).get("profile") or []
+                if PROFILE_DEVICE_UV_IPS not in dprof:
+                    bad.append(f"{dev.get('id')}:device-no-ips-profile")
+                if (dev.get("patient") or {}).get("reference") != patient_url:
+                    bad.append(f"{dev.get('id')}:device-patient-ref")
+                if not (coding_code(dev.get("type")) or (dev.get("type") or {}).get("text") or dev.get("deviceName")):
+                    bad.append(f"{dev.get('id')}:device-no-type")
+    what = "profile · patient ref · status · date/string" + (" · Device resolved + Device-uv-ips" if key == "dv" else "")
+    name = f"P6 {label}-uv-ips {what}"
+    if res and not bad:
+        rep.ok(pid, name)
+    elif res:
+        rep.fail(pid, name, ", ".join(map(str, bad))[:200])
+
+    if key == "dv":
+        n_dev = len(entries_of_type(b, "Device"))
+        if n_dev != len(res):
+            rep.fail(pid, "P6b one Device per DeviceUseStatement", f"devices={n_dev} statements={len(res)}")
+
+
+def verify_profile(pid, folder, rep, expected):
     jpath = folder / f"{pid}.json"
     fpath = folder / f"{pid}.fhir.json"
 
@@ -122,70 +247,32 @@ def verify_profile(pid, folder, rep, expected_immunizations=None):
     if len(urls) != len(set(urls)):
         rep.fail(pid, "P3b fullUrls unique", "duplicates found")
 
-    # P4
-    imm_entries = entries_of_type(b, "Immunization")
-    imm = [e["resource"] for e in imm_entries]
-    jim = j.get("im", []) or []
-    codes_fhir = sorted(coding_code(r.get("vaccineCode")) or "" for r in imm)
-    codes_j = sorted(e.get("c") or "" for e in jim)
-    dates_fhir = sorted(r.get("occurrenceDateTime") or "" for r in imm)
-    dates_j = sorted(e.get("dt") or "" for e in jim)
-    if len(imm) == len(jim) and codes_fhir == codes_j and dates_fhir == dates_j:
-        rep.ok(pid, "P4 `_j.im` projection ⇄ Immunization resources", f"{len(imm)} immunizations")
-    else:
-        rep.fail(pid, "P4 `_j.im` projection ⇄ Immunization resources",
-                 f"fhir={len(imm)}/{codes_fhir}/{dates_fhir} j={len(jim)}/{codes_j}/{dates_j}")
-    if expected_immunizations is not None:
-        if len(imm) == expected_immunizations:
-            rep.ok(pid, f"P4b expected {expected_immunizations} immunizations")
-        else:
-            rep.fail(pid, f"P4b expected {expected_immunizations} immunizations", f"found {len(imm)}")
+    # P4–P6 per native pillar
+    for spec in PILLARS:
+        verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected.get(spec["key"]))
 
-    # P5
+    # P8: legacy sections still present when their arrays are non-empty
     comp = entries[0]["resource"]
     sections = comp.get("section", []) or []
-    imm_sections = [s for s in sections if coding_code(s.get("code")) == LOINC_IMMUNIZATIONS]
-    imm_urls = sorted(e.get("fullUrl") for e in imm_entries)
-    if imm:
-        refs = sorted(r.get("reference") for r in (imm_sections[0].get("entry", []) if imm_sections else []))
-        if len(imm_sections) == 1 and refs == imm_urls:
-            rep.ok(pid, "P5 Composition section 11369-6 → Immunization fullUrls", f"{len(refs)} refs")
-        else:
-            rep.fail(pid, "P5 Composition section 11369-6 → Immunization fullUrls",
-                     f"sections={len(imm_sections)} refs={refs} urls={imm_urls}")
-    else:
-        if not imm_sections:
-            rep.ok(pid, "P5 no 11369-6 section when there are no immunizations")
-        else:
-            rep.fail(pid, "P5 no 11369-6 section when there are no immunizations", "section present")
-
-    # P6
-    bad6 = []
-    for r in imm:
-        prof = (r.get("meta") or {}).get("profile") or []
-        pref = (r.get("patient") or {}).get("reference")
-        if PROFILE_IMMUNIZATION_UV_IPS not in prof or pref != patient_url:
-            bad6.append(r.get("id"))
-        if not (r.get("occurrenceDateTime") or r.get("occurrenceString")):
-            bad6.append(f"{r.get('id')}:no-occurrence")
-        if not r.get("status"):
-            bad6.append(f"{r.get('id')}:no-status")
-    if imm and not bad6:
-        rep.ok(pid, "P6 Immunization-uv-ips profile · patient ref · occurrence · status")
-    elif imm:
-        rep.fail(pid, "P6 Immunization-uv-ips profile · patient ref · occurrence · status", ", ".join(map(str, bad6))[:160])
-
-    # Extra: legacy sections still present when their arrays are non-empty
     for key, loinc, label in (("al", "48765-2", "Allergies"), ("md", "10160-0", "Medications"), ("cn", "11450-4", "Problems")):
         if j.get(key):
             present = any(coding_code(s.get("code")) == loinc for s in sections)
             (rep.ok if present else rep.fail)(pid, f"P8 legacy section {label} ({loinc}) present", f"{len(j.get(key))} entries")
 
 
+def parse_expectations(items, key, into):
+    for item in items:
+        k, v = item.split("=", 1)
+        into.setdefault(k, {})[key] = int(v)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("folder", help="pulled profiles folder")
-    ap.add_argument("--expect", action="append", default=[], help="<profileId>=<n immunizations>, repeatable")
+    ap.add_argument("--expect", action="append", default=[], help="<profileId>=<n Immunization>, repeatable (alias of --expect-im)")
+    ap.add_argument("--expect-im", action="append", default=[], help="<profileId>=<n Immunization>, repeatable")
+    ap.add_argument("--expect-pr", action="append", default=[], help="<profileId>=<n Procedure>, repeatable")
+    ap.add_argument("--expect-dv", action="append", default=[], help="<profileId>=<n DeviceUseStatement>, repeatable")
     ap.add_argument("--only", action="append", default=[], help="restrict to these profile ids (repeatable)")
     ap.add_argument("--markdown", help="write the report table to this file")
     ap.add_argument("--title", default="verify_profiles")
@@ -193,9 +280,9 @@ def main():
 
     folder = Path(args.folder)
     expectations = {}
-    for item in args.expect:
-        k, v = item.split("=", 1)
-        expectations[k] = int(v)
+    parse_expectations(args.expect + args.expect_im, "im", expectations)
+    parse_expectations(args.expect_pr, "pr", expectations)
+    parse_expectations(args.expect_dv, "dv", expectations)
 
     ids = sorted(p.name[:-5] for p in folder.glob("*.json")
                  if not p.name.endswith(".fhir.json") and p.name != "meta.json")
@@ -205,7 +292,7 @@ def main():
     if not ids:
         rep.fail("-", "profiles folder", f"no profile found in {folder}")
     for pid in ids:
-        verify_profile(pid, folder, rep, expectations.get(pid))
+        verify_profile(pid, folder, rep, expectations.get(pid, {}))
     for pid in expectations:
         if pid not in ids:
             rep.fail(pid, "expected profile present", "missing")

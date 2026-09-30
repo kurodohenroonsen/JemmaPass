@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_devices_edit.xml — JEMMA Pass · IPS pillar "Medical Devices" (EN, default) -->
+<resources>
+
+    <string name="devices_edit_title">Medical devices</string>
+    <string name="devices_edit_hero_title">Medical devices</string>
+    <string name="devices_fab_add_desc">Add a device</string>
+    <string name="devices_empty_default">No device recorded yet.\nTap + to add an implant or assistive device.</string>
+    <string name="devices_empty_no_profile">No profile selected. Create or select a profile first.</string>
+    <string name="devices_unnamed">Unnamed device</string>
+    <plurals name="devices_count">
+        <item quantity="zero">No device</item>
+        <item quantity="one">%d device</item>
+        <item quantity="other">%d devices</item>
+    </plurals>
+    <string name="devices_saved">Devices saved</string>
+    <string name="devices_save_failed">Could not save the devices</string>
+    <string name="devices_delete_title">Delete this device?</string>
+    <string name="devices_delete_message">“%1$s” will be removed from the profile.</string>
+    <string name="devices_delete_cancel">Cancel</string>
+    <string name="devices_delete_confirm">Delete</string>
+    <string name="devices_date_unknown">Date unknown</string>
+    <string name="devices_serial_short">S/N %1$s</string>
+    <string name="devices_udi_short">UDI %1$s</string>
+    <string name="device_form_title_create">📟  Add a device</string>
+    <string name="device_form_title_edit">📟  Edit device</string>
+    <string name="device_form_label_code">Device</string>
+    <string name="device_form_code_hint">Tap to choose a device…</string>
+    <string name="device_form_code_clear_desc">Clear device</string>
+    <string name="device_form_code_picker_title">Choose a device</string>
+    <string name="device_form_label_text">Or type the device name</string>
+    <string name="device_form_text_helper">Free text, used only when no device is picked above</string>
+    <string name="device_form_label_udi">UDI (device identifier)</string>
+    <string name="device_form_udi_helper">From the implant card, e.g. (01)00643169007222(21)PJN1234567</string>
+    <string name="device_form_label_manufacturer">Manufacturer</string>
+    <string name="device_form_label_model">Model</string>
+    <string name="device_form_label_serial">Serial number</string>
+    <string name="device_form_label_date">In use since (implant date)</string>
+    <string name="device_form_date_hint">Unknown date — tap to pick</string>
+    <string name="device_form_date_clear_desc">Clear date</string>
+    <string name="device_form_date_pick_title">Date the device was implanted / first used</string>
+    <string name="device_form_label_status">Status</string>
+    <string name="device_form_status_pick_title">Device status</string>
+    <string name="device_form_label_body_site">Body site</string>
+    <string name="device_form_label_note">Note</string>
+    <string name="device_form_note_helper">MRI compatibility, battery check, follow-up centre…</string>
+    <string name="device_form_cancel">Cancel</string>
+    <string name="device_form_delete">Delete</string>
+    <string name="device_form_save">Save</string>
+    <string name="device_form_validation_code">Pick a device or type its name</string>
+    <string name="device_form_validation_udi">This does not look like a UDI — check the implant card or leave the field empty</string>
+    <string name="profile_detail_devices_title">📟 MEDICAL DEVICES (%1$d)</string>
+</resources>

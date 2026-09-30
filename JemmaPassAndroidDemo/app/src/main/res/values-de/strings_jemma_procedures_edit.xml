@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_procedures_edit.xml — JEMMA Pass · IPS-Säule „Eingriffe“ (DE) -->
+<resources>
+
+    <string name="procedures_edit_title">Eingriffe</string>
+    <string name="procedures_edit_hero_title">Eingriffe</string>
+    <string name="procedures_fab_add_desc">Eingriff hinzufügen</string>
+    <string name="procedures_empty_default">Noch kein Eingriff erfasst.\nTippe auf +, um eine Operation oder einen Eingriff hinzuzufügen.</string>
+    <string name="procedures_empty_no_profile">Kein Profil ausgewählt. Erstelle oder wähle zuerst ein Profil.</string>
+    <string name="procedures_unnamed">Unbenannter Eingriff</string>
+    <plurals name="procedures_count">
+        <item quantity="zero">Kein Eingriff</item>
+        <item quantity="one">%d Eingriff</item>
+        <item quantity="other">%d Eingriffe</item>
+    </plurals>
+    <string name="procedures_saved">Eingriffe gespeichert</string>
+    <string name="procedures_save_failed">Eingriffe konnten nicht gespeichert werden</string>
+    <string name="procedures_delete_title">Diesen Eingriff löschen?</string>
+    <string name="procedures_delete_message">„%1$s“ wird aus dem Profil entfernt.</string>
+    <string name="procedures_delete_cancel">Abbrechen</string>
+    <string name="procedures_delete_confirm">Löschen</string>
+    <string name="procedures_date_unknown">Datum unbekannt</string>
+    <string name="procedure_form_title_create">🏥  Eingriff hinzufügen</string>
+    <string name="procedure_form_title_edit">🏥  Eingriff bearbeiten</string>
+    <string name="procedure_form_label_code">Eingriff</string>
+    <string name="procedure_form_code_hint">Tippe, um einen Eingriff zu wählen…</string>
+    <string name="procedure_form_code_clear_desc">Eingriff löschen</string>
+    <string name="procedure_form_code_picker_title">Eingriff wählen</string>
+    <string name="procedure_form_label_text">Oder Namen des Eingriffs eingeben</string>
+    <string name="procedure_form_text_helper">Freitext, nur verwendet, wenn oben kein Eingriff gewählt ist</string>
+    <string name="procedure_form_label_date">Datum des Eingriffs</string>
+    <string name="procedure_form_date_hint">Datum unbekannt — tippe zum Wählen</string>
+    <string name="procedure_form_date_clear_desc">Datum löschen</string>
+    <string name="procedure_form_date_pick_title">Datum, an dem der Eingriff durchgeführt wurde</string>
+    <string name="procedure_form_label_status">Status</string>
+    <string name="procedure_form_status_pick_title">Status des Eingriffs</string>
+    <string name="procedure_form_label_body_site">Körperstelle</string>
+    <string name="procedure_form_label_outcome">Ergebnis</string>
+    <string name="procedure_form_label_performer">Durchgeführt von (Chirurg / Arzt)</string>
+    <string name="procedure_form_label_location">Krankenhaus / Klinik</string>
+    <string name="procedure_form_label_note">Notiz</string>
+    <string name="procedure_form_note_helper">Komplikationen, belassene Implantate, Nachsorge…</string>
+    <string name="procedure_form_cancel">Abbrechen</string>
+    <string name="procedure_form_delete">Löschen</string>
+    <string name="procedure_form_save">Speichern</string>
+    <string name="procedure_form_validation_code">Wähle einen Eingriff oder gib seinen Namen ein</string>
+    <string name="profile_detail_procedures_title">🏥 EINGRIFFE (%1$d)</string>
+</resources>

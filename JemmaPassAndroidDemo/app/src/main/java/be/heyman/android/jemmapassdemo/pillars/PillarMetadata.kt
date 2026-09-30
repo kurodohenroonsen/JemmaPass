@@ -8,11 +8,11 @@
  * encode its values, and the ordered list of editable fields with their
  * cardinality + FHIR datatype.
  *
- * 4 pillars are marked `isActive=true` (patient, contacts, allergies,
- * medications) — these are the ones the production app lets you edit.
- * The remaining 14 are read-only "info" pages that surface their FHIR
- * structure for transparency, with the production app linked at the
- * bottom of the screen.
+ * 7 pillars are marked `isActive=true` (patient, contacts, allergies,
+ * medications, immunizations, procedures, devices) — these are the ones
+ * the app lets you edit. The remaining 11 are read-only "info" pages that
+ * surface their FHIR structure for transparency while they are being
+ * ported to FHIR-native editing (feat/ips-18-pillars-cleanup).
  *
  * Why a Kotlin object (rather than parsing the JS file at runtime) :
  *   1. Type-safety : R.string refs caught at compile-time
@@ -205,32 +205,33 @@ object PillarRegistry {
             ),
         ),
 
-        // ─── 8. procedures (passive) ────────────────────────────────────────
+        // ─── 8. procedures (ACTIVE — FHIR-native, sprint 2) ────────────────
         Pillar(
             key = "procedures",
             emoji = "🏥",
             titleRes = R.string.pillar_procedures_title,
             descRes = R.string.pillar_procedures_desc,
             ipsTypeRes = R.string.pillar_procedures_ips_type,
-            codeSystems = listOf("SNOMED CT", "CPT", "ICD-10-PCS"),
-            isActive = false,
+            codeSystems = listOf("SNOMED CT"),
+            isActive = true,
             fields = listOf(
                 PillarField("procedure", R.string.pillar_field_procedure, R.string.pillar_field_procedure_desc, "1..1", "CodeableConcept"),
-                PillarField("date",      R.string.pillar_field_date,      R.string.pillar_field_date_desc,      "0..1", "dateTime"),
+                PillarField("date",      R.string.pillar_field_date,      R.string.pillar_field_date_desc,      "1..1", "dateTime | string"),
                 PillarField("status",    R.string.pillar_field_status,    R.string.pillar_field_status_desc,    "1..1", "code"),
+                PillarField("body_site", R.string.pillar_field_body_site, R.string.pillar_field_body_site_desc, "0..1", "CodeableConcept"),
                 PillarField("outcome",   R.string.pillar_field_outcome,   R.string.pillar_field_outcome_desc,   "0..1", "CodeableConcept"),
             ),
         ),
 
-        // ─── 9. devices (passive) ───────────────────────────────────────────
+        // ─── 9. devices (ACTIVE — FHIR-native Device + DeviceUseStatement, sprint 2) ──
         Pillar(
             key = "devices",
-            emoji = "📱",
+            emoji = "📟",
             titleRes = R.string.pillar_devices_title,
             descRes = R.string.pillar_devices_desc,
             ipsTypeRes = R.string.pillar_devices_ips_type,
-            codeSystems = listOf("SNOMED CT", "GMDN", "UDI-DI"),
-            isActive = false,
+            codeSystems = listOf("SNOMED CT", "UDI (GS1 / HIBCC / ICCBBA)"),
+            isActive = true,
             fields = listOf(
                 PillarField("device",    R.string.pillar_field_device,    R.string.pillar_field_device_desc,    "1..1", "CodeableConcept"),
                 PillarField("date",      R.string.pillar_field_date,      R.string.pillar_field_date_desc,      "0..1", "dateTime"),

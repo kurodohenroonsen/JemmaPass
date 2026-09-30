@@ -1,7 +1,7 @@
 # Device QA · feat/ips-18-pillars-cleanup · <sha7> · <Pixel 9 · Android 15> · <YYYY-MM-DD HH:MM>
 
 - Exécutant : Antigravity · Hôte : macOS · Langue appareil : <EN|FR|JA>
-- Build : `logs/assemble.log` · Tests JVM : <30 tests, 0 failed> (`logs/unit-tests.log`)
+- Build : `logs/assemble.log` · Tests JVM : <50 tests, 0 failed> (`logs/unit-tests.log`)
 - Verdict global : **<PASS|FAIL>** — <n> ✅ · <m> ❌ · <k> ⚠️ · <s> ⏭
 
 ## Résultats
@@ -18,6 +18,10 @@
 | T7 Haru / Kamekichi | | `screenshots/70-…`, `71-…` | |
 | T8 chemins alternatifs (texte libre, not-done, ✕, annuler) | | `screenshots/80-…` | |
 | T9 chemins d'erreur (validation, date future, rotation, double-tap) | | `screenshots/90-…`, `logs/logcat-ui.txt` | |
+| T10 procédures — fiche + liste + création + édition + suppression | | `screenshots/100-…` → `108-…`, `verify-t10.md` | |
+| T11 dispositifs — fiche + liste + création (UDI) + édition + suppression | | `screenshots/110-…` → `118-…`, `verify-t11.md` | |
+| T12 chemins alternatifs + erreurs (procédures et dispositifs) | | `screenshots/120-…`, `logs/logcat-ui.txt` | |
+| T13 canaux — QR texte 🏥/📟 EN/FR/JA + non-régression vaccins/allergies | | `screenshots/130-…`, `verify-t13.md` | |
 
 ## Bugs (un bloc par bug)
 

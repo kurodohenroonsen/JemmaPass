@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_procedures_edit.xml — JEMMA Pass · IPS「処置・手術歴」(JA) -->
+<resources>
+
+    <string name="procedures_edit_title">処置・手術</string>
+    <string name="procedures_edit_hero_title">処置・手術</string>
+    <string name="procedures_fab_add_desc">処置を追加</string>
+    <string name="procedures_empty_default">処置・手術の記録はまだありません。\n＋をタップして追加してください。</string>
+    <string name="procedures_empty_no_profile">プロフィールが選択されていません。先にプロフィールを作成または選択してください。</string>
+    <string name="procedures_unnamed">名称未設定の処置</string>
+    <plurals name="procedures_count">
+        <item quantity="zero">処置なし</item>
+        <item quantity="one">%d 件の処置</item>
+        <item quantity="other">%d 件の処置</item>
+    </plurals>
+    <string name="procedures_saved">処置を保存しました</string>
+    <string name="procedures_save_failed">処置を保存できませんでした</string>
+    <string name="procedures_delete_title">この処置を削除しますか？</string>
+    <string name="procedures_delete_message">「%1$s」をプロフィールから削除します。</string>
+    <string name="procedures_delete_cancel">キャンセル</string>
+    <string name="procedures_delete_confirm">削除</string>
+    <string name="procedures_date_unknown">日付不明</string>
+    <string name="procedure_form_title_create">🏥  処置を追加</string>
+    <string name="procedure_form_title_edit">🏥  処置を編集</string>
+    <string name="procedure_form_label_code">処置・手術</string>
+    <string name="procedure_form_code_hint">タップして処置を選択…</string>
+    <string name="procedure_form_code_clear_desc">処置をクリア</string>
+    <string name="procedure_form_code_picker_title">処置を選択</string>
+    <string name="procedure_form_label_text">または処置名を入力</string>
+    <string name="procedure_form_text_helper">上で処置が選択されていない場合のみ使用される自由記述</string>
+    <string name="procedure_form_label_date">実施日</string>
+    <string name="procedure_form_date_hint">日付不明 — タップして選択</string>
+    <string name="procedure_form_date_clear_desc">日付をクリア</string>
+    <string name="procedure_form_date_pick_title">処置が実施された日</string>
+    <string name="procedure_form_label_status">ステータス</string>
+    <string name="procedure_form_status_pick_title">処置のステータス</string>
+    <string name="procedure_form_label_body_site">部位</string>
+    <string name="procedure_form_label_outcome">転帰・結果</string>
+    <string name="procedure_form_label_performer">実施者（外科医・医師）</string>
+    <string name="procedure_form_label_location">病院・クリニック</string>
+    <string name="procedure_form_label_note">メモ</string>
+    <string name="procedure_form_note_helper">合併症、留置物、フォローアップ…</string>
+    <string name="procedure_form_cancel">キャンセル</string>
+    <string name="procedure_form_delete">削除</string>
+    <string name="procedure_form_save">保存</string>
+    <string name="procedure_form_validation_code">処置を選択するか名称を入力してください</string>
+    <string name="profile_detail_procedures_title">🏥 処置・手術 (%1$d)</string>
+</resources>

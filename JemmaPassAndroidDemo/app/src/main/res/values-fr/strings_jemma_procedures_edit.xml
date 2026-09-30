@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_procedures_edit.xml — JEMMA Pass · pilier IPS « Interventions » (FR) -->
+<resources>
+
+    <string name="procedures_edit_title">Interventions</string>
+    <string name="procedures_edit_hero_title">Interventions</string>
+    <string name="procedures_fab_add_desc">Ajouter une intervention</string>
+    <string name="procedures_empty_default">Aucune intervention enregistrée.\nAppuie sur + pour ajouter une opération ou un examen.</string>
+    <string name="procedures_empty_no_profile">Aucun profil sélectionné. Crée ou sélectionne d’abord un profil.</string>
+    <string name="procedures_unnamed">Intervention sans nom</string>
+    <plurals name="procedures_count">
+        <item quantity="zero">Aucune intervention</item>
+        <item quantity="one">%d intervention</item>
+        <item quantity="other">%d interventions</item>
+    </plurals>
+    <string name="procedures_saved">Interventions enregistrées</string>
+    <string name="procedures_save_failed">Impossible d’enregistrer les interventions</string>
+    <string name="procedures_delete_title">Supprimer cette intervention ?</string>
+    <string name="procedures_delete_message">« %1$s » sera retiré du profil.</string>
+    <string name="procedures_delete_cancel">Annuler</string>
+    <string name="procedures_delete_confirm">Supprimer</string>
+    <string name="procedures_date_unknown">Date inconnue</string>
+    <string name="procedure_form_title_create">🏥  Ajouter une intervention</string>
+    <string name="procedure_form_title_edit">🏥  Modifier l’intervention</string>
+    <string name="procedure_form_label_code">Intervention</string>
+    <string name="procedure_form_code_hint">Appuie pour choisir une intervention…</string>
+    <string name="procedure_form_code_clear_desc">Effacer l’intervention</string>
+    <string name="procedure_form_code_picker_title">Choisir une intervention</string>
+    <string name="procedure_form_label_text">Ou saisir le nom de l’intervention</string>
+    <string name="procedure_form_text_helper">Texte libre, utilisé seulement si aucune intervention n’est choisie ci-dessus</string>
+    <string name="procedure_form_label_date">Date de l’intervention</string>
+    <string name="procedure_form_date_hint">Date inconnue — appuie pour choisir</string>
+    <string name="procedure_form_date_clear_desc">Effacer la date</string>
+    <string name="procedure_form_date_pick_title">Date de réalisation de l’intervention</string>
+    <string name="procedure_form_label_status">Statut</string>
+    <string name="procedure_form_status_pick_title">Statut de l’intervention</string>
+    <string name="procedure_form_label_body_site">Localisation (partie du corps)</string>
+    <string name="procedure_form_label_outcome">Résultat / suites</string>
+    <string name="procedure_form_label_performer">Réalisée par (chirurgien / praticien)</string>
+    <string name="procedure_form_label_location">Hôpital / clinique</string>
+    <string name="procedure_form_label_note">Note</string>
+    <string name="procedure_form_note_helper">Complications, matériel laissé en place, suivi…</string>
+    <string name="procedure_form_cancel">Annuler</string>
+    <string name="procedure_form_delete">Supprimer</string>
+    <string name="procedure_form_save">Enregistrer</string>
+    <string name="procedure_form_validation_code">Choisis une intervention ou saisis son nom</string>
+    <string name="profile_detail_procedures_title">🏥 INTERVENTIONS (%1$d)</string>
+</resources>

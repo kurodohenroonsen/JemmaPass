@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  bottom_sheet_procedure_form.xml — JEMMA Pass · IPS pillar "History of Procedures"
+
+  Full-height sheet (root match_parent, scroll area weight=1) like the
+  immunization form. Fields map 1:1 onto FHIR R4 Procedure (Procedure-uv-ips) :
+  code · performed[x] · status · bodySite · outcome · performer · location · note.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F172A"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="6dp"
+        android:background="#475569" />
+
+    <TextView
+        android:id="@+id/procedure_form_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:text="🏥  Add a procedure" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="20dp">
+
+            <!-- ─── Procedure (catalog + KB picker) ─────────── -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/procedure_form_code_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="#1E293B"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#334155"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/procedure_form_label_code"
+                        android:textColor="#94A3B8"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.08"
+                        android:textAllCaps="true" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/procedure_form_code_display"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp"
+                            android:textColorHint="#475569"
+                            tools:text="Appendectomy" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/procedure_form_code_clear"
+                            style="@style/Widget.Material3.Button.IconButton"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:visibility="gone"
+                            android:contentDescription="@string/procedure_form_code_clear_desc"
+                            app:icon="@android:drawable/ic_menu_close_clear_cancel"
+                            app:iconTint="#94A3B8"
+                            app:iconSize="18dp"
+                            tools:visibility="visible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="›"
+                            android:textColor="#64748B"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ─── Free-text procedure name (when nothing is picked) ── -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/procedure_form_text_layout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="@string/procedure_form_label_text"
+                app:boxStrokeColor="#3B82F6"
+                app:hintTextColor="#3B82F6"
+                app:helperText="@string/procedure_form_text_helper">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/procedure_form_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:textColor="@android:color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ─── Date (performed) ────────────────────────── -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="6dp"
+                android:text="@string/procedure_form_label_date"
+                android:textColor="#94A3B8"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08"
+                android:textAllCaps="true" />
+
+            <LinearLayout
+                android:id="@+id/procedure_form_date_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:background="#1E293B"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="📅"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/procedure_form_date_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:text="@string/procedure_form_date_hint"
+                    tools:text="1995-07-12" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/procedure_form_date_clear"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:visibility="gone"
+                    android:contentDescription="@string/procedure_form_date_clear_desc"
+                    app:icon="@android:drawable/ic_menu_close_clear_cancel"
+                    app:iconTint="#94A3B8"
+                    app:iconSize="18dp"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="›"
+                    android:textColor="#64748B"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!-- ─── Status ──────────────────────────────────── -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="6dp"
+                android:text="@string/procedure_form_label_status"
+                android:textColor="#94A3B8"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08"
+                android:textAllCaps="true" />
+
+            <LinearLayout
+                android:id="@+id/procedure_form_status_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:background="#1E293B"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/procedure_form_status_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    tools:text="✅ Completed" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="›"
+                    android:textColor="#64748B"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!-- ─── Body site ───────────────────────────────── -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:hint="@string/procedure_form_label_body_site"
+                app:boxStrokeColor="#3B82F6"
+                app:hintTextColor="#3B82F6">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/procedure_form_body_site"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:textColor="@android:color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ─── Outcome ─────────────────────────────────── -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/procedure_form_label_outcome"
+                app:boxStrokeColor="#3B82F6"
+                app:hintTextColor="#3B82F6">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/procedure_form_outcome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:textColor="@android:color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ─── Performer ───────────────────────────────── -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/procedure_form_label_performer"
+                app:boxStrokeColor="#3B82F6"
+                app:hintTextColor="#3B82F6">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/procedure_form_performer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:textColor="@android:color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ─── Location ────────────────────────────────── -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/procedure_form_label_location"
+                app:boxStrokeColor="#3B82F6"
+                app:hintTextColor="#3B82F6">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/procedure_form_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:textColor="@android:color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- ─── Note ────────────────────────────────────── -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/procedure_form_label_note"
+                app:boxStrokeColor="#3B82F6"
+                app:hintTextColor="#3B82F6"
+                app:helperText="@string/procedure_form_note_helper">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/procedure_form_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:maxLines="3"
+                    android:textColor="@android:color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="14dp"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/procedure_form_delete_btn"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/procedure_form_delete"
+            android:textColor="#F87171"
+            tools:visibility="visible" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/procedure_form_cancel_btn"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/procedure_form_cancel"
+            android:textColor="#94A3B8" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/procedure_form_save_btn"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/procedure_form_save"
+            android:textStyle="bold"
+            android:backgroundTint="#3B82F6"
+            app:icon="@drawable/ic_check_24"
+            app:iconTint="@android:color/white" />
+    </LinearLayout>
+</LinearLayout>

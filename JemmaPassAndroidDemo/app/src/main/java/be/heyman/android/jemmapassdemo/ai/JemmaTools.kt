@@ -20,6 +20,9 @@
  *     getFocusProfileAllergies     — allergy entries with localized labels
  *     getFocusProfileMedications   — medication entries with localized labels
  *     getFocusProfileConditions    — condition entries with localized labels
+ *     getFocusProfileImmunizations — vaccination history (FHIR-native pillar)
+ *     getFocusProfileProcedures    — history of procedures (FHIR-native pillar)
+ *     getFocusProfileDevices       — implants / medical devices (FHIR-native pillar)
  *
  *   ─── Cross-check (the killer) ───────────────────────────────────────
  *     checkOneDrugAgainstFocusProfile — single drug name → full clinical
@@ -432,6 +435,8 @@ class JemmaTools @Inject constructor(
             "medications_count" to p.md.size,
             "conditions_count" to p.cn.size,
             "immunizations_count" to p.im.size,
+            "procedures_count" to p.pr.size,
+            "devices_count" to p.dv.size,
             "contacts_count" to (patient?.ct?.size ?: 0),
         )
     }
@@ -485,6 +490,52 @@ class JemmaTools @Inject constructor(
             )
         }
         mapOf("ok" to true, "lang" to lang, "count" to rows.size, "immunizations" to rows)
+    }
+
+    @Tool(description = "List the history of procedures (surgeries, interventions, major exams) of the focus profile: label, SNOMED code, date (YYYY-MM-DD or unknown) and status. Use it to answer 'has the patient had surgery?' or to flag prior operations relevant to an emergency (e.g. appendectomy, bypass, cesarean).")
+    fun getFocusProfileProcedures(): Map<String, Any> = runBlocking(Dispatchers.IO) {
+        val p = focusRef.get() ?: return@runBlocking profileMissingMap()
+        val lang = currentLang()
+        val rows = mutableListOf<Map<String, Any>>()
+        for (pr in p.pr) {
+            val label = be.heyman.android.jemmapassdemo.pillars.IpsProcedureCatalog.getDisplay(pr.c, lang)
+                ?: pr.displayLabel?.takeIf { it.isNotBlank() }
+                ?: pr.c.orEmpty()
+            rows.add(
+                mapOf(
+                    "procedure" to label,
+                    "code" to pr.c.orEmpty(),
+                    "system" to (pr.codeSystem ?: "http://snomed.info/sct"),
+                    "date" to (pr.date ?: "unknown"),
+                    "status" to (pr.status ?: "completed"),
+                    "note" to pr.d.orEmpty(),
+                )
+            )
+        }
+        mapOf("ok" to true, "lang" to lang, "count" to rows.size, "procedures" to rows)
+    }
+
+    @Tool(description = "List the medical devices and implants of the focus profile (pacemaker, defibrillator, stent, prosthesis, insulin pump, hearing aid…): label, SNOMED code, in-use date, status (active / inactive) and note. Critical for MRI safety, defibrillation and emergency care.")
+    fun getFocusProfileDevices(): Map<String, Any> = runBlocking(Dispatchers.IO) {
+        val p = focusRef.get() ?: return@runBlocking profileMissingMap()
+        val lang = currentLang()
+        val rows = mutableListOf<Map<String, Any>>()
+        for (dv in p.dv) {
+            val label = be.heyman.android.jemmapassdemo.pillars.IpsDeviceCatalog.getDisplay(dv.c, lang)
+                ?: dv.displayLabel?.takeIf { it.isNotBlank() }
+                ?: dv.c.orEmpty()
+            rows.add(
+                mapOf(
+                    "device" to label,
+                    "code" to dv.c.orEmpty(),
+                    "system" to (dv.codeSystem ?: "http://snomed.info/sct"),
+                    "since" to (dv.date ?: "unknown"),
+                    "status" to (dv.status ?: "active"),
+                    "note" to dv.d.orEmpty(),
+                )
+            )
+        }
+        mapOf("ok" to true, "lang" to lang, "count" to rows.size, "devices" to rows)
     }
 
     // ─────────────────────────────────────────────────────────────────

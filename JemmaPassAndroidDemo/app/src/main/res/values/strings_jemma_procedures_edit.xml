@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_procedures_edit.xml — JEMMA Pass · IPS pillar "History of Procedures" (EN, default) -->
+<resources>
+
+    <string name="procedures_edit_title">Procedures</string>
+    <string name="procedures_edit_hero_title">Procedures</string>
+    <string name="procedures_fab_add_desc">Add a procedure</string>
+    <string name="procedures_empty_default">No procedure recorded yet.\nTap + to add a surgery or procedure.</string>
+    <string name="procedures_empty_no_profile">No profile selected. Create or select a profile first.</string>
+    <string name="procedures_unnamed">Unnamed procedure</string>
+    <plurals name="procedures_count">
+        <item quantity="zero">No procedure</item>
+        <item quantity="one">%d procedure</item>
+        <item quantity="other">%d procedures</item>
+    </plurals>
+    <string name="procedures_saved">Procedures saved</string>
+    <string name="procedures_save_failed">Could not save the procedures</string>
+    <string name="procedures_delete_title">Delete this procedure?</string>
+    <string name="procedures_delete_message">“%1$s” will be removed from the profile.</string>
+    <string name="procedures_delete_cancel">Cancel</string>
+    <string name="procedures_delete_confirm">Delete</string>
+    <string name="procedures_date_unknown">Date unknown</string>
+    <string name="procedure_form_title_create">🏥  Add a procedure</string>
+    <string name="procedure_form_title_edit">🏥  Edit procedure</string>
+    <string name="procedure_form_label_code">Procedure</string>
+    <string name="procedure_form_code_hint">Tap to choose a procedure…</string>
+    <string name="procedure_form_code_clear_desc">Clear procedure</string>
+    <string name="procedure_form_code_picker_title">Choose a procedure</string>
+    <string name="procedure_form_label_text">Or type the procedure name</string>
+    <string name="procedure_form_text_helper">Free text, used only when no procedure is picked above</string>
+    <string name="procedure_form_label_date">Date performed</string>
+    <string name="procedure_form_date_hint">Unknown date — tap to pick</string>
+    <string name="procedure_form_date_clear_desc">Clear date</string>
+    <string name="procedure_form_date_pick_title">Date the procedure was performed</string>
+    <string name="procedure_form_label_status">Status</string>
+    <string name="procedure_form_status_pick_title">Procedure status</string>
+    <string name="procedure_form_label_body_site">Body site</string>
+    <string name="procedure_form_label_outcome">Outcome</string>
+    <string name="procedure_form_label_performer">Performed by (surgeon / practitioner)</string>
+    <string name="procedure_form_label_location">Hospital / clinic</string>
+    <string name="procedure_form_label_note">Note</string>
+    <string name="procedure_form_note_helper">Complications, implants left in place, follow-up…</string>
+    <string name="procedure_form_cancel">Cancel</string>
+    <string name="procedure_form_delete">Delete</string>
+    <string name="procedure_form_save">Save</string>
+    <string name="procedure_form_validation_code">Pick a procedure or type its name</string>
+    <string name="profile_detail_procedures_title">🏥 PROCEDURES (%1$d)</string>
+</resources>

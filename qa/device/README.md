@@ -46,18 +46,21 @@ Le script écrit tout dans `qa/device/out/<sha7>-<horodatage>/` :
 
 | Étape | Ce qu'elle fait | Preuve |
 |---|---|---|
-| 1 | `:app:testDebugUnitTest` — attendu **30 tests, 0 échec** | `logs/unit-tests.log` |
+| 1 | `:app:testDebugUnitTest` — attendu **50 tests, 0 échec** | `logs/unit-tests.log` |
 | 2 | `:app:assembleDebug` | `logs/assemble.log` |
 | 3 | `adb install -r -g` (permissions runtime accordées, données conservées) | `logs/install.log` |
 | 4 | sauvegarde de `profiles/`, suppression des seuls fichiers `demo_*` → re-seed | `backup/` (non publié) |
 | 5 | lancement, 15 s, pull de `profiles/`, logcat filtré puis scrubbé (pas de capture : la liste des profils peut montrer un profil réel) | `files/demo_*.json`, `logs/logcat-seed.txt` |
-| 6 | `verify_profiles.py` — invariants P1…P8 sur les 3 personas, attendu Kurodo=4, Haru=3, Kamekichi=0 | `verify-seed.md`, `steps.md` |
+| 6 | `verify_profiles.py` — invariants P1…P8 sur les 3 personas et les 3 piliers natifs, attendu 💉 Kurodo=4 · Haru=3 · Kamekichi=0, 🏥 Kurodo=2 · Haru=2, 📟 Haru=2 | `verify-seed.md`, `steps.md` |
 
 `verify_profiles.py` contrôle : Bundle `document` + Composition en tête, URNs
-`urn:uuid:` déterministes (UUID v3), projection `_j.im` ⇄ ressources `Immunization`
-(codes + dates), section LOINC `11369-6` pointant exactement sur les fullUrl des
-Immunization, profil `Immunization-uv-ips` + référence patient, sections legacy
-(allergies/médicaments/problèmes) toujours présentes.
+`urn:uuid:` déterministes (UUID v3), et pour chaque pilier natif (💉 `im`/`Immunization`,
+🏥 `pr`/`Procedure`, 📟 `dv`/`DeviceUseStatement` + `Device`) : projection `_j.<clé>` ⇄
+ressources (codes + dates), section LOINC (`11369-6` / `47519-4` / `46264-8`) pointant
+exactement sur les fullUrl des ressources, profil `*-uv-ips` + référence patient + statut,
+`DeviceUseStatement.device` résolu vers un `Device` (profil `Device-uv-ips`), sections
+legacy (allergies/médicaments/problèmes) toujours présentes. Options : `--expect`
+(vaccins), `--expect-pr`, `--expect-dv`.
 
 ## 3. Protocole UI (à dérouler avec `ui.py`, une capture par point de contrôle)
 
@@ -264,10 +267,154 @@ japonais si l'appareil est en JA. Fiche Kamekichi : pas de section vaccins, tuil
 
 Chaque cas : capture + ligne dans le rapport. Puis `verify_profiles.py … --expect demo_kurodo=4` doit rester PASS.
 
+### T10 — Procédures (🏥 pilier natif, sprint 2)
+
+Personas : Kurodo = appendicectomie 1995-07-12 + coloscopie 2024-02-19 ; Haru = pontage
+coronarien 2015-09-02 + césarienne « 1975 » (année seule) ; Kamekichi = aucune.
+
+```
+$UI stop && $UI launch && $UI wait 4
+$UI tap --text "Kurodo"
+$UI wait 3
+$UI screenshot $OUT/screenshots/100-detail-kurodo-procedures.png
+$UI exists --text "PROCEDURES (2)"
+$UI tap --id profile_detail_pillars_header
+$UI wait 1
+$UI tap --id profile_detail_tile_procedures
+$UI wait 2
+$UI screenshot $OUT/screenshots/101-procedures-list.png
+$UI exists --text "2 procedures"
+```
+FR : `INTERVENTIONS (2)`, `2 interventions`. Attendu : section « 🏥 » sous les vaccins
+(2 lignes, coloscopie d'abord), tuile 🏥 **active** avec badge **2**, liste de 2 cartes
+triées par date décroissante (`2024-02-19 · ✅ Completed / Réalisée`, `1995-07-12 · …`),
+ligne muette « CHU … · Dr … » si renseignée.
+
+**Création (picker catalogue)** :
+```
+$UI tap --id procedures_fab_add
+$UI wait 2
+$UI screenshot $OUT/screenshots/102-procedure-form-empty.png
+$UI tap --id procedure_form_code_card
+$UI wait 2
+$UI screenshot $OUT/screenshots/103-procedure-picker.png
+$UI tap --text "Cholecystectomy"
+$UI wait 1
+$UI tap --id procedure_form_date_row
+$UI wait 2
+```
+FR : `--text "Cholécystectomie"`. Choisir une date passée dans le calendrier (OK), puis
+`procedure_form_body_site` = `Abdomen`, `procedure_form_location` = `CHU Demo`,
+`procedure_form_note` = `Test QA`, `procedure_form_save_btn`. Attendu : toast
+« Procedures saved » / « Interventions enregistrées », 3 cartes, la nouvelle en tête si sa
+date est la plus récente. Capture `104-procedure-created.png`, puis :
+```
+adb pull /sdcard/Android/data/be.heyman.android.jemmapassdemo/files/profiles $OUT/pull-t10/
+python3 qa/device/verify_profiles.py $OUT/pull-t10/profiles --only demo_kurodo --expect demo_kurodo=4 --expect-pr demo_kurodo=3 --title "T10 procedure created" --markdown $OUT/verify-t10.md
+```
+Vérifie dans `demo_kurodo.fhir.json` : ressource `Procedure` avec
+`code.coding[0].code = 38102005`, `performedDateTime`, `bodySite.text`, `location.display`,
+`note[0].text`, profil `Procedure-uv-ips` ; section LOINC `47519-4` à 3 références ; dans
+`demo_kurodo.json` `pr[]` a 3 entrées (`c`, `dt`, `d_display`, `d` = note).
+
+**Recherche KB** (picker) : `$UI tap --id picker_search`, taper `appendic` → attendu :
+l'entrée catalogue « Appendectomy » / « Appendicectomie » en tête, puis des résultats KB
+(`terminology_codes.category = 'Procedure'`, FTS5). Capture `105-procedure-kb-search.png`.
+Choisir un résultat **KB** (hors catalogue), Save, et noter dans le rapport le `code` et le
+`system` écrits dans le Bundle (attendu : SNOMED `http://snomed.info/sct` quand la KB
+connaît le mapping, sinon `urn:umls` + CUI — les deux sont acceptés, note lequel).
+
+**Édition + suppression** : ouvrir la carte « Cholecystectomy » → changer le statut
+(`procedure_form_status_row` → « In progress » / « En cours ») → Save → carte avec ⏳ ;
+rouvrir → `procedure_form_delete_btn` → confirmer « Delete » / « Supprimer ». Supprimer
+aussi l'entrée KB par **appui long** sur la carte. Captures `106-procedure-edited.png`,
+`107-procedure-delete-dialog.png`, `108-procedures-back-to-2.png`. Puis
+`verify_profiles.py … --expect-pr demo_kurodo=2` PASS.
+
+### T11 — Dispositifs médicaux (📟 pilier natif, sprint 2)
+
+Personas : Haru = pacemaker (UDI `(01)00643169007222(21)PJN1234567`, Medtronic, 2021-03-15)
++ appareil auditif (Phonak, « 2019-06 », mois seul) ; Kurodo / Kamekichi = aucun.
+
+```
+$UI stop && $UI launch && $UI wait 4
+$UI tap --text "Haru"
+$UI wait 3
+$UI screenshot $OUT/screenshots/110-detail-haru-devices.png
+$UI exists --text "MEDICAL DEVICES (2)"
+$UI tap --id profile_detail_pillars_header
+$UI wait 1
+$UI tap --id profile_detail_tile_devices
+$UI wait 2
+$UI screenshot $OUT/screenshots/111-devices-list.png
+$UI exists --text "2 devices"
+```
+FR : `DISPOSITIFS MÉDICAUX (2)`, `2 dispositifs`. Attendu : cartes ❤️ pacemaker
+(`2021-03-15 · ✅ In use / En place`, ligne « Medtronic … · UDI (01)… ») et 👂 appareil
+auditif (`2019-06 · …`), tuile 📟 active avec badge 2. Sur la fiche Kurodo : pas de
+section 📟 et tuile sans badge.
+
+**Création avec UDI** (sur Kurodo, pour laisser Haru intact) : fiche Kurodo → tuile 📟 →
+`devices_fab_add` → `device_form_code_card` → « Insulin pump » / « Pompe à insuline » →
+`device_form_udi` = `(01)00643169007222(21)QA0001` → `device_form_manufacturer` = `Demo
+Med` → `device_form_model` = `QA-1` → `device_form_serial` = `SN-QA-1` → date passée →
+`device_form_body_site` = `Abdomen` → Save. Captures `112-device-form.png`,
+`113-device-created.png`.
+```
+adb pull /sdcard/Android/data/be.heyman.android.jemmapassdemo/files/profiles $OUT/pull-t11/
+python3 qa/device/verify_profiles.py $OUT/pull-t11/profiles --only demo_kurodo --only demo_haru --expect demo_kurodo=4 --expect-pr demo_kurodo=2 --expect-dv demo_kurodo=1 --expect-dv demo_haru=2 --title "T11 device created" --markdown $OUT/verify-t11.md
+```
+Vérifie dans `demo_kurodo.fhir.json` : **deux** ressources par dispositif — `Device`
+(`type.coding[0].code = 69805005`, `udiCarrier[0].deviceIdentifier` + `carrierHRF`,
+`manufacturer`, `modelNumber`, `serialNumber`, `patient`, profil `Device-uv-ips`) et
+`DeviceUseStatement` (`device.reference` = fullUrl du Device, `timingDateTime`,
+`bodySite.text`, profil `DeviceUseStatement-uv-ips`) ; section LOINC `46264-8` pointant
+sur le `DeviceUseStatement` ; `_j.dv[0]` avec `c`, `dt`, `d_display`.
+
+**Édition + suppression** : ouvrir la carte → statut « Removed / no longer used » /
+« Retiré » → Save → icône ⏹, `status: inactive` sur le `Device` et `completed` sur le
+`DeviceUseStatement`, `"st":"inactive"` dans `_j.dv` ; puis `device_form_delete_btn` →
+confirmer → retour à 0 dispositif sur Kurodo. Captures `114-device-edited.png`,
+`115-devices-back-to-0.png`. Vérifier que Haru a toujours ses 2 dispositifs
+(`--expect-dv demo_haru=2`).
+
+### T12 — Chemins alternatifs et d'erreur (🏥 + 📟)
+
+| Cas | Action | Attendu |
+|---|---|---|
+| Procédure en texte libre | FAB 🏥 → rien dans le picker, `procedure_form_text` = `Opération du genou 1998`, date inconnue, Save | carte avec le texte, « Date unknown » ; Bundle : `code.text` sans `coding`, `performedString: "unknown"` ; `verify … --expect-pr demo_kurodo=3` PASS |
+| Aucune procédure | FAB 🏥 → Save direct | erreur inline rouge sous le champ texte « Pick a procedure or type its name » / « Choisis une intervention ou saisis son nom », formulaire ouvert, `Log.w JEMMA-PROCEDURES-FORM` |
+| ✕ procédure | choisir une procédure → `procedure_form_code_clear` | le champ texte libre réapparaît |
+| Annuler | remplir → `procedure_form_cancel_btn` | aucune carte, fichiers inchangés |
+| Dispositif en texte libre | FAB 📟 → `device_form_text` = `Plaque tibia gauche`, Save | Bundle : `Device.type.text` + `deviceName[0]` (`patient-reported-name`), pas de `coding` |
+| Aucun dispositif | FAB 📟 → Save direct | erreur inline « Pick a device or type its name » / « Choisis un dispositif … » |
+| UDI invalide | dispositif choisi, `device_form_udi` = `ABC`, Save | erreur inline « This does not look like a UDI… » / « Ça ne ressemble pas à un UDI… », focus sur le champ, s'efface dès la saisie |
+| UDI GTIN nu | `device_form_udi` = `00643169007222`, Save | accepté (14 chiffres) |
+| Date future | ouvrir un sélecteur de date (🏥 et 📟) | jours après aujourd'hui désactivés |
+| Rotation | formulaire 🏥 rempli, rotation | pas de crash (`AndroidRuntime:E` vide) |
+| Double-tap Save | 🏥 puis 📟, deux taps rapides | une seule carte à chaque fois |
+| Nettoyage | supprimer les cartes de test | Kurodo : 🏥 2 · 📟 0 ; `verify` PASS |
+
+Captures `120-…` (une par cas) + ligne dans le rapport.
+
+### T13 — Canaux : QR texte 🏥/📟 + non-régression
+
+Fiche **Haru** → Export → « QR Codes » → `qr_tab_text` → `qr_lang_en`, `qr_lang_fr`,
+`qr_lang_ja` (captures `130-qr-text-en.png`, `131-…-fr.png`, `132-…-ja.png`), décodage
+OpenCV comme en T5. Attendu : après `💉 [ IMMUNIZATIONS ]`, une section
+`🏥 [ PROCEDURES ]` / `🏥 [ INTERVENTIONS ]` / `🏥 [ 処置・手術歴 ]` (2 lignes, 2015 avant
+1975) puis `📟 [ MEDICAL DEVICES ]` / `📟 [ DISPOSITIFS MÉDICAUX ]` / `📟 [ 医療機器 ]`
+(2 lignes, libellés du catalogue localisés : « Stimulateur cardiaque (pacemaker) », « 心臓ペースメーカー »).
+Note si la section est tronquée par le plafond 2200 octets (Haru a maintenant 3 + 2 + 2 entrées natives).
+
+Non-régression courte : T1 (section 💉 Kurodo à 4), T4 (édition allergie → `verify` complet
+PASS avec `--expect demo_kurodo=4 --expect-pr demo_kurodo=2`), T7 (Kamekichi : ni 💉 ni 🏥
+ni 📟, tuiles actives sans badge). Résultat dans `verify-t13.md`.
+
 ## 4. Logcat de fin
 
 ```
-adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROFILE-DETAIL:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
+adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROCEDURES-EDIT:* JEMMA-PROCEDURES-FORM:* JEMMA-PROCEDURES-ADAPTER:* JEMMA-DEVICES-EDIT:* JEMMA-DEVICES-FORM:* JEMMA-DEVICES-ADAPTER:* JEMMA-PROFILE-DETAIL:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
 python3 qa/device/scrub_logcat.py $OUT/logs/logcat-ui.txt
 ```
 Le buffer logcat peut avoir tourné (les tags JEMMA sont bavards) : si le fichier est
@@ -276,7 +423,7 @@ jamais un log à la main.
 
 ## 5. Rapport et publication
 
-Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T8,
+Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T13,
 statut ✅ / ❌ / ⚠️ / ⏭, preuve = nom de capture ou fichier, déviations, bugs avec
 étapes de reproduction). Puis :
 

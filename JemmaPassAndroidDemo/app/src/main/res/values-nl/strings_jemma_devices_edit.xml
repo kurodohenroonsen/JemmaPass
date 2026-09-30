@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_devices_edit.xml — JEMMA Pass · IPS-pijler „Medische hulpmiddelen“ (NL) -->
+<resources>
+
+    <string name="devices_edit_title">Medische hulpmiddelen</string>
+    <string name="devices_edit_hero_title">Medische hulpmiddelen</string>
+    <string name="devices_fab_add_desc">Hulpmiddel toevoegen</string>
+    <string name="devices_empty_default">Nog geen hulpmiddel geregistreerd.\nTik op + om een implantaat of hulpmiddel toe te voegen.</string>
+    <string name="devices_empty_no_profile">Geen profiel geselecteerd. Maak of kies eerst een profiel.</string>
+    <string name="devices_unnamed">Naamloos hulpmiddel</string>
+    <plurals name="devices_count">
+        <item quantity="zero">Geen hulpmiddel</item>
+        <item quantity="one">%d hulpmiddel</item>
+        <item quantity="other">%d hulpmiddelen</item>
+    </plurals>
+    <string name="devices_saved">Hulpmiddelen opgeslagen</string>
+    <string name="devices_save_failed">Kon de hulpmiddelen niet opslaan</string>
+    <string name="devices_delete_title">Dit hulpmiddel verwijderen?</string>
+    <string name="devices_delete_message">“%1$s” wordt uit het profiel verwijderd.</string>
+    <string name="devices_delete_cancel">Annuleren</string>
+    <string name="devices_delete_confirm">Verwijderen</string>
+    <string name="devices_date_unknown">Datum onbekend</string>
+    <string name="devices_serial_short">S/N %1$s</string>
+    <string name="devices_udi_short">UDI %1$s</string>
+    <string name="device_form_title_create">📟  Hulpmiddel toevoegen</string>
+    <string name="device_form_title_edit">📟  Hulpmiddel bewerken</string>
+    <string name="device_form_label_code">Hulpmiddel</string>
+    <string name="device_form_code_hint">Tik om een hulpmiddel te kiezen…</string>
+    <string name="device_form_code_clear_desc">Hulpmiddel wissen</string>
+    <string name="device_form_code_picker_title">Kies een hulpmiddel</string>
+    <string name="device_form_label_text">Of typ de naam van het hulpmiddel</string>
+    <string name="device_form_text_helper">Vrije tekst, alleen gebruikt als hierboven geen hulpmiddel is gekozen</string>
+    <string name="device_form_label_udi">UDI (unieke hulpmiddelidentificatie)</string>
+    <string name="device_form_udi_helper">Van de implantaatkaart, bv. (01)00643169007222(21)PJN1234567</string>
+    <string name="device_form_label_manufacturer">Fabrikant</string>
+    <string name="device_form_label_model">Model</string>
+    <string name="device_form_label_serial">Serienummer</string>
+    <string name="device_form_label_date">In gebruik sinds (implantatiedatum)</string>
+    <string name="device_form_date_hint">Datum onbekend — tik om te kiezen</string>
+    <string name="device_form_date_clear_desc">Datum wissen</string>
+    <string name="device_form_date_pick_title">Datum van implantatie / eerste gebruik</string>
+    <string name="device_form_label_status">Status</string>
+    <string name="device_form_status_pick_title">Status van het hulpmiddel</string>
+    <string name="device_form_label_body_site">Lichaamsdeel</string>
+    <string name="device_form_label_note">Notitie</string>
+    <string name="device_form_note_helper">MRI-compatibiliteit, batterijcontrole, opvolgcentrum…</string>
+    <string name="device_form_cancel">Annuleren</string>
+    <string name="device_form_delete">Verwijderen</string>
+    <string name="device_form_save">Opslaan</string>
+    <string name="device_form_validation_code">Kies een hulpmiddel of typ de naam</string>
+    <string name="device_form_validation_udi">Dit lijkt geen UDI — controleer de implantaatkaart of laat het veld leeg</string>
+    <string name="profile_detail_devices_title">📟 MEDISCHE HULPMIDDELEN (%1$d)</string>
+</resources>

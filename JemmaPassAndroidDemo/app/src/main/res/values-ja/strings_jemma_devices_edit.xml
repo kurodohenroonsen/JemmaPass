@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_devices_edit.xml — JEMMA Pass · IPS「医療機器」(JA) -->
+<resources>
+
+    <string name="devices_edit_title">医療機器</string>
+    <string name="devices_edit_hero_title">医療機器</string>
+    <string name="devices_fab_add_desc">機器を追加</string>
+    <string name="devices_empty_default">医療機器の記録はまだありません。\n＋をタップしてインプラントや補助機器を追加してください。</string>
+    <string name="devices_empty_no_profile">プロフィールが選択されていません。先にプロフィールを作成または選択してください。</string>
+    <string name="devices_unnamed">名称未設定の機器</string>
+    <plurals name="devices_count">
+        <item quantity="zero">機器なし</item>
+        <item quantity="one">%d 件の機器</item>
+        <item quantity="other">%d 件の機器</item>
+    </plurals>
+    <string name="devices_saved">機器を保存しました</string>
+    <string name="devices_save_failed">機器を保存できませんでした</string>
+    <string name="devices_delete_title">この機器を削除しますか？</string>
+    <string name="devices_delete_message">「%1$s」をプロフィールから削除します。</string>
+    <string name="devices_delete_cancel">キャンセル</string>
+    <string name="devices_delete_confirm">削除</string>
+    <string name="devices_date_unknown">日付不明</string>
+    <string name="devices_serial_short">S/N %1$s</string>
+    <string name="devices_udi_short">UDI %1$s</string>
+    <string name="device_form_title_create">📟  機器を追加</string>
+    <string name="device_form_title_edit">📟  機器を編集</string>
+    <string name="device_form_label_code">機器</string>
+    <string name="device_form_code_hint">タップして機器を選択…</string>
+    <string name="device_form_code_clear_desc">機器をクリア</string>
+    <string name="device_form_code_picker_title">機器を選択</string>
+    <string name="device_form_label_text">または機器名を入力</string>
+    <string name="device_form_text_helper">上で機器が選択されていない場合のみ使用される自由記述</string>
+    <string name="device_form_label_udi">UDI（機器固有識別子）</string>
+    <string name="device_form_udi_helper">インプラントカードに記載、例：(01)00643169007222(21)PJN1234567</string>
+    <string name="device_form_label_manufacturer">製造者</string>
+    <string name="device_form_label_model">モデル</string>
+    <string name="device_form_label_serial">シリアル番号</string>
+    <string name="device_form_label_date">使用開始日（植込み日）</string>
+    <string name="device_form_date_hint">日付不明 — タップして選択</string>
+    <string name="device_form_date_clear_desc">日付をクリア</string>
+    <string name="device_form_date_pick_title">植込み日または使用開始日</string>
+    <string name="device_form_label_status">ステータス</string>
+    <string name="device_form_status_pick_title">機器のステータス</string>
+    <string name="device_form_label_body_site">部位</string>
+    <string name="device_form_label_note">メモ</string>
+    <string name="device_form_note_helper">MRI適合性、電池チェック、フォローアップ施設…</string>
+    <string name="device_form_cancel">キャンセル</string>
+    <string name="device_form_delete">削除</string>
+    <string name="device_form_save">保存</string>
+    <string name="device_form_validation_code">機器を選択するか名称を入力してください</string>
+    <string name="device_form_validation_udi">UDIの形式ではないようです — インプラントカードを確認するか空欄にしてください</string>
+    <string name="profile_detail_devices_title">📟 医療機器 (%1$d)</string>
+</resources>

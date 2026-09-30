@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_procedures_edit.xml — JEMMA Pass · IPS「手术与操作史」(ZH-CN) -->
+<resources>
+
+    <string name="procedures_edit_title">手术与操作</string>
+    <string name="procedures_edit_hero_title">手术与操作</string>
+    <string name="procedures_fab_add_desc">添加手术/操作</string>
+    <string name="procedures_empty_default">尚未记录任何手术或操作。\n点击 + 添加。</string>
+    <string name="procedures_empty_no_profile">未选择档案。请先创建或选择一个档案。</string>
+    <string name="procedures_unnamed">未命名的操作</string>
+    <plurals name="procedures_count">
+        <item quantity="zero">无手术/操作</item>
+        <item quantity="one">%d 项手术/操作</item>
+        <item quantity="other">%d 项手术/操作</item>
+    </plurals>
+    <string name="procedures_saved">已保存</string>
+    <string name="procedures_save_failed">无法保存手术/操作</string>
+    <string name="procedures_delete_title">删除此项手术/操作？</string>
+    <string name="procedures_delete_message">“%1$s”将从档案中移除。</string>
+    <string name="procedures_delete_cancel">取消</string>
+    <string name="procedures_delete_confirm">删除</string>
+    <string name="procedures_date_unknown">日期未知</string>
+    <string name="procedure_form_title_create">🏥  添加手术/操作</string>
+    <string name="procedure_form_title_edit">🏥  编辑手术/操作</string>
+    <string name="procedure_form_label_code">手术/操作</string>
+    <string name="procedure_form_code_hint">点击选择手术/操作…</string>
+    <string name="procedure_form_code_clear_desc">清除</string>
+    <string name="procedure_form_code_picker_title">选择手术/操作</string>
+    <string name="procedure_form_label_text">或输入手术/操作名称</string>
+    <string name="procedure_form_text_helper">自由文本，仅在上方未选择时使用</string>
+    <string name="procedure_form_label_date">实施日期</string>
+    <string name="procedure_form_date_hint">日期未知 — 点击选择</string>
+    <string name="procedure_form_date_clear_desc">清除日期</string>
+    <string name="procedure_form_date_pick_title">手术/操作实施日期</string>
+    <string name="procedure_form_label_status">状态</string>
+    <string name="procedure_form_status_pick_title">手术/操作状态</string>
+    <string name="procedure_form_label_body_site">部位</string>
+    <string name="procedure_form_label_outcome">结果</string>
+    <string name="procedure_form_label_performer">实施者（外科医生/医师）</string>
+    <string name="procedure_form_label_location">医院/诊所</string>
+    <string name="procedure_form_label_note">备注</string>
+    <string name="procedure_form_note_helper">并发症、留置植入物、随访…</string>
+    <string name="procedure_form_cancel">取消</string>
+    <string name="procedure_form_delete">删除</string>
+    <string name="procedure_form_save">保存</string>
+    <string name="procedure_form_validation_code">请选择手术/操作或输入其名称</string>
+    <string name="profile_detail_procedures_title">🏥 手术与操作 (%1$d)</string>
+</resources>

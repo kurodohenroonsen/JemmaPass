@@ -120,6 +120,12 @@
         <action
             android:id="@+id/action_gallery_to_immunizations"
             app:destination="@id/dest_immunizations" />
+        <action
+            android:id="@+id/action_gallery_to_procedures"
+            app:destination="@id/dest_procedures" />
+        <action
+            android:id="@+id/action_gallery_to_devices"
+            app:destination="@id/dest_devices" />
     </fragment>
 
     <!--
@@ -314,6 +320,33 @@
         android:name="be.heyman.android.jemmapassdemo.ui.profile.immunizations.ImmunizationsEditFragment"
         android:label="@string/immunizations_edit_title"
         tools:layout="@layout/fragment_immunizations_edit">
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+
+    <!-- 🏥 IPS pillar "History of Procedures" — FHIR-native (`_j.pr` is a projection). -->
+    <fragment
+        android:id="@+id/dest_procedures"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.procedures.ProceduresEditFragment"
+        android:label="@string/procedures_edit_title"
+        tools:layout="@layout/fragment_procedures_edit">
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+
+    <!-- 📟 IPS pillar "Medical Devices" — FHIR-native Device + DeviceUseStatement
+         (`_j.dv` is a projection). -->
+    <fragment
+        android:id="@+id/dest_devices"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.devices.DevicesEditFragment"
+        android:label="@string/devices_edit_title"
+        tools:layout="@layout/fragment_devices_edit">
         <argument
             android:name="profileId"
             app:argType="string"
@@ -541,6 +574,14 @@
         <action
             android:id="@+id/action_detail_to_immunizations"
             app:destination="@id/dest_immunizations" />
+        <!-- 🏥 Active pillar: procedures edit (FHIR-native) -->
+        <action
+            android:id="@+id/action_detail_to_procedures"
+            app:destination="@id/dest_procedures" />
+        <!-- 📟 Active pillar: devices edit (FHIR-native) -->
+        <action
+            android:id="@+id/action_detail_to_devices"
+            app:destination="@id/dest_devices" />
         <action
             android:id="@+id/action_detail_to_pillar_stub"
             app:destination="@id/dest_pillar_stub" />

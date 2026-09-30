@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_devices_edit.xml — JEMMA Pass · IPS「医疗器械」(ZH-CN) -->
+<resources>
+
+    <string name="devices_edit_title">医疗器械</string>
+    <string name="devices_edit_hero_title">医疗器械</string>
+    <string name="devices_fab_add_desc">添加器械</string>
+    <string name="devices_empty_default">尚未记录任何器械。\n点击 + 添加植入物或辅助器械。</string>
+    <string name="devices_empty_no_profile">未选择档案。请先创建或选择一个档案。</string>
+    <string name="devices_unnamed">未命名的器械</string>
+    <plurals name="devices_count">
+        <item quantity="zero">无器械</item>
+        <item quantity="one">%d 项器械</item>
+        <item quantity="other">%d 项器械</item>
+    </plurals>
+    <string name="devices_saved">已保存</string>
+    <string name="devices_save_failed">无法保存器械</string>
+    <string name="devices_delete_title">删除此器械？</string>
+    <string name="devices_delete_message">“%1$s”将从档案中移除。</string>
+    <string name="devices_delete_cancel">取消</string>
+    <string name="devices_delete_confirm">删除</string>
+    <string name="devices_date_unknown">日期未知</string>
+    <string name="devices_serial_short">序列号 %1$s</string>
+    <string name="devices_udi_short">UDI %1$s</string>
+    <string name="device_form_title_create">📟  添加器械</string>
+    <string name="device_form_title_edit">📟  编辑器械</string>
+    <string name="device_form_label_code">器械</string>
+    <string name="device_form_code_hint">点击选择器械…</string>
+    <string name="device_form_code_clear_desc">清除</string>
+    <string name="device_form_code_picker_title">选择器械</string>
+    <string name="device_form_label_text">或输入器械名称</string>
+    <string name="device_form_text_helper">自由文本，仅在上方未选择时使用</string>
+    <string name="device_form_label_udi">UDI（器械唯一标识）</string>
+    <string name="device_form_udi_helper">见植入物卡片，例如 (01)00643169007222(21)PJN1234567</string>
+    <string name="device_form_label_manufacturer">制造商</string>
+    <string name="device_form_label_model">型号</string>
+    <string name="device_form_label_serial">序列号</string>
+    <string name="device_form_label_date">使用起始日期（植入日期）</string>
+    <string name="device_form_date_hint">日期未知 — 点击选择</string>
+    <string name="device_form_date_clear_desc">清除日期</string>
+    <string name="device_form_date_pick_title">植入或首次使用日期</string>
+    <string name="device_form_label_status">状态</string>
+    <string name="device_form_status_pick_title">器械状态</string>
+    <string name="device_form_label_body_site">部位</string>
+    <string name="device_form_label_note">备注</string>
+    <string name="device_form_note_helper">MRI 兼容性、电池检查、随访中心…</string>
+    <string name="device_form_cancel">取消</string>
+    <string name="device_form_delete">删除</string>
+    <string name="device_form_save">保存</string>
+    <string name="device_form_validation_code">请选择器械或输入其名称</string>
+    <string name="device_form_validation_udi">这看起来不像 UDI — 请核对植入物卡片或留空</string>
+    <string name="profile_detail_devices_title">📟 医疗器械 (%1$d)</string>
+</resources>

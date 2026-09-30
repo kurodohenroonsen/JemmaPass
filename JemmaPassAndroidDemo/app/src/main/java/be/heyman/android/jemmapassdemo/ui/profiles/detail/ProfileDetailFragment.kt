@@ -297,6 +297,8 @@ class ProfileDetailFragment : Fragment() {
         // ── Conditions ──
         renderConditions(h)
         renderImmunizations(h)
+        renderProcedures(h)
+        renderDevices(h)
 
         // ── Alerts section ──
         renderAlerts(h)
@@ -545,6 +547,66 @@ class ProfileDetailFragment : Fragment() {
             val dose = im.doseNumber?.let { " · " + getString(R.string.immunizations_dose_number, it) } ?: ""
             val tv = makeListItemTextView()
             tv.text = "•  $label — $date$dose"
+            listView.addView(tv)
+        }
+    }
+
+    /** 🏥 FHIR-native pillar — rendered from the `_j.pr` projection (Bundle = source of truth). */
+    private fun renderProcedures(h: HydratedProfile) {
+        val entries = h.raw.pr
+        if (entries.isEmpty()) {
+            binding.profileDetailProceduresSection.isVisible = false
+            return
+        }
+        binding.profileDetailProceduresSection.isVisible = true
+        binding.profileDetailProceduresTitle.text = getString(R.string.profile_detail_procedures_title, entries.size)
+        val lang = java.util.Locale.getDefault().language.lowercase().take(2)
+        val listView = binding.profileDetailProceduresList
+        listView.removeAllViews()
+        val sorted = entries.sortedWith(
+            compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
+                .thenByDescending { it.date ?: "" }
+        )
+        for (pr in sorted) {
+            val label = be.heyman.android.jemmapassdemo.pillars.IpsProcedureCatalog.getDisplay(pr.c, lang)
+                ?: pr.displayLabel?.takeIf { it.isNotBlank() }
+                ?: pr.c.orEmpty()
+            val date = pr.date?.takeIf { it.isNotBlank() } ?: getString(R.string.procedures_date_unknown)
+            val status = pr.status?.takeIf { it.isNotBlank() && it != "completed" }
+                ?.let { be.heyman.android.jemmapassdemo.pillars.IpsProcedureStatusCatalog.byCode(it) }
+                ?.let { " · ${it.emoji} ${it.pick(lang)}" } ?: ""
+            val tv = makeListItemTextView()
+            tv.text = "•  $label — $date$status"
+            listView.addView(tv)
+        }
+    }
+
+    /** 📟 FHIR-native pillar — rendered from the `_j.dv` projection (Bundle = source of truth). */
+    private fun renderDevices(h: HydratedProfile) {
+        val entries = h.raw.dv
+        if (entries.isEmpty()) {
+            binding.profileDetailDevicesSection.isVisible = false
+            return
+        }
+        binding.profileDetailDevicesSection.isVisible = true
+        binding.profileDetailDevicesTitle.text = getString(R.string.profile_detail_devices_title, entries.size)
+        val lang = java.util.Locale.getDefault().language.lowercase().take(2)
+        val listView = binding.profileDetailDevicesList
+        listView.removeAllViews()
+        val sorted = entries.sortedWith(
+            compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.status.isNullOrBlank() || it.status == "active" }
+                .thenByDescending { it.date ?: "" }
+        )
+        for (dv in sorted) {
+            val label = be.heyman.android.jemmapassdemo.pillars.IpsDeviceCatalog.getDisplay(dv.c, lang)
+                ?: dv.displayLabel?.takeIf { it.isNotBlank() }
+                ?: dv.c.orEmpty()
+            val since = dv.date?.takeIf { it.isNotBlank() }?.let { " — $it" } ?: ""
+            val status = dv.status?.takeIf { it.isNotBlank() && it != "active" }
+                ?.let { be.heyman.android.jemmapassdemo.pillars.IpsDeviceStatusCatalog.byCode(it) }
+                ?.let { " · ${it.emoji} ${it.pick(lang)}" } ?: ""
+            val tv = makeListItemTextView()
+            tv.text = "•  $label$since$status"
             listView.addView(tv)
         }
     }
@@ -1202,6 +1264,9 @@ class ProfileDetailFragment : Fragment() {
                         "medications" -> R.id.action_detail_to_medications to true
                         // 💉 FHIR-native pillar (feat/ips-18-pillars-cleanup)
                         "immunizations" -> R.id.action_detail_to_immunizations to true
+                        // 🏥 📟 FHIR-native pillars (sprint 2)
+                        "procedures" -> R.id.action_detail_to_procedures to true
+                        "devices" -> R.id.action_detail_to_devices to true
                         else -> R.id.action_detail_to_pillar_stub to false
                     }
                     val args = if (includeProfileId) {
@@ -1240,7 +1305,7 @@ class ProfileDetailFragment : Fragment() {
         }
         val elapsed = System.currentTimeMillis() - tStart
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🩺 renderPillars · END · " +
-            "active=$boundActive/5 · stub=$boundStub/13 · missing=$missing/18 · ${elapsed}ms")
+            "active=$boundActive/7 · stub=$boundStub/11 · missing=$missing/18 · ${elapsed}ms")
         if (missing > 0) {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ $missing tile(s) failed to bind · " +
                 "vérifier que les ids profile_detail_tile_<key> existent dans fragment_profile_detail.xml")

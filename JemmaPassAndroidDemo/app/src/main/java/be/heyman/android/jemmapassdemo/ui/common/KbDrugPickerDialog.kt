@@ -272,11 +272,15 @@ class KbDrugPickerDialog : DialogFragment() {
                         // Re-find original hit to get the localized display
                         val origHit = result.hits.firstOrNull { it.concept.code == concept.code }
                         val dose = concept.atcCode?.let { doseMap[it] }
+                        // IPS pillars (Procedure / Device / Condition) want SNOMED CT : when the
+                        // UMLS row carries a `snomed_code` mapping, surface that code instead of
+                        // the CUI. Medications keep their native code (ATC enrichment relies on it).
+                        val snomed = concept.snomedCode?.takeIf { it.isNotBlank() && category != CATEGORY_MEDICATION }
                         currentResults.add(
                             PickedDrug(
-                                code = concept.code,
+                                code = snomed ?: concept.code,
                                 display = origHit?.display ?: concept.primaryDisplay,
-                                system = concept.system,
+                                system = if (snomed != null) KnowledgeBaseService.SYSTEM_SNOMED else concept.system,
                                 atcCode = concept.atcCode,
                                 doseDdd = dose?.doseDdd,
                                 doseUnit = dose?.doseUnit,

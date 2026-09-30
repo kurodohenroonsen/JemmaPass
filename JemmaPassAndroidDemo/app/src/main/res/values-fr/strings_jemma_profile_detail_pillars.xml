@@ -2,5 +2,5 @@
 <resources>
     <!-- Section piliers cliquables dans la page détail du profil -->
     <string name="profile_detail_pillars_title">🩺  Piliers du profil</string>
-    <string name="profile_detail_pillars_subtitle">Touche un pilier pour le modifier. 5 piliers actifs, 13 à venir.</string>
+    <string name="profile_detail_pillars_subtitle">Touche un pilier pour le modifier. 7 piliers actifs, 11 à venir.</string>
 </resources>

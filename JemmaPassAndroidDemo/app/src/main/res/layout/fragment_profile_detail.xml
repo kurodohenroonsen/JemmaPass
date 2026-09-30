@@ -217,7 +217,7 @@
                             android:layout_weight="1" />
                         <include
                             android:id="@+id/profile_detail_tile_procedures"
-                            layout="@layout/view_pillar_tile_stub"
+                            layout="@layout/view_pillar_tile"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -231,7 +231,7 @@
                         android:paddingBottom="6dp">
                         <include
                             android:id="@+id/profile_detail_tile_devices"
-                            layout="@layout/view_pillar_tile_stub"
+                            layout="@layout/view_pillar_tile"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -453,6 +453,60 @@
 
                 <LinearLayout
                     android:id="@+id/profile_detail_immunizations_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <!-- ─── PROCEDURES (FHIR-native pillar) ─── -->
+            <LinearLayout
+                android:id="@+id/profile_detail_procedures_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/profile_detail_procedures_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="🏥 PROCEDURES (2)" />
+
+                <LinearLayout
+                    android:id="@+id/profile_detail_procedures_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <!-- ─── MEDICAL DEVICES (FHIR-native pillar) ─── -->
+            <LinearLayout
+                android:id="@+id/profile_detail_devices_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/profile_detail_devices_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="📟 MEDICAL DEVICES (2)" />
+
+                <LinearLayout
+                    android:id="@+id/profile_detail_devices_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

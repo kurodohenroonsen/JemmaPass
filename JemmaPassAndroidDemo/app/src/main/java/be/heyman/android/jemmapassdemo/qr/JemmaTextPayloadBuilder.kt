@@ -159,6 +159,32 @@ object JemmaTextPayloadBuilder {
             formatter = { im -> formatImmunization(im, lang) },
         )
 
+        // ─── Procedures (FHIR-native pillar, `_j.pr` projection) ──
+        appendSection(
+            sb = sb,
+            icon = "🏥",
+            title = JemmaTranslations.getLabel(lang, "procedures_title"),
+            items = hydrated.raw.pr.sortedWith(
+                compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
+                    .thenByDescending { it.date ?: "" }
+            ),
+            empty = JemmaTranslations.getLabel(lang, "empty"),
+            formatter = { pr -> formatProcedure(pr, lang) },
+        )
+
+        // ─── Medical devices (FHIR-native pillar, `_j.dv` projection) ──
+        appendSection(
+            sb = sb,
+            icon = "📟",
+            title = JemmaTranslations.getLabel(lang, "devices_title"),
+            items = hydrated.raw.dv.sortedWith(
+                compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.status.isNullOrBlank() || it.status == "active" }
+                    .thenByDescending { it.date ?: "" }
+            ),
+            empty = JemmaTranslations.getLabel(lang, "empty"),
+            formatter = { dv -> formatDevice(dv, lang) },
+        )
+
         sb.append(JemmaTranslations.getLabel(lang, "footer")).append("\r\n")
 
         // Cap byte-size en UTF-8.
@@ -183,6 +209,30 @@ object JemmaTextPayloadBuilder {
         im.date?.takeIf { it.isNotBlank() }?.let { sb.append(" — ").append(it) }
         im.doseNumber?.let { sb.append(" · #").append(it) }
         im.status?.takeIf { it.isNotBlank() }?.let { sb.append(" (").append(it).append(")") }
+        return sb.toString()
+    }
+
+    /** "Appendectomy — 1995-07-12" from the `_j.pr` projection (status appended when not completed). */
+    private fun formatProcedure(pr: be.heyman.android.jemmapassdemo.qr.JEntryGeneric, lang: Lang): String {
+        val langCode = lang.isoCode
+        val label = be.heyman.android.jemmapassdemo.pillars.IpsProcedureCatalog.getDisplay(pr.c, langCode)
+            ?: pr.displayLabel?.takeIf { it.isNotBlank() }
+            ?: pr.c.orEmpty()
+        val sb = StringBuilder(label)
+        pr.date?.takeIf { it.isNotBlank() }?.let { sb.append(" — ").append(it) }
+        pr.status?.takeIf { it.isNotBlank() && it != "completed" }?.let { sb.append(" (").append(it).append(")") }
+        return sb.toString()
+    }
+
+    /** "Cardiac pacemaker — 2021-03-15 · Medtronic" from the `_j.dv` projection (status appended when not active). */
+    private fun formatDevice(dv: be.heyman.android.jemmapassdemo.qr.JEntryGeneric, lang: Lang): String {
+        val langCode = lang.isoCode
+        val label = be.heyman.android.jemmapassdemo.pillars.IpsDeviceCatalog.getDisplay(dv.c, langCode)
+            ?: dv.displayLabel?.takeIf { it.isNotBlank() }
+            ?: dv.c.orEmpty()
+        val sb = StringBuilder(label)
+        dv.date?.takeIf { it.isNotBlank() }?.let { sb.append(" — ").append(it) }
+        dv.status?.takeIf { it.isNotBlank() && it != "active" }?.let { sb.append(" (").append(it).append(")") }
         return sb.toString()
     }
 

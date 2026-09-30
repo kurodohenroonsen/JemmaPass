@@ -11,8 +11,8 @@ demo pillars but does not scale to the 18 IPS sections: `_j` only has room for
 (dates, statuses, lots, performers, values, units…) had nowhere to live.
 
 Decision (Kudoro, 2026-09-30): **the FHIR R4 IPS Bundle is the source of
-truth; `_j` becomes a projection.** Pillars migrate one by one; Immunizations
-is the first FHIR-native pillar.
+truth; `_j` becomes a projection.** Pillars migrate one by one: Immunizations
+(sprint 1), then Procedures + Medical Devices (sprint 2).
 
 ## Storage
 
@@ -20,7 +20,7 @@ is the first FHIR-native pillar.
 {externalFilesDir}/profiles/
 ├── {id}.json        JemmaProfileJ  — legacy-authored pillars (patient, allergies,
 │                                     medications, conditions, contacts) + the
-│                                     PROJECTION of the FHIR-native pillars (`im`, …)
+│                                     PROJECTION of the FHIR-native pillars (`im`, `pr`, `dv`, …)
 └── {id}.fhir.json   FHIR R4 Bundle — SOURCE OF TRUTH for the FHIR-native pillars
 ```
 
@@ -36,8 +36,9 @@ Who is authoritative when a `_j` profile is saved (`resolveNativePillars`):
 | `DEMO_SEED`                   | `JemmaPersonasSeeder.getDemoNativePillars()` |
 | anything else (QR, mesh, …)   | the incoming `_j` arrays (import wins)       |
 
-A Bundle written before this branch has no `Immunization` resources: the
-reader falls back to `_j.im`, and the next save migrates it into the Bundle.
+A Bundle written before a pillar went native has no resources for it: the
+reader falls back to that pillar's `_j` array (per pillar, `ifEmpty { fromJ }`),
+and the next save migrates it into the Bundle.
 
 Intra-bundle references are deterministic (`IpsFhirCodec.stableUrn(seed)` =
 `urn:uuid:` + UUIDv3 of `sid|ResourceType|identity`), so an unchanged profile
@@ -58,13 +59,40 @@ rebuilds to the same document.
 | Demo data        | `JemmaPersonasSeeder.getDemoNativePillars(sid)`                               |
 | Tests (JVM)      | `test/.../ips/IpsImmunizationCodecTest.kt`, `IpsImmunizationProjectionTest.kt` |
 
-### Checklist for the next pillar (Procedures, Devices, Results…)
+## Sprint 2 — Procedures 🏥 and Medical Devices 📟
+
+| Layer            | Procedures                                              | Medical devices                                                     |
+|------------------|---------------------------------------------------------|---------------------------------------------------------------------|
+| FHIR             | `Procedure` (Procedure-uv-ips), `performed[x]` DateTime or `performedString "unknown"`, `bodySite.text`, `outcome.text`, `performer[0].actor.display`, `location.display`, `note` | `Device` (Device-uv-ips: `type`, `status`, `patient`, `udiCarrier` GS1, `manufacturer`, `modelNumber`, `serialNumber`, `deviceName` patient-reported when free text) **+** `DeviceUseStatement` (DeviceUseStatement-uv-ips: `status`, `subject`, `device` → Device fullUrl, `timingDateTime`, `bodySite.text`, `note`) |
+| Section          | LOINC `47519-4` → Procedure fullUrls                    | LOINC `46264-8` → DeviceUseStatement fullUrls                       |
+| Domain           | `ips/IpsProcedure.kt` (`IpsProcedureStatus` = FHIR event-status) | `ips/IpsDevice.kt` (`IpsDeviceStatus` active / inactive / entered-in-error, mapped to `Device.status` and `DeviceUseStatement.status` active / completed / entered-in-error) |
+| `_j` projection  | `pr[]` — `c, cs (non-SNOMED), d_display, d (note), dt, st (non-completed)` | `dv[]` — `c, cs, d_display, d (note), dt, st (non-active)`   |
+| Store API        | `loadProcedures` / `saveProcedures`                     | `loadDevices` / `saveDevices`                                       |
+| Catalogs         | `pillars/IpsProcedureCatalog.kt` (12 SNOMED procedures, EN/FR/JA) + `IpsProcedureStatusCatalog` | `pillars/IpsDeviceCatalog.kt` (6 SNOMED devices) + `IpsDeviceStatusCatalog` |
+| Picker           | `KbDrugPickerDialog.newInstance(title, lang, category = "Procedure", suggestions, suggestionsSystem)` — catalog suggestions while the query is < 2 chars, then KB FTS5 on `terminology_codes.category`; when a KB row carries `snomed_code` the picker surfaces the SNOMED code instead of the UMLS CUI | same with `category = "Device"` |
+| UI               | `ui/profile/procedures/` (EditFragment, Adapter, FormBottomSheet) + 3 layouts + `strings_jemma_procedures_edit.xml` ×6 | `ui/profile/devices/` (+ UDI plausibility check: GS1 `(01)…`, HIBCC `+…`, ICCBBA `=…`, bare 8–14-digit GTIN) + `strings_jemma_devices_edit.xml` ×6 |
+| Wiring           | `dest_procedures`, `action_detail_to_procedures`, `action_gallery_to_procedures`, `renderProcedures` | `dest_devices`, `action_detail_to_devices`, `action_gallery_to_devices`, `renderDevices` |
+| Channels         | text QR `🏥 [ PROCEDURES ]` (25 langs), Gemma `getFocusProfileProcedures` | text QR `📟 [ MEDICAL DEVICES ]`, Gemma `getFocusProfileDevices`   |
+| Demo data        | Kurodo: appendectomy 1995-07-12, colonoscopy 2024-02-19 · Haru: CABG 2015-09-02, cesarean "1975" | Haru: pacemaker (UDI, Medtronic, 2021-03-15), hearing aid (Phonak, "2019-06") |
+| Tests (JVM)      | `test/.../ips/IpsProcedureDeviceCodecTest.kt` (round trips, JSON essentials, projections, bundle wiring, determinism) | idem |
+
+Knowledge base facts learnt from the device dump (`device-reports/kb/`):
+`terminology_codes` holds SNOMED CT (19 697 codes, no category) and UMLS
+(760 485 CUIs, categories Medication 135 541 · Condition 69 523 · Procedure
+51 470 · Device 14 048 · allergens · food); `ips_valuesets(_translations)`
+carries the IPS free sets — `procedures-snomed-ct-ips-free-set` (6 069),
+`medical-devices-snomed-ct-ips-free-set` (260), `problems-…` (70 956),
+`vaccines-…` (88), and the `results-*` sets (blood group, microorganism,
+presence/absence, radiology, specimen). **No LOINC table**: the Results
+pillar will need an in-app LOINC catalog for common lab observations.
+
+### Checklist for the next pillar (Results, Functional status, Pregnancy…)
 
 1. Tests first: FHIR round trip (full / minimal / edge dates / status
    normalisation), Bundle embedding + section wiring, projection contract.
 2. Domain class + `IpsNativePillars` field; `IpsFhirCodec.nativeOf()`.
 3. `JemmaFhirBundleBuilder.build()`: entries + `Composition.section`
-   (Procedures `47519-4`, Devices `46264-8`, Results `30954-2`).
+   (Results `30954-2`, Functional status `47420-5`, Pregnancy `10162-6`).
 4. `ProfilesRepository`: `load<Pillar>` / `save<Pillar>`; projection in
    `writeProfileFiles`; fallback in `readNativePillars`.
 5. UI + wiring + strings (values, en, fr, ja, de, nl, zh-rCN).
@@ -72,7 +100,7 @@ rebuilds to the same document.
 
 ## Known limits / next steps
 
-- Pocket Pass PDF does not print immunizations yet (≈55 pt free in column 1).
+- Pocket Pass PDF does not print immunizations / procedures / devices yet (≈55 pt free in column 1).
 - Mesh SOS chunks carry `im[].c` only; `guessSystem` tags all-digit codes as
   SNOMED (CVX codes would be mis-tagged — we default to SNOMED products).
 - Legacy pillars (patient, allergies, medications, conditions) are still

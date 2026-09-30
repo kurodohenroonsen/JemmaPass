@@ -111,7 +111,7 @@
                     android:layout_weight="1" />
                 <include
                     android:id="@+id/gallery_tile_procedures"
-                    layout="@layout/view_pillar_tile_stub"
+                    layout="@layout/view_pillar_tile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
@@ -125,7 +125,7 @@
                 android:paddingBottom="6dp">
                 <include
                     android:id="@+id/gallery_tile_devices"
-                    layout="@layout/view_pillar_tile_stub"
+                    layout="@layout/view_pillar_tile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />

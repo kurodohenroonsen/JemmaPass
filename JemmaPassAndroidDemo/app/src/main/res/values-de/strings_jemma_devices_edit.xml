@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_devices_edit.xml — JEMMA Pass · IPS-Säule „Medizinprodukte“ (DE) -->
+<resources>
+
+    <string name="devices_edit_title">Medizinprodukte</string>
+    <string name="devices_edit_hero_title">Medizinprodukte</string>
+    <string name="devices_fab_add_desc">Gerät hinzufügen</string>
+    <string name="devices_empty_default">Noch kein Gerät erfasst.\nTippe auf +, um ein Implantat oder Hilfsmittel hinzuzufügen.</string>
+    <string name="devices_empty_no_profile">Kein Profil ausgewählt. Erstelle oder wähle zuerst ein Profil.</string>
+    <string name="devices_unnamed">Unbenanntes Gerät</string>
+    <plurals name="devices_count">
+        <item quantity="zero">Kein Gerät</item>
+        <item quantity="one">%d Gerät</item>
+        <item quantity="other">%d Geräte</item>
+    </plurals>
+    <string name="devices_saved">Geräte gespeichert</string>
+    <string name="devices_save_failed">Geräte konnten nicht gespeichert werden</string>
+    <string name="devices_delete_title">Dieses Gerät löschen?</string>
+    <string name="devices_delete_message">„%1$s“ wird aus dem Profil entfernt.</string>
+    <string name="devices_delete_cancel">Abbrechen</string>
+    <string name="devices_delete_confirm">Löschen</string>
+    <string name="devices_date_unknown">Datum unbekannt</string>
+    <string name="devices_serial_short">S/N %1$s</string>
+    <string name="devices_udi_short">UDI %1$s</string>
+    <string name="device_form_title_create">📟  Gerät hinzufügen</string>
+    <string name="device_form_title_edit">📟  Gerät bearbeiten</string>
+    <string name="device_form_label_code">Gerät</string>
+    <string name="device_form_code_hint">Tippe, um ein Gerät zu wählen…</string>
+    <string name="device_form_code_clear_desc">Gerät löschen</string>
+    <string name="device_form_code_picker_title">Gerät wählen</string>
+    <string name="device_form_label_text">Oder Gerätenamen eingeben</string>
+    <string name="device_form_text_helper">Freitext, nur verwendet, wenn oben kein Gerät gewählt ist</string>
+    <string name="device_form_label_udi">UDI (Produktkennung)</string>
+    <string name="device_form_udi_helper">Vom Implantatausweis, z. B. (01)00643169007222(21)PJN1234567</string>
+    <string name="device_form_label_manufacturer">Hersteller</string>
+    <string name="device_form_label_model">Modell</string>
+    <string name="device_form_label_serial">Seriennummer</string>
+    <string name="device_form_label_date">In Gebrauch seit (Implantationsdatum)</string>
+    <string name="device_form_date_hint">Datum unbekannt — tippe zum Wählen</string>
+    <string name="device_form_date_clear_desc">Datum löschen</string>
+    <string name="device_form_date_pick_title">Datum der Implantation / ersten Verwendung</string>
+    <string name="device_form_label_status">Status</string>
+    <string name="device_form_status_pick_title">Gerätestatus</string>
+    <string name="device_form_label_body_site">Körperstelle</string>
+    <string name="device_form_label_note">Notiz</string>
+    <string name="device_form_note_helper">MRT-Tauglichkeit, Batteriekontrolle, Nachsorgezentrum…</string>
+    <string name="device_form_cancel">Abbrechen</string>
+    <string name="device_form_delete">Löschen</string>
+    <string name="device_form_save">Speichern</string>
+    <string name="device_form_validation_code">Wähle ein Gerät oder gib seinen Namen ein</string>
+    <string name="device_form_validation_udi">Das sieht nicht wie eine UDI aus — prüfe den Implantatausweis oder lass das Feld leer</string>
+    <string name="profile_detail_devices_title">📟 MEDIZINPRODUKTE (%1$d)</string>
+</resources>

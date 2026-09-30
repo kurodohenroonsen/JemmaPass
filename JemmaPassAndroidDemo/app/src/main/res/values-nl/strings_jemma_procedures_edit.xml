@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_procedures_edit.xml — JEMMA Pass · IPS-pijler „Ingrepen“ (NL) -->
+<resources>
+
+    <string name="procedures_edit_title">Ingrepen</string>
+    <string name="procedures_edit_hero_title">Ingrepen</string>
+    <string name="procedures_fab_add_desc">Ingreep toevoegen</string>
+    <string name="procedures_empty_default">Nog geen ingreep geregistreerd.\nTik op + om een operatie of ingreep toe te voegen.</string>
+    <string name="procedures_empty_no_profile">Geen profiel geselecteerd. Maak of kies eerst een profiel.</string>
+    <string name="procedures_unnamed">Naamloze ingreep</string>
+    <plurals name="procedures_count">
+        <item quantity="zero">Geen ingreep</item>
+        <item quantity="one">%d ingreep</item>
+        <item quantity="other">%d ingrepen</item>
+    </plurals>
+    <string name="procedures_saved">Ingrepen opgeslagen</string>
+    <string name="procedures_save_failed">Kon de ingrepen niet opslaan</string>
+    <string name="procedures_delete_title">Deze ingreep verwijderen?</string>
+    <string name="procedures_delete_message">“%1$s” wordt uit het profiel verwijderd.</string>
+    <string name="procedures_delete_cancel">Annuleren</string>
+    <string name="procedures_delete_confirm">Verwijderen</string>
+    <string name="procedures_date_unknown">Datum onbekend</string>
+    <string name="procedure_form_title_create">🏥  Ingreep toevoegen</string>
+    <string name="procedure_form_title_edit">🏥  Ingreep bewerken</string>
+    <string name="procedure_form_label_code">Ingreep</string>
+    <string name="procedure_form_code_hint">Tik om een ingreep te kiezen…</string>
+    <string name="procedure_form_code_clear_desc">Ingreep wissen</string>
+    <string name="procedure_form_code_picker_title">Kies een ingreep</string>
+    <string name="procedure_form_label_text">Of typ de naam van de ingreep</string>
+    <string name="procedure_form_text_helper">Vrije tekst, alleen gebruikt als hierboven geen ingreep is gekozen</string>
+    <string name="procedure_form_label_date">Datum van de ingreep</string>
+    <string name="procedure_form_date_hint">Datum onbekend — tik om te kiezen</string>
+    <string name="procedure_form_date_clear_desc">Datum wissen</string>
+    <string name="procedure_form_date_pick_title">Datum waarop de ingreep is uitgevoerd</string>
+    <string name="procedure_form_label_status">Status</string>
+    <string name="procedure_form_status_pick_title">Status van de ingreep</string>
+    <string name="procedure_form_label_body_site">Lichaamsdeel</string>
+    <string name="procedure_form_label_outcome">Uitkomst</string>
+    <string name="procedure_form_label_performer">Uitgevoerd door (chirurg / arts)</string>
+    <string name="procedure_form_label_location">Ziekenhuis / kliniek</string>
+    <string name="procedure_form_label_note">Notitie</string>
+    <string name="procedure_form_note_helper">Complicaties, achtergebleven materiaal, opvolging…</string>
+    <string name="procedure_form_cancel">Annuleren</string>
+    <string name="procedure_form_delete">Verwijderen</string>
+    <string name="procedure_form_save">Opslaan</string>
+    <string name="procedure_form_validation_code">Kies een ingreep of typ de naam</string>
+    <string name="profile_detail_procedures_title">🏥 INGREPEN (%1$d)</string>
+</resources>
