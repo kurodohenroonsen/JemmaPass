@@ -25,7 +25,7 @@ echo "|---|---|---|" >> "$OUT/steps.md"
 
 log "0. Device"
 "${ADB[@]}" get-state >/dev/null 2>&1 || { echo "no device attached (adb get-state)"; exit 2; }
-"${ADB[@]}" devices -l | tee "$OUT/logs/adb-devices.txt"
+"${ADB[@]}" devices -l | sed -E 's/^[A-Za-z0-9._:-]{6,}(  +| )/<serial> /; s/adb-[A-Za-z0-9-]+\._adb/adb-<serial>._adb/' | tee "$OUT/logs/adb-devices.txt"
 MODEL="$("${ADB[@]}" shell getprop ro.product.model | tr -d '\r')"
 ANDROID="$("${ADB[@]}" shell getprop ro.build.version.release | tr -d '\r')"
 {
