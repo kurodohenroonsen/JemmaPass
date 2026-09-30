@@ -2,7 +2,6 @@ name: Android CI
 
 on:
   push:
-    branches: ["**"]
     branches-ignore: ["ci-logs", "device-reports"]
     paths-ignore:
       - "README.md"
