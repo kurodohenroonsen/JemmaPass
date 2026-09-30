@@ -98,6 +98,8 @@ class IpsCodePickerDialog : DialogFragment() {
         private const val ARG_TITLE = "title"
         private const val ARG_ITEMS_CODES = "items_codes"
         private const val ARG_ITEMS_DISPLAYS = "items_displays"
+        /** Caller-provided normalised search keys (multilingual aliases). Parallel to the codes. */
+        private const val ARG_ITEMS_SEARCH = "items_search"
 
         // 🆕 L_PICKERS : 2 arrays parallèles pour le mapping code→prefix.
         // Si vide, fallback sur "code · display" (comportement legacy).
@@ -164,6 +166,9 @@ class IpsCodePickerDialog : DialogFragment() {
                     // 2 arrays parallèles — plus léger qu'un Parcelable
                     putStringArray(ARG_ITEMS_CODES, items.map { it.code }.toTypedArray())
                     putStringArray(ARG_ITEMS_DISPLAYS, items.map { it.display }.toTypedArray())
+                    // Keep the caller's search keys (e.g. EN + FR + JA aliases of a vaccine) so
+                    // a French user typing "influenza" still finds « Vaccin grippe saisonnière ».
+                    putStringArray(ARG_ITEMS_SEARCH, items.map { it.searchKey }.toTypedArray())
                     putStringArray(ARG_PREFIX_KEYS, codeToPrefix.keys.toTypedArray())
                     putStringArray(ARG_PREFIX_VALUES, codeToPrefix.values.toTypedArray())
                     putStringArray(ARG_CATEGORY_KEYS, codeToCategory.keys.toTypedArray())
@@ -315,7 +320,13 @@ class IpsCodePickerDialog : DialogFragment() {
         val categoryValues = args.getStringArray(ARG_CATEGORY_VALUES) ?: emptyArray()
         codeToCategory = categoryKeys.zip(categoryValues).toMap()
 
-        allItems = codes.zip(displays).map { (c, d) -> IpsPickerItem(c, d) }
+        val searchKeys = args.getStringArray(ARG_ITEMS_SEARCH)
+        allItems = codes.indices.map { i ->
+            val c = codes[i]
+            val d = displays.getOrElse(i) { "" }
+            val k = searchKeys?.getOrNull(i)?.takeIf { it.isNotBlank() }
+            if (k != null) IpsPickerItem(c, d, normalizeForPickerSearch("$k $c $d")) else IpsPickerItem(c, d)
+        }
         filteredItems = allItems.toMutableList()
 
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 📋 picker open · title='$title' · " +

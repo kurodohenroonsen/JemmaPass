@@ -24,6 +24,9 @@ data class VaccineEntry(
         "ja" -> displayJa
         else -> displayEn
     }
+
+    /** Every language at once, for pickers: a French user may type the international name. */
+    fun searchAliases(): String = "$code $displayEn $displayFr $displayJa"
 }
 
 data class ImmunizationStatusEntry(

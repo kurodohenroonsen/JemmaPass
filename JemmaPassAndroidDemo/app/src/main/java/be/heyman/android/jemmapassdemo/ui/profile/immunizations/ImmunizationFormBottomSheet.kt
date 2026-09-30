@@ -30,6 +30,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import be.heyman.android.jemmapassdemo.R
@@ -182,6 +183,17 @@ class ImmunizationFormBottomSheet : BottomSheetDialogFragment() {
         binding.immunizationFormDateClear.setOnClickListener { clearDate() }
         binding.immunizationFormStatusRow.setOnClickListener { openStatusPicker() }
 
+        // Inline errors clear as soon as the user edits the offending field.
+        binding.immunizationFormText.doAfterTextChanged { binding.immunizationFormTextLayout.error = null }
+        binding.immunizationFormDoseNumber.doAfterTextChanged {
+            binding.immunizationFormDoseNumberLayout.error = null
+            binding.immunizationFormSeriesDosesLayout.error = null
+        }
+        binding.immunizationFormSeriesDoses.doAfterTextChanged {
+            binding.immunizationFormDoseNumberLayout.error = null
+            binding.immunizationFormSeriesDosesLayout.error = null
+        }
+
         binding.immunizationFormCancelBtn.setOnClickListener {
             Log.i(TAG, "[t=${System.currentTimeMillis()}] ↩ cancel")
             dismiss()
@@ -257,7 +269,7 @@ class ImmunizationFormBottomSheet : BottomSheetDialogFragment() {
             val items = mutableListOf<IpsPickerItem>()
             val prefixes = mutableMapOf<String, String>()
             curated.forEach { v ->
-                items.add(IpsPickerItem(code = v.code, display = v.pick(lang)))
+                items.add(IpsPickerItem(code = v.code, display = v.pick(lang), searchKey = v.searchAliases()))
                 prefixes[v.code] = v.emoji
             }
             // Second tier : every SNOMED "vaccine product" of the bundled asset
@@ -273,7 +285,7 @@ class ImmunizationFormBottomSheet : BottomSheetDialogFragment() {
                 emptyList()
             }
             assetVaccines.sortedBy { it.second.pick(lang) }.forEach { (code, t) ->
-                items.add(IpsPickerItem(code = code, display = t.pick(lang)))
+                items.add(IpsPickerItem(code = code, display = t.pick(lang), searchKey = "$code ${t.en} ${t.fr} ${t.ja}"))
             }
             if (_binding == null) return@launch
             IpsCodePickerDialog
@@ -366,33 +378,46 @@ class ImmunizationFormBottomSheet : BottomSheetDialogFragment() {
 
     // ─── Submit ──────────────────────────────────────────────────────
 
+    /** Inline error on the field (persistent, red) + toast (visible even if the field is scrolled away). */
+    private fun reject(layout: com.google.android.material.textfield.TextInputLayout, field: View, @androidx.annotation.StringRes msgRes: Int, why: String) {
+        Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ validation: $why")
+        layout.error = getString(msgRes)
+        Toast.makeText(requireContext(), msgRes, Toast.LENGTH_SHORT).show()
+        field.requestFocus()
+        binding.immunizationFormSaveBtn.isEnabled = true
+    }
+
     private fun trySubmit() {
+        // Debounce: a second tap before dismiss() must not emit a second result.
+        if (!binding.immunizationFormSaveBtn.isEnabled) return
+        binding.immunizationFormSaveBtn.isEnabled = false
+
         val code = pickedCode?.takeIf { it.isNotBlank() }
         val freeText = binding.immunizationFormText.text?.toString()?.trim().orEmpty()
         val doseNumberStr = binding.immunizationFormDoseNumber.text?.toString()?.trim().orEmpty()
         val seriesDosesStr = binding.immunizationFormSeriesDoses.text?.toString()?.trim().orEmpty()
 
         if (code == null && freeText.isBlank()) {
-            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ validation: no vaccine picked nor typed")
-            Toast.makeText(requireContext(), R.string.immunization_form_validation_vaccine, Toast.LENGTH_SHORT).show()
+            reject(binding.immunizationFormTextLayout, binding.immunizationFormText,
+                R.string.immunization_form_validation_vaccine, "no vaccine picked nor typed")
             return
         }
 
         val doseNumber = doseNumberStr.toIntOrNull()
         if (doseNumberStr.isNotBlank() && (doseNumber == null || doseNumber <= 0)) {
-            Toast.makeText(requireContext(), R.string.immunization_form_validation_dose, Toast.LENGTH_SHORT).show()
-            binding.immunizationFormDoseNumber.requestFocus()
+            reject(binding.immunizationFormDoseNumberLayout, binding.immunizationFormDoseNumber,
+                R.string.immunization_form_validation_dose, "dose number invalid '$doseNumberStr'")
             return
         }
         val seriesDoses = seriesDosesStr.toIntOrNull()
         if (seriesDosesStr.isNotBlank() && (seriesDoses == null || seriesDoses <= 0)) {
-            Toast.makeText(requireContext(), R.string.immunization_form_validation_dose, Toast.LENGTH_SHORT).show()
-            binding.immunizationFormSeriesDoses.requestFocus()
+            reject(binding.immunizationFormSeriesDosesLayout, binding.immunizationFormSeriesDoses,
+                R.string.immunization_form_validation_dose, "series doses invalid '$seriesDosesStr'")
             return
         }
         if (doseNumber != null && seriesDoses != null && doseNumber > seriesDoses) {
-            Toast.makeText(requireContext(), R.string.immunization_form_validation_series, Toast.LENGTH_SHORT).show()
-            binding.immunizationFormSeriesDoses.requestFocus()
+            reject(binding.immunizationFormSeriesDosesLayout, binding.immunizationFormSeriesDoses,
+                R.string.immunization_form_validation_series, "dose $doseNumber > series $seriesDoses")
             return
         }
 
