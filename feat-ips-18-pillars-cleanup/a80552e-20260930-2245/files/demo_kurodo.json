@@ -1,0 +1,112 @@
+{
+  "_j": "1.2",
+  "p": {
+    "gn": "Kurodo",
+    "fn": "Henro",
+    "gs": "M",
+    "bd": "1979-04-04",
+    "nat": "BE",
+    "bt": "A+",
+    "adr": "Rue de la Paix 12, 5660 Couvin, Belgique",
+    "idn": "BE-680412-123-45",
+    "ids": [],
+    "adrs": [],
+    "tels": [],
+    "lang": "fr-FR",
+    "ct": [
+      {
+        "n": "Kamekichi",
+        "r": "friend",
+        "adr": "75 Avenue Louise, Bruxelles"
+      }
+    ]
+  },
+  "al": [
+    {
+      "c": "91936005",
+      "s": "H",
+      "st": "A",
+      "d": "Allergy to penicillin",
+      "m": "Anaphylactic shock 2019-03",
+      "d_display": "ペニシリンアレルギー · Allergie à la pénicilline",
+      "cs": "http://snomed.info/sct",
+      "cat": "medication",
+      "rxns": []
+    },
+    {
+      "c": "232347008",
+      "s": "H",
+      "st": "A",
+      "d": "Allergy to fish",
+      "m": "Urticaria + tongue swelling",
+      "d_display": "魚アレルギー · Allergie au poisson",
+      "cs": "http://snomed.info/sct",
+      "cat": "food",
+      "rxns": []
+    },
+    {
+      "c": "419263009",
+      "s": "L",
+      "st": "A",
+      "d": "Allergy to tree pollen",
+      "d_display": "花粉症 · Pollinose",
+      "cs": "http://snomed.info/sct",
+      "cat": "environment",
+      "rxns": []
+    }
+  ],
+  "md": [],
+  "cn": [],
+  "ph": [],
+  "im": [
+    {
+      "c": "871876003",
+      "d_display": "Tetanus-diphtheria-pertussis (Tdap)",
+      "dt": "2022-05-17"
+    },
+    {
+      "c": "871803007",
+      "d": "Series completed before the first Shikoku pilgrimage",
+      "d_display": "Hepatitis A + B vaccine",
+      "dt": "2016-03-02",
+      "dn": 3
+    },
+    {
+      "c": "836378001",
+      "d_display": "Japanese encephalitis vaccine",
+      "dt": "2023-01-20",
+      "dn": 2
+    },
+    {
+      "c": "1119349007",
+      "d_display": "COVID-19 mRNA vaccine",
+      "dt": "2021-06-11",
+      "dn": 2
+    }
+  ],
+  "pr": [
+    {
+      "c": "80146002",
+      "d": "Laparoscopic",
+      "d_display": "Appendectomy",
+      "dt": "1995-07-12"
+    },
+    {
+      "c": "73761001",
+      "d": "Next screening 2034",
+      "d_display": "Colonoscopy",
+      "dt": "2024-02-19"
+    }
+  ],
+  "dv": [],
+  "fs": [],
+  "pg": [],
+  "rs": [],
+  "ad": [],
+  "cs": [],
+  "gl": [],
+  "en": [],
+  "oc": [],
+  "pv": [],
+  "sid": "demo_kurodo"
+}

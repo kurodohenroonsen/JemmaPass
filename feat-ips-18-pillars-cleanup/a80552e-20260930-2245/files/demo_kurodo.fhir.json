@@ -1,0 +1,507 @@
+{
+    "resourceType": "Bundle",
+    "type": "document",
+    "timestamp": "2026-09-30T20:49:32.071Z",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:87752277-1319-36dc-89bc-84401f621cde",
+            "resource": {
+                "resourceType": "Composition",
+                "status": "final",
+                "type": {
+                    "coding": [
+                        {
+                            "system": "http://loinc.org",
+                            "code": "60591-5",
+                            "display": "Patient summary Document"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+                },
+                "date": "2026-09-30T20:49:32.058Z",
+                "author": [
+                    {
+                        "display": "JEMMA Pass on-device"
+                    }
+                ],
+                "title": "International Patient Summary",
+                "confidentiality": "N",
+                "section": [
+                    {
+                        "title": "Allergies",
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "48765-2"
+                                }
+                            ]
+                        },
+                        "entry": [
+                            {
+                                "reference": "urn:uuid:7aa6d0b0-0f52-30aa-a629-6f4e6458f5c7"
+                            },
+                            {
+                                "reference": "urn:uuid:8958c3b4-5b45-3fad-becc-7a4371eb0260"
+                            },
+                            {
+                                "reference": "urn:uuid:022f7ed5-e2b8-34d3-b410-43637b00d2b7"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Immunizations",
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "11369-6",
+                                    "display": "History of Immunization Narrative"
+                                }
+                            ]
+                        },
+                        "entry": [
+                            {
+                                "reference": "urn:uuid:53d9a549-9968-3e73-92eb-cfdbc04879bc"
+                            },
+                            {
+                                "reference": "urn:uuid:bb2daf49-a43f-3738-9fc7-8882d8bddc67"
+                            },
+                            {
+                                "reference": "urn:uuid:8fa2fdf0-9d8b-38ef-a038-01790dfaca5c"
+                            },
+                            {
+                                "reference": "urn:uuid:4f6e47c5-601e-3cc5-bd06-49685ef16e94"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "History of Procedures",
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "47519-4",
+                                    "display": "History of Procedures Document"
+                                }
+                            ]
+                        },
+                        "entry": [
+                            {
+                                "reference": "urn:uuid:dae4d977-5d62-3129-b704-46e606ca9930"
+                            },
+                            {
+                                "reference": "urn:uuid:8b292a6e-8347-3d6d-86ab-d27b91623d54"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1",
+            "resource": {
+                "resourceType": "Patient",
+                "id": "patient-01",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips"
+                    ]
+                },
+                "extension": [
+                    {
+                        "url": "http://jemmapass.net/fhir/StructureDefinition/blood-type",
+                        "valueString": "A+"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Henro",
+                        "given": [
+                            "Kurodo"
+                        ]
+                    }
+                ],
+                "gender": "male",
+                "birthDate": "1979-04-04",
+                "address": [
+                    {
+                        "text": "Rue de la Paix 12, 5660 Couvin, Belgique",
+                        "line": [
+                            "Rue de la Paix 12, 5660 Couvin, Belgique"
+                        ]
+                    }
+                ],
+                "contact": [
+                    {
+                        "relationship": [
+                            {
+                                "text": "friend"
+                            }
+                        ],
+                        "name": {
+                            "text": "Kamekichi"
+                        }
+                    }
+                ],
+                "communication": [
+                    {
+                        "language": {
+                            "coding": [
+                                {
+                                    "system": "urn:ietf:bcp:47",
+                                    "code": "fr-FR"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:7aa6d0b0-0f52-30aa-a629-6f4e6458f5c7",
+            "resource": {
+                "resourceType": "AllergyIntolerance",
+                "clinicalStatus": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+                            "code": "active"
+                        }
+                    ]
+                },
+                "verificationStatus": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+                            "code": "confirmed"
+                        }
+                    ]
+                },
+                "type": "allergy",
+                "criticality": "high",
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "91936005",
+                            "display": "Allergy to penicillin"
+                        }
+                    ],
+                    "text": "Allergy to penicillin"
+                },
+                "patient": {
+                    "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+                }
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8958c3b4-5b45-3fad-becc-7a4371eb0260",
+            "resource": {
+                "resourceType": "AllergyIntolerance",
+                "clinicalStatus": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+                            "code": "active"
+                        }
+                    ]
+                },
+                "verificationStatus": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+                            "code": "confirmed"
+                        }
+                    ]
+                },
+                "type": "allergy",
+                "criticality": "high",
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "232347008",
+                            "display": "Allergy to fish"
+                        }
+                    ],
+                    "text": "Allergy to fish"
+                },
+                "patient": {
+                    "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+                }
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:022f7ed5-e2b8-34d3-b410-43637b00d2b7",
+            "resource": {
+                "resourceType": "AllergyIntolerance",
+                "clinicalStatus": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+                            "code": "active"
+                        }
+                    ]
+                },
+                "verificationStatus": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+                            "code": "confirmed"
+                        }
+                    ]
+                },
+                "type": "allergy",
+                "criticality": "low",
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "419263009",
+                            "display": "Allergy to tree pollen"
+                        }
+                    ],
+                    "text": "Allergy to tree pollen"
+                },
+                "patient": {
+                    "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+                }
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:53d9a549-9968-3e73-92eb-cfdbc04879bc",
+            "resource": {
+                "resourceType": "Immunization",
+                "id": "im-kurodo-tdap-2022",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/uv/ips/StructureDefinition/Immunization-uv-ips"
+                    ]
+                },
+                "status": "completed",
+                "vaccineCode": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "871876003",
+                            "display": "Tetanus-diphtheria-pertussis (Tdap)"
+                        }
+                    ],
+                    "text": "Tetanus-diphtheria-pertussis (Tdap)"
+                },
+                "patient": {
+                    "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+                },
+                "manufacturer": {
+                    "display": "Sanofi Pasteur"
+                },
+                "lotNumber": "AC52B213BC",
+                "performer": [
+                    {
+                        "actor": {
+                            "display": "Dr. Lambert, Couvin"
+                        }
+                    }
+                ],
+                "occurrenceDateTime": "2022-05-17"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:bb2daf49-a43f-3738-9fc7-8882d8bddc67",
+            "resource": {
+                "resourceType": "Immunization",
+                "id": "im-kurodo-hepab-2016",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/uv/ips/StructureDefinition/Immunization-uv-ips"
+                    ]
+                },
+                "status": "completed",
+                "vaccineCode": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "871803007",
+                            "display": "Hepatitis A + B vaccine"
+                        }
+                    ],
+                    "text": "Hepatitis A + B vaccine"
+                },
+                "patient": {
+                    "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+                },
+                "manufacturer": {
+                    "display": "GSK"
+                },
+                "note": [
+                    {
+                        "text": "Series completed before the first Shikoku pilgrimage"
+                    }
+                ],
+                "protocolApplied": [
+                    {
+                        "doseNumberPositiveInt": 3,
+                        "seriesDosesPositiveInt": 3
+                    }
+                ],
+                "occurrenceDateTime": "2016-03-02"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8fa2fdf0-9d8b-38ef-a038-01790dfaca5c",
+            "resource": {
+                "resourceType": "Immunization",
+                "id": "im-kurodo-je-2023",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/uv/ips/StructureDefinition/Immunization-uv-ips"
+                    ]
+                },
+                "status": "completed",
+                "vaccineCode": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "836378001",
+                            "display": "Japanese encephalitis vaccine"
+                        }
+                    ],
+                    "text": "Japanese encephalitis vaccine"
+                },
+                "patient": {
+                    "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+                },
+                "manufacturer": {
+                    "display": "Valneva"
+                },
+                "protocolApplied": [
+                    {
+                        "doseNumberPositiveInt": 2,
+                        "seriesDosesPositiveInt": 2
+                    }
+                ],
+                "occurrenceDateTime": "2023-01-20"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4f6e47c5-601e-3cc5-bd06-49685ef16e94",
+            "resource": {
+                "resourceType": "Immunization",
+                "id": "im-kurodo-covid-2021",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/uv/ips/StructureDefinition/Immunization-uv-ips"
+                    ]
+                },
+                "status": "completed",
+                "vaccineCode": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "1119349007",
+                            "display": "COVID-19 mRNA vaccine"
+                        }
+                    ],
+                    "text": "COVID-19 mRNA vaccine"
+                },
+                "patient": {
+                    "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+                },
+                "manufacturer": {
+                    "display": "Pfizer-BioNTech"
+                },
+                "lotNumber": "FD0168",
+                "protocolApplied": [
+                    {
+                        "doseNumberPositiveInt": 2,
+                        "seriesDosesPositiveInt": 2
+                    }
+                ],
+                "occurrenceDateTime": "2021-06-11"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:dae4d977-5d62-3129-b704-46e606ca9930",
+            "resource": {
+                "resourceType": "Procedure",
+                "id": "pr-kurodo-appendectomy-1995",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/uv/ips/StructureDefinition/Procedure-uv-ips"
+                    ]
+                },
+                "status": "completed",
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "80146002",
+                            "display": "Appendectomy"
+                        }
+                    ],
+                    "text": "Appendectomy"
+                },
+                "subject": {
+                    "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+                },
+                "location": {
+                    "display": "CHU UCL Namur (Godinne)"
+                },
+                "outcome": {
+                    "text": "Uneventful recovery"
+                },
+                "note": [
+                    {
+                        "text": "Laparoscopic"
+                    }
+                ],
+                "performedDateTime": "1995-07-12"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8b292a6e-8347-3d6d-86ab-d27b91623d54",
+            "resource": {
+                "resourceType": "Procedure",
+                "id": "pr-kurodo-colonoscopy-2024",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/uv/ips/StructureDefinition/Procedure-uv-ips"
+                    ]
+                },
+                "status": "completed",
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "73761001",
+                            "display": "Colonoscopy"
+                        }
+                    ],
+                    "text": "Colonoscopy"
+                },
+                "subject": {
+                    "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+                },
+                "performer": [
+                    {
+                        "actor": {
+                            "display": "Dr. Lambert, Couvin"
+                        }
+                    }
+                ],
+                "outcome": {
+                    "text": "Normal — screening"
+                },
+                "note": [
+                    {
+                        "text": "Next screening 2034"
+                    }
+                ],
+                "performedDateTime": "2024-02-19"
+            }
+        }
+    ]
+}
