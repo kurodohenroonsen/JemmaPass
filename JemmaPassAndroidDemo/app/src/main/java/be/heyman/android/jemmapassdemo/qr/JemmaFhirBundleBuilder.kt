@@ -3,9 +3,18 @@
  *
  * Refactored to use the official Kotlin-FHIR SDK (dev.ohs.fhir).
  * Fixed enum references and casing for all FHIR resources.
+ *
+ * FHIR-native pillars (feat/ips-18-pillars-cleanup):
+ *   • `build()` now also takes the [IpsNativePillars] that live ONLY in the
+ *     Bundle (Immunizations first) and appends their resources + IPS sections.
+ *   • Intra-bundle `urn:uuid:` references are deterministic (derived from the
+ *     profile sid + resource identity) so a rebuild of an unchanged profile
+ *     yields the same document — no more random UUIDs on every save.
  */
 package be.heyman.android.jemmapassdemo.qr
 
+import be.heyman.android.jemmapassdemo.ips.IpsFhirCodec
+import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
 import be.heyman.android.jemmapassdemo.kb.HydratedProfile
 import dev.ohs.fhir.model.r4.AllergyIntolerance
 import dev.ohs.fhir.model.r4.Bundle
@@ -35,7 +44,6 @@ import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.AdministrativeGender
 import com.ionspin.kotlin.bignum.decimal.toBigDecimal
-import java.util.UUID
 import java.util.Date
 import java.util.TimeZone
 import java.text.SimpleDateFormat
@@ -65,17 +73,19 @@ object JemmaFhirBundleBuilder {
      * Construit un Bundle FHIR R4 type "document" depuis le profile
      * hydraté. Retourne le JSON sérialisé pretty-printed.
      */
-    fun build(hydrated: HydratedProfile): kotlin.String {
+    fun build(hydrated: HydratedProfile, native: IpsNativePillars = IpsNativePillars.EMPTY): kotlin.String {
         val t0 = java.lang.System.currentTimeMillis()
 
-        // URNs pour cross-référencement intra-bundle.
-        val patientUrn = "urn:uuid:${UUID.randomUUID()}"
-        val compositionUrn = "urn:uuid:${UUID.randomUUID()}"
+        // URNs pour cross-référencement intra-bundle — déterministes (sid + identité).
+        val sid = hydrated.raw.sid?.takeIf { it.isNotBlank() } ?: "no-sid"
+        val patientUrn = IpsFhirCodec.stableUrn("$sid|Patient")
+        val compositionUrn = IpsFhirCodec.stableUrn("$sid|Composition")
         
-        val allergyUrns = hydrated.allergies.map { "urn:uuid:${UUID.randomUUID()}" }
-        val medStatementUrns = hydrated.medications.map { "urn:uuid:${UUID.randomUUID()}" }
-        val medRefUrns = hydrated.medications.map { "urn:uuid:${UUID.randomUUID()}" }
-        val conditionUrns = hydrated.conditions.map { "urn:uuid:${UUID.randomUUID()}" }
+        val allergyUrns = hydrated.allergies.mapIndexed { i, a -> IpsFhirCodec.stableUrn("$sid|AllergyIntolerance|$i|${a.raw.c.orEmpty()}") }
+        val medStatementUrns = hydrated.medications.mapIndexed { i, m -> IpsFhirCodec.stableUrn("$sid|MedicationStatement|$i|${m.raw.c.orEmpty()}") }
+        val medRefUrns = hydrated.medications.mapIndexed { i, m -> IpsFhirCodec.stableUrn("$sid|Medication|$i|${m.raw.c.orEmpty()}") }
+        val conditionUrns = hydrated.conditions.mapIndexed { i, c -> IpsFhirCodec.stableUrn("$sid|Condition|$i|${c.raw.c.orEmpty()}") }
+        val immunizationUrns = native.immunizations.map { im -> IpsFhirCodec.immunizationUrn(sid, im.id) }
 
         val nowIsoBuilder = nowDateTimeBuilder()
 
@@ -318,11 +328,20 @@ object JemmaFhirBundleBuilder {
             })
         }
 
+        // 2b. FHIR-native pillars (source of truth = the Bundle itself)
+        native.immunizations.forEachIndexed { i, im ->
+            bundleEntries.add(Bundle.Entry.Builder().apply {
+                fullUrl = Uri.Builder().apply { value = immunizationUrns[i] }
+                resource = IpsFhirCodec.toFhir(im, patientUrn)
+            })
+        }
+
         // 3. Composition Resource
         val sections = listOfNotNull(
             sectionStub("Allergies", "48765-2", allergyUrns, hydrated.allergies),
             sectionStub("Medications", "10160-0", medStatementUrns, hydrated.medications),
             sectionStub("Problems", "11450-4", conditionUrns, hydrated.conditions),
+            IpsFhirCodec.immunizationSection(immunizationUrns),
         ).map { it.build() }
         
         val composition = Composition.Builder(

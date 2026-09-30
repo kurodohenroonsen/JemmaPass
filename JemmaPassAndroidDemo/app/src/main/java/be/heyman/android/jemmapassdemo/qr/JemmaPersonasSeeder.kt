@@ -6,8 +6,68 @@ import be.heyman.android.jemmapassdemo.qr.JContact
 import be.heyman.android.jemmapassdemo.qr.JAllergy
 import be.heyman.android.jemmapassdemo.qr.JMedication
 import be.heyman.android.jemmapassdemo.qr.JCondition
+import be.heyman.android.jemmapassdemo.ips.IpsCodeSystems
+import be.heyman.android.jemmapassdemo.ips.IpsImmunization
+import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
 
 object JemmaPersonasSeeder {
+
+    const val SID_KURODO = "demo_kurodo"
+    const val SID_KAMEKICHI = "demo_kamekichi"
+    const val SID_HARU = "demo_haru"
+
+    /**
+     * FHIR-native demo data per persona (Immunizations). Stable ids so the
+     * seeded Bundles are reproducible; null when a persona has none.
+     */
+    fun getDemoNativePillars(sid: String): IpsNativePillars? = when (sid) {
+        SID_KURODO -> IpsNativePillars(
+            immunizations = listOf(
+                IpsImmunization(
+                    id = "im-kurodo-tdap-2022", code = "871876003", system = IpsCodeSystems.SNOMED,
+                    display = "Tetanus-diphtheria-pertussis (Tdap)", date = "2022-05-17",
+                    lotNumber = "AC52B213BC", manufacturer = "Sanofi Pasteur",
+                    performer = "Dr. Lambert, Couvin",
+                ),
+                IpsImmunization(
+                    id = "im-kurodo-hepab-2016", code = "871803007", system = IpsCodeSystems.SNOMED,
+                    display = "Hepatitis A + B vaccine", date = "2016-03-02",
+                    doseNumber = 3, seriesDoses = 3, manufacturer = "GSK",
+                    note = "Series completed before the first Shikoku pilgrimage",
+                ),
+                IpsImmunization(
+                    id = "im-kurodo-je-2023", code = "836378001", system = IpsCodeSystems.SNOMED,
+                    display = "Japanese encephalitis vaccine", date = "2023-01-20",
+                    doseNumber = 2, seriesDoses = 2, manufacturer = "Valneva",
+                ),
+                IpsImmunization(
+                    id = "im-kurodo-covid-2021", code = "1119349007", system = IpsCodeSystems.SNOMED,
+                    display = "COVID-19 mRNA vaccine", date = "2021-06-11",
+                    doseNumber = 2, seriesDoses = 2, lotNumber = "FD0168", manufacturer = "Pfizer-BioNTech",
+                ),
+            )
+        )
+        SID_HARU -> IpsNativePillars(
+            immunizations = listOf(
+                IpsImmunization(
+                    id = "im-haru-flu-2025", code = "1181000221105", system = IpsCodeSystems.SNOMED,
+                    display = "Seasonal influenza vaccine", date = "2025-10-14",
+                    performer = "青森市民病院", note = "定期接種（高齢者）",
+                ),
+                IpsImmunization(
+                    id = "im-haru-pcv-2021", code = "1801000221105", system = IpsCodeSystems.SNOMED,
+                    display = "Pneumococcal conjugate vaccine (PCV)", date = "2021-04-06",
+                    doseNumber = 1, seriesDoses = 1,
+                ),
+                IpsImmunization(
+                    id = "im-haru-covid-2024", code = "1119349007", system = IpsCodeSystems.SNOMED,
+                    display = "COVID-19 mRNA vaccine", date = "2024-11-02",
+                    doseNumber = 7, lotNumber = "HG1282", manufacturer = "Pfizer-BioNTech",
+                ),
+            )
+        )
+        else -> null
+    }
 
     fun getDemoProfiles(): List<JemmaProfileJ> {
         val kurodo = JemmaProfileJ(

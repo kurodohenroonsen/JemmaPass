@@ -347,6 +347,17 @@ data class JEntryGeneric(
     @Json(name = "c") val c: String? = null,
     @Json(name = "d") val d: String? = null,
     @Json(name = "d_display") val displayLabel: String? = null,
+    // ── Optional compact fields (all default to null → omitted from JSON;
+    //    older `_j 1.2` readers ignore unknown keys). Filled by the
+    //    FHIR-native pillars' projections (Immunizations first).
+    /** Occurrence / performed date: YYYY, YYYY-MM or YYYY-MM-DD. */
+    @Json(name = "dt") val date: String? = null,
+    /** Code system URI when it is not SNOMED CT (e.g. CVX, ATC). */
+    @Json(name = "cs") val codeSystem: String? = null,
+    /** FHIR status when it is not the pillar default (e.g. "not-done"). */
+    @Json(name = "st") val status: String? = null,
+    /** Dose number in a series (immunizations). */
+    @Json(name = "dn") val doseNumber: Int? = null,
 )
 
 // ──────────────────────────────────────────────────────────────────────

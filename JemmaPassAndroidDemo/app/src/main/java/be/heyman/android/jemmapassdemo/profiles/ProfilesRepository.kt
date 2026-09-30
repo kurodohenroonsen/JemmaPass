@@ -20,9 +20,19 @@
  * Storage layout :
  *
  *   {externalFilesDir}/profiles/
- *     ├── {profileId}.json                ← full JemmaProfileJ payload (Moshi)
- *     ├── {profileId}.json
+ *     ├── {profileId}.json                ← JemmaProfileJ payload (Moshi) — legacy-authored
+ *     │                                      pillars (patient/allergies/meds/conditions) +
+ *     │                                      the pruned PROJECTION of the FHIR-native ones
+ *     ├── {profileId}.fhir.json           ← FHIR R4 IPS Bundle — SOURCE OF TRUTH for the
+ *     │                                      FHIR-native pillars (Immunizations first)
  *     └── ...
+ *
+ * FHIR-native pillars (feat/ips-18-pillars-cleanup) :
+ *   • Every write goes through [writeProfileFiles] which regenerates BOTH files
+ *     from (JemmaProfileJ, IpsNativePillars), so `_j.im` is always the
+ *     projection of the Bundle's Immunization resources.
+ *   • [resolveNativePillars] decides who is authoritative on a `_j` save :
+ *     local edits keep the Bundle, imports (QR / mesh) take the incoming `_j`.
  *
  *   SharedPreferences "jemma_profiles_prefs" :
  *     ├── currentProfileId : String?      ← the active profile id
@@ -39,6 +49,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
+import be.heyman.android.jemmapassdemo.ips.IpsFhirCodec
+import be.heyman.android.jemmapassdemo.ips.IpsImmunization
+import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
+import be.heyman.android.jemmapassdemo.qr.JemmaFhirBundleBuilder
+import be.heyman.android.jemmapassdemo.qr.JemmaPersonasSeeder
 import be.heyman.android.jemmapassdemo.qr.JemmaProfileJ
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -67,6 +82,9 @@ class ProfilesRepository @Inject constructor(
         private const val DIR_NAME = "profiles"
         private const val PREFS_NAME = "jemma_profiles_prefs"
         private const val KEY_CURRENT_PROFILE_ID = "currentProfileId"
+
+        const val SOURCE_MANUAL_EDIT = "MANUAL_EDIT"
+        const val SOURCE_DEMO_SEED = "DEMO_SEED"
     }
 
     private val profilesDir: File
@@ -115,25 +133,18 @@ class ProfilesRepository @Inject constructor(
 
             // 🆕 Seed demo profiles only if they do not exist to prevent losing user modifications on restart
             try {
-                val demoProfiles = be.heyman.android.jemmapassdemo.qr.JemmaPersonasSeeder.getDemoProfiles()
+                val demoProfiles = JemmaPersonasSeeder.getDemoProfiles()
                 for (demo in demoProfiles) {
                     val id = demo.sid ?: continue
                     val file = File(profilesDir, "$id.json")
                     
                     if (!file.exists()) {
-                        // Seed the JSON file on the device if it doesn't exist
-                        file.writeText(profileAdapter.toJson(demo))
-                        
-                        // Pre-hydrate and generate the FHIR IPS JSON too
-                        try {
-                            val hydrated = hydrator.hydrate(demo)
-                            val fhirJson = be.heyman.android.jemmapassdemo.qr.JemmaFhirBundleBuilder.build(hydrated)
-                            val fhirFile = File(profilesDir, "$id.fhir.json")
-                            fhirFile.writeText(fhirJson)
-                            Log.d(TAG, "⭐ Seeded demo profile files for $id")
-                        } catch (ex: Throwable) {
-                            Log.e(TAG, "⚠️ Failed to pre-generate FHIR IPS for demo $id : ${ex.message}")
-                        }
+                        // Seed both files (JSON projection + FHIR Bundle) through the
+                        // single write path so the demo immunizations land in the Bundle.
+                        val native = JemmaPersonasSeeder.getDemoNativePillars(id)
+                            ?: IpsNativePillars.fromJEntries(demo.im)
+                        writeProfileFiles(id, demo, native)
+                        Log.d(TAG, "⭐ Seeded demo profile files for $id")
                     } else {
                         Log.d(TAG, "⭐ Demo profile $id already exists on disk. Skipping seeding to preserve user modifications.")
                     }
@@ -171,24 +182,13 @@ class ProfilesRepository @Inject constructor(
         val id = profile.sid?.takeIf { it.isNotBlank() } ?: generateNewId()
         val tStart = System.currentTimeMillis()
         val file = File(profilesDir, "$id.json")
-        val fhirFile = File(profilesDir, "$id.fhir.json")
         val alreadyExisted = file.exists()
 
         try {
-            // 1. Save standard JemmaProfileJ (for QR/Nearby)
-            file.writeText(profileAdapter.toJson(profile))
-            
-            // 2. 🏥 Generate and Save Full FHIR IPS (for Hospital Interop)
-            // Using the new JemmaFhirBundleBuilder backed by kotlin-fhir SDK.
-            try {
-                val hydrated = hydrator.hydrate(profile)
-                val fhirJson = be.heyman.android.jemmapassdemo.qr.JemmaFhirBundleBuilder.build(hydrated)
-                fhirFile.writeText(fhirJson)
-                Log.i(TAG, "[t=${System.currentTimeMillis()}] 🏥 IPS FHIR profile saved for $id (${fhirJson.length} bytes)")
-            } catch (e: Throwable) {
-                Log.e(TAG, "⚠️ Failed to generate FHIR IPS for $id : ${e.message}", e)
-                // We don't fail the whole save because the core profile is saved.
-            }
+            // FHIR-native pillars : decide who is authoritative for this save,
+            // then regenerate BOTH files (JSON projection + FHIR Bundle).
+            val native = resolveNativePillars(id, profile, sourceFormat)
+            writeProfileFiles(id, profile, native)
 
             Log.i(
                 TAG,
@@ -223,6 +223,111 @@ class ProfilesRepository @Inject constructor(
     suspend fun loadIpsProfile(id: String): String? = withContext(Dispatchers.IO) {
         val file = File(profilesDir, "$id.fhir.json")
         if (file.exists()) file.readText() else null
+    }
+
+    // ──────────────────────────────────────────────────────────────────────
+    // FHIR-native pillars (source of truth = {id}.fhir.json)
+    // ──────────────────────────────────────────────────────────────────────
+
+    /**
+     * Native pillars of a stored profile. Reads the Bundle; when it carries
+     * none (legacy file written before the FHIR-native store, or a fresh
+     * import) falls back to the `_j` projection so nothing is lost.
+     */
+    suspend fun loadNativePillars(id: String): IpsNativePillars = withContext(Dispatchers.IO) {
+        ensureInitialScan()
+        val profile = loadProfile(id) ?: return@withContext IpsNativePillars.EMPTY
+        readNativePillars(id, profile)
+    }
+
+    suspend fun loadImmunizations(id: String): List<IpsImmunization> =
+        loadNativePillars(id).immunizations
+
+    /**
+     * Replace the immunizations of a profile. Returns false when the profile
+     * does not exist. Regenerates the Bundle (authoritative) and the `_j`
+     * projection, then refreshes the list / widget like [saveProfile].
+     */
+    suspend fun saveImmunizations(id: String, immunizations: List<IpsImmunization>): Boolean =
+        withContext(Dispatchers.IO) {
+            ensureInitialScan()
+            val profile = loadProfile(id) ?: return@withContext false
+            val current = readNativePillars(id, profile)
+            val native = current.copy(immunizations = immunizations)
+            try {
+                writeProfileFiles(id, profile, native)
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] 💉 saved ${immunizations.size} immunizations for $id")
+            } catch (e: Exception) {
+                Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ saveImmunizations($id) failed : ${e.message}", e)
+                throw e
+            }
+            rescanFromDisk()
+            if (id == _currentIdFlow.value) {
+                try {
+                    be.heyman.android.jemmapassdemo.sos.JemmaEmergencyWidget.updateAllWidgets(context)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to update widgets after saving immunizations", e)
+                }
+            }
+            true
+        }
+
+    /** Bundle first, `_j` projection as fallback (legacy / freshly imported files). */
+    private fun readNativePillars(id: String, profile: JemmaProfileJ): IpsNativePillars {
+        val fhirFile = File(profilesDir, "$id.fhir.json")
+        val fromBundle = if (fhirFile.exists()) {
+            try {
+                IpsFhirCodec.parseBundle(fhirFile.readText())?.let { IpsFhirCodec.nativeOf(it) }
+            } catch (e: Throwable) {
+                Log.w(TAG, "⚠️ readNativePillars($id) bundle unreadable : ${e.message}")
+                null
+            }
+        } else null
+        return fromBundle?.takeIf { !it.isEmpty } ?: IpsNativePillars.fromJEntries(profile.im)
+    }
+
+    /**
+     * Who is authoritative for the FHIR-native pillars when a `_j` profile is
+     * saved ?
+     *   • DEMO_SEED            → the seeder's native data (else the `_j` arrays)
+     *   • MANUAL_EDIT / ASSISTANT_* (local edits of other pillars)
+     *                          → the existing Bundle (fallback : `_j` arrays)
+     *   • anything else (QR / mesh / legacy imports) → the incoming `_j` arrays
+     */
+    private fun resolveNativePillars(id: String, profile: JemmaProfileJ, sourceFormat: String): IpsNativePillars {
+        val fromJ = IpsNativePillars.fromJEntries(profile.im)
+        return when {
+            sourceFormat == SOURCE_DEMO_SEED ->
+                JemmaPersonasSeeder.getDemoNativePillars(id) ?: fromJ
+            sourceFormat == SOURCE_MANUAL_EDIT || sourceFormat.startsWith("ASSISTANT") ->
+                readNativePillars(id, profile)
+            else -> fromJ
+        }
+    }
+
+    /**
+     * The single write path : `_j` JSON (with the native pillars PROJECTED into
+     * it) + FHIR IPS Bundle (native resources included). A Bundle failure does
+     * not fail the save — the JSON is the compatibility layer for QR / mesh.
+     */
+    private suspend fun writeProfileFiles(id: String, profile: JemmaProfileJ, native: IpsNativePillars) {
+        val file = File(profilesDir, "$id.json")
+        val fhirFile = File(profilesDir, "$id.fhir.json")
+        val projected = profile.copy(
+            sid = id,
+            im = native.immunizations.map { it.toJEntry() },
+        )
+        // 1. `_j` projection (QR / Nearby / legacy screens)
+        file.writeText(profileAdapter.toJson(projected))
+        // 2. 🏥 FHIR IPS Bundle (source of truth for the native pillars)
+        try {
+            val hydrated = hydrator.hydrate(projected)
+            val fhirJson = JemmaFhirBundleBuilder.build(hydrated, native)
+            fhirFile.writeText(fhirJson)
+            Log.i(TAG, "[t=${System.currentTimeMillis()}] 🏥 IPS FHIR profile saved for $id (${fhirJson.length} bytes · ${native.immunizations.size} immunizations)")
+        } catch (e: Throwable) {
+            Log.e(TAG, "⚠️ Failed to generate FHIR IPS for $id : ${e.message}", e)
+        }
     }
 
     /**
@@ -354,6 +459,7 @@ class ProfilesRepository @Inject constructor(
                             allergiesCount = profile.al.size,
                             medicationsCount = profile.md.size,
                             conditionsCount = profile.cn.size,
+                            immunizationsCount = profile.im.size,
                             lastModifiedMs = f.lastModified(),
                             fileSizeBytes = f.length(),
                         )
@@ -403,6 +509,7 @@ data class ProfileSummary(
     val allergiesCount: Int,
     val medicationsCount: Int,
     val conditionsCount: Int,
+    val immunizationsCount: Int = 0,
     val lastModifiedMs: Long,
     val fileSizeBytes: Long,
 )
