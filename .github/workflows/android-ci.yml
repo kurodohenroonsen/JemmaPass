@@ -1,0 +1,150 @@
+name: Android CI
+
+on:
+  push:
+    branches: ["**"]
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Unit tests + debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: JemmaPassAndroidDemo
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: "platforms;android-35 build-tools;35.0.0 platform-tools"
+
+      - name: Set up Gradle (with cache)
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/feat/ips-18-pillars-cleanup' }}
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Unit tests + assembleDebug
+        id: gradle
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          ./gradlew --no-daemon --stacktrace --continue --console=plain \
+            :app:testDebugUnitTest :app:assembleDebug 2>&1 | tee "$GITHUB_WORKSPACE/ci-build.log"
+
+      - name: Build summary
+        id: summary
+        if: always()
+        working-directory: ${{ github.workspace }}
+        run: |
+          python3 - <<'PY'
+          import glob, os, re, xml.etree.ElementTree as ET
+          log = open("ci-build.log", encoding="utf-8", errors="replace").read().splitlines()
+          outcome = "${{ steps.gradle.outcome }}"
+          tests = fails = errors = skipped = 0
+          failing = []
+          for f in glob.glob("JemmaPassAndroidDemo/app/build/test-results/testDebugUnitTest/*.xml"):
+              try:
+                  r = ET.parse(f).getroot()
+              except Exception:
+                  continue
+              tests += int(r.get("tests", 0)); fails += int(r.get("failures", 0))
+              errors += int(r.get("errors", 0)); skipped += int(r.get("skipped", 0))
+              for tc in r.iter("testcase"):
+                  for bad in list(tc.findall("failure")) + list(tc.findall("error")):
+                      failing.append(f"{tc.get('classname')}.{tc.get('name')}: {(bad.get('message') or '')[:300]}")
+          kt_errors = [l for l in log if re.match(r"^e: ", l)]
+          other = [l for l in log if re.search(r"(error:|FAILED|What went wrong|Execution failed|Unresolved reference|Could not resolve)", l) and not l.startswith("e: ")]
+          apk = glob.glob("JemmaPassAndroidDemo/app/build/outputs/apk/debug/*.apk")
+          lines = []
+          lines.append(f"# CI · {os.environ.get('GITHUB_REF_NAME')} · {os.environ.get('GITHUB_SHA','')[:7]} · run #{os.environ.get('GITHUB_RUN_NUMBER')}")
+          lines.append("")
+          lines.append(f"- Gradle outcome: **{outcome}**")
+          lines.append(f"- Unit tests: **{tests}** run · {fails} failed · {errors} errors · {skipped} skipped")
+          lines.append(f"- Debug APK: {'✅ ' + os.path.basename(apk[0]) + f' ({os.path.getsize(apk[0])//1024//1024} MB)' if apk else '❌ not produced'}")
+          lines.append(f"- Kotlin compile errors: {len(kt_errors)}")
+          lines.append("")
+          if kt_errors:
+              lines.append("## Kotlin errors"); lines.append("```")
+              lines += kt_errors[:200]
+              lines.append("```")
+          if failing:
+              lines.append("## Failing tests"); lines.append("```")
+              lines += failing[:100]
+              lines.append("```")
+          if other:
+              lines.append("## Other errors"); lines.append("```")
+              lines += other[:120]
+              lines.append("```")
+          lines.append("## Log tail"); lines.append("```")
+          lines += log[-80:]
+          lines.append("```")
+          open("ci-summary.md", "w", encoding="utf-8").write("\n".join(lines) + "\n")
+          print("\n".join(lines[:12]))
+          PY
+          cat ci-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish log to ci-logs branch
+        if: always()
+        working-directory: ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          SLUG="$(echo "$GITHUB_REF_NAME" | tr '/' '-')"
+          REMOTE="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          rm -rf /tmp/ci-logs
+          if git ls-remote --exit-code --heads "$REMOTE" ci-logs >/dev/null 2>&1; then
+            git clone --depth 1 --branch ci-logs "$REMOTE" /tmp/ci-logs
+          else
+            mkdir -p /tmp/ci-logs && cd /tmp/ci-logs && git init -q -b ci-logs && git remote add origin "$REMOTE" && cd "$GITHUB_WORKSPACE"
+          fi
+          mkdir -p "/tmp/ci-logs/$SLUG/history"
+          cp ci-summary.md "/tmp/ci-logs/$SLUG/latest.md"
+          cp ci-build.log "/tmp/ci-logs/$SLUG/latest.log"
+          cp ci-summary.md "/tmp/ci-logs/$SLUG/history/run-${GITHUB_RUN_NUMBER}-${GITHUB_SHA::7}.md"
+          cd /tmp/ci-logs
+          git config user.name "jemma-ci"
+          git config user.email "ci@jemmapass.net"
+          git add -A
+          git commit -q -m "ci: $SLUG run #${GITHUB_RUN_NUMBER} (${GITHUB_SHA::7}) → ${{ steps.gradle.outcome }}" || echo "nothing to commit"
+          git push -q origin ci-logs
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jemmapass-ci-${{ github.run_number }}
+          if-no-files-found: ignore
+          retention-days: 14
+          path: |
+            JemmaPassAndroidDemo/app/build/outputs/apk/debug/*.apk
+            JemmaPassAndroidDemo/app/build/reports/tests/testDebugUnitTest/
+            ci-build.log
+
+      - name: Fail the job if Gradle failed
+        if: steps.gradle.outcome == 'failure'
+        run: exit 1
