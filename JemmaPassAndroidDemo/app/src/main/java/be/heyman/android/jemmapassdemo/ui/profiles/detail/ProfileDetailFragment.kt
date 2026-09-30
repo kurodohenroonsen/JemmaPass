@@ -296,6 +296,7 @@ class ProfileDetailFragment : Fragment() {
 
         // ── Conditions ──
         renderConditions(h)
+        renderImmunizations(h)
 
         // ── Alerts section ──
         renderAlerts(h)
@@ -508,6 +509,42 @@ class ProfileDetailFragment : Fragment() {
         for (cond in h.conditions) {
             val tv = makeListItemTextView()
             tv.text = "•  ${cond.displayLocalized}"
+            listView.addView(tv)
+        }
+    }
+
+    /**
+     * 💉 FHIR-native pillar — rendered from the `_j.im` projection carried by
+     * the hydrated profile (the Bundle is the source of truth ; the projection
+     * is regenerated on every save so no extra I/O is needed here).
+     */
+    private fun renderImmunizations(h: HydratedProfile) {
+        val entries = h.raw.im
+        if (entries.isEmpty()) {
+            binding.profileDetailImmunizationsSection.isVisible = false
+            return
+        }
+        binding.profileDetailImmunizationsSection.isVisible = true
+        binding.profileDetailImmunizationsTitle.text = getString(
+            R.string.profile_detail_immunizations_title,
+            entries.size,
+        )
+        val lang = java.util.Locale.getDefault().language.lowercase().take(2)
+        val listView = binding.profileDetailImmunizationsList
+        listView.removeAllViews()
+        val sorted = entries.sortedWith(
+            compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
+                .thenByDescending { it.date ?: "" }
+        )
+        for (im in sorted) {
+            val label = be.heyman.android.jemmapassdemo.pillars.IpsVaccineCatalog.getDisplay(im.c, lang)
+                ?: im.displayLabel?.takeIf { it.isNotBlank() }
+                ?: im.c.orEmpty()
+            val date = im.date?.takeIf { it.isNotBlank() }
+                ?: getString(R.string.immunizations_date_unknown)
+            val dose = im.doseNumber?.let { " · " + getString(R.string.immunizations_dose_number, it) } ?: ""
+            val tv = makeListItemTextView()
+            tv.text = "•  $label — $date$dose"
             listView.addView(tv)
         }
     }
@@ -1163,7 +1200,8 @@ class ProfileDetailFragment : Fragment() {
                         "contacts" -> R.id.action_detail_to_contacts to true
                         "allergies" -> R.id.action_detail_to_allergies to true
                         "medications" -> R.id.action_detail_to_medications to true
-                        // All 4 active pillars wired now ✅
+                        // 💉 FHIR-native pillar (feat/ips-18-pillars-cleanup)
+                        "immunizations" -> R.id.action_detail_to_immunizations to true
                         else -> R.id.action_detail_to_pillar_stub to false
                     }
                     val args = if (includeProfileId) {
@@ -1202,7 +1240,7 @@ class ProfileDetailFragment : Fragment() {
         }
         val elapsed = System.currentTimeMillis() - tStart
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🩺 renderPillars · END · " +
-            "active=$boundActive/4 · stub=$boundStub/14 · missing=$missing/18 · ${elapsed}ms")
+            "active=$boundActive/5 · stub=$boundStub/13 · missing=$missing/18 · ${elapsed}ms")
         if (missing > 0) {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ $missing tile(s) failed to bind · " +
                 "vérifier que les ids profile_detail_tile_<key> existent dans fragment_profile_detail.xml")

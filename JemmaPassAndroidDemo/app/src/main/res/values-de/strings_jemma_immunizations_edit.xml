@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_immunizations_edit.xml — JEMMA Pass · IPS-Säule „Impfungen“ (DE) -->
+<resources>
+    <string name="immunizations_edit_title">Impfungen</string>
+    <string name="immunizations_edit_hero_title">Impfungen</string>
+    <string name="immunizations_fab_add_desc">Impfung hinzufügen</string>
+    <string name="immunizations_empty_default">Noch keine Impfung erfasst.\nTippe auf +, um einen Impfstoff hinzuzufügen.</string>
+    <string name="immunizations_empty_no_profile">Kein Profil ausgewählt. Erstelle oder wähle zuerst ein Profil.</string>
+    <string name="immunizations_unnamed">Unbenannter Impfstoff</string>
+    <plurals name="immunizations_count">
+        <item quantity="zero">Keine Impfung</item>
+        <item quantity="one">%d Impfung</item>
+        <item quantity="other">%d Impfungen</item>
+    </plurals>
+    <string name="immunizations_saved">Impfungen gespeichert</string>
+    <string name="immunizations_save_failed">Impfungen konnten nicht gespeichert werden</string>
+    <string name="immunizations_delete_title">Diese Impfung löschen?</string>
+    <string name="immunizations_delete_message">„%1$s“ wird aus dem Profil entfernt.</string>
+    <string name="immunizations_delete_cancel">Abbrechen</string>
+    <string name="immunizations_delete_confirm">Löschen</string>
+    <string name="immunizations_date_unknown">Datum unbekannt</string>
+    <string name="immunizations_dose_of_series">Dosis %1$d/%2$d</string>
+    <string name="immunizations_dose_number">Dosis %1$d</string>
+    <string name="immunizations_lot_short">Charge %1$s</string>
+    <string name="immunization_form_title_create">💉  Impfung hinzufügen</string>
+    <string name="immunization_form_title_edit">💉  Impfung bearbeiten</string>
+    <string name="immunization_form_label_vaccine">Impfstoff</string>
+    <string name="immunization_form_vaccine_hint">Tippen, um einen Impfstoff zu wählen…</string>
+    <string name="immunization_form_vaccine_clear_desc">Impfstoff löschen</string>
+    <string name="immunization_form_vaccine_picker_title">Impfstoff wählen</string>
+    <string name="immunization_form_label_text">Oder Impfstoffname eingeben</string>
+    <string name="immunization_form_text_helper">Freitext, nur verwendet, wenn oben kein Impfstoff gewählt ist</string>
+    <string name="immunization_form_label_date">Impfdatum</string>
+    <string name="immunization_form_date_hint">Datum unbekannt — tippen zum Wählen</string>
+    <string name="immunization_form_date_clear_desc">Datum löschen</string>
+    <string name="immunization_form_date_pick_title">Datum der Impfung</string>
+    <string name="immunization_form_label_status">Status</string>
+    <string name="immunization_form_status_pick_title">Impfstatus</string>
+    <string name="immunization_form_label_dose_number">Dosis Nr.</string>
+    <string name="immunization_form_label_series_doses">von (Serie)</string>
+    <string name="immunization_form_label_lot">Chargennummer</string>
+    <string name="immunization_form_label_manufacturer">Hersteller</string>
+    <string name="immunization_form_label_performer">Verabreicht von (Arzt / Praxis)</string>
+    <string name="immunization_form_label_note">Notiz</string>
+    <string name="immunization_form_note_helper">Reaktion, Auffrischung, Reisekontext…</string>
+    <string name="immunization_form_cancel">Abbrechen</string>
+    <string name="immunization_form_save">Speichern</string>
+    <string name="immunization_form_validation_vaccine">Wähle einen Impfstoff oder gib seinen Namen ein</string>
+    <string name="immunization_form_validation_dose">Dosisnummern müssen positive ganze Zahlen sein</string>
+    <string name="immunization_form_validation_series">Die Dosisnummer darf die Anzahl der Dosen der Serie nicht überschreiten</string>
+    <string name="profile_detail_immunizations_title">💉 IMPFUNGEN (%1$d)</string>
+</resources>

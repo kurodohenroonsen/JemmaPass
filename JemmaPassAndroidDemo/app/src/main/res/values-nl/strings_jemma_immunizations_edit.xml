@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_immunizations_edit.xml — JEMMA Pass · IPS-pijler „Vaccinaties” (NL) -->
+<resources>
+    <string name="immunizations_edit_title">Vaccinaties</string>
+    <string name="immunizations_edit_hero_title">Vaccinaties</string>
+    <string name="immunizations_fab_add_desc">Vaccinatie toevoegen</string>
+    <string name="immunizations_empty_default">Nog geen vaccinatie geregistreerd.\nTik op + om een vaccin toe te voegen.</string>
+    <string name="immunizations_empty_no_profile">Geen profiel geselecteerd. Maak of kies eerst een profiel.</string>
+    <string name="immunizations_unnamed">Naamloos vaccin</string>
+    <plurals name="immunizations_count">
+        <item quantity="zero">Geen vaccinatie</item>
+        <item quantity="one">%d vaccinatie</item>
+        <item quantity="other">%d vaccinaties</item>
+    </plurals>
+    <string name="immunizations_saved">Vaccinaties opgeslagen</string>
+    <string name="immunizations_save_failed">De vaccinaties konden niet worden opgeslagen</string>
+    <string name="immunizations_delete_title">Deze vaccinatie verwijderen?</string>
+    <string name="immunizations_delete_message">“%1$s” wordt uit het profiel verwijderd.</string>
+    <string name="immunizations_delete_cancel">Annuleren</string>
+    <string name="immunizations_delete_confirm">Verwijderen</string>
+    <string name="immunizations_date_unknown">Datum onbekend</string>
+    <string name="immunizations_dose_of_series">dosis %1$d/%2$d</string>
+    <string name="immunizations_dose_number">dosis %1$d</string>
+    <string name="immunizations_lot_short">lot %1$s</string>
+    <string name="immunization_form_title_create">💉  Vaccinatie toevoegen</string>
+    <string name="immunization_form_title_edit">💉  Vaccinatie bewerken</string>
+    <string name="immunization_form_label_vaccine">Vaccin</string>
+    <string name="immunization_form_vaccine_hint">Tik om een vaccin te kiezen…</string>
+    <string name="immunization_form_vaccine_clear_desc">Vaccin wissen</string>
+    <string name="immunization_form_vaccine_picker_title">Kies een vaccin</string>
+    <string name="immunization_form_label_text">Of typ de naam van het vaccin</string>
+    <string name="immunization_form_text_helper">Vrije tekst, alleen gebruikt als hierboven geen vaccin is gekozen</string>
+    <string name="immunization_form_label_date">Datum van toediening</string>
+    <string name="immunization_form_date_hint">Datum onbekend — tik om te kiezen</string>
+    <string name="immunization_form_date_clear_desc">Datum wissen</string>
+    <string name="immunization_form_date_pick_title">Datum waarop het vaccin werd toegediend</string>
+    <string name="immunization_form_label_status">Status</string>
+    <string name="immunization_form_status_pick_title">Vaccinatiestatus</string>
+    <string name="immunization_form_label_dose_number">Dosis nr.</string>
+    <string name="immunization_form_label_series_doses">van (reeks)</string>
+    <string name="immunization_form_label_lot">Lotnummer</string>
+    <string name="immunization_form_label_manufacturer">Fabrikant</string>
+    <string name="immunization_form_label_performer">Toegediend door (arts / centrum)</string>
+    <string name="immunization_form_label_note">Notitie</string>
+    <string name="immunization_form_note_helper">Reactie, geplande herhaling, reiscontext…</string>
+    <string name="immunization_form_cancel">Annuleren</string>
+    <string name="immunization_form_save">Opslaan</string>
+    <string name="immunization_form_validation_vaccine">Kies een vaccin of typ de naam</string>
+    <string name="immunization_form_validation_dose">Dosisnummers moeten positieve gehele getallen zijn</string>
+    <string name="immunization_form_validation_series">Het dosisnummer mag het aantal dosissen van de reeks niet overschrijden</string>
+    <string name="profile_detail_immunizations_title">💉 VACCINATIES (%1$d)</string>
+</resources>

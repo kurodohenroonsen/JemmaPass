@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_immunizations_edit.xml — JEMMA Pass · pilier IPS « Vaccinations » (FR) -->
+<resources>
+
+    <string name="immunizations_edit_title">Vaccinations</string>
+    <string name="immunizations_edit_hero_title">Vaccinations</string>
+    <string name="immunizations_fab_add_desc">Ajouter une vaccination</string>
+    <string name="immunizations_empty_default">Aucune vaccination enregistrée.\nAppuie sur + pour ajouter un vaccin.</string>
+    <string name="immunizations_empty_no_profile">Aucun profil sélectionné. Crée ou sélectionne d’abord un profil.</string>
+    <string name="immunizations_unnamed">Vaccin sans nom</string>
+    <plurals name="immunizations_count">
+        <item quantity="zero">Aucune vaccination</item>
+        <item quantity="one">%d vaccination</item>
+        <item quantity="other">%d vaccinations</item>
+    </plurals>
+    <string name="immunizations_saved">Vaccinations enregistrées</string>
+    <string name="immunizations_save_failed">Impossible d’enregistrer les vaccinations</string>
+    <string name="immunizations_delete_title">Supprimer cette vaccination ?</string>
+    <string name="immunizations_delete_message">« %1$s » sera retiré du profil.</string>
+    <string name="immunizations_delete_cancel">Annuler</string>
+    <string name="immunizations_delete_confirm">Supprimer</string>
+    <string name="immunizations_date_unknown">Date inconnue</string>
+    <string name="immunizations_dose_of_series">dose %1$d/%2$d</string>
+    <string name="immunizations_dose_number">dose %1$d</string>
+    <string name="immunizations_lot_short">lot %1$s</string>
+
+    <string name="immunization_form_title_create">💉  Ajouter une vaccination</string>
+    <string name="immunization_form_title_edit">💉  Modifier la vaccination</string>
+    <string name="immunization_form_label_vaccine">Vaccin</string>
+    <string name="immunization_form_vaccine_hint">Appuie pour choisir un vaccin…</string>
+    <string name="immunization_form_vaccine_clear_desc">Effacer le vaccin</string>
+    <string name="immunization_form_vaccine_picker_title">Choisir un vaccin</string>
+    <string name="immunization_form_label_text">Ou saisir le nom du vaccin</string>
+    <string name="immunization_form_text_helper">Texte libre, utilisé seulement si aucun vaccin n’est choisi ci-dessus</string>
+    <string name="immunization_form_label_date">Date d’administration</string>
+    <string name="immunization_form_date_hint">Date inconnue — appuie pour choisir</string>
+    <string name="immunization_form_date_clear_desc">Effacer la date</string>
+    <string name="immunization_form_date_pick_title">Date d’administration du vaccin</string>
+    <string name="immunization_form_label_status">Statut</string>
+    <string name="immunization_form_status_pick_title">Statut de la vaccination</string>
+    <string name="immunization_form_label_dose_number">Dose n°</string>
+    <string name="immunization_form_label_series_doses">sur (schéma)</string>
+    <string name="immunization_form_label_lot">Numéro de lot</string>
+    <string name="immunization_form_label_manufacturer">Fabricant</string>
+    <string name="immunization_form_label_performer">Administré par (médecin / centre)</string>
+    <string name="immunization_form_label_note">Note</string>
+    <string name="immunization_form_note_helper">Réaction, rappel prévu, contexte de voyage…</string>
+    <string name="immunization_form_cancel">Annuler</string>
+    <string name="immunization_form_save">Enregistrer</string>
+    <string name="immunization_form_validation_vaccine">Choisis un vaccin ou saisis son nom</string>
+    <string name="immunization_form_validation_dose">Les numéros de dose doivent être des entiers positifs</string>
+    <string name="immunization_form_validation_series">Le numéro de dose ne peut pas dépasser le nombre de doses du schéma</string>
+
+    <string name="profile_detail_immunizations_title">💉 VACCINATIONS (%1$d)</string>
+</resources>

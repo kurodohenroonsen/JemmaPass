@@ -146,6 +146,16 @@ object JemmaTextPayloadBuilder {
             formatter = { c -> c.displayLocalized.ifBlank { c.raw.c.orEmpty() } },
         )
 
+        // ─── Immunizations (FHIR-native pillar, `_j.im` projection) ──
+        appendSection(
+            sb = sb,
+            icon = "💉",
+            title = JemmaTranslations.getLabel(lang, "immunizations_title"),
+            items = hydrated.raw.im,
+            empty = JemmaTranslations.getLabel(lang, "empty"),
+            formatter = { im -> formatImmunization(im, lang) },
+        )
+
         sb.append(JemmaTranslations.getLabel(lang, "footer")).append("\r\n")
 
         // Cap byte-size en UTF-8.
@@ -158,6 +168,19 @@ object JemmaTextPayloadBuilder {
                 " → ${capped.length} chars (${capped.toByteArray(Charsets.UTF_8).size} bytes)",
         )
         return capped
+    }
+
+    /** "Tdap — 2022-05-17 · dose 2" from the `_j.im` projection (catalog label when known). */
+    private fun formatImmunization(im: be.heyman.android.jemmapassdemo.qr.JEntryGeneric, lang: Lang): String {
+        val langCode = lang.isoCode
+        val label = be.heyman.android.jemmapassdemo.pillars.IpsVaccineCatalog.getDisplay(im.c, langCode)
+            ?: im.displayLabel?.takeIf { it.isNotBlank() }
+            ?: im.c.orEmpty()
+        val sb = StringBuilder(label)
+        im.date?.takeIf { it.isNotBlank() }?.let { sb.append(" — ").append(it) }
+        im.doseNumber?.let { sb.append(" · #").append(it) }
+        im.status?.takeIf { it.isNotBlank() }?.let { sb.append(" (").append(it).append(")") }
+        return sb.toString()
     }
 
     /** Append une section avec icon + items mappés via [formatter]. Skipé si liste vide. */

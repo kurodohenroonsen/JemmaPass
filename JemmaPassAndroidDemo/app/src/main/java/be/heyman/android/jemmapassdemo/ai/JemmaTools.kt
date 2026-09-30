@@ -463,6 +463,30 @@ class JemmaTools @Inject constructor(
         mapOf("ok" to true, "lang" to lang, "count" to rows.size, "conditions" to rows)
     }
 
+    @Tool(description = "List the immunizations (vaccination history) of the focus profile: vaccine label, SNOMED/CVX code, date (YYYY-MM-DD or unknown), dose number and status. Use it to answer questions such as 'is the patient vaccinated against tetanus?' or to advise a booster after an injury.")
+    fun getFocusProfileImmunizations(): Map<String, Any> = runBlocking(Dispatchers.IO) {
+        val p = focusRef.get() ?: return@runBlocking profileMissingMap()
+        val lang = currentLang()
+        val rows = mutableListOf<Map<String, Any>>()
+        for (im in p.im) {
+            val label = be.heyman.android.jemmapassdemo.pillars.IpsVaccineCatalog.getDisplay(im.c, lang)
+                ?: im.displayLabel?.takeIf { it.isNotBlank() }
+                ?: im.c.orEmpty()
+            rows.add(
+                mapOf(
+                    "vaccine" to label,
+                    "code" to im.c.orEmpty(),
+                    "system" to (im.codeSystem ?: "http://snomed.info/sct"),
+                    "date" to (im.date ?: "unknown"),
+                    "dose_number" to (im.doseNumber ?: 0),
+                    "status" to (im.status ?: "completed"),
+                    "note" to im.d.orEmpty(),
+                )
+            )
+        }
+        mapOf("ok" to true, "lang" to lang, "count" to rows.size, "immunizations" to rows)
+    }
+
     // ─────────────────────────────────────────────────────────────────
     // Cross-check — Family D (2 tools, the killers)
     // ─────────────────────────────────────────────────────────────────

@@ -186,18 +186,18 @@ object PillarRegistry {
             ),
         ),
 
-        // ─── 7. immunizations (passive) ─────────────────────────────────────
+        // ─── 7. immunizations (ACTIVE — FHIR-native, feat/ips-18-pillars-cleanup) ──
         Pillar(
             key = "immunizations",
             emoji = "💉",
             titleRes = R.string.pillar_immunizations_title,
             descRes = R.string.pillar_immunizations_desc,
             ipsTypeRes = R.string.pillar_immunizations_ips_type,
-            codeSystems = listOf("CVX", "SNOMED CT"),
-            isActive = false,
+            codeSystems = listOf("SNOMED CT", "CVX"),
+            isActive = true,
             fields = listOf(
                 PillarField("vaccine",      R.string.pillar_field_vaccine,      R.string.pillar_field_vaccine_desc,      "1..1", "CodeableConcept"),
-                PillarField("date",         R.string.pillar_field_date,         R.string.pillar_field_date_desc,         "0..1", "dateTime"),
+                PillarField("date",         R.string.pillar_field_date,         R.string.pillar_field_date_desc,         "1..1", "dateTime | string"),
                 PillarField("lot_number",   R.string.pillar_field_lot_number,   R.string.pillar_field_lot_number_desc,   "0..1", "string"),
                 PillarField("manufacturer", R.string.pillar_field_manufacturer, R.string.pillar_field_manufacturer_desc, "0..1", "Reference(Organization)"),
                 PillarField("site",         R.string.pillar_field_site,         R.string.pillar_field_site_desc,         "0..1", "CodeableConcept"),

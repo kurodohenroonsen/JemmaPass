@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_immunizations_edit.xml — JEMMA Pass · IPS「免疫接种」支柱 (ZH-CN) -->
+<resources>
+    <string name="immunizations_edit_title">免疫接种</string>
+    <string name="immunizations_edit_hero_title">免疫接种</string>
+    <string name="immunizations_fab_add_desc">添加接种记录</string>
+    <string name="immunizations_empty_default">尚无接种记录。\n点按 + 添加疫苗。</string>
+    <string name="immunizations_empty_no_profile">未选择档案。请先创建或选择一个档案。</string>
+    <string name="immunizations_unnamed">未命名疫苗</string>
+    <plurals name="immunizations_count">
+        <item quantity="zero">无接种记录</item>
+        <item quantity="one">%d 条接种记录</item>
+        <item quantity="other">%d 条接种记录</item>
+    </plurals>
+    <string name="immunizations_saved">接种记录已保存</string>
+    <string name="immunizations_save_failed">无法保存接种记录</string>
+    <string name="immunizations_delete_title">删除此接种记录？</string>
+    <string name="immunizations_delete_message">“%1$s”将从档案中移除。</string>
+    <string name="immunizations_delete_cancel">取消</string>
+    <string name="immunizations_delete_confirm">删除</string>
+    <string name="immunizations_date_unknown">日期未知</string>
+    <string name="immunizations_dose_of_series">第 %1$d/%2$d 剂</string>
+    <string name="immunizations_dose_number">第 %1$d 剂</string>
+    <string name="immunizations_lot_short">批号 %1$s</string>
+    <string name="immunization_form_title_create">💉  添加接种记录</string>
+    <string name="immunization_form_title_edit">💉  编辑接种记录</string>
+    <string name="immunization_form_label_vaccine">疫苗</string>
+    <string name="immunization_form_vaccine_hint">点按选择疫苗…</string>
+    <string name="immunization_form_vaccine_clear_desc">清除疫苗</string>
+    <string name="immunization_form_vaccine_picker_title">选择疫苗</string>
+    <string name="immunization_form_label_text">或输入疫苗名称</string>
+    <string name="immunization_form_text_helper">自由文本，仅在上方未选择疫苗时使用</string>
+    <string name="immunization_form_label_date">接种日期</string>
+    <string name="immunization_form_date_hint">日期未知 — 点按选择</string>
+    <string name="immunization_form_date_clear_desc">清除日期</string>
+    <string name="immunization_form_date_pick_title">疫苗接种日期</string>
+    <string name="immunization_form_label_status">状态</string>
+    <string name="immunization_form_status_pick_title">接种状态</string>
+    <string name="immunization_form_label_dose_number">第几剂</string>
+    <string name="immunization_form_label_series_doses">共几剂</string>
+    <string name="immunization_form_label_lot">批号</string>
+    <string name="immunization_form_label_manufacturer">生产商</string>
+    <string name="immunization_form_label_performer">接种者（医生 / 机构）</string>
+    <string name="immunization_form_label_note">备注</string>
+    <string name="immunization_form_note_helper">不良反应、加强针提醒、旅行背景…</string>
+    <string name="immunization_form_cancel">取消</string>
+    <string name="immunization_form_save">保存</string>
+    <string name="immunization_form_validation_vaccine">请选择疫苗或输入其名称</string>
+    <string name="immunization_form_validation_dose">剂次必须为正整数</string>
+    <string name="immunization_form_validation_series">剂次不能超过该系列的总剂数</string>
+    <string name="profile_detail_immunizations_title">💉 免疫接种 (%1$d)</string>
+</resources>

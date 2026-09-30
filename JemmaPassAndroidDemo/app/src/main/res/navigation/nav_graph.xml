@@ -117,6 +117,9 @@
         <action
             android:id="@+id/action_gallery_to_medications"
             app:destination="@id/dest_medications" />
+        <action
+            android:id="@+id/action_gallery_to_immunizations"
+            app:destination="@id/dest_immunizations" />
     </fragment>
 
     <!--
@@ -297,6 +300,20 @@
         android:name="be.heyman.android.jemmapassdemo.ui.profile.allergies.chat.AllergiesChatFragment"
         android:label="@string/allergies_chat_title"
         tools:layout="@layout/fragment_allergies_chat">
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+
+    <!-- 💉 IPS pillar "Immunizations" — first FHIR-native pillar (the profile
+         Bundle is the source of truth ; `_j.im` is a projection). -->
+    <fragment
+        android:id="@+id/dest_immunizations"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.immunizations.ImmunizationsEditFragment"
+        android:label="@string/immunizations_edit_title"
+        tools:layout="@layout/fragment_immunizations_edit">
         <argument
             android:name="profileId"
             app:argType="string"
@@ -520,6 +537,10 @@
         <action
             android:id="@+id/action_detail_to_medications"
             app:destination="@id/dest_medications" />
+        <!-- 💉 Active pillar: immunizations edit (FHIR-native) -->
+        <action
+            android:id="@+id/action_detail_to_immunizations"
+            app:destination="@id/dest_immunizations" />
         <action
             android:id="@+id/action_detail_to_pillar_stub"
             app:destination="@id/dest_pillar_stub" />

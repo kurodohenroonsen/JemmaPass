@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_immunizations_edit.xml — JEMMA Pass · IPS pillar "Immunizations" (EN, default) -->
+<resources>
+
+    <!-- ─── List screen ─────────────────────────────────────────── -->
+    <string name="immunizations_edit_title">Immunizations</string>
+    <string name="immunizations_edit_hero_title">Immunizations</string>
+    <string name="immunizations_fab_add_desc">Add an immunization</string>
+    <string name="immunizations_empty_default">No immunization recorded yet.\nTap + to add a vaccine.</string>
+    <string name="immunizations_empty_no_profile">No profile selected. Create or select a profile first.</string>
+    <string name="immunizations_unnamed">Unnamed vaccine</string>
+    <plurals name="immunizations_count">
+        <item quantity="zero">No immunization</item>
+        <item quantity="one">%d immunization</item>
+        <item quantity="other">%d immunizations</item>
+    </plurals>
+    <string name="immunizations_saved">Immunizations saved</string>
+    <string name="immunizations_save_failed">Could not save the immunizations</string>
+    <string name="immunizations_delete_title">Delete this immunization?</string>
+    <string name="immunizations_delete_message">“%1$s” will be removed from the profile.</string>
+    <string name="immunizations_delete_cancel">Cancel</string>
+    <string name="immunizations_delete_confirm">Delete</string>
+    <string name="immunizations_date_unknown">Date unknown</string>
+    <string name="immunizations_dose_of_series">dose %1$d/%2$d</string>
+    <string name="immunizations_dose_number">dose %1$d</string>
+    <string name="immunizations_lot_short">lot %1$s</string>
+
+    <!-- ─── Form ────────────────────────────────────────────────── -->
+    <string name="immunization_form_title_create">💉  Add an immunization</string>
+    <string name="immunization_form_title_edit">💉  Edit immunization</string>
+    <string name="immunization_form_label_vaccine">Vaccine</string>
+    <string name="immunization_form_vaccine_hint">Tap to choose a vaccine…</string>
+    <string name="immunization_form_vaccine_clear_desc">Clear vaccine</string>
+    <string name="immunization_form_vaccine_picker_title">Choose a vaccine</string>
+    <string name="immunization_form_label_text">Or type the vaccine name</string>
+    <string name="immunization_form_text_helper">Free text, used only when no vaccine is picked above</string>
+    <string name="immunization_form_label_date">Date given</string>
+    <string name="immunization_form_date_hint">Unknown date — tap to pick</string>
+    <string name="immunization_form_date_clear_desc">Clear date</string>
+    <string name="immunization_form_date_pick_title">Date the vaccine was given</string>
+    <string name="immunization_form_label_status">Status</string>
+    <string name="immunization_form_status_pick_title">Immunization status</string>
+    <string name="immunization_form_label_dose_number">Dose n°</string>
+    <string name="immunization_form_label_series_doses">of (series)</string>
+    <string name="immunization_form_label_lot">Lot number</string>
+    <string name="immunization_form_label_manufacturer">Manufacturer</string>
+    <string name="immunization_form_label_performer">Given by (practitioner / clinic)</string>
+    <string name="immunization_form_label_note">Note</string>
+    <string name="immunization_form_note_helper">Reaction, booster reminder, travel context…</string>
+    <string name="immunization_form_cancel">Cancel</string>
+    <string name="immunization_form_save">Save</string>
+    <string name="immunization_form_validation_vaccine">Pick a vaccine or type its name</string>
+    <string name="immunization_form_validation_dose">Dose numbers must be positive whole numbers</string>
+    <string name="immunization_form_validation_series">The dose number cannot exceed the number of doses in the series</string>
+
+    <!-- ─── Profile detail section ──────────────────────────────── -->
+    <string name="profile_detail_immunizations_title">💉 IMMUNIZATIONS (%1$d)</string>
+</resources>

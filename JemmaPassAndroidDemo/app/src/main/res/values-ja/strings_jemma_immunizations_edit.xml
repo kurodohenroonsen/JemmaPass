@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_immunizations_edit.xml — JEMMA Pass · IPS「予防接種」ピラー (JA) -->
+<resources>
+
+    <string name="immunizations_edit_title">予防接種</string>
+    <string name="immunizations_edit_hero_title">予防接種</string>
+    <string name="immunizations_fab_add_desc">予防接種を追加</string>
+    <string name="immunizations_empty_default">予防接種の記録はまだありません。\n＋をタップしてワクチンを追加してください。</string>
+    <string name="immunizations_empty_no_profile">プロフィールが選択されていません。先にプロフィールを作成または選択してください。</string>
+    <string name="immunizations_unnamed">名称未設定のワクチン</string>
+    <plurals name="immunizations_count">
+        <item quantity="zero">予防接種なし</item>
+        <item quantity="one">%d 件の予防接種</item>
+        <item quantity="other">%d 件の予防接種</item>
+    </plurals>
+    <string name="immunizations_saved">予防接種を保存しました</string>
+    <string name="immunizations_save_failed">予防接種を保存できませんでした</string>
+    <string name="immunizations_delete_title">この予防接種を削除しますか？</string>
+    <string name="immunizations_delete_message">「%1$s」をプロフィールから削除します。</string>
+    <string name="immunizations_delete_cancel">キャンセル</string>
+    <string name="immunizations_delete_confirm">削除</string>
+    <string name="immunizations_date_unknown">接種日不明</string>
+    <string name="immunizations_dose_of_series">%1$d/%2$d 回目</string>
+    <string name="immunizations_dose_number">%1$d 回目</string>
+    <string name="immunizations_lot_short">ロット %1$s</string>
+
+    <string name="immunization_form_title_create">💉  予防接種を追加</string>
+    <string name="immunization_form_title_edit">💉  予防接種を編集</string>
+    <string name="immunization_form_label_vaccine">ワクチン</string>
+    <string name="immunization_form_vaccine_hint">タップしてワクチンを選択…</string>
+    <string name="immunization_form_vaccine_clear_desc">ワクチンをクリア</string>
+    <string name="immunization_form_vaccine_picker_title">ワクチンを選択</string>
+    <string name="immunization_form_label_text">またはワクチン名を入力</string>
+    <string name="immunization_form_text_helper">自由入力。上でワクチンを選択していない場合のみ使用されます</string>
+    <string name="immunization_form_label_date">接種日</string>
+    <string name="immunization_form_date_hint">接種日不明 — タップして選択</string>
+    <string name="immunization_form_date_clear_desc">日付をクリア</string>
+    <string name="immunization_form_date_pick_title">ワクチン接種日</string>
+    <string name="immunization_form_label_status">状態</string>
+    <string name="immunization_form_status_pick_title">予防接種の状態</string>
+    <string name="immunization_form_label_dose_number">接種回数</string>
+    <string name="immunization_form_label_series_doses">全回数</string>
+    <string name="immunization_form_label_lot">ロット番号</string>
+    <string name="immunization_form_label_manufacturer">製造元</string>
+    <string name="immunization_form_label_performer">接種者（医師・医療機関）</string>
+    <string name="immunization_form_label_note">メモ</string>
+    <string name="immunization_form_note_helper">副反応、追加接種の予定、渡航の背景など</string>
+    <string name="immunization_form_cancel">キャンセル</string>
+    <string name="immunization_form_save">保存</string>
+    <string name="immunization_form_validation_vaccine">ワクチンを選択するか名前を入力してください</string>
+    <string name="immunization_form_validation_dose">接種回数は正の整数で入力してください</string>
+    <string name="immunization_form_validation_series">接種回数は全回数を超えられません</string>
+
+    <string name="profile_detail_immunizations_title">💉 予防接種 (%1$d)</string>
+</resources>

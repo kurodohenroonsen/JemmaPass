@@ -88,10 +88,13 @@ class IpsImmunizationProjectionTest {
     fun moshiRoundTripKeepsTheCompactKeys() {
         val profile = JemmaProfileJ(j = "1.2", sid = "t", im = listOf(tdap.toJEntry()))
         val json = adapter.toJson(profile)
-        assertTrue(json.contains("\"dt\":\"2022-05-17\""))
-        assertTrue(json.contains("\"dn\":2"))
-        assertTrue("null defaults must not be serialised", !json.contains("\"cs\""))
-        assertTrue(!json.contains("\"st\""))
+        // Inspect the `im[0]` object itself (the profile also has a top-level `cs` array).
+        val entry = org.json.JSONObject(json).getJSONArray("im").getJSONObject(0)
+        assertEquals("2022-05-17", entry.getString("dt"))
+        assertEquals(2, entry.getInt("dn"))
+        assertEquals("871876003", entry.getString("c"))
+        assertTrue("null defaults must not be serialised", !entry.has("cs"))
+        assertTrue(!entry.has("st"))
         val back = adapter.fromJson(json)
         assertNotNull(back)
         assertEquals(profile.im, back!!.im)
