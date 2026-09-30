@@ -28,11 +28,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "21"
+
+      - name: Drop the IDE daemon JVM criteria (JetBrains runtime is not provisionable on CI)
+        run: rm -f gradle/gradle-daemon-jvm.properties
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
