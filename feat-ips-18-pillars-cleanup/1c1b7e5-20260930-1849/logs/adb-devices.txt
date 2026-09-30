@@ -1,0 +1,4 @@
+List of devices attached
+46071FDAS00AFP         device usb:20-4 product:komodo model:Pixel_9_Pro_XL device:komodo transport_id:1
+adb-46071FDAS00AFP-38TT6Z._adb-tls-connect._tcp device product:komodo model:Pixel_9_Pro_XL device:komodo transport_id:2
+

@@ -1,0 +1,29 @@
+--------- beginning of main
+09-30 19:07:00.430 11493 11628 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 31ms : 9 entries
+09-30 19:08:01.122 11493 11558 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 9ms : 9 entries
+09-30 19:08:35.893 11493 11493 I JEMMA-QR: [t=1790788115893] 📤 onViewCreated · profileId=demo_kurodo · initialChannel=PRUNED
+09-30 19:08:35.939 11493 11493 I JEMMA-QR: [t=1790788115939] 📂 loadProfile(demo_kurodo) → ok in 23ms
+09-30 19:08:36.534 11493 11493 I JEMMA-QR: [t=1790788116534] 🧪 hydrate ok in 595ms · al=3 md=0 cn=0
+09-30 19:08:36.577 11493 12684 I JEMMA-CODEC: [t=1790788116577] ✂️ prune ok in 6ms : raw=1372b → pruned=1266b (92%)
+09-30 19:08:36.577 11493 12684 I JEMMA-CODEC: [t=1790788116577] 📦 encode ok in 40ms : pruned=1266b → compressed=952b (75%)
+09-30 19:08:36.580 11493 12684 D JEMMA-CODEC: [t=1790788116580] 🪟 single frame (952 bytes ≤ 1800 bytes)
+09-30 19:08:36.835 11493 12684 D JEMMA-CODEC: [t=1790788116835] 🖼️ qr encode ok in 250ms : len=952b → raw 121×121 scaled to 726×726px · EC=M
+09-30 19:08:36.850 11493 11493 D JEMMA-QR: [t=1790788116850] 🖼️ rendered frame 1/1 (952b)
+09-30 19:08:42.421 11493 11493 D JEMMA-QR: [t=1790788122421] 🔀 channel switch PRUNED → TEXT
+09-30 19:08:43.011 11493 11631 I JEMMA-CODEC: [t=1790788123011] 📝 text build FR in 1ms : 611 chars → 611 chars (681 bytes)
+09-30 19:08:43.012 11493 11631 D JEMMA-CODEC: [t=1790788123012] 🪟 single frame (681 bytes ≤ 1800 bytes)
+09-30 19:08:43.038 11493 11631 D JEMMA-CODEC: [t=1790788123038] 🖼️ qr encode ok in 25ms : len=611b → raw 105×105 scaled to 735×735px · EC=M
+09-30 19:08:43.045 11493 11493 D JEMMA-QR: [t=1790788123045] 🖼️ rendered frame 1/1 (611b)
+09-30 19:09:21.719 11493 11493 D JEMMA-QR: [t=1790788161719] 🌐 lang switch → EN
+09-30 19:09:22.320 11493 12684 I JEMMA-CODEC: [t=1790788162320] 📝 text build EN in 1ms : 598 chars → 598 chars (662 bytes)
+09-30 19:09:22.321 11493 12684 D JEMMA-CODEC: [t=1790788162321] 🪟 single frame (662 bytes ≤ 1800 bytes)
+09-30 19:09:22.375 11493 12684 D JEMMA-CODEC: [t=1790788162375] 🖼️ qr encode ok in 53ms : len=598b → raw 101×101 scaled to 707×707px · EC=M
+09-30 19:09:22.381 11493 11493 D JEMMA-QR: [t=1790788162381] 🖼️ rendered frame 1/1 (598b)
+09-30 19:09:28.118 11493 11493 I JEMMA-QR: [t=1790788168118] 📋 copied to clipboard · channel=TEXT · len=598
+09-30 19:11:14.837 11493 11493 D JEMMA-QR: [t=1790788274837] 🌐 lang switch → FR
+09-30 19:11:15.440 11493 11633 I JEMMA-CODEC: [t=1790788275440] 📝 text build FR in 1ms : 611 chars → 611 chars (681 bytes)
+09-30 19:11:15.441 11493 11633 D JEMMA-CODEC: [t=1790788275441] 🪟 single frame (681 bytes ≤ 1800 bytes)
+09-30 19:11:15.490 11493 11633 D JEMMA-CODEC: [t=1790788275490] 🖼️ qr encode ok in 47ms : len=611b → raw 105×105 scaled to 735×735px · EC=M
+09-30 19:11:15.494 11493 11493 D JEMMA-QR: [t=1790788275494] 🖼️ rendered frame 1/1 (611b)
+09-30 19:11:21.484 11493 11493 I JEMMA-QR: [t=1790788281484] 📋 copied to clipboard · channel=TEXT · len=611
+# AndroidRuntime:E — 0 error

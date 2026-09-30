@@ -1,0 +1,102 @@
+{
+  "_j": "1.2",
+  "p": {
+    "gn": "Haru",
+    "fn": "Tanaka",
+    "gs": "F",
+    "bd": "1946-02-08",
+    "nat": "JP",
+    "bt": "O+",
+    "adr": "Aomori, Japan",
+    "idn": "JP-12345678",
+    "ids": [],
+    "adrs": [],
+    "tels": [],
+    "lang": "ja-JP",
+    "ct": []
+  },
+  "al": [
+    {
+      "c": "419474003",
+      "s": "L",
+      "st": "A",
+      "d": "Allergy to soy",
+      "m": "Mild GI symptoms",
+      "d_display": "大豆アレルギー · Allergie au soja",
+      "cs": "http://snomed.info/sct",
+      "cat": "food",
+      "rxns": []
+    }
+  ],
+  "md": [
+    {
+      "c": "R06AX26",
+      "t": "Allegra FX (fexofenadine 60mg)",
+      "r": "O",
+      "v": "1",
+      "u": "tab",
+      "rs": "BID",
+      "rc": "J30",
+      "d_display": "Antihistamine · 抗ヒスタミン薬",
+      "cs": "http://www.whocc.no/atc",
+      "ms": "active"
+    },
+    {
+      "c": "R05DA09",
+      "t": "Medicon Pro (dextromethorphan)",
+      "r": "O",
+      "v": "1",
+      "u": "tab",
+      "rs": "PRN cough",
+      "d_display": "Antitussive · 鎮咳薬",
+      "cs": "http://www.whocc.no/atc",
+      "ms": "active"
+    },
+    {
+      "c": "C03CA01",
+      "t": "Furosemide 20mg",
+      "r": "O",
+      "v": "1",
+      "u": "tab",
+      "rs": "Daily",
+      "rc": "I50",
+      "d_display": "Diuretic for heart failure · 心不全用利尿薬",
+      "cs": "http://www.whocc.no/atc",
+      "ms": "active"
+    }
+  ],
+  "cn": [],
+  "ph": [],
+  "im": [
+    {
+      "c": "1181000221105",
+      "d": "定期接種（高齢者）",
+      "d_display": "Seasonal influenza vaccine",
+      "dt": "2025-10-14"
+    },
+    {
+      "c": "1801000221105",
+      "d_display": "Pneumococcal conjugate vaccine (PCV)",
+      "dt": "2021-04-06",
+      "dn": 1
+    },
+    {
+      "c": "1119349007",
+      "d_display": "COVID-19 mRNA vaccine",
+      "dt": "2024-11-02",
+      "dn": 7
+    }
+  ],
+  "pr": [],
+  "dv": [],
+  "fs": [],
+  "pg": [],
+  "rs": [],
+  "ad": [],
+  "cs": [],
+  "gl": [],
+  "en": [],
+  "oc": [],
+  "pv": [],
+  "sid": "demo_haru"
+}
