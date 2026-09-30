@@ -28,8 +28,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
-import androidx.core.net.toUri
-import androidx.core.os.bundleOf
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
@@ -37,9 +35,7 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.google.ai.edge.gallery.AppLifecycleProvider
-import com.google.ai.edge.gallery.GalleryEvent
 import be.heyman.android.jemmapassdemo.R
-import com.google.ai.edge.gallery.firebaseAnalytics
 import com.google.ai.edge.gallery.worker.DownloadWorker
 import java.util.UUID
 import java.util.concurrent.Executors
@@ -172,10 +168,6 @@ class DefaultDownloadRepository(
             downloadStartTimeSharedPreferences.edit {
               putLong(model.name, System.currentTimeMillis())
             }
-            firebaseAnalytics?.logEvent(
-              GalleryEvent.MODEL_DOWNLOAD.id,
-              bundleOf("event_type" to "start", "model_id" to model.name),
-            )
           }
 
           WorkInfo.State.RUNNING -> {
@@ -215,16 +207,6 @@ class DefaultDownloadRepository(
               modelName = model.name,
             )
 
-            val startTime = downloadStartTimeSharedPreferences.getLong(model.name, 0L)
-            val duration = System.currentTimeMillis() - startTime
-            firebaseAnalytics?.logEvent(
-              GalleryEvent.MODEL_DOWNLOAD.id,
-              bundleOf(
-                "event_type" to "success",
-                "model_id" to model.name,
-                "duration_ms" to duration,
-              ),
-            )
             downloadStartTimeSharedPreferences.edit { remove(model.name) }
           }
 
@@ -241,7 +223,7 @@ class DefaultDownloadRepository(
             } else {
               sendNotification(
                 title = context.getString(R.string.notification_title_fail),
-                text = context.getString(R.string.notification_content_success).format(model.name),
+                text = context.getString(R.string.notification_content_fail).format(model.name),
                 taskId = "",
                 modelName = "",
               )
@@ -251,17 +233,6 @@ class DefaultDownloadRepository(
               ModelDownloadStatus(status = status, errorMessage = errorMessage),
             )
 
-            val startTime = downloadStartTimeSharedPreferences.getLong(model.name, 0L)
-            val duration = System.currentTimeMillis() - startTime
-            // TODO: Add failure reasons
-            firebaseAnalytics?.logEvent(
-              GalleryEvent.MODEL_DOWNLOAD.id,
-              bundleOf(
-                "event_type" to "failure",
-                "model_id" to model.name,
-                "duration_ms" to duration,
-              ),
-            )
             downloadStartTimeSharedPreferences.edit { remove(model.name) }
           }
 
@@ -278,7 +249,7 @@ class DefaultDownloadRepository(
     }
 
     val channelId = "download_notification"
-    val channelName = "AI Edge Gallery download notification"
+    val channelName = "JemmaPass downloads"
 
     // Create the NotificationChannel, but only on API 26+ because
     // the NotificationChannel class is new and not in the support library
@@ -288,26 +259,12 @@ class DefaultDownloadRepository(
       context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     notificationManager.createNotificationChannel(channel)
 
-    val intent: Intent
-    if (taskId.isEmpty()) {
-      // If taskId is empty, it's a failed download. Just open the app's main screen.
-      intent = context.packageManager.getLaunchIntentForPackage(context.packageName)!!
-    }
-    // Download from global model manager. Open the global model manager screen.
-    else if (taskId == DOWNLOAD_FROM_GLOBAL_MODEL_MANAGER_TASK_ID) {
-      intent =
-        Intent(Intent.ACTION_VIEW, "com.google.ai.edge.gallery://global_model_manager".toUri())
-          .apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK }
-    } else {
-
-      // Otherwise, create the deep link as before.
-      intent =
-        Intent(
-            Intent.ACTION_VIEW,
-            "com.google.ai.edge.gallery://model/$taskId/${modelName}".toUri(),
-          )
-          .apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK }
-    }
+    // JEMMA — the Gallery deep-link activity is gone: every download
+    // notification opens JEMMA's own launcher activity.
+    val intent: Intent =
+      (context.packageManager.getLaunchIntentForPackage(context.packageName) ?: Intent()).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+      }
 
     // Create a PendingIntent
     val pendingIntent: PendingIntent =

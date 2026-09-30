@@ -38,7 +38,6 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="com.google.android.apps.aicore.service.BIND_SERVICE" />
 
     <!-- ═══════════════════════════════════════════════════════════════════
          JEMMA : Firebase / FCM removed for privacy.
@@ -190,29 +189,6 @@
             </intent-filter>
         </activity>
 
-        <!--
-          Edge Gallery's original MainActivity is kept for backward compat
-          with their deep-link scheme but is NO LONGER the launcher entry.
-          The MAIN/LAUNCHER intent-filter has been removed ; the VIEW filter
-          is preserved so deep links com.google.ai.edge.gallery://... still
-          work for whoever depends on them. JEMMA does not depend on it.
-        -->
-        <activity
-            android:name="com.google.ai.edge.gallery.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Gallery.SplashScreen"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:configChanges="uiMode"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="com.google.ai.edge.gallery" />
-            </intent-filter>
-        </activity>
-
         <!-- Set themes for activities that are used for viewing open source licenses -->
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
@@ -303,20 +279,6 @@
             android:name=".sos.JemmaWidgetEmergencyService"
             android:foregroundServiceType="connectedDevice"
             android:exported="false" />
-
-        <!-- For Firebase Analytics. -->
-        <receiver
-            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
-            android:enabled="true"
-            android:exported="false" />
-        <service android:name="com.google.android.gms.measurement.AppMeasurementService"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
-            android:enabled="true"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <!-- ═══════════════════════════════════════════════════════════════
              JEMMA : Firebase Cloud Messaging service removed for privacy.

@@ -338,10 +338,11 @@ class DownloadWorker(context: Context, params: WorkerParameters) :
     }
     val content = "Downloading in progress: $progress%"
 
+    // JEMMA — open the app's own launcher activity (the Gallery activity was removed).
     val intent =
-      Intent(applicationContext, Class.forName("com.google.ai.edge.gallery.MainActivity")).apply {
-        flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-      }
+      (applicationContext.packageManager.getLaunchIntentForPackage(applicationContext.packageName)
+          ?: Intent())
+        .apply { flags = Intent.FLAG_ACTIVITY_SINGLE_TOP }
     val pendingIntent =
       PendingIntent.getActivity(
         applicationContext,

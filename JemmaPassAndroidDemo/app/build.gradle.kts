@@ -16,12 +16,9 @@
 
 plugins {
   alias(libs.plugins.android.application)
-  // Note: set apply to true to enable google-services (requires google-services.json).
-  alias(libs.plugins.google.services) apply false
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.kotlin.serialization)
-  alias(libs.plugins.protobuf)
   alias(libs.plugins.hilt.application)
   alias(libs.plugins.oss.licenses)
   alias(libs.plugins.ksp)
@@ -40,11 +37,6 @@ android {
     versionCode = 31
     versionName = "1.0.14"
 
-    // Needed for HuggingFace auth workflows.
-    // Use the scheme of the "Redirect URLs" in HuggingFace app.
-    manifestPlaceholders["appAuthRedirectScheme"] =
-        "REPLACE_WITH_YOUR_REDIRECT_SCHEME_IN_HUGGINGFACE_APP"
-    manifestPlaceholders["applicationName"] = "com.google.ai.edge.gallery.GalleryApplication"
     manifestPlaceholders["appIcon"] = "@mipmap/ic_launcher"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -98,19 +90,13 @@ dependencies {
   implementation(libs.androidx.ui.graphics)
   implementation(libs.androidx.ui.tooling.preview)
   implementation(libs.androidx.material3)
-  implementation(libs.androidx.compose.navigation)
   implementation(libs.kotlinx.serialization.json)
   implementation(libs.kotlin.reflect)
-  implementation(libs.material.icon.extended)
   implementation(libs.androidx.work.runtime)
-  implementation(libs.androidx.datastore)
   implementation(libs.com.google.code.gson)
   implementation(libs.androidx.lifecycle.process)
   implementation(libs.androidx.security.crypto)
-  implementation(libs.androidx.webkit)
   implementation(libs.litertlm)
-  implementation(libs.commonmark)
-  implementation(libs.richtext)
   implementation(libs.tflite)
   implementation(libs.tflite.gpu)
   implementation(libs.tflite.support)
@@ -118,15 +104,9 @@ dependencies {
   implementation(libs.camerax.camera2)
   implementation(libs.camerax.lifecycle)
   implementation(libs.camerax.view)
-  implementation(libs.openid.appauth)
   implementation(libs.androidx.splashscreen)
-  implementation(libs.protobuf.javalite)
   implementation(libs.hilt.android)
-  implementation(libs.hilt.navigation.compose)
   implementation(libs.play.services.oss.licenses)
-  implementation(platform(libs.firebase.bom))
-  implementation(libs.firebase.analytics)
-  implementation(libs.firebase.messaging)
   implementation(libs.androidx.exifinterface)
   implementation(libs.moshi.kotlin)
   ksp(libs.hilt.android.compiler)
@@ -140,7 +120,6 @@ dependencies {
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
   ksp(libs.moshi.kotlin.codegen)
-  implementation(libs.mlkit.genai.prompt)
 
   // 🏥 Lot 14.5c22 — SDK Kotlin FHIR (IPS Storage & Hospital Interop)
   // L44.90 : This lib is compiled with Kotlin 2.3.0 — that's WHY we upgraded.
@@ -210,9 +189,4 @@ dependencies {
   // critical invariant called out in the handoff).
   implementation("com.google.android.gms:play-services-nearby:19.3.0")
   implementation("com.google.android.gms:play-services-location:21.3.0")
-}
-
-protobuf {
-  protoc { artifact = "com.google.protobuf:protoc:4.26.1" }
-  generateProtoTasks { all().forEach { it.plugins { create("java") { option("lite") } } } }
 }

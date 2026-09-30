@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import be.heyman.android.jemmapassdemo.BuildConfig
 import be.heyman.android.jemmapassdemo.R
 import be.heyman.android.jemmapassdemo.ai.gemma.GemmaSession
 import be.heyman.android.jemmapassdemo.databinding.FragmentSettingsBinding
@@ -277,7 +278,7 @@ class SettingsFragment : Fragment() {
 
         binding.settingsBtnWipe.setOnClickListener { showWipeConfirmDialog() }
 
-        binding.settingsAbout.text = getString(R.string.app_name) + " v2.2.0"
+        binding.settingsAbout.text = getString(R.string.jemma_app_name) + " v" + BuildConfig.VERSION_NAME
     }
 
     // ──────────────────────────────────────────────────────────────────────
