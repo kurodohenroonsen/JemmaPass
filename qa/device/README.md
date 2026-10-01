@@ -633,6 +633,47 @@ de 📜/🩺 : pas de nouveau tag logcat, ce sont les tags `JEMMA-PASTPROBLEMS-*
 | Réduire un run audité | `qa/device/prune_run.sh <dossier run>…` | ne garde que `report.md` + `screenshots/` |
 | Galerie d'écrans | `python3 qa/device/build_gallery.py <checkout device-reports>` | `screens/<pilier>/` + `INDEX.md`, classement par nom de fichier (aucune analyse d'image) |
 
+## 3 ter. Une seule commande par couloir — plus aucune validation à la chaîne
+
+Antigravity demande une autorisation pour **chaque ligne de commande différente**. Donc il n'y en a
+plus que cinq, toujours identiques au caractère près, à autoriser une fois (« always allow … in this
+project ») :
+
+```
+bash qa/device/lane-main.sh
+bash qa/device/lane-device.sh
+bash qa/device/lane-fhir.sh
+bash qa/device/lane-kb.sh
+bash qa/device/lane-docs.sh
+```
+
+Mode d'emploi pour un agent / sous-agent :
+1. **Écrire** (outil d'édition de fichier, pas le terminal) `/tmp/jp/<couloir>/task.txt` : une action
+   par ligne, arguments séparés par des espaces, guillemets pour un argument avec espaces.
+2. **Lancer** la commande fixe de son couloir (rien d'autre, jamais de pipe ni d'argument).
+3. **Lire** `/tmp/jp/<couloir>/out.txt` (outil de lecture) : chaque action y est encadrée par
+   `▶ action` … `◀ rc=N`.
+
+Le numéro de série et les chemins vivent dans `~/.jemmapass.env` (`export ADB_SERIAL=…`,
+`JP_REPORTS=…`, `JP_MAILBOX=…`), jamais dans une commande. `OUT` = dernier dossier de run.
+
+| Action | Effet |
+|---|---|
+| `mailbox-pull` · `mailbox-push "<message de commit>"` | lire / pousser la mailbox |
+| `checkout <sha>` · `status` | branche code |
+| `qa-run` | `run_device_qa.sh` (tests, build, install, seed, verify-seed) |
+| `ui <args de ui.py…>` · `shot <nom.png>` · `swipe x1 y1 x2 y2 [ms]` · `key <code>` · `locale <fr\|ja\|en>` | pilotage du téléphone |
+| `pull-profiles <sous-dossier>` · `verify <sous-dossier> <options verify_profiles…>` | profils du device |
+| `validate [dossier] [suffixe]` | validateur HL7 ×3 en parallèle |
+| `decode-qr <capture.png> <sortie.txt>` · `json <fichier relatif à OUT> <sélecteur> <sortie.json>` | QR, extraits FHIR bruts (`code:`, `section:`, `id:`, `type:`) |
+| `logcat` · `logcat-clear` · `grep-log <texte>` | logcat (liste de tags du §4 intégrée) + scrub |
+| `kb-pull` · `kb-sql <requete.sql dans le dossier du couloir> <sortie.txt>` · `kb-rm` | KB hors dépôt |
+| `measure` · `count-png` · `prune` · `gallery` · `leakcheck` | device-reports |
+| `publish <NN-sha> "<message de commit>"` · `reports-commit "<message>"` | copie du run + galerie + commit + push |
+
+Une action inconnue est refusée (`rc=64`) : s'il manque un outil, demande-le dans le rapport au lieu
+de taper une commande libre.
+
 ## 4. Logcat de fin
 
 ```
