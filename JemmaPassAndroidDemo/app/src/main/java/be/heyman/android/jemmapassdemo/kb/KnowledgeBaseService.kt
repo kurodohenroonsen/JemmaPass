@@ -704,13 +704,26 @@ class KnowledgeBaseService @Inject constructor(
             val a = atc.trim().uppercase()
             data class Row(val severity: String?, val description: String?, val management: String?, val disease: String)
             val rows = mutableListOf<Row>()
+            val seen = HashSet<String>()
             try {
+                // DDInter keys its rules by the drug's *primary* ATC (device QA cycle 20:
+                // ibuprofen = G02CC01, not M01AE01; furosemide = C03EB01, not C03CA01).
+                // Every DDInter drug listing the ATC in its atc_codes is therefore included.
                 db.rawQuery(
-                    "SELECT severity, description_en, management_en, disease_name_en FROM drug_disease_interactions WHERE drug_atc = ?",
-                    arrayOf(a),
+                    """
+                    SELECT severity, description_en, management_en, disease_name_en
+                    FROM drug_disease_interactions
+                    WHERE drug_atc = ?
+                       OR drug_ddinter_id IN (
+                            SELECT ddinter_id FROM ddinter_drugs
+                            WHERE primary_atc = ? OR (',' || atc_codes || ',') LIKE ?
+                       )
+                    """.trimIndent(),
+                    arrayOf(a, a, "%,$a,%"),
                 ).use { c ->
                     while (c.moveToNext()) {
                         val disease = c.getStringOrNull(3) ?: continue
+                        if (!seen.add(disease.lowercase() + "|" + c.getStringOrNull(0))) continue
                         rows += Row(c.getStringOrNull(0), c.getStringOrNull(1), c.getStringOrNull(2), disease)
                     }
                 }

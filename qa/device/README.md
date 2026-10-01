@@ -552,6 +552,19 @@ SNOMED stocké, display primaire KB) puis le libellé localisé, dans les deux s
    `SELECT drug_name, drug_atc, COUNT(*) FROM drug_disease_interactions WHERE lower(drug_name) IN ('ibuprofen','furosemide','bisoprolol','sildenafil','dextromethorphan','fexofenadine','warfarin','isosorbide dinitrate') GROUP BY 1,2;`
    `SELECT d.name, d.primary_atc, d.atc_codes FROM ddinter_drugs d WHERE lower(d.name) IN ('ibuprofen','furosemide','bisoprolol','sildenafil');`
 
+### T19 — ATC primaire DDInter (cycle 20)
+
+Les règles DDInter sont rattachées à l'ATC *primaire* du médicament (ibuprofène G02CC01,
+furosémide C03EB01, bisoprolol C07FX04, sildénafil G01AE10) : la requête inclut désormais tous
+les médicaments DDInter dont `atc_codes` contient l'ATC du profil.
+
+1. Dump brut (copie KB hors dépôt) → `kb/ddinter-persona-rules.txt` :
+   `SELECT d.name, i.disease_name_en, i.severity FROM drug_disease_interactions i JOIN ddinter_drugs d ON d.ddinter_id = i.drug_ddinter_id WHERE (',' || d.atc_codes || ',') GLOB '*,M01AE01,*' OR (',' || d.atc_codes || ',') GLOB '*,C07AB07,*' OR (',' || d.atc_codes || ',') GLOB '*,G04BE03,*' OR (',' || d.atc_codes || ',') GLOB '*,C03CA01,*' ORDER BY 1,3,2;`
+2. Lignes `JEMMA-HYDRATOR … drug×disease=N` de Kamekichi et Haru (copie brute) ; chaque alerte
+   affichée recopiée telle quelle (captures `200-dd-kamekichi.png`, `201-dd-haru.png`).
+3. Pour chaque alerte : vérifie qu'elle correspond à une ligne du dump (médicament + maladie).
+   Signale toute alerte qui te paraît cliniquement absurde (faux positif de correspondance).
+
 ## 4. Logcat de fin
 
 ```
@@ -567,7 +580,7 @@ jamais un log à la main.
 
 ## 5. Rapport et publication
 
-Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T18,
+Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T19,
 statut ✅ / ❌ / ⚠️ / ⏭, preuve = nom de capture ou fichier, déviations, bugs avec
 étapes de reproduction). Puis :
 
