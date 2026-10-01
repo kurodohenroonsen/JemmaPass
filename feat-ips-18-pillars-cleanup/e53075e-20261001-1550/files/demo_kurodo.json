@@ -1,0 +1,172 @@
+{
+  "_j": "1.2",
+  "p": {
+    "gn": "Kurodo",
+    "fn": "Henro",
+    "gs": "M",
+    "bd": "1979-04-04",
+    "nat": "BE",
+    "bt": "A+",
+    "adr": "Rue de la Paix 12, 5660 Couvin, Belgique",
+    "idn": "BE-680412-123-45",
+    "ids": [],
+    "adrs": [],
+    "tels": [],
+    "lang": "fr-FR",
+    "ct": [
+      {
+        "n": "Kamekichi",
+        "r": "friend",
+        "adr": "75 Avenue Louise, Bruxelles"
+      }
+    ]
+  },
+  "al": [
+    {
+      "c": "91936005",
+      "s": "H",
+      "st": "A",
+      "d": "Allergy to penicillin",
+      "m": "Anaphylactic shock 2019-03",
+      "d_display": "ペニシリンアレルギー · Allergie à la pénicilline",
+      "cs": "http://snomed.info/sct",
+      "cat": "medication",
+      "rxns": []
+    },
+    {
+      "c": "417532002",
+      "s": "H",
+      "st": "A",
+      "d": "Allergy to fish",
+      "m": "Urticaria + tongue swelling",
+      "d_display": "魚アレルギー · Allergie au poisson",
+      "cs": "http://snomed.info/sct",
+      "cat": "food",
+      "rxns": []
+    },
+    {
+      "c": "419263009",
+      "s": "L",
+      "st": "A",
+      "d": "Allergy to tree pollen",
+      "d_display": "花粉症 · Pollinose",
+      "cs": "http://snomed.info/sct",
+      "cat": "environment",
+      "rxns": []
+    }
+  ],
+  "md": [],
+  "cn": [
+    {
+      "c": "13644009",
+      "s": "mild",
+      "st": "active",
+      "d": "LDL 131 mg/dL — lifestyle first",
+      "d_display": "Hypercholesterolemia",
+      "dt": "2026-01"
+    }
+  ],
+  "ph": [
+    {
+      "c": "74400008",
+      "d": "Treated by appendectomy",
+      "d_display": "Appendicitis",
+      "dt": "1995-07-10",
+      "ab": "1995-07-12",
+      "sv": "LA6751-7"
+    },
+    {
+      "c": "233604007",
+      "d_display": "Pneumonia",
+      "dt": "2018-02",
+      "ab": "2018-03",
+      "sv": "LA6752-5"
+    }
+  ],
+  "im": [
+    {
+      "c": "871876003",
+      "d_display": "Tetanus-diphtheria-pertussis (Tdap)",
+      "dt": "2022-05-17"
+    },
+    {
+      "c": "871803007",
+      "d": "Series completed before the first Shikoku pilgrimage",
+      "d_display": "Hepatitis A + B vaccine",
+      "dt": "2016-03-02",
+      "dn": 3
+    },
+    {
+      "c": "836378001",
+      "d_display": "Japanese encephalitis vaccine",
+      "dt": "2023-01-20",
+      "dn": 2
+    },
+    {
+      "c": "1119349007",
+      "d_display": "COVID-19 mRNA vaccine",
+      "dt": "2021-06-11",
+      "dn": 2
+    }
+  ],
+  "pr": [
+    {
+      "c": "80146002",
+      "d": "Laparoscopic",
+      "d_display": "Appendectomy",
+      "dt": "1995-07-12"
+    },
+    {
+      "c": "73761001",
+      "d": "Next screening 2034",
+      "d_display": "Colonoscopy",
+      "dt": "2024-02-19"
+    }
+  ],
+  "dv": [],
+  "fs": [],
+  "pg": [],
+  "rs": [
+    {
+      "c": "882-1",
+      "d_display": "ABO and Rh blood group",
+      "v": "Blood group A Rh(D) positive",
+      "vc": "278149003"
+    },
+    {
+      "c": "4548-4",
+      "d_display": "Hemoglobin A1c",
+      "dt": "2026-01-15",
+      "v": "5.6",
+      "u": "%",
+      "ip": "N",
+      "rr": "4-6"
+    },
+    {
+      "c": "2089-1",
+      "d": "Lifestyle advice, recheck in 6 months",
+      "d_display": "LDL cholesterol",
+      "dt": "2026-01-15",
+      "v": "131",
+      "u": "mg/dL",
+      "ip": "H",
+      "rr": "≤100"
+    },
+    {
+      "c": "2160-0",
+      "d_display": "Creatinine (serum/plasma)",
+      "dt": "2026-01-15",
+      "v": "0.9",
+      "u": "mg/dL",
+      "ip": "N",
+      "rr": "0.7-1.2"
+    }
+  ],
+  "ad": [],
+  "cs": [],
+  "gl": [],
+  "en": [],
+  "oc": [],
+  "pv": [],
+  "sid": "demo_kurodo"
+}

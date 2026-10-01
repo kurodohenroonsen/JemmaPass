@@ -1,0 +1,1091 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OperationOutcome xmlns="http://hl7.org/fhir">
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p class="res-header-id">
+        <b>OperationOutcome </b>
+      </p>
+      <table class="grid">
+        <tr>
+          <td>
+            <b>Severity</b>
+          </td>
+          <td>
+            <b>Location</b>
+          </td>
+          <td>
+            <b>Code</b>
+          </td>
+          <td>
+            <b>Details</b>
+          </td>
+          <td>
+            <b>Diagnostics</b>
+          </td>
+          <td>
+            <b>Source</b>
+          </td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[0].resource/*Composition/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[1].resource/*Patient/patient-01*/.contact[0].relationship[0]</td>
+          <td>Invalid Code</td>
+          <td>No code provided, and a code should be provided from the value set 'Patient Contact Relationship ' (http://hl7.org/fhir/ValueSet/patient-contactrelationship|4.0.1)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[1].resource/*Patient/patient-01*/.communication[0].language.coding[0].system</td>
+          <td>Not Found</td>
+          <td>A definition for CodeSystem 'urn:ietf:bcp:47' could not be found, so the code cannot be validated</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[1].resource/*Patient/patient-01*/.communication[0].language.coding[0].system</td>
+          <td>Not Found</td>
+          <td>A definition for CodeSystem 'urn:ietf:bcp:47' version 'null' could not be found, so the code cannot be validated. Valid versions: 2.0.1</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[1].resource/*Patient/patient-01*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[2].resource/*AllergyIntolerance/null*/.code.coding[0]</td>
+          <td>Business Rule Violation</td>
+          <td>The concept '300916003' has a status of inactive and its use should be reviewed</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[2].resource/*AllergyIntolerance/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[3].resource/*AllergyIntolerance/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[4].resource/*AllergyIntolerance/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[5].resource/*Medication/null*/.code.coding[0].system</td>
+          <td>Not Found</td>
+          <td>A definition for CodeSystem 'http://www.whocc.no/atc' could not be found, so the code cannot be validated</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[5].resource/*Medication/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[6].resource/*MedicationStatement/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[7].resource/*Medication/null*/.code.coding[0].system</td>
+          <td>Not Found</td>
+          <td>A definition for CodeSystem 'http://www.whocc.no/atc' could not be found, so the code cannot be validated</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[7].resource/*Medication/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[8].resource/*MedicationStatement/null*/.dosage[0].doseAndRate[0].dose.ofType(Quantity)</td>
+          <td>Business Rule Violation</td>
+          <td>Unable to validate code 'mg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[8].resource/*MedicationStatement/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[9].resource/*Medication/null*/.code.coding[0].system</td>
+          <td>Not Found</td>
+          <td>A definition for CodeSystem 'http://www.whocc.no/atc' could not be found, so the code cannot be validated</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[9].resource/*Medication/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[10].resource/*MedicationStatement/null*/.dosage[0].doseAndRate[0].dose.ofType(Quantity)</td>
+          <td>Business Rule Violation</td>
+          <td>Unable to validate code 'mg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[10].resource/*MedicationStatement/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[11].resource/*Medication/null*/.code.coding[0].system</td>
+          <td>Not Found</td>
+          <td>A definition for CodeSystem 'http://www.whocc.no/atc' could not be found, so the code cannot be validated</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[11].resource/*Medication/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[12].resource/*MedicationStatement/null*/.dosage[0].doseAndRate[0].dose.ofType(Quantity)</td>
+          <td>Business Rule Violation</td>
+          <td>Unable to validate code 'mg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[12].resource/*MedicationStatement/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[13].resource/*Medication/null*/.code.coding[0].system</td>
+          <td>Not Found</td>
+          <td>A definition for CodeSystem 'http://www.whocc.no/atc' could not be found, so the code cannot be validated</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[13].resource/*Medication/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[14].resource/*MedicationStatement/null*/.dosage[0].doseAndRate[0].dose.ofType(Quantity)</td>
+          <td>Business Rule Violation</td>
+          <td>Unable to validate code 'mg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[14].resource/*MedicationStatement/null*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[15].resource/*Condition/cn-kamekichi-hypertension*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Information</td>
+          <td>Bundle.entry[15].resource/*Condition/cn-kamekichi-hypertension*/.category[0]</td>
+          <td>Business Rule Violation</td>
+          <td>Reference to draft CodeSystem http://terminology.hl7.org/CodeSystem/condition-category|0.5.0</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[16].resource/*Condition/cn-kamekichi-af*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Information</td>
+          <td>Bundle.entry[16].resource/*Condition/cn-kamekichi-af*/.category[0]</td>
+          <td>Business Rule Violation</td>
+          <td>Reference to draft CodeSystem http://terminology.hl7.org/CodeSystem/condition-category|0.5.0</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+        <tr>
+          <td>Warning</td>
+          <td>Bundle.entry[17].resource/*Condition/cn-kamekichi-angina*/</td>
+          <td>Validation rule failed</td>
+          <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
+          <td/>
+          <td>InstanceValidator</td>
+        </tr>
+        <tr>
+          <td>Information</td>
+          <td>Bundle.entry[17].resource/*Condition/cn-kamekichi-angina*/.category[0]</td>
+          <td>Business Rule Violation</td>
+          <td>Reference to draft CodeSystem http://terminology.hl7.org/CodeSystem/condition-category|0.5.0</td>
+          <td/>
+          <td>TerminologyEngine</td>
+        </tr>
+      </table>
+    </div>
+  </text>
+  <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-file">
+    <valueString value="/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/qa/device/out/e53075e-20261001-1550/files/demo_kamekichi.fhir.json"/>
+  </extension>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="12"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Composition|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[0].resource/*Composition/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="159"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="30"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="Terminology_TX_Code_ValueSet_Ext"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Patient|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="code-invalid"/>
+    <details>
+      <text value="No code provided, and a code should be provided from the value set 'Patient Contact Relationship ' (http://hl7.org/fhir/ValueSet/patient-contactrelationship|4.0.1)"/>
+    </details>
+    <expression value="Bundle.entry[1].resource/*Patient/patient-01*/.contact[0].relationship[0]"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="170"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="26"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="UNKNOWN_CODESYSTEM"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Patient|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="not-found"/>
+    <details>
+      <text value="A definition for CodeSystem 'urn:ietf:bcp:47' could not be found, so the code cannot be validated"/>
+    </details>
+    <expression value="Bundle.entry[1].resource/*Patient/patient-01*/.communication[0].language.coding[0].system"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="170"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="26"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="UNKNOWN_CODESYSTEM_VERSION"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Patient|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="not-found"/>
+    <details>
+      <text value="A definition for CodeSystem 'urn:ietf:bcp:47' version 'null' could not be found, so the code cannot be validated. Valid versions: 2.0.1"/>
+    </details>
+    <expression value="Bundle.entry[1].resource/*Patient/patient-01*/.communication[0].language.coding[0].system"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="131"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Patient|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[1].resource/*Patient/patient-01*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="204"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="18"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="INACTIVE_CONCEPT_FOUND"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/AllergyIntolerance|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="business-rule"/>
+    <details>
+      <text value="The concept '300916003' has a status of inactive and its use should be reviewed"/>
+    </details>
+    <expression value="Bundle.entry[2].resource/*AllergyIntolerance/null*/.code.coding[0]"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="184"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[2].resource/*AllergyIntolerance/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="221"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[3].resource/*AllergyIntolerance/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="258"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[4].resource/*AllergyIntolerance/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="297"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="18"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="UNKNOWN_CODESYSTEM"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Medication|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="not-found"/>
+    <details>
+      <text value="A definition for CodeSystem 'http://www.whocc.no/atc' could not be found, so the code cannot be validated"/>
+    </details>
+    <expression value="Bundle.entry[5].resource/*Medication/null*/.code.coding[0].system"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="295"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Medication|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[5].resource/*Medication/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="311"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[6].resource/*MedicationStatement/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="343"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="18"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="UNKNOWN_CODESYSTEM"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Medication|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="not-found"/>
+    <details>
+      <text value="A definition for CodeSystem 'http://www.whocc.no/atc' could not be found, so the code cannot be validated"/>
+    </details>
+    <expression value="Bundle.entry[7].resource/*Medication/null*/.code.coding[0].system"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="341"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Medication|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[7].resource/*Medication/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="372"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="34"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="Error_validating_code_running_without_terminology_services"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="business-rule"/>
+    <details>
+      <text value="Unable to validate code 'mg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services"/>
+    </details>
+    <expression value="Bundle.entry[8].resource/*MedicationStatement/null*/.dosage[0].doseAndRate[0].dose.ofType(Quantity)"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="357"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[8].resource/*MedicationStatement/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="391"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="18"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="UNKNOWN_CODESYSTEM"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Medication|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="not-found"/>
+    <details>
+      <text value="A definition for CodeSystem 'http://www.whocc.no/atc' could not be found, so the code cannot be validated"/>
+    </details>
+    <expression value="Bundle.entry[9].resource/*Medication/null*/.code.coding[0].system"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="389"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Medication|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[9].resource/*Medication/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="420"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="34"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="Error_validating_code_running_without_terminology_services"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="business-rule"/>
+    <details>
+      <text value="Unable to validate code 'mg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services"/>
+    </details>
+    <expression value="Bundle.entry[10].resource/*MedicationStatement/null*/.dosage[0].doseAndRate[0].dose.ofType(Quantity)"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="405"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[10].resource/*MedicationStatement/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="439"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="18"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="UNKNOWN_CODESYSTEM"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Medication|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="not-found"/>
+    <details>
+      <text value="A definition for CodeSystem 'http://www.whocc.no/atc' could not be found, so the code cannot be validated"/>
+    </details>
+    <expression value="Bundle.entry[11].resource/*Medication/null*/.code.coding[0].system"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="437"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Medication|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[11].resource/*Medication/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="468"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="34"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="Error_validating_code_running_without_terminology_services"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="business-rule"/>
+    <details>
+      <text value="Unable to validate code 'mg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services"/>
+    </details>
+    <expression value="Bundle.entry[12].resource/*MedicationStatement/null*/.dosage[0].doseAndRate[0].dose.ofType(Quantity)"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="453"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[12].resource/*MedicationStatement/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="487"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="18"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="UNKNOWN_CODESYSTEM"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Medication|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="not-found"/>
+    <details>
+      <text value="A definition for CodeSystem 'http://www.whocc.no/atc' could not be found, so the code cannot be validated"/>
+    </details>
+    <expression value="Bundle.entry[13].resource/*Medication/null*/.code.coding[0].system"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="485"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/StructureDefinition/Medication|4.0.1"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[13].resource/*Medication/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="516"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="34"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="Error_validating_code_running_without_terminology_services"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="business-rule"/>
+    <details>
+      <text value="Unable to validate code 'mg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services"/>
+    </details>
+    <expression value="Bundle.entry[14].resource/*MedicationStatement/null*/.dosage[0].doseAndRate[0].dose.ofType(Quantity)"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="501"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[14].resource/*MedicationStatement/null*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="533"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[15].resource/*Condition/cn-kamekichi-hypertension*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="551"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="22"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="MSG_DRAFT"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Condition-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="information"/>
+    <code value="business-rule"/>
+    <details>
+      <text value="Reference to draft CodeSystem http://terminology.hl7.org/CodeSystem/condition-category|0.5.0"/>
+    </details>
+    <expression value="Bundle.entry[15].resource/*Condition/cn-kamekichi-hypertension*/.category[0]"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="579"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[16].resource/*Condition/cn-kamekichi-af*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="597"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="22"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="MSG_DRAFT"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Condition-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="information"/>
+    <code value="business-rule"/>
+    <details>
+      <text value="Reference to draft CodeSystem http://terminology.hl7.org/CodeSystem/condition-category|0.5.0"/>
+    </details>
+    <expression value="Bundle.entry[16].resource/*Condition/cn-kamekichi-af*/.category[0]"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="639"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="14"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="InstanceValidator"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="warning"/>
+    <code value="invariant"/>
+    <details>
+      <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
+    </details>
+    <expression value="Bundle.entry[17].resource/*Condition/cn-kamekichi-angina*/"/>
+  </issue>
+  <issue>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
+      <valueInteger value="657"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
+      <valueInteger value="22"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
+      <valueString value="TerminologyEngine"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
+      <valueCode value="MSG_DRAFT"/>
+    </extension>
+    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
+      <valueString value="http://hl7.org/fhir/uv/ips/StructureDefinition/Condition-uv-ips|1.1.0"/>
+    </extension>
+    <severity value="information"/>
+    <code value="business-rule"/>
+    <details>
+      <text value="Reference to draft CodeSystem http://terminology.hl7.org/CodeSystem/condition-category|0.5.0"/>
+    </details>
+    <expression value="Bundle.entry[17].resource/*Condition/cn-kamekichi-angina*/.category[0]"/>
+  </issue>
+</OperationOutcome>
