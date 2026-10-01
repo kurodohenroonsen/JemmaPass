@@ -1,0 +1,17 @@
+▶ 0. Device
+▶ 1. JVM unit tests
+▶ 2. assembleDebug
+▶ 3. Install (keeps data — the 6 GB model/KB stay in place)
+▶ 4. Backup profiles + force re-seed of the demo personas only
+▶ 5. Launch, wait for seeding, pull the profiles (no screenshot here: the profiles list may show real profiles)
+total 200
+drwxr-xr-x@  8 kurodohenroonsen  staff    256 Sep 30 23:34 .
+drwxr-xr-x@ 10 kurodohenroonsen  staff    320 Sep 30 23:31 ..
+-rw-r--r--@  1 kurodohenroonsen  staff  38116 Sep 30 23:34 demo_haru.fhir.json
+-rw-r--r--@  1 kurodohenroonsen  staff   3356 Sep 30 23:34 demo_haru.json
+-rw-r--r--@  1 kurodohenroonsen  staff  18445 Sep 30 23:34 demo_kamekichi.fhir.json
+-rw-r--r--@  1 kurodohenroonsen  staff   2805 Sep 30 23:34 demo_kamekichi.json
+-rw-r--r--@  1 kurodohenroonsen  staff  28535 Sep 30 23:34 demo_kurodo.fhir.json
+-rw-r--r--@  1 kurodohenroonsen  staff   2867 Sep 30 23:34 demo_kurodo.json
+▶ 6. verify_profiles.py on the seeded demo personas
+▶ Done — automated part finished. Continue with the UI protocol (README §3), then re-run:

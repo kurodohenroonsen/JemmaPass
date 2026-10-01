@@ -1,0 +1,63 @@
+--------- beginning of main
+09-30 23:33:54.522  2147  2180 D JEMMA-PROFILES: [t=1790804034522] 🔍 loadProfile(demo_kurodo) → not found
+09-30 23:33:54.540  2147  2147 D JEMMA-PROFILES: [t=1790804034540] 📋 onCreateView (v2.2.16.10)
+09-30 23:33:54.580  2147  2147 D JEMMA-PROFILES: [t=1790804034580] 📋 onViewCreated
+09-30 23:33:54.583  2147  2147 D JEMMA-PROFILES: [t=1790804034583] 📋 renderList · 0 profiles · current=demo_kurodo
+09-30 23:33:54.583  2147  2147 D JEMMA-PROFILES: [t=1790804034583] [Adapter] 📦 submit · 0 profiles · currentId=demo_kurodo
+09-30 23:33:55.544  2147  2254 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 55ms : 14 entries
+09-30 23:33:55.545  2147  2254 I JEMMA-PROFILES: [t=1790804035545] 🏥 IPS FHIR profile saved for demo_kurodo (28533 bytes · 4 immunizations · 2 procedures · 0 devices · 3 results)
+09-30 23:33:55.545  2147  2254 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_kurodo
+09-30 23:33:56.499  2147  2178 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 46ms : 15 entries
+09-30 23:33:56.500  2147  2178 I JEMMA-PROFILES: [t=1790804036500] 🏥 IPS FHIR profile saved for demo_kamekichi (18435 bytes · 0 immunizations · 0 procedures · 0 devices · 0 results)
+09-30 23:33:56.500  2147  2178 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_kamekichi
+09-30 23:33:56.774  2147  2253 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 65ms : 23 entries
+09-30 23:33:56.775  2147  2253 I JEMMA-PROFILES: [t=1790804036775] 🏥 IPS FHIR profile saved for demo_haru (38066 bytes · 3 immunizations · 2 procedures · 2 devices · 5 results)
+09-30 23:33:56.775  2147  2253 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_haru
+09-30 23:33:56.790  2147  2253 I JEMMA-PROFILES: [t=1790804036790] 📋 rescanFromDisk · 4 profiles · current=demo_kurodo in 15ms
+09-30 23:33:56.791  2147  2147 D JEMMA-PROFILES: [t=1790804036791] 📋 renderList · 4 profiles · current=demo_kurodo
+09-30 23:33:56.791  2147  2147 D JEMMA-PROFILES: [t=1790804036791] [Adapter] 📦 submit · 4 profiles · currentId=demo_kurodo
+09-30 23:33:56.809  2147  2147 D JEMMA-PROFILES: [t=1790804036809] [Adapter] 🏗 onCreateViewHolder
+09-30 23:33:56.809  2147  2147 D JEMMA-PROFILES: [t=1790804036809] [Adapter] 🔗 bind pos=0 · id=demo_haru · name=Haru Tanaka · isCurrent=false
+09-30 23:33:56.813  2147  2147 D JEMMA-PROFILES: [t=1790804036813] [Adapter] 🏗 onCreateViewHolder
+09-30 23:33:56.813  2147  2147 D JEMMA-PROFILES: [t=1790804036813] [Adapter] 🔗 bind pos=1 · id=demo_kamekichi · name=Kamekichi · isCurrent=false
+09-30 23:33:56.815  2147  2147 D JEMMA-PROFILES: [t=1790804036815] [Adapter] 🏗 onCreateViewHolder
+09-30 23:33:56.815  2147  2147 D JEMMA-PROFILES: [t=1790804036815] [Adapter] 🔗 bind pos=2 · id=demo_kurodo · name=Kurodo Henro · isCurrent=true
+09-30 23:33:56.818  2147  2147 D JEMMA-PROFILES: [t=1790804036818] [Adapter] 🏗 onCreateViewHolder
+09-30 23:34:36.234  2147  2147 I JEMMA-PROFILES: [t=1790804076234] [Adapter] 👆 card tap · id=demo_haru
+09-30 23:34:36.234  2147  2147 I JEMMA-PROFILES: [t=1790804076234] 👆 profile tap → detail · id=demo_haru · name=Haru Tanaka
+09-30 23:34:36.323  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076323] 📋 onViewCreated · id=demo_haru
+09-30 23:34:36.333  2147  2147 I JEMMA-PROFILE-DETAIL: [t=1790804076333] 🧪 hydrating profile (fr)...
+09-30 23:34:36.485  2147  2147 I JEMMA-PROFILE-DETAIL: [t=1790804076485] ✅ hydrated in 151ms · alerts ddi=0 al×md=0
+09-30 23:34:36.500  2147  2147 I JEMMA-PROFILE-DETAIL: [t=1790804076500] 🩺 renderPillars · START · profileId=demo_haru
+09-30 23:34:36.500  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076500] 🩺 counts computed · patient=1 contacts=0 allergies=1 medications=3 conditions=0 immunizations=3 procedures=2 devices=2 results=5 providers=0
+09-30 23:34:36.502  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076502] 🎴 bound tile · key=patient · isActive=true · layout=active · emoji='📝' · label='Patient' · count=1
+09-30 23:34:36.502  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076502] 🎴 bound tile · key=allergies · isActive=true · layout=active · emoji='⚠️' · label='Allergies' · count=1
+09-30 23:34:36.502  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076502] 🎴 bound tile · key=medications · isActive=true · layout=active · emoji='💊' · label='Médicaments' · count=3
+09-30 23:34:36.503  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076503] 🎴 bound tile · key=contacts · isActive=false · layout=stub · emoji='👥' · label='Contacts d'urgence' · count=0
+09-30 23:34:36.503  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076503] 🎴 bound tile · key=conditions · isActive=false · layout=stub · emoji='🩺' · label='Pathologies actives' · count=0
+09-30 23:34:36.503  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076503] 🎴 bound tile · key=pastProblems · isActive=false · layout=stub · emoji='📜' · label='Antécédents médicaux' · count=0
+09-30 23:34:36.503  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076503] 🎴 bound tile · key=immunizations · isActive=true · layout=active · emoji='💉' · label='Vaccinations' · count=3
+09-30 23:34:36.504  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076504] 🎴 bound tile · key=procedures · isActive=true · layout=active · emoji='🏥' · label='Procédures' · count=2
+09-30 23:34:36.504  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076504] 🎴 bound tile · key=devices · isActive=true · layout=active · emoji='📟' · label='Dispositifs médicaux' · count=2
+09-30 23:34:36.504  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076504] 🎴 bound tile · key=functional · isActive=false · layout=stub · emoji='♿' · label='Statut fonctionnel' · count=0
+09-30 23:34:36.504  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076504] 🎴 bound tile · key=pregnancy · isActive=false · layout=stub · emoji='🤰' · label='Grossesse' · count=0
+09-30 23:34:36.505  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076505] 🎴 bound tile · key=results · isActive=false · layout=stub · emoji='🧪' · label='Résultats labo' · count=5
+09-30 23:34:36.505  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076505] 🎴 bound tile · key=advanceDirectives · isActive=false · layout=stub · emoji='📜' · label='Directives anticipées' · count=0
+09-30 23:34:36.505  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076505] 🎴 bound tile · key=consents · isActive=false · layout=stub · emoji='✍️' · label='Consentements' · count=0
+09-30 23:34:36.505  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076505] 🎴 bound tile · key=goals · isActive=false · layout=stub · emoji='🎯' · label='Objectifs de soins' · count=0
+09-30 23:34:36.506  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076506] 🎴 bound tile · key=encounters · isActive=false · layout=stub · emoji='🚑' · label='Rencontres / Visites' · count=0
+09-30 23:34:36.506  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076506] 🎴 bound tile · key=occupational · isActive=false · layout=stub · emoji='💼' · label='Données professionnelles' · count=0
+09-30 23:34:36.506  2147  2147 D JEMMA-PROFILE-DETAIL: [t=1790804076506] 🎴 bound tile · key=providers · isActive=false · layout=stub · emoji='👨‍⚕️' · label='Équipe de soins' · count=0
+09-30 23:34:36.506  2147  2147 I JEMMA-PROFILE-DETAIL: [t=1790804076506] 🩺 renderPillars · END · active=6/7 · stub=12/11 · missing=0/18 · 6ms
+09-30 23:34:47.709  2147  2147 D JEMMA-PROFILES: [t=1790804087709] 📋 onCreateView (v2.2.16.10)
+09-30 23:34:47.728  2147  2147 D JEMMA-PROFILES: [t=1790804087728] 📋 onViewCreated
+09-30 23:34:47.729  2147  2147 D JEMMA-PROFILES: [t=1790804087729] 📋 renderList · 4 profiles · current=demo_kurodo
+09-30 23:34:47.729  2147  2147 D JEMMA-PROFILES: [t=1790804087729] [Adapter] 📦 submit · 4 profiles · currentId=demo_kurodo
+09-30 23:34:47.734  2147  2147 D JEMMA-PROFILES: [t=1790804087734] [Adapter] 🏗 onCreateViewHolder
+09-30 23:34:47.734  2147  2147 D JEMMA-PROFILES: [t=1790804087734] [Adapter] 🔗 bind pos=0 · id=demo_haru · name=Haru Tanaka · isCurrent=false
+09-30 23:34:47.736  2147  2147 D JEMMA-PROFILES: [t=1790804087736] [Adapter] 🏗 onCreateViewHolder
+09-30 23:34:47.736  2147  2147 D JEMMA-PROFILES: [t=1790804087736] [Adapter] 🔗 bind pos=1 · id=demo_kamekichi · name=Kamekichi · isCurrent=false
+09-30 23:34:47.737  2147  2147 D JEMMA-PROFILES: [t=1790804087737] [Adapter] 🏗 onCreateViewHolder
+09-30 23:34:47.737  2147  2147 D JEMMA-PROFILES: [t=1790804087737] [Adapter] 🔗 bind pos=2 · id=demo_kurodo · name=Kurodo Henro · isCurrent=true
+09-30 23:34:47.739  2147  2147 D JEMMA-PROFILES: [t=1790804087739] [Adapter] 🏗 onCreateViewHolder
+--------- scrub_logcat: 2 line(s) removed (non-demo profile data)

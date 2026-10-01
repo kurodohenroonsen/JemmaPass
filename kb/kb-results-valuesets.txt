@@ -1,0 +1,225 @@
+Found 7 results-* valuesets: ['results-blood-group-snomed-ct-ips-free-set', 'results-microorganism-snomed-ct-ips-free-set', 'results-presence-absence-snomed-ct-ips-free-set', 'results-radiology-numobs-snomed-dicom-uv-ips', 'results-radiology-txtobs-snomed-dicom-loinc-uv-ips', 'results-specimen-collection-method-uv-ips', 'results-specimen-type-snomed-ct-ips-free-set']
+
+================================================================================
+ValueSet: results-blood-group-snomed-ct-ips-free-set (total: 13)
+--------------------------------------------------------------------------------
+First 10 rows:
+  112144000 | http://snomed.info/sct | Blood group A
+  112149005 | http://snomed.info/sct | Blood group B
+  165743006 | http://snomed.info/sct | Blood group AB
+  165746003 | http://snomed.info/sct | RhD negative
+  278147001 | http://snomed.info/sct | Blood group O Rh(D) positive
+  278148006 | http://snomed.info/sct | Blood group O Rh(D) negative
+  278149003 | http://snomed.info/sct | Blood group A Rh(D) positive
+  278150003 | http://snomed.info/sct | Blood group B Rh(D) positive
+  278151004 | http://snomed.info/sct | Blood group AB Rh(D) positive
+  278152006 | http://snomed.info/sct | Blood group A Rh(D) negative
+Translations available:
+  ar: 10
+  cs: 10
+  de: 10
+  es: 26
+  et: 10
+  fi: 10
+  fr: 10
+  hu: 10
+  is: 10
+  it: 10
+  ja: 10
+  ko: 10
+  lt: 10
+  lv: 10
+  nl: 10
+  pl: 10
+  pt: 10
+  ru: 10
+  sv: 10
+
+================================================================================
+ValueSet: results-microorganism-snomed-ct-ips-free-set (total: 1343)
+--------------------------------------------------------------------------------
+First 10 rows:
+  10262005 | http://snomed.info/sct | Enterococcus malodoratus
+  103427005 | http://snomed.info/sct | Campylobacter upsaliensis
+  103428000 | http://snomed.info/sct | Corynebacterium ulcerans
+  103429008 | http://snomed.info/sct | Enterohemorrhagic Escherichia coli, serotype O157:H7
+  103430003 | http://snomed.info/sct | Yersinia enterocolitica serogroup O:3
+  103431004 | http://snomed.info/sct | Yersinia enterocolitica serogroup O:5
+  103432006 | http://snomed.info/sct | Yersinia enterocolitica serogroup O:8
+  103433001 | http://snomed.info/sct | Yersinia enterocolitica serogroup O:9
+  103436009 | http://snomed.info/sct | Enterococcus pseudoavium
+  103437000 | http://snomed.info/sct | Enterococcus raffinosus
+Translations available:
+  ar: 7
+  cs: 262
+  de: 259
+  es: 1334
+  et: 7
+  fi: 215
+  fr: 260
+  hu: 7
+  is: 7
+  it: 244
+  ja: 205
+  ko: 7
+  lt: 7
+  lv: 7
+  nl: 236
+  no: 245
+  pl: 224
+  pt: 262
+  ru: 224
+  sv: 233
+
+================================================================================
+ValueSet: results-presence-absence-snomed-ct-ips-free-set (total: 9)
+--------------------------------------------------------------------------------
+First 10 rows:
+  260347006 | http://snomed.info/sct | +
+  260348001 | http://snomed.info/sct | ++
+  260349009 | http://snomed.info/sct | +++
+  260350009 | http://snomed.info/sct | ++++
+  2667000 | http://snomed.info/sct | Absent
+  441517005 | http://snomed.info/sct | Present two plus out of three plus
+  441521003 | http://snomed.info/sct | Present three plus out of three plus
+  441614007 | http://snomed.info/sct | Present one plus out of three plus
+  52101004 | http://snomed.info/sct | Present
+Translations available:
+  es: 9
+
+================================================================================
+ValueSet: results-radiology-numobs-snomed-dicom-uv-ips (total: 26)
+--------------------------------------------------------------------------------
+First 10 rows:
+  103339001 | http://snomed.info/sct | Long Axis
+  103340004 | http://snomed.info/sct | Short Axis
+  103355008 | http://snomed.info/sct | Width
+  118565006 | http://snomed.info/sct | Volume
+  121206 | http://dicom.nema.org/resources/ontology/DCM | Distance
+  121207 | http://dicom.nema.org/resources/ontology/DCM | Height
+  121211 | http://dicom.nema.org/resources/ontology/DCM | Path length
+  121216 | http://dicom.nema.org/resources/ontology/DCM | Volume estimated from single 2D region
+  121217 | http://dicom.nema.org/resources/ontology/DCM | Volume estimated from three or more non-coplanar 2D regions
+  121218 | http://dicom.nema.org/resources/ontology/DCM | Volume estimated from two non-coplanar 2D regions
+Translations available:
+  es: 14
+
+================================================================================
+ValueSet: results-radiology-txtobs-snomed-dicom-loinc-uv-ips (total: 11)
+--------------------------------------------------------------------------------
+First 10 rows:
+  11329-0 | http://loinc.org | History
+  116224001 | http://snomed.info/sct | Complication of Procedure
+  121065 | http://dicom.nema.org/resources/ontology/DCM | Procedure Description
+  121069 | http://dicom.nema.org/resources/ontology/DCM | Previous Finding
+  121071 | http://dicom.nema.org/resources/ontology/DCM | Finding
+  121073 | http://dicom.nema.org/resources/ontology/DCM | Impression
+  121075 | http://dicom.nema.org/resources/ontology/DCM | Recommendation
+  121077 | http://dicom.nema.org/resources/ontology/DCM | Conclusion
+  121110 | http://dicom.nema.org/resources/ontology/DCM | Patient Presentation
+  121111 | http://dicom.nema.org/resources/ontology/DCM | Summary
+Translations available:
+  es: 2
+
+================================================================================
+ValueSet: results-specimen-collection-method-uv-ips (total: 10)
+--------------------------------------------------------------------------------
+First 10 rows:
+  129300006 | http://snomed.info/sct | Puncture - action
+  129304002 | http://snomed.info/sct | Excision - action
+  129314006 | http://snomed.info/sct | Biopsy - action
+  129316008 | http://snomed.info/sct | Aspiration - action
+  129323009 | http://snomed.info/sct | Scraping - action
+  225113003 | http://snomed.info/sct | Timed urine collection
+  278450005 | http://snomed.info/sct | Finger-prick sampling
+  386089008 | http://snomed.info/sct | Collection of coughed sputum
+  70777001 | http://snomed.info/sct | Urine specimen collection, catheterized
+  73416001 | http://snomed.info/sct | Urine specimen collection, clean catch
+Translations available:
+  es: 12
+
+================================================================================
+ValueSet: results-specimen-type-snomed-ct-ips-free-set (total: 127)
+--------------------------------------------------------------------------------
+First 10 rows:
+  119294007 | http://snomed.info/sct | Dried blood specimen
+  119295008 | http://snomed.info/sct | Specimen obtained by aspiration
+  119297000 | http://snomed.info/sct | Blood specimen
+  119300005 | http://snomed.info/sct | Specimen from blood product
+  119304001 | http://snomed.info/sct | Specimen from blood bag
+  119305000 | http://snomed.info/sct | Specimen from plasma bag
+  119311002 | http://snomed.info/sct | Catheter submitted as specimen
+  119312009 | http://snomed.info/sct | Catheter tip submitted as specimen
+  119318008 | http://snomed.info/sct | Water specimen
+  119320006 | http://snomed.info/sct | Food specimen
+Translations available:
+  cs: 1
+  de: 1
+  es: 125
+  fi: 1
+  fr: 1
+  it: 1
+  ja: 1
+  nl: 1
+  no: 1
+  pl: 1
+  pt: 1
+  ru: 1
+  sv: 1
+
+================================================================================
+FULL LIST: results-blood-group-snomed-ct-ips-free-set
+================================================================================
+Total codes: 13
+code: 112144000
+  EN: Blood group A
+  FR: Groupe sanguin A
+  JA: 血液型Ａ
+code: 112149005
+  EN: Blood group B
+  FR: Groupe sanguin B
+  JA: 血液型Ｂ
+code: 165743006
+  EN: Blood group AB
+  FR: Groupe sanguin AB
+  JA: 血液型ＡＢ
+code: 165746003
+  EN: RhD negative
+  FR: Anticorps (anti-D) antirhésus négatif
+  JA: Ｒｈ抗体（抗Ｄ）陰性
+code: 278147001
+  EN: Blood group O Rh(D) positive
+  FR: None
+  JA: None
+code: 278148006
+  EN: Blood group O Rh(D) negative
+  FR: None
+  JA: None
+code: 278149003
+  EN: Blood group A Rh(D) positive
+  FR: None
+  JA: None
+code: 278150003
+  EN: Blood group B Rh(D) positive
+  FR: None
+  JA: None
+code: 278151004
+  EN: Blood group AB Rh(D) positive
+  FR: None
+  JA: None
+code: 278152006
+  EN: Blood group A Rh(D) negative
+  FR: None
+  JA: None
+code: 278153001
+  EN: Blood group B Rh(D) negative
+  FR: None
+  JA: None
+code: 278154007
+  EN: Blood group AB Rh(D) negative
+  FR: None
+  JA: None
+code: 58460004
+  EN: Blood group O
+  FR: Groupe sanguin O
+  JA: 血液型Ｏ

@@ -1,0 +1,8 @@
+=== 1. Terminology codes with system like %loinc% ===
+count: 0
+
+=== 2. SQLite tables/views mentioning loinc in DDL ===
+(none)
+
+=== 3. IPS valuesets with code_system like %loinc% ===
+count: 29
