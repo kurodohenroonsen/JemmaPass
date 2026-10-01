@@ -631,7 +631,7 @@ de 📜/🩺 : pas de nouveau tag logcat, ce sont les tags `JEMMA-PASTPROBLEMS-*
 | Décoder un QR | `python3 qa/device/decode_qr.py <capture.png> $OUT/qr/qr-<persona>-<lang>.txt` | texte brut + taille en octets |
 | Valider les 3 personas **en parallèle** | `qa/device/validate_all.sh $OUT [suffixe]` | `validator/<persona><suffixe>.txt` + `summary<suffixe>.txt` |
 | Réduire un run audité | `qa/device/prune_run.sh <dossier run>…` | ne garde que `report.md` + `screenshots/` |
-| Galerie d'écrans | `python3 qa/device/build_gallery.py <checkout device-reports>` | `screens/<pilier>/` + `INDEX.md`, classement par nom de fichier (aucune analyse d'image) |
+| Galerie d'écrans | `python3 qa/device/build_gallery.py <checkout device-reports>` | `screens/INDEX.md` : liens par pilier vers les captures des runs (aucune copie, aucune analyse d'image) |
 
 ## 3 ter. Une seule commande par couloir — plus aucune validation à la chaîne
 

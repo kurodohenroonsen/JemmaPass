@@ -5,8 +5,8 @@ build_gallery.py — deterministic screen gallery for docs / user guide / design
   python3 qa/device/build_gallery.py <device-reports checkout>
 
 Scans <root>/feat-*/<commit>-<stamp>/screenshots/*.png, classifies each capture from its FILE NAME,
-keeps the newest capture per name, copies it to <root>/screens/<pilier>/ and writes screens/INDEX.md
-(pilier, capture, commit and run of origin). Re-runnable; the gallery is documentation, not evidence.
+keeps the newest capture per name and writes <root>/screens/INDEX.md: one section per pillar with
+LINKS to the captures kept in the run folders (no copy — the first version doubled the repo size).
 """
 import re
 import shutil
@@ -47,21 +47,23 @@ def main():
                 newest[png.name] = (png, stamp, run.name)
     screens = root / "screens"
     if screens.exists():
-        shutil.rmtree(screens)
+        shutil.rmtree(screens)          # the gallery is an index of links: no duplicated PNG
+    screens.mkdir(parents=True)
     rows = []
     for name, (png, _stamp, run_name) in sorted(newest.items()):
-        pillar = pillar_of(name)
-        dest = screens / pillar / name
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(png, dest)
-        rows.append((pillar, name, run_name.split("-", 1)[0], run_name))
+        rel = "../" + png.relative_to(root).as_posix()
+        rows.append((pillar_of(name), name, rel, run_name.split("-", 1)[0], run_name))
     rows.sort()
     lines = ["# Galerie d'écrans (générée par qa/device/build_gallery.py)", "",
-             "| Pilier | Capture | Commit | Run d'origine |", "|---|---|---|---|"]
-    lines += [f"| {p} | [{n}]({p}/{n}) | `{c}` | {r} |" for p, n, c, r in rows]
+             "Index par pilier vers les captures conservées dans les dossiers de run (aucune copie).", ""]
+    current = None
+    for pillar, name, rel, commit, run in rows:
+        if pillar != current:
+            lines += ["", f"## {pillar}", "", "| Capture | Commit | Run d'origine |", "|---|---|---|"]
+            current = pillar
+        lines.append(f"| [{name}]({rel}) | `{commit}` | {run} |")
     (screens / "INDEX.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(f"{len(rows)} screens in {len({r[0] for r in rows})} pillars -> {screens}")
-
+    print(f"{len(rows)} screens in {len({r[0] for r in rows})} pillars -> {screens / 'INDEX.md'} (links only)")
 
 if __name__ == "__main__":
     main()
