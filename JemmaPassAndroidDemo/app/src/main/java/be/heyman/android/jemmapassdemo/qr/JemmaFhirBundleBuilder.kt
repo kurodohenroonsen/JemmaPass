@@ -101,9 +101,11 @@ object JemmaFhirBundleBuilder {
                 profile.add(Canonical.Builder().apply { value = "http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips" })
             }
             
+            // HL7 validator (cycle 6): empty strings are invalid FHIR primitives — omit blanks
+            // (Kamekichi is mononymous: given name only).
             name.add(HumanName.Builder().apply {
-                family = String.Builder().apply { value = p?.fn ?: "" }
-                given.add(String.Builder().apply { value = p?.gn ?: "" })
+                p?.fn?.takeIf { it.isNotBlank() }?.let { fn -> family = String.Builder().apply { value = fn } }
+                p?.gn?.takeIf { it.isNotBlank() }?.let { gn -> given.add(String.Builder().apply { value = gn }) }
             })
             
             p?.gs?.let { gender = Enumeration.of(mapGender(it), null) }
@@ -154,11 +156,9 @@ object JemmaFhirBundleBuilder {
                 }
             }
             
-            p?.bt?.takeIf { it.isNotBlank() }?.let {
-                extension.add(Extension.Builder("http://jemmapass.net/fhir/StructureDefinition/blood-type").apply {
-                    value = Extension.Value.String(String.Builder().apply { value = it }.build())
-                })
-            }
+            // Blood type: no longer a home-made Patient extension (rejected by the HL7
+            // validator) — it travels as a Results Observation (LOINC 882-1, SNOMED value)
+            // derived from `p.bt` by ProfilesRepository / IpsBloodGroup.
         }
 
         // 2. Entries
@@ -393,6 +393,11 @@ object JemmaFhirBundleBuilder {
 
         // 4. Final Bundle
         val bundle = Bundle.Builder(Enumeration.of(Bundle.BundleType.Document, null)).apply {
+            // bdl-9: a document Bundle must carry an identifier (system + value); deterministic per profile.
+            identifier = dev.ohs.fhir.model.r4.Identifier.Builder().apply {
+                system = Uri.Builder().apply { value = "urn:ietf:rfc:3986" }
+                value = String.Builder().apply { value = IpsFhirCodec.stableUrn("$sid|Bundle") }
+            }
             timestamp = FhirInstant.Builder().apply {
                 value = FhirDateTime.fromString(getCurrentIsoTimestamp())
             }

@@ -64,6 +64,7 @@ object JemmaPersonasSeeder {
                 ),
             ),
             // Kurodo carries no device: the empty-pillar path stays covered by a persona.
+            // (Each persona also gets a derived blood-group Observation from `p.bt` at write time.)
             results = listOf(
                 IpsResult(
                     id = "rs-kurodo-hba1c-2026", code = "4548-4", system = IpsCodeSystems.LOINC,
@@ -144,12 +145,6 @@ object JemmaPersonasSeeder {
                     display = "eGFR (MDRD)", date = "2026-02-10", value = "48", unit = "mL/min/{1.73_m2}",
                     interpretation = IpsResultInterpretation.LOW, refLow = "60",
                     performer = "Matsuyama Red Cross Hospital laboratory", note = "CKD stage 3a — adjust renally cleared drugs",
-                ),
-                IpsResult(
-                    id = "rs-haru-blood-group", code = "882-1", system = IpsCodeSystems.LOINC,
-                    display = "ABO and Rh blood group", date = "2015-09-01",
-                    valueCode = "278149003", valueCodeSystem = IpsCodeSystems.SNOMED, valueDisplay = "Blood group O Rh(D) positive",
-                    performer = "Matsuyama Red Cross Hospital laboratory",
                 ),
                 IpsResult(
                     id = "rs-haru-chest-xray-2025", text = "Chest X-ray", date = "2025-12-03",

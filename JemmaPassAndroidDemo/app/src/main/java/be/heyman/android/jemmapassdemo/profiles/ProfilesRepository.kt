@@ -346,9 +346,11 @@ class ProfilesRepository @Inject constructor(
      * it) + FHIR IPS Bundle (native resources included). A Bundle failure does
      * not fail the save — the JSON is the compatibility layer for QR / mesh.
      */
-    private suspend fun writeProfileFiles(id: String, profile: JemmaProfileJ, native: IpsNativePillars) {
+    private suspend fun writeProfileFiles(id: String, profile: JemmaProfileJ, nativeIn: IpsNativePillars) {
         val file = File(profilesDir, "$id.json")
         val fhirFile = File(profilesDir, "$id.fhir.json")
+        // The patient's blood type (`p.bt`) is mirrored as a Results Observation (LOINC 882-1).
+        val native = nativeIn.copy(results = be.heyman.android.jemmapassdemo.ips.IpsBloodGroup.sync(nativeIn.results, id, profile.p?.bt))
         val projected = profile.copy(
             sid = id,
             im = native.immunizations.map { it.toJEntry() },

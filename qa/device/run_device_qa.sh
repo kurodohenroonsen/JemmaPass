@@ -82,7 +82,7 @@ if python3 "$ROOT/qa/device/verify_profiles.py" "$OUT/pull/profiles" \
      --expect demo_kurodo=4 --expect demo_haru=3 --expect demo_kamekichi=0 \
      --expect-pr demo_kurodo=2 --expect-pr demo_haru=2 --expect-pr demo_kamekichi=0 \
      --expect-dv demo_kurodo=0 --expect-dv demo_haru=2 --expect-dv demo_kamekichi=0 \
-     --expect-rs demo_kurodo=3 --expect-rs demo_haru=5 --expect-rs demo_kamekichi=0 \
+     --expect-rs demo_kurodo=4 --expect-rs demo_haru=5 --expect-rs demo_kamekichi=1 \
      --title "Seed verification (demo personas)" --markdown "$OUT/verify-seed.md"; then
   step_result "6 verify seed" "✅" "see verify-seed.md"
 else

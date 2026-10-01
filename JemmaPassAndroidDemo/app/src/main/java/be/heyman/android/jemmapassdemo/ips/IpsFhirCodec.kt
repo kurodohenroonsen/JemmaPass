@@ -56,7 +56,7 @@ object IpsFhirCodec {
         "http://hl7.org/fhir/uv/ips/StructureDefinition/DeviceUseStatement-uv-ips"
     const val PROFILE_DEVICE_UV_IPS =
         "http://hl7.org/fhir/uv/ips/StructureDefinition/Device-uv-ips"
-    const val UDI_ISSUER_GS1 = "http://hl7.org/fhir/NamingSystem/gs1-di"
+    const val UDI_ISSUER_GS1 = "http://hl7.org/fhir/NamingSystem/gs1"
 
     const val LOINC_SECTION_RESULTS = "30954-2"
     const val TITLE_SECTION_RESULTS = "Results"
@@ -564,7 +564,7 @@ object IpsFhirCodec {
 
     /** Composition section listing the immunization entries (null when empty). */
     fun immunizationSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
-        section(TITLE_SECTION_IMMUNIZATIONS, LOINC_SECTION_IMMUNIZATIONS, "History of Immunization Narrative", entryUrns)
+        section(TITLE_SECTION_IMMUNIZATIONS, LOINC_SECTION_IMMUNIZATIONS, "History of Immunization note", entryUrns)
 
     fun procedureSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
         section(TITLE_SECTION_PROCEDURES, LOINC_SECTION_PROCEDURES, "History of Procedures Document", entryUrns)
@@ -573,7 +573,7 @@ object IpsFhirCodec {
         section(TITLE_SECTION_DEVICES, LOINC_SECTION_DEVICES, "History of medical device use", entryUrns)
 
     fun resultSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
-        section(TITLE_SECTION_RESULTS, LOINC_SECTION_RESULTS, "Relevant diagnostic tests/laboratory data Narrative", entryUrns)
+        section(TITLE_SECTION_RESULTS, LOINC_SECTION_RESULTS, "Relevant diagnostic tests/laboratory data note", entryUrns)
 
     /** Serialise one resource alone (debug / tests). */
     fun encode(resource: Resource): kotlin.String = json.encodeToString(resource)

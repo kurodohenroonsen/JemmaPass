@@ -100,6 +100,15 @@ pillar will need an in-app LOINC catalog for common lab observations.
 | Tests (JVM)      | `test/.../ips/IpsResultCodecTest.kt` (13), `pillars/IpsResultCatalogTest.kt` (4)          |
 | QA kit           | `verify_profiles.py` 🧪 rs (P4/P5/P6 + P6c values ⇄ projection), `--expect-rs`             |
 
+Blood type: `p.bt` is mirrored on every write as a derived Observation 882-1
+(`IpsBloodGroup.sync`, id `rs-blood-group-<sid>`, SNOMED value from the IPS free
+set confirmed in the KB dump) — the home-made Patient extension is gone.
+
+HL7 validator (cycle 6) structural fixes: Bundle.identifier (bdl-9), blank name
+parts omitted, UDI issuer `http://hl7.org/fhir/NamingSystem/gs1`, LOINC section
+displays aligned. Run the validator with `-locale en`: the fr locale turns every
+English display name into an error.
+
 Decimals travel as exact `BigDecimal` (bignum) in the Kotlin FHIR model and as JSON
 numbers on disk (`5.4`, `120.0`); `IpsDecimal.trimZeros` restores the typed text.
 

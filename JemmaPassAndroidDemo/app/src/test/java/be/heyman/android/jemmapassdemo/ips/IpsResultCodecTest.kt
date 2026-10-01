@@ -31,7 +31,7 @@ class IpsResultCodecTest {
 
     private val bloodGroup = IpsResult(
         id = "rs-2", code = "882-1", system = IpsCodeSystems.LOINC, display = "ABO and Rh blood group",
-        date = "2015-09-01", valueCode = "278149003", valueCodeSystem = IpsCodeSystems.SNOMED,
+        date = "2015-09-01", valueCode = "278147001", valueCodeSystem = IpsCodeSystems.SNOMED,
         valueDisplay = "Blood group O Rh(D) positive",
     )
 
@@ -100,7 +100,7 @@ class IpsResultCodecTest {
     fun codedAndTextualJsonUseTheRightValueChoice() {
         val coded = JSONObject(IpsFhirCodec.encode(IpsFhirCodec.toFhir(bloodGroup, patientUrn).build()))
         val vcc = coded.getJSONObject("valueCodeableConcept").getJSONArray("coding").getJSONObject(0)
-        assertEquals("278149003", vcc.getString("code"))
+        assertEquals("278147001", vcc.getString("code"))
         assertEquals(IpsCodeSystems.SNOMED, vcc.getString("system"))
         assertFalse(coded.has("valueQuantity"))
         assertFalse(coded.has("referenceRange"))
@@ -210,7 +210,7 @@ class IpsResultCodecTest {
 
         val g = a.results[1]
         assertTrue(g.isCoded)
-        assertEquals("278149003", g.valueCode)
+        assertEquals("278147001", g.valueCode)
         assertEquals("Blood group O Rh(D) positive", g.valueDisplay)
 
         val x = a.results[2]
