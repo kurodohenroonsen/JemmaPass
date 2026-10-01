@@ -28,8 +28,8 @@ Daemon will be stopped at the end of the build
 > Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:javaPreCompileDebugUnitTest
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:javaPreCompileDebugUnitTest
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
@@ -38,18 +38,18 @@ Daemon will be stopped at the end of the build
 > Task :app:desugarDebugFileDependencies
 > Task :app:mergeDebugJniLibFolders
 > Task :app:checkDebugDuplicateClasses
-> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugNativeLibs
-> Task :app:processDebugResources
-> Task :app:validateSigningDebug
-> Task :app:writeDebugAppMetadata
-> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeLibDexDebug
 
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libLiteRt.so, libLiteRtClGlAccelerator.so, libandroidx.graphics.path.so, libbarhopper_v3.so, libimage_processing_util_jni.so, liblitertlm_jni.so, libsqlite3x.so, libsurface_util_jni.so, libtensorflowlite_jni_gms_client.so. Run with --info option to learn more.
 
-> Task :app:mergeExtDexDebug
+> Task :app:processDebugResources
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
 > Task :app:kspDebugKotlin
+> Task :app:mergeExtDexDebug
 > Task :app:compileDebugKotlin
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ai/assistant/VulgariseRepository.kt:20:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
@@ -585,27 +585,27 @@ w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/mai
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:347:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:338:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:348:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:340:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:349:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:351:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:354:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:352:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:356:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:353:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
@@ -620,12 +620,12 @@ w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/mai
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:363:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:362:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:365:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:364:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
@@ -650,12 +650,22 @@ w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/mai
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:376:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:375:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:378:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:377:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:380:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:382:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
@@ -698,7 +708,7 @@ w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/mai
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/profile/common/FormA11yHelpers.kt:129:20 'static fun setAccessibilityLiveRegion(p0: View, p1: Int): Unit' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/profiles/detail/ProfileDetailFragment.kt:1608:47 Redundant call of conversion method.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/profiles/detail/ProfileDetailFragment.kt:1610:47 Redundant call of conversion method.
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/radar/RadarOverlayView.kt:298:91 Redundant call of conversion method.
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/radar/RadarOverlayView.kt:453:68 'field scaledDensity: Float' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/settings/SettingsViewModel.kt:46:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
@@ -754,9 +764,9 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 > Task :app:processDebugUnitTestJavaRes
 > Task :app:transformDebugUnitTestClassesWithAsm
 > Task :app:testDebugUnitTest
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790853458808.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790861392040.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
 
-BUILD SUCCESSFUL in 2m 50s
+BUILD SUCCESSFUL in 2m 6s
 55 actionable tasks: 55 executed
