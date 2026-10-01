@@ -1,4 +1,4 @@
-# Agent mailbox — protocole Claude ⇄ Antigravity (v1)
+# Agent mailbox — protocole Claude ⇄ Antigravity (v2)
 
 Branche orpheline `agent-mailbox`. C'est le **seul canal** entre les deux agents.
 Kudoro ne copie plus de prompts : il tape `go` dans une UI, ou les heartbeats font le relais.
@@ -51,28 +51,31 @@ Le détail vit dans `device-reports` (règle 8 : sorties brutes, fichiers publi�
 | `agent-mailbox` | les deux, selon §1 | |
 | `ci-logs` | CI | lecture seule |
 
-## 4. Micro-blocs et sous-agents (ne jamais se marcher dessus)
+## 4. L'agent principal est un ORCHESTRATEUR — il ne fait aucun travail lui-même
 
-Règle unique : **un sous-agent = un répertoire de sortie qui n'appartient qu'à lui**, et une seule
-ressource exclusive. L'agent principal est l'**intégrateur** : lui seul assemble et pousse.
+Son rôle se limite à 4 gestes : **lire** le message, **instancier** un sous-agent par bloc,
+**attendre**, **assembler + pousser**. Il n'analyse pas d'images, ne lance pas adb, n'écrit pas de
+rapport de mémoire.
 
-### Antigravity (Agent Manager / sous-agents, chacun dans son worktree)
-| Couloir | Ressource exclusive | Écrit uniquement dans | Dépend de |
-|---|---|---|---|
-| `DEVICE` | le téléphone (adb) — **un seul agent à la fois** | `$OUT/screenshots/`, `$OUT/logs/`, `$OUT/files/`, `$OUT/qr/` | — |
-| `FHIR` | validateur HL7 (hôte) | `$OUT/validator/` | `$OUT/files/` (attend la fin du seed) |
-| `KB` | copie de la KB hors dépôt | `$OUT/kb/` | — (parallèle dès le début) |
-| `DOCS` | — | `screens/`, `guide/` sur `device-reports` | captures du couloir DEVICE |
-| intégrateur | `git push` | `$OUT/report.md`, `reports/cycle-NN-*.md`, la mailbox | tous |
+1. Chaque `task` contient une table `blocs` : `id · sous-agent · dépend de · commande/consigne ·
+   écrit uniquement dans · terminé quand`. L'orchestrateur n'a rien à décider.
+2. **Tous les blocs sans dépendance démarrent en même temps**, dans le même tour ; un bloc qui
+   dépend d'un autre démarre dès que le fichier attendu existe (pas d'attente « par prudence »).
+3. Un sous-agent = **un répertoire de sortie à lui seul** + au plus une ressource exclusive.
+   Le téléphone (adb) est la seule ressource exclusive : un seul sous-agent `DEVICE` à la fois ;
+   tout le reste est parallèle sans limite.
+4. Chaque sous-agent termine par `lanes/<id>.md` : 5 lignes max (verdict, fichiers produits,
+   anomalies). Il ne résume pas les sorties : elles sont déjà dans des fichiers (règle 8).
+5. **Scripts d'abord** : décodage QR, validateur, nettoyage, galerie ont un outil en une commande
+   (`qa/device/README.md` §3 bis). Interdit de réécrire ces boucles à la main ou de classer des
+   captures en les « regardant ».
+6. L'orchestrateur assemble `report.md` en concaténant les `lanes/*.md` + les sorties brutes
+   demandées, pousse **une fois** sur `device-reports`, puis répond dans la mailbox.
+7. Budget : un bloc qui dépasse 3× sa durée indicative est arrêté et signalé `⏱` dans le rapport,
+   les autres blocs continuent.
 
-`KB` et le build démarrent en parallèle ; `FHIR` démarre dès que `files/` existe ; `DEVICE` déroule
-le protocole UI pendant que `FHIR` tourne (le validateur prend plusieurs minutes par persona :
-lance les 3 personas en parallèle). Chaque couloir rend un `lanes/<couloir>.md` (verdict + chemins) ;
-l'intégrateur n'écrit `report.md` qu'à partir de ces fichiers et des sorties brutes.
-
-### Claude (sous-agents en worktrees isolés)
-Blocs à fichiers disjoints : `domain+codec+tests` / `strings ×6 + layouts` / `catalogues + i18n` /
-`qa kit + docs`. Claude intègre, lance la CI et ne publie un `task` qu'avec une CI verte.
+Côté Claude, même règle : les blocs de code à fichiers disjoints partent en sous-agents parallèles,
+Claude intègre, CI verte, puis `task`.
 
 ## 5. Heartbeat
 
