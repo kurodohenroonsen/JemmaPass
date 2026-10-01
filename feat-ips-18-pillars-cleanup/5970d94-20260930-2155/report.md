@@ -1,7 +1,7 @@
 # Device QA · feat/ips-18-pillars-cleanup · 5970d94 · Pixel 9 Pro XL · Android 15 · 2026-09-30 22:30
 
 - Exécutant : Antigravity · Hôte : macOS · Langue appareil : FR (fr-BE)
-- Appareil : Google Pixel 9 Pro XL (`46071FDAS00AFP`) · Android 15 (SDK 35)
+- Appareil : Google Pixel 9 Pro XL (<serial>) · Android 15 (SDK 35)
 - Build : `logs/assemble.log` · Tests JVM : 50 tests, 0 failed (`logs/unit-tests.log`)
 - Verdict global : **PASS** — 5 ✅ · 0 ❌ · 1 ⚠️ · 9 ⏭
 
