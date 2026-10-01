@@ -1,4 +1,0 @@
-List of devices attached
-<serial> device usb:20-4 product:komodo model:Pixel_9_Pro_XL device:komodo transport_id:1
-<serial> device product:komodo model:Pixel_9_Pro_XL device:komodo transport_id:359
-
