@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_pregnancy_edit.xml — JEMMA Pass · IPS-Säule „Schwangerschaften“ (DE) -->
+<resources>
+
+    <string name="pregnancy_edit_title">Schwangerschaften</string>
+    <string name="pregnancy_edit_hero_title">Schwangerschaften</string>
+    <string name="pregnancy_edit_subtitle">Status, Geburtstermin und geburtshilfliche Übersicht</string>
+    <string name="pregnancy_section_status">Aktueller Status</string>
+    <string name="pregnancy_status_none">— Nicht angegeben</string>
+    <string name="pregnancy_status_pregnant">🤰 Schwanger</string>
+    <string name="pregnancy_status_not_pregnant">➖ Nicht schwanger</string>
+    <string name="pregnancy_status_unknown">❔ Unbekannt</string>
+    <string name="pregnancy_status_pick_title">Schwangerschaftsstatus</string>
+    <string name="pregnancy_label_status_date">Status festgestellt am</string>
+    <string name="pregnancy_date_hint">Datum unbekannt — zum Auswählen tippen</string>
+    <string name="pregnancy_date_clear_desc">Datum löschen</string>
+    <string name="pregnancy_label_edd">Voraussichtlicher Geburtstermin</string>
+    <string name="pregnancy_edd_hint">Nicht angegeben — zum Auswählen tippen</string>
+    <string name="pregnancy_label_edd_method">Berechnet anhand von</string>
+    <string name="pregnancy_edd_method_generic">Schätzung (nicht näher angegeben)</string>
+    <string name="pregnancy_edd_method_lmp">Letzte Regelblutung</string>
+    <string name="pregnancy_edd_method_ovulation">Eisprungdatum</string>
+    <string name="pregnancy_edd_method_pick_title">Berechnungsmethode</string>
+    <string name="pregnancy_section_summary">Geburtshilfliche Übersicht</string>
+    <string name="pregnancy_summary_helper">Lass ein Feld leer, wenn die Zahl nicht bekannt ist.</string>
+    <string name="pregnancy_count_births_total">Geburten (gesamt)</string>
+    <string name="pregnancy_count_births_live">Lebendgeburten</string>
+    <string name="pregnancy_count_births_term">Termingeburten</string>
+    <string name="pregnancy_count_births_preterm">Frühgeburten</string>
+    <string name="pregnancy_count_still_living">Lebende Kinder</string>
+    <string name="pregnancy_count_abortions">Aborte (gesamt)</string>
+    <string name="pregnancy_count_miscarriages">Fehlgeburten</string>
+    <string name="pregnancy_count_induced">Schwangerschaftsabbrüche</string>
+    <string name="pregnancy_count_ectopic">Eileiterschwangerschaften</string>
+    <string name="pregnancy_label_summary_date">Übersicht vom</string>
+    <string name="pregnancy_save">Speichern</string>
+    <string name="pregnancy_clear_all">Alles löschen</string>
+    <string name="pregnancy_clear_all_title">Schwangerschaften löschen?</string>
+    <string name="pregnancy_clear_all_message">Status, Geburtstermin und Übersicht werden aus dem Profil entfernt.</string>
+    <string name="pregnancy_cancel">Abbrechen</string>
+    <string name="pregnancy_confirm">Löschen</string>
+    <string name="pregnancy_saved">Schwangerschaften gespeichert</string>
+    <string name="pregnancy_save_failed">Schwangerschaften konnten nicht gespeichert werden</string>
+    <string name="pregnancy_no_profile">Kein Profil ausgewählt. Erstelle oder wähle zuerst ein Profil.</string>
+    <string name="pregnancy_validation_edd_past">Der Geburtstermin darf nicht vor dem Statusdatum liegen</string>
+    <string name="pregnancy_validation_live_gt_total">Die Lebendgeburten dürfen die Gesamtzahl der Geburten nicht überschreiten</string>
+    <string name="pregnancy_validation_status_needed">Wähle den Status, bevor du einen Geburtstermin angibst</string>
+    <string name="profile_detail_pregnancy_title">🤰 SCHWANGERSCHAFTEN (%1$d)</string>
+</resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_pregnancy_edit.xml — JEMMA Pass · IPS pillar "History of Pregnancy" (EN, default) -->
+<resources>
+
+    <string name="pregnancy_edit_title">Pregnancy history</string>
+    <string name="pregnancy_edit_hero_title">Pregnancy history</string>
+    <string name="pregnancy_edit_subtitle">Status, due date and obstetric summary</string>
+    <string name="pregnancy_section_status">Current status</string>
+    <string name="pregnancy_status_none">— Not recorded</string>
+    <string name="pregnancy_status_pregnant">🤰 Pregnant</string>
+    <string name="pregnancy_status_not_pregnant">➖ Not pregnant</string>
+    <string name="pregnancy_status_unknown">❔ Unknown</string>
+    <string name="pregnancy_status_pick_title">Pregnancy status</string>
+    <string name="pregnancy_label_status_date">Status recorded on</string>
+    <string name="pregnancy_date_hint">Unknown date — tap to pick</string>
+    <string name="pregnancy_date_clear_desc">Clear date</string>
+    <string name="pregnancy_label_edd">Estimated delivery date</string>
+    <string name="pregnancy_edd_hint">Not set — tap to pick</string>
+    <string name="pregnancy_label_edd_method">Estimated from</string>
+    <string name="pregnancy_edd_method_generic">Estimation (unspecified)</string>
+    <string name="pregnancy_edd_method_lmp">Last menstrual period</string>
+    <string name="pregnancy_edd_method_ovulation">Ovulation date</string>
+    <string name="pregnancy_edd_method_pick_title">Estimation method</string>
+    <string name="pregnancy_section_summary">Obstetric summary</string>
+    <string name="pregnancy_summary_helper">Leave a field empty when the number is not known.</string>
+    <string name="pregnancy_count_births_total">Births (total)</string>
+    <string name="pregnancy_count_births_live">Live births</string>
+    <string name="pregnancy_count_births_term">Term births</string>
+    <string name="pregnancy_count_births_preterm">Preterm births</string>
+    <string name="pregnancy_count_still_living">Children still living</string>
+    <string name="pregnancy_count_abortions">Abortions (total)</string>
+    <string name="pregnancy_count_miscarriages">Miscarriages</string>
+    <string name="pregnancy_count_induced">Induced abortions</string>
+    <string name="pregnancy_count_ectopic">Ectopic pregnancies</string>
+    <string name="pregnancy_label_summary_date">Summary dated</string>
+    <string name="pregnancy_save">Save</string>
+    <string name="pregnancy_clear_all">Clear all</string>
+    <string name="pregnancy_clear_all_title">Clear the pregnancy history?</string>
+    <string name="pregnancy_clear_all_message">Status, due date and summary will be removed from the profile.</string>
+    <string name="pregnancy_cancel">Cancel</string>
+    <string name="pregnancy_confirm">Clear</string>
+    <string name="pregnancy_saved">Pregnancy history saved</string>
+    <string name="pregnancy_save_failed">Could not save the pregnancy history</string>
+    <string name="pregnancy_no_profile">No profile selected. Create or select a profile first.</string>
+    <string name="pregnancy_validation_edd_past">The delivery date cannot be before the status date</string>
+    <string name="pregnancy_validation_live_gt_total">Live births cannot exceed total births</string>
+    <string name="pregnancy_validation_status_needed">Choose the status before setting a delivery date</string>
+    <string name="profile_detail_pregnancy_title">🤰 PREGNANCY HISTORY (%1$d)</string>
+</resources>

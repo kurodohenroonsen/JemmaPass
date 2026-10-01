@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_pregnancy_edit.xml — JEMMA Pass · IPS 項目「妊娠歴」(JA) -->
+<resources>
+
+    <string name="pregnancy_edit_title">妊娠歴</string>
+    <string name="pregnancy_edit_hero_title">妊娠歴</string>
+    <string name="pregnancy_edit_subtitle">状態・出産予定日・産科歴のまとめ</string>
+    <string name="pregnancy_section_status">現在の状態</string>
+    <string name="pregnancy_status_none">— 未記録</string>
+    <string name="pregnancy_status_pregnant">🤰 妊娠中</string>
+    <string name="pregnancy_status_not_pregnant">➖ 妊娠していない</string>
+    <string name="pregnancy_status_unknown">❔ 不明</string>
+    <string name="pregnancy_status_pick_title">妊娠の状態</string>
+    <string name="pregnancy_label_status_date">状態の確認日</string>
+    <string name="pregnancy_date_hint">日付不明 — タップして選択</string>
+    <string name="pregnancy_date_clear_desc">日付を消去</string>
+    <string name="pregnancy_label_edd">出産予定日</string>
+    <string name="pregnancy_edd_hint">未設定 — タップして選択</string>
+    <string name="pregnancy_label_edd_method">算出の根拠</string>
+    <string name="pregnancy_edd_method_generic">推定(詳細不明)</string>
+    <string name="pregnancy_edd_method_lmp">最終月経</string>
+    <string name="pregnancy_edd_method_ovulation">排卵日</string>
+    <string name="pregnancy_edd_method_pick_title">算出方法</string>
+    <string name="pregnancy_section_summary">産科歴のまとめ</string>
+    <string name="pregnancy_summary_helper">回数がわからない項目は空欄のままにしてください。</string>
+    <string name="pregnancy_count_births_total">出産回数(合計)</string>
+    <string name="pregnancy_count_births_live">生産(出生)回数</string>
+    <string name="pregnancy_count_births_term">正期産の回数</string>
+    <string name="pregnancy_count_births_preterm">早産の回数</string>
+    <string name="pregnancy_count_still_living">生存している子の数</string>
+    <string name="pregnancy_count_abortions">流産・中絶(合計)</string>
+    <string name="pregnancy_count_miscarriages">自然流産</string>
+    <string name="pregnancy_count_induced">人工妊娠中絶</string>
+    <string name="pregnancy_count_ectopic">異所性妊娠(子宮外妊娠)</string>
+    <string name="pregnancy_label_summary_date">まとめの記録日</string>
+    <string name="pregnancy_save">保存</string>
+    <string name="pregnancy_clear_all">すべて消去</string>
+    <string name="pregnancy_clear_all_title">妊娠歴を消去しますか?</string>
+    <string name="pregnancy_clear_all_message">状態、出産予定日、まとめがプロフィールから削除されます。</string>
+    <string name="pregnancy_cancel">キャンセル</string>
+    <string name="pregnancy_confirm">消去</string>
+    <string name="pregnancy_saved">妊娠歴を保存しました</string>
+    <string name="pregnancy_save_failed">妊娠歴を保存できませんでした</string>
+    <string name="pregnancy_no_profile">プロフィールが選択されていません。先にプロフィールを作成または選択してください。</string>
+    <string name="pregnancy_validation_edd_past">出産予定日は状態の確認日より前にできません</string>
+    <string name="pregnancy_validation_live_gt_total">生産回数は出産回数の合計を超えられません</string>
+    <string name="pregnancy_validation_status_needed">出産予定日を設定する前に状態を選択してください</string>
+    <string name="profile_detail_pregnancy_title">🤰 妊娠歴 (%1$d)</string>
+</resources>

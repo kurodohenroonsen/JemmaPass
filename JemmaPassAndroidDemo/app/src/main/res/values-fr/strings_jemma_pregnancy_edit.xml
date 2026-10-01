@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_pregnancy_edit.xml — JEMMA Pass · pilier IPS « Grossesses » (FR) -->
+<resources>
+
+    <string name="pregnancy_edit_title">Grossesses</string>
+    <string name="pregnancy_edit_hero_title">Grossesses</string>
+    <string name="pregnancy_edit_subtitle">Statut, terme et bilan obstétrical</string>
+    <string name="pregnancy_section_status">Statut actuel</string>
+    <string name="pregnancy_status_none">— Non renseigné</string>
+    <string name="pregnancy_status_pregnant">🤰 Enceinte</string>
+    <string name="pregnancy_status_not_pregnant">➖ Non enceinte</string>
+    <string name="pregnancy_status_unknown">❔ Inconnu</string>
+    <string name="pregnancy_status_pick_title">Statut de grossesse</string>
+    <string name="pregnancy_label_status_date">Statut constaté le</string>
+    <string name="pregnancy_date_hint">Date inconnue — appuie pour choisir</string>
+    <string name="pregnancy_date_clear_desc">Effacer la date</string>
+    <string name="pregnancy_label_edd">Date prévue d’accouchement</string>
+    <string name="pregnancy_edd_hint">Non renseignée — appuie pour choisir</string>
+    <string name="pregnancy_label_edd_method">Estimée d’après</string>
+    <string name="pregnancy_edd_method_generic">Estimation (non précisée)</string>
+    <string name="pregnancy_edd_method_lmp">Dernières règles</string>
+    <string name="pregnancy_edd_method_ovulation">Date d’ovulation</string>
+    <string name="pregnancy_edd_method_pick_title">Méthode d’estimation</string>
+    <string name="pregnancy_section_summary">Bilan obstétrical</string>
+    <string name="pregnancy_summary_helper">Laisse un champ vide si le nombre n’est pas connu.</string>
+    <string name="pregnancy_count_births_total">Naissances (total)</string>
+    <string name="pregnancy_count_births_live">Naissances vivantes</string>
+    <string name="pregnancy_count_births_term">Naissances à terme</string>
+    <string name="pregnancy_count_births_preterm">Naissances prématurées</string>
+    <string name="pregnancy_count_still_living">Enfants en vie</string>
+    <string name="pregnancy_count_abortions">Interruptions de grossesse (total)</string>
+    <string name="pregnancy_count_miscarriages">Fausses couches</string>
+    <string name="pregnancy_count_induced">Interruptions volontaires</string>
+    <string name="pregnancy_count_ectopic">Grossesses extra-utérines</string>
+    <string name="pregnancy_label_summary_date">Bilan daté du</string>
+    <string name="pregnancy_save">Enregistrer</string>
+    <string name="pregnancy_clear_all">Tout effacer</string>
+    <string name="pregnancy_clear_all_title">Effacer les grossesses ?</string>
+    <string name="pregnancy_clear_all_message">Le statut, le terme et le bilan seront retirés du profil.</string>
+    <string name="pregnancy_cancel">Annuler</string>
+    <string name="pregnancy_confirm">Effacer</string>
+    <string name="pregnancy_saved">Grossesses enregistrées</string>
+    <string name="pregnancy_save_failed">Impossible d’enregistrer les grossesses</string>
+    <string name="pregnancy_no_profile">Aucun profil sélectionné. Crée ou sélectionne d’abord un profil.</string>
+    <string name="pregnancy_validation_edd_past">La date d’accouchement ne peut pas précéder la date du statut</string>
+    <string name="pregnancy_validation_live_gt_total">Les naissances vivantes ne peuvent pas dépasser le total</string>
+    <string name="pregnancy_validation_status_needed">Choisis le statut avant de renseigner le terme</string>
+    <string name="profile_detail_pregnancy_title">🤰 GROSSESSES (%1$d)</string>
+</resources>

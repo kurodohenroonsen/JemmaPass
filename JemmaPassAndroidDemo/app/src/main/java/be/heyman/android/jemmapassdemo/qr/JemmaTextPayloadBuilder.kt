@@ -218,7 +218,7 @@ object JemmaTextPayloadBuilder {
             title = JemmaTranslations.getLabel(lang, "pregnancy_title"),
             items = hydrated.raw.pg.mapIndexedNotNull { i, e -> be.heyman.android.jemmapassdemo.ips.IpsPregnancyObs.fromJEntry(e, i) },
             empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { pg -> "${pg.label()}: ${pg.valueLabel()}" + (pg.date?.let { " — $it" } ?: "") },
+            formatter = { pg -> be.heyman.android.jemmapassdemo.pillars.IpsPregnancyCatalog.format(pg, lang.isoCode) },
         )
 
         sb.append(JemmaTranslations.getLabel(lang, "footer")).append("\r\n")

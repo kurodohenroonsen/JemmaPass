@@ -8,10 +8,10 @@
  * encode its values, and the ordered list of editable fields with their
  * cardinality + FHIR datatype.
  *
- * 9 pillars are marked `isActive=true` (patient, allergies, medications,
- * conditions, past problems, immunizations, procedures, devices, results —
+ * 10 pillars are marked `isActive=true` (patient, allergies, medications,
+ * conditions, past problems, immunizations, procedures, devices, pregnancy, results —
  * contacts is parked as a stub for the demo) — these are the ones the app lets
- * you edit. The remaining 9 are read-only "info" pages that
+ * you edit. The remaining 8 are read-only "info" pages that
  * surface their FHIR structure for transparency while they are being
  * ported to FHIR-native editing (feat/ips-18-pillars-cleanup).
  *
@@ -257,7 +257,7 @@ object PillarRegistry {
             ),
         ),
 
-        // ─── 11. pregnancy (passive) ────────────────────────────────────────
+        // ─── 11. pregnancy (ACTIVE — FHIR-native Observations, sprint 6) ───
         Pillar(
             key = "pregnancy",
             emoji = "🤰",
@@ -265,7 +265,7 @@ object PillarRegistry {
             descRes = R.string.pillar_pregnancy_desc,
             ipsTypeRes = R.string.pillar_pregnancy_ips_type,
             codeSystems = listOf("LOINC", "SNOMED CT"),
-            isActive = false,
+            isActive = true,
             fields = listOf(
                 PillarField("status", R.string.pillar_field_status_preg, R.string.pillar_field_status_preg_desc, "1..1", "CodeableConcept"),
                 PillarField("date",   R.string.pillar_field_date,        R.string.pillar_field_date_desc,        "0..1", "dateTime"),

@@ -301,6 +301,7 @@ class ProfileDetailFragment : Fragment() {
         renderDevices(h)
         renderResults(h)
         renderPastProblems(h)
+        renderPregnancy(h)
 
         // ── Alerts section ──
         renderAlerts(h)
@@ -579,6 +580,25 @@ class ProfileDetailFragment : Fragment() {
                 ?.let { " · ${it.emoji} ${it.pick(lang)}" } ?: ""
             val tv = makeListItemTextView()
             tv.text = "•  $label — $date$status"
+            listView.addView(tv)
+        }
+    }
+
+    /** 🤰 FHIR-native pillar — rendered from the `_j.pg` projection (Bundle = source of truth). */
+    private fun renderPregnancy(h: HydratedProfile) {
+        val lang = java.util.Locale.getDefault().language.lowercase().take(2)
+        val obs = h.raw.pg.mapIndexedNotNull { i, e -> be.heyman.android.jemmapassdemo.ips.IpsPregnancyObs.fromJEntry(e, i) }
+        if (obs.isEmpty()) {
+            binding.profileDetailPregnancySection.isVisible = false
+            return
+        }
+        binding.profileDetailPregnancySection.isVisible = true
+        binding.profileDetailPregnancyTitle.text = getString(R.string.profile_detail_pregnancy_title, obs.size)
+        val listView = binding.profileDetailPregnancyList
+        listView.removeAllViews()
+        for (o in obs) {
+            val tv = makeListItemTextView()
+            tv.text = "•  " + be.heyman.android.jemmapassdemo.pillars.IpsPregnancyCatalog.format(o, lang)
             listView.addView(tv)
         }
     }
@@ -1340,6 +1360,8 @@ class ProfileDetailFragment : Fragment() {
                         "pastProblems" -> R.id.action_detail_to_past_problems to true
                         // 🩺 FHIR-native problem list (sprint 5)
                         "conditions" -> R.id.action_detail_to_problems to true
+                        // 🤰 FHIR-native pregnancy history (sprint 6)
+                        "pregnancy" -> R.id.action_detail_to_pregnancy to true
                         else -> R.id.action_detail_to_pillar_stub to false
                     }
                     val args = if (includeProfileId) {

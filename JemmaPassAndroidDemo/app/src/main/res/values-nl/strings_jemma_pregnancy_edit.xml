@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_pregnancy_edit.xml — JEMMA Pass · IPS-pijler „Zwangerschappen” (NL) -->
+<resources>
+
+    <string name="pregnancy_edit_title">Zwangerschappen</string>
+    <string name="pregnancy_edit_hero_title">Zwangerschappen</string>
+    <string name="pregnancy_edit_subtitle">Status, uitgerekende datum en obstetrisch overzicht</string>
+    <string name="pregnancy_section_status">Huidige status</string>
+    <string name="pregnancy_status_none">— Niet ingevuld</string>
+    <string name="pregnancy_status_pregnant">🤰 Zwanger</string>
+    <string name="pregnancy_status_not_pregnant">➖ Niet zwanger</string>
+    <string name="pregnancy_status_unknown">❔ Onbekend</string>
+    <string name="pregnancy_status_pick_title">Zwangerschapsstatus</string>
+    <string name="pregnancy_label_status_date">Status vastgesteld op</string>
+    <string name="pregnancy_date_hint">Datum onbekend — tik om te kiezen</string>
+    <string name="pregnancy_date_clear_desc">Datum wissen</string>
+    <string name="pregnancy_label_edd">Uitgerekende datum</string>
+    <string name="pregnancy_edd_hint">Niet ingevuld — tik om te kiezen</string>
+    <string name="pregnancy_label_edd_method">Geschat op basis van</string>
+    <string name="pregnancy_edd_method_generic">Schatting (niet gespecificeerd)</string>
+    <string name="pregnancy_edd_method_lmp">Laatste menstruatie</string>
+    <string name="pregnancy_edd_method_ovulation">Ovulatiedatum</string>
+    <string name="pregnancy_edd_method_pick_title">Schattingsmethode</string>
+    <string name="pregnancy_section_summary">Obstetrisch overzicht</string>
+    <string name="pregnancy_summary_helper">Laat een veld leeg als het aantal niet bekend is.</string>
+    <string name="pregnancy_count_births_total">Geboorten (totaal)</string>
+    <string name="pregnancy_count_births_live">Levendgeboorten</string>
+    <string name="pregnancy_count_births_term">Voldragen geboorten</string>
+    <string name="pregnancy_count_births_preterm">Vroeggeboorten</string>
+    <string name="pregnancy_count_still_living">Kinderen in leven</string>
+    <string name="pregnancy_count_abortions">Abortussen (totaal)</string>
+    <string name="pregnancy_count_miscarriages">Miskramen</string>
+    <string name="pregnancy_count_induced">Zwangerschapsafbrekingen</string>
+    <string name="pregnancy_count_ectopic">Buitenbaarmoederlijke zwangerschappen</string>
+    <string name="pregnancy_label_summary_date">Overzicht gedateerd op</string>
+    <string name="pregnancy_save">Opslaan</string>
+    <string name="pregnancy_clear_all">Alles wissen</string>
+    <string name="pregnancy_clear_all_title">Zwangerschappen wissen?</string>
+    <string name="pregnancy_clear_all_message">Status, uitgerekende datum en overzicht worden uit het profiel verwijderd.</string>
+    <string name="pregnancy_cancel">Annuleren</string>
+    <string name="pregnancy_confirm">Wissen</string>
+    <string name="pregnancy_saved">Zwangerschappen opgeslagen</string>
+    <string name="pregnancy_save_failed">Kan de zwangerschappen niet opslaan</string>
+    <string name="pregnancy_no_profile">Geen profiel geselecteerd. Maak of selecteer eerst een profiel.</string>
+    <string name="pregnancy_validation_edd_past">De uitgerekende datum mag niet vóór de statusdatum liggen</string>
+    <string name="pregnancy_validation_live_gt_total">Het aantal levendgeboorten mag niet hoger zijn dan het totaal</string>
+    <string name="pregnancy_validation_status_needed">Kies de status voordat je een uitgerekende datum invult</string>
+    <string name="profile_detail_pregnancy_title">🤰 ZWANGERSCHAPPEN (%1$d)</string>
+</resources>

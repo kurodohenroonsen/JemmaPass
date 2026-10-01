@@ -579,10 +579,37 @@ Seed : Haru = résumé obstétrical (naissances totales 2, vivantes 2, à terme 
 4. QR texte Haru EN/FR/JA (`qr/qr-haru-<lang>.txt`) : section `🤰 [ PREGNANCY HISTORY ]` /
    `[ GROSSESSES ]` / `[ 妊娠歴 ]`, taille ≤ 2 200 octets.
 
+### T21 — Grossesses : écran d'édition (🤰 sprint 6 UI)
+
+Un seul écran (pas de liste) : statut + date, terme (visible seulement si « Enceinte »), bilan
+obstétrical (9 compteurs optionnels) + date du bilan. Libellés localisés (catalogue embarqué).
+
+1. **Fiche + tuile** (Haru) : section « 🤰 GROSSESSES (3) » avec « Naissances (total): 2 —
+   2026-02-10 » etc. en français ; tuile 🤰 active (badge 3) → écran, champs pré-remplis 2 / 2 / 2,
+   date du bilan 2026-02-10. Captures `210-detail-haru-pregnancy.png`, `211-pregnancy-edit.png`.
+2. **Statut enceinte** (Haru, données de test) : statut → « 🤰 Enceinte » → le bloc terme apparaît ;
+   date du statut = aujourd'hui ; terme = une date future ; méthode « Dernières règles » ; Save.
+   Bundle : Observation `82810-3` profil `Observation-pregnancy-status-uv-ips` avec
+   `valueCodeableConcept` LOINC `LA15173-0` ; Observation `11779-6` profil
+   `Observation-pregnancy-edd-uv-ips` avec `valueDateTime` ; les 3 compteurs conservent leurs `id`.
+   `verify … --expect-pg demo_haru=5` PASS.
+3. **Erreurs** : terme antérieur à la date du statut → message rouge + toast, rien d'enregistré ;
+   naissances vivantes `3` avec total `2` → « Les naissances vivantes ne peuvent pas dépasser le
+   total ».
+4. **Statut « Non enceinte »** → le bloc terme disparaît ; Save → plus d'Observation EDD
+   (`--expect-pg demo_haru=4`). Statut « — Non renseigné » + Save → retour à 3.
+5. **Tout effacer** sur Kurodo après y avoir saisi un compteur → `--expect-pg demo_kurodo=0`,
+   pas de section 10162-6 dans son Bundle.
+6. **QR texte** Haru FR/JA/EN (`qr/qr-haru-<lang>.txt`) : lignes localisées (« Naissances
+   vivantes: 2 — 2026-02-10 »).
+7. **Validateur HL7** avec le statut + le terme présents (étape 2) puis à l'état final → 0 erreur
+   (`validator/<persona>-pregnant.txt`, `validator/<persona>.txt`).
+8. Ligne `renderPillars · END` : `active=10/10 · stub=8/8`, sous-titre « 10 piliers actifs, 8 à venir ».
+
 ## 4. Logcat de fin
 
 ```
-adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROCEDURES-EDIT:* JEMMA-PROCEDURES-FORM:* JEMMA-PROCEDURES-ADAPTER:* JEMMA-DEVICES-EDIT:* JEMMA-DEVICES-FORM:* JEMMA-DEVICES-ADAPTER:* JEMMA-RESULTS-EDIT:* JEMMA-RESULTS-FORM:* JEMMA-RESULTS-ADAPTER:* JEMMA-PASTPROBLEMS-EDIT:* JEMMA-PASTPROBLEMS-FORM:* JEMMA-PASTPROBLEMS-ADAPTER:* JEMMA-KB-CONDITION-PICKER:* JEMMA-SNOMED-CAT:* JEMMA-PROFILE-DETAIL:* JEMMA-HYDRATOR:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
+adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROCEDURES-EDIT:* JEMMA-PROCEDURES-FORM:* JEMMA-PROCEDURES-ADAPTER:* JEMMA-DEVICES-EDIT:* JEMMA-DEVICES-FORM:* JEMMA-DEVICES-ADAPTER:* JEMMA-RESULTS-EDIT:* JEMMA-RESULTS-FORM:* JEMMA-RESULTS-ADAPTER:* JEMMA-PASTPROBLEMS-EDIT:* JEMMA-PASTPROBLEMS-FORM:* JEMMA-PASTPROBLEMS-ADAPTER:* JEMMA-KB-CONDITION-PICKER:* JEMMA-SNOMED-CAT:* JEMMA-PREGNANCY-EDIT:* JEMMA-PROFILE-DETAIL:* JEMMA-HYDRATOR:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
 python3 qa/device/scrub_logcat.py $OUT/logs/logcat-ui.txt
 ```
 ⚠️ `logcat -s` n'accepte pas de joker (`JEMMA-*` ne filtre rien) : utilise la liste
@@ -594,7 +621,7 @@ jamais un log à la main.
 
 ## 5. Rapport et publication
 
-Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T20,
+Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T21,
 statut ✅ / ❌ / ⚠️ / ⏭, preuve = nom de capture ou fichier, déviations, bugs avec
 étapes de reproduction). Puis :
 

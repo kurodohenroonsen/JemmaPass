@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_pregnancy_edit.xml — JEMMA Pass · IPS 项目“妊娠史”(ZH-CN) -->
+<resources>
+
+    <string name="pregnancy_edit_title">妊娠史</string>
+    <string name="pregnancy_edit_hero_title">妊娠史</string>
+    <string name="pregnancy_edit_subtitle">状态、预产期和产科概况</string>
+    <string name="pregnancy_section_status">当前状态</string>
+    <string name="pregnancy_status_none">— 未记录</string>
+    <string name="pregnancy_status_pregnant">🤰 已怀孕</string>
+    <string name="pregnancy_status_not_pregnant">➖ 未怀孕</string>
+    <string name="pregnancy_status_unknown">❔ 未知</string>
+    <string name="pregnancy_status_pick_title">妊娠状态</string>
+    <string name="pregnancy_label_status_date">状态记录日期</string>
+    <string name="pregnancy_date_hint">日期未知 — 点按选择</string>
+    <string name="pregnancy_date_clear_desc">清除日期</string>
+    <string name="pregnancy_label_edd">预产期</string>
+    <string name="pregnancy_edd_hint">未设置 — 点按选择</string>
+    <string name="pregnancy_label_edd_method">推算依据</string>
+    <string name="pregnancy_edd_method_generic">推算(未说明)</string>
+    <string name="pregnancy_edd_method_lmp">末次月经</string>
+    <string name="pregnancy_edd_method_ovulation">排卵日期</string>
+    <string name="pregnancy_edd_method_pick_title">推算方法</string>
+    <string name="pregnancy_section_summary">产科概况</string>
+    <string name="pregnancy_summary_helper">数字不清楚时请将该栏留空。</string>
+    <string name="pregnancy_count_births_total">分娩次数(总计)</string>
+    <string name="pregnancy_count_births_live">活产次数</string>
+    <string name="pregnancy_count_births_term">足月产次数</string>
+    <string name="pregnancy_count_births_preterm">早产次数</string>
+    <string name="pregnancy_count_still_living">现存子女数</string>
+    <string name="pregnancy_count_abortions">流产次数(总计)</string>
+    <string name="pregnancy_count_miscarriages">自然流产</string>
+    <string name="pregnancy_count_induced">人工流产</string>
+    <string name="pregnancy_count_ectopic">异位妊娠(宫外孕)</string>
+    <string name="pregnancy_label_summary_date">概况记录日期</string>
+    <string name="pregnancy_save">保存</string>
+    <string name="pregnancy_clear_all">全部清除</string>
+    <string name="pregnancy_clear_all_title">清除妊娠史?</string>
+    <string name="pregnancy_clear_all_message">状态、预产期和概况将从个人资料中移除。</string>
+    <string name="pregnancy_cancel">取消</string>
+    <string name="pregnancy_confirm">清除</string>
+    <string name="pregnancy_saved">妊娠史已保存</string>
+    <string name="pregnancy_save_failed">无法保存妊娠史</string>
+    <string name="pregnancy_no_profile">未选择个人资料。请先创建或选择个人资料。</string>
+    <string name="pregnancy_validation_edd_past">预产期不能早于状态记录日期</string>
+    <string name="pregnancy_validation_live_gt_total">活产次数不能超过分娩总次数</string>
+    <string name="pregnancy_validation_status_needed">请先选择状态,再设置预产期</string>
+    <string name="profile_detail_pregnancy_title">🤰 妊娠史 (%1$d)</string>
+</resources>

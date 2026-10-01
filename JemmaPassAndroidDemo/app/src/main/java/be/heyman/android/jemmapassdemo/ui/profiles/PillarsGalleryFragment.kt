@@ -143,13 +143,15 @@ class PillarsGalleryFragment : Fragment() {
                         "results" -> R.id.action_gallery_to_results
                         "pastProblems" -> R.id.action_gallery_to_past_problems
                         "conditions" -> R.id.action_gallery_to_problems
+                        "pregnancy" -> R.id.action_gallery_to_pregnancy
                         else -> R.id.action_gallery_to_pillar_stub
                     }
                     val args = if (pillarKey == "patient" || pillarKey == "contacts" ||
                                    pillarKey == "allergies" || pillarKey == "medications" ||
                                    pillarKey == "immunizations" || pillarKey == "procedures" ||
                                    pillarKey == "devices" || pillarKey == "results" ||
-                                   pillarKey == "pastProblems" || pillarKey == "conditions") {
+                                   pillarKey == "pastProblems" || pillarKey == "conditions" ||
+                                   pillarKey == "pregnancy") {
                         bundleOf(
                             "pillarKey" to pillarKey,
                             "profileId" to profilesRepo.currentProfileId,
