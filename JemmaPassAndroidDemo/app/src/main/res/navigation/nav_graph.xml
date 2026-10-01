@@ -126,6 +126,9 @@
         <action
             android:id="@+id/action_gallery_to_devices"
             app:destination="@id/dest_devices" />
+        <action
+            android:id="@+id/action_gallery_to_results"
+            app:destination="@id/dest_results" />
     </fragment>
 
     <!--
@@ -347,6 +350,19 @@
         android:name="be.heyman.android.jemmapassdemo.ui.profile.devices.DevicesEditFragment"
         android:label="@string/devices_edit_title"
         tools:layout="@layout/fragment_devices_edit">
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+
+    <!-- 🧪 IPS pillar "Results" — FHIR-native Observation (`_j.rs` is a projection). -->
+    <fragment
+        android:id="@+id/dest_results"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.results.ResultsEditFragment"
+        android:label="@string/results_edit_title"
+        tools:layout="@layout/fragment_results_edit">
         <argument
             android:name="profileId"
             app:argType="string"
@@ -582,6 +598,10 @@
         <action
             android:id="@+id/action_detail_to_devices"
             app:destination="@id/dest_devices" />
+        <!-- 🧪 Active pillar: results edit (FHIR-native) -->
+        <action
+            android:id="@+id/action_detail_to_results"
+            app:destination="@id/dest_results" />
         <action
             android:id="@+id/action_detail_to_pillar_stub"
             app:destination="@id/dest_pillar_stub" />

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_results_edit.xml — JEMMA Pass · IPS「检查结果」(ZH-CN) -->
+<resources>
+
+    <string name="results_edit_title">检查结果</string>
+    <string name="results_edit_hero_title">检查结果</string>
+    <string name="results_fab_add_desc">添加结果</string>
+    <string name="results_empty_default">尚未记录任何检查结果。\n点击 + 添加化验或影像结果。</string>
+    <string name="results_empty_no_profile">未选择档案。请先创建或选择一个档案。</string>
+    <string name="results_unnamed">未命名的结果</string>
+    <string name="results_saved">已保存</string>
+    <string name="results_save_failed">无法保存检查结果</string>
+    <string name="results_delete_title">删除此结果？</string>
+    <string name="results_delete_message">“%1$s”将从档案中移除。</string>
+    <string name="results_delete_cancel">取消</string>
+    <string name="results_delete_confirm">删除</string>
+    <string name="results_date_unknown">日期未知</string>
+    <string name="results_ref_short">参考 %1$s</string>
+    <string name="results_derived_blood_group">来自患者血型</string>
+    <string name="results_derived_blood_group_hint">血型来自“患者”支柱 — 请在那里修改。</string>
+    <string name="result_form_title_create">🧪  添加结果</string>
+    <string name="result_form_title_edit">🧪  编辑结果</string>
+    <string name="result_form_label_code">检查项目</string>
+    <string name="result_form_code_hint">点击选择检查项目…</string>
+    <string name="result_form_code_clear_desc">清除</string>
+    <string name="result_form_code_picker_title">选择检查项目</string>
+    <string name="result_form_label_text">或输入检查名称</string>
+    <string name="result_form_text_helper">自由文本，仅在上方未选择时使用</string>
+    <string name="result_form_label_category">类别</string>
+    <string name="result_form_category_pick_title">结果类别</string>
+    <string name="result_form_label_value">数值</string>
+    <string name="result_form_value_helper">数字（5.4）或简短文字（如阴性）</string>
+    <string name="result_form_label_unit">单位（UCUM）</string>
+    <string name="result_form_unit_none">无单位</string>
+    <string name="result_form_unit_pick_title">单位</string>
+    <string name="result_form_label_coded">血型</string>
+    <string name="result_form_coded_hint">点击选择…</string>
+    <string name="result_form_coded_pick_title">ABO / Rh(D) 血型</string>
+    <string name="result_form_label_interpretation">判读</string>
+    <string name="result_form_interpretation_none">未指定</string>
+    <string name="result_form_interpretation_pick_title">判读</string>
+    <string name="result_form_label_ref_low">参考下限</string>
+    <string name="result_form_label_ref_high">参考上限</string>
+    <string name="result_form_label_date">检查日期</string>
+    <string name="result_form_date_hint">日期未知 — 点击选择</string>
+    <string name="result_form_date_clear_desc">清除日期</string>
+    <string name="result_form_date_pick_title">检查日期</string>
+    <string name="result_form_label_status">状态</string>
+    <string name="result_form_status_pick_title">结果状态</string>
+    <string name="result_form_label_performer">实验室/放射科/诊所</string>
+    <string name="result_form_label_note">备注</string>
+    <string name="result_form_note_helper">空腹采血、备注、随访…</string>
+    <string name="result_form_cancel">取消</string>
+    <string name="result_form_delete">删除</string>
+    <string name="result_form_save">保存</string>
+    <string name="result_form_validation_code">请选择检查项目或输入其名称</string>
+    <string name="result_form_validation_value">请输入结果数值</string>
+    <string name="result_form_validation_coded">请选择血型</string>
+    <string name="result_form_validation_range_number">参考范围必须是数字</string>
+    <string name="result_form_validation_range_order">下限不能超过上限</string>
+    <string name="profile_detail_results_title">🧪 检查结果 (%1$d)</string>
+    <plurals name="results_count">
+        <item quantity="zero">无结果</item>
+        <item quantity="one">%d 项结果</item>
+        <item quantity="other">%d 项结果</item>
+    </plurals>
+</resources>

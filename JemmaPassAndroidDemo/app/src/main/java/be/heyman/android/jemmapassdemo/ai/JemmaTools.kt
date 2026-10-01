@@ -23,6 +23,7 @@
  *     getFocusProfileImmunizations — vaccination history (FHIR-native pillar)
  *     getFocusProfileProcedures    — history of procedures (FHIR-native pillar)
  *     getFocusProfileDevices       — implants / medical devices (FHIR-native pillar)
+ *     getFocusProfileResults       — lab / imaging results (FHIR-native pillar)
  *
  *   ─── Cross-check (the killer) ───────────────────────────────────────
  *     checkOneDrugAgainstFocusProfile — single drug name → full clinical
@@ -437,6 +438,7 @@ class JemmaTools @Inject constructor(
             "immunizations_count" to p.im.size,
             "procedures_count" to p.pr.size,
             "devices_count" to p.dv.size,
+            "results_count" to p.rs.size,
             "contacts_count" to (patient?.ct?.size ?: 0),
         )
     }
@@ -536,6 +538,34 @@ class JemmaTools @Inject constructor(
             )
         }
         mapOf("ok" to true, "lang" to lang, "count" to rows.size, "devices" to rows)
+    }
+
+    @Tool(description = "List the diagnostic results of the focus profile (lab tests such as potassium, hemoglobin, eGFR, HbA1c, LDL, blood group; imaging conclusions): test label, LOINC code, value with UCUM unit, interpretation (H high, L low, HH/LL critical, N normal), reference range and date. Use it to check renal function before dosing, anemia, blood group for transfusion, or abnormal values.")
+    fun getFocusProfileResults(): Map<String, Any> = runBlocking(Dispatchers.IO) {
+        val p = focusRef.get() ?: return@runBlocking profileMissingMap()
+        val lang = currentLang()
+        val rows = mutableListOf<Map<String, Any>>()
+        for (rs in p.rs) {
+            val label = be.heyman.android.jemmapassdemo.pillars.IpsResultCatalog.getDisplay(rs.c, lang)
+                ?: rs.displayLabel?.takeIf { it.isNotBlank() }
+                ?: rs.c.orEmpty()
+            rows.add(
+                mapOf(
+                    "test" to label,
+                    "code" to rs.c.orEmpty(),
+                    "system" to (rs.codeSystem ?: "http://loinc.org"),
+                    "value" to (be.heyman.android.jemmapassdemo.ips.IpsBloodGroup.labelFromSnomed(rs.valueCode) ?: rs.value.orEmpty()),
+                    "unit" to rs.unit.orEmpty(),
+                    "interpretation" to rs.interpretation.orEmpty(),
+                    "reference_range" to rs.referenceRange.orEmpty(),
+                    "date" to (rs.date ?: "unknown"),
+                    "category" to (rs.category ?: "laboratory"),
+                    "status" to (rs.status ?: "final"),
+                    "note" to rs.d.orEmpty(),
+                )
+            )
+        }
+        mapOf("ok" to true, "lang" to lang, "count" to rows.size, "results" to rows)
     }
 
     // ─────────────────────────────────────────────────────────────────

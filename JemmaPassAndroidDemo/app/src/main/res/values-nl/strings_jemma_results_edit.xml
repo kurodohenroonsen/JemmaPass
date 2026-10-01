@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_results_edit.xml — JEMMA Pass · IPS-pijler „Resultaten“ (NL) -->
+<resources>
+
+    <string name="results_edit_title">Resultaten</string>
+    <string name="results_edit_hero_title">Resultaten</string>
+    <string name="results_fab_add_desc">Resultaat toevoegen</string>
+    <string name="results_empty_default">Nog geen resultaat geregistreerd.\nTik op + om een labo- of beeldvormingsresultaat toe te voegen.</string>
+    <string name="results_empty_no_profile">Geen profiel geselecteerd. Maak of kies eerst een profiel.</string>
+    <string name="results_unnamed">Naamloos resultaat</string>
+    <string name="results_saved">Resultaten opgeslagen</string>
+    <string name="results_save_failed">Kon de resultaten niet opslaan</string>
+    <string name="results_delete_title">Dit resultaat verwijderen?</string>
+    <string name="results_delete_message">“%1$s” wordt uit het profiel verwijderd.</string>
+    <string name="results_delete_cancel">Annuleren</string>
+    <string name="results_delete_confirm">Verwijderen</string>
+    <string name="results_date_unknown">Datum onbekend</string>
+    <string name="results_ref_short">ref. %1$s</string>
+    <string name="results_derived_blood_group">uit de bloedgroep van de patiënt</string>
+    <string name="results_derived_blood_group_hint">De bloedgroep komt uit de pijler Patiënt — wijzig hem daar.</string>
+    <string name="result_form_title_create">🧪  Resultaat toevoegen</string>
+    <string name="result_form_title_edit">🧪  Resultaat bewerken</string>
+    <string name="result_form_label_code">Test</string>
+    <string name="result_form_code_hint">Tik om een test te kiezen…</string>
+    <string name="result_form_code_clear_desc">Test wissen</string>
+    <string name="result_form_code_picker_title">Kies een test</string>
+    <string name="result_form_label_text">Of typ de naam van de test</string>
+    <string name="result_form_text_helper">Vrije tekst, alleen gebruikt als hierboven geen test is gekozen</string>
+    <string name="result_form_label_category">Categorie</string>
+    <string name="result_form_category_pick_title">Categorie van het resultaat</string>
+    <string name="result_form_label_value">Waarde</string>
+    <string name="result_form_value_helper">Een getal (5.4 of 5,4) of een korte tekst (bv. negatief)</string>
+    <string name="result_form_label_unit">Eenheid (UCUM)</string>
+    <string name="result_form_unit_none">Geen eenheid</string>
+    <string name="result_form_unit_pick_title">Eenheid</string>
+    <string name="result_form_label_coded">Bloedgroep</string>
+    <string name="result_form_coded_hint">Tik om te kiezen…</string>
+    <string name="result_form_coded_pick_title">Bloedgroep ABO / Rh(D)</string>
+    <string name="result_form_label_interpretation">Interpretatie</string>
+    <string name="result_form_interpretation_none">Niet opgegeven</string>
+    <string name="result_form_interpretation_pick_title">Interpretatie</string>
+    <string name="result_form_label_ref_low">Ref. laag</string>
+    <string name="result_form_label_ref_high">Ref. hoog</string>
+    <string name="result_form_label_date">Datum van de test</string>
+    <string name="result_form_date_hint">Datum onbekend — tik om te kiezen</string>
+    <string name="result_form_date_clear_desc">Datum wissen</string>
+    <string name="result_form_date_pick_title">Datum van de test</string>
+    <string name="result_form_label_status">Status</string>
+    <string name="result_form_status_pick_title">Status van het resultaat</string>
+    <string name="result_form_label_performer">Labo / radiologie / kliniek</string>
+    <string name="result_form_label_note">Notitie</string>
+    <string name="result_form_note_helper">Nuchter, opmerking, opvolging…</string>
+    <string name="result_form_cancel">Annuleren</string>
+    <string name="result_form_delete">Verwijderen</string>
+    <string name="result_form_save">Opslaan</string>
+    <string name="result_form_validation_code">Kies een test of typ de naam</string>
+    <string name="result_form_validation_value">Vul de waarde van het resultaat in</string>
+    <string name="result_form_validation_coded">Kies de bloedgroep</string>
+    <string name="result_form_validation_range_number">Referentiegrenzen moeten getallen zijn</string>
+    <string name="result_form_validation_range_order">De ondergrens mag de bovengrens niet overschrijden</string>
+    <string name="profile_detail_results_title">🧪 RESULTATEN (%1$d)</string>
+    <plurals name="results_count">
+        <item quantity="zero">Geen resultaat</item>
+        <item quantity="one">%d resultaat</item>
+        <item quantity="other">%d resultaten</item>
+    </plurals>
+</resources>

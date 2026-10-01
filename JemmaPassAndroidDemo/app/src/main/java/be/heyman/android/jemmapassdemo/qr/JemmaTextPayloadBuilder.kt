@@ -185,6 +185,19 @@ object JemmaTextPayloadBuilder {
             formatter = { dv -> formatDevice(dv, lang) },
         )
 
+        // ─── Results (FHIR-native pillar, `_j.rs` projection) ──
+        appendSection(
+            sb = sb,
+            icon = "🧪",
+            title = JemmaTranslations.getLabel(lang, "results_title"),
+            items = hydrated.raw.rs.sortedWith(
+                compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
+                    .thenByDescending { it.date ?: "" }
+            ),
+            empty = JemmaTranslations.getLabel(lang, "empty"),
+            formatter = { rs -> formatResult(rs, lang) },
+        )
+
         sb.append(JemmaTranslations.getLabel(lang, "footer")).append("\r\n")
 
         // Cap byte-size en UTF-8.
@@ -233,6 +246,20 @@ object JemmaTextPayloadBuilder {
         val sb = StringBuilder(label)
         dv.date?.takeIf { it.isNotBlank() }?.let { sb.append(" — ").append(it) }
         dv.status?.takeIf { it.isNotBlank() && it != "active" }?.let { sb.append(" (").append(it).append(")") }
+        return sb.toString()
+    }
+
+    /** "Potassium: 4.1 mmol/L (N) — 2026-02-10", blood group as "O+". */
+    private fun formatResult(rs: be.heyman.android.jemmapassdemo.qr.JEntryGeneric, lang: Lang): String {
+        val label = be.heyman.android.jemmapassdemo.pillars.IpsResultCatalog.getDisplay(rs.c, lang.isoCode)
+            ?: rs.displayLabel?.takeIf { it.isNotBlank() }
+            ?: rs.c.orEmpty()
+        val value = be.heyman.android.jemmapassdemo.ips.IpsBloodGroup.labelFromSnomed(rs.valueCode)
+            ?: listOfNotNull(rs.value, rs.unit).joinToString(" ")
+        val sb = StringBuilder(label)
+        if (value.isNotBlank()) sb.append(": ").append(value)
+        rs.interpretation?.takeIf { it.isNotBlank() && it != "N" }?.let { sb.append(" (").append(it).append(")") }
+        rs.date?.takeIf { it.isNotBlank() }?.let { sb.append(" — ").append(it) }
         return sb.toString()
     }
 

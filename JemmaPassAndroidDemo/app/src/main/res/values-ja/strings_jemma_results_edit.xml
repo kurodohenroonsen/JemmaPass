@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_results_edit.xml — JEMMA Pass · IPS「検査結果」(JA) -->
+<resources>
+
+    <string name="results_edit_title">検査結果</string>
+    <string name="results_edit_hero_title">検査結果</string>
+    <string name="results_fab_add_desc">結果を追加</string>
+    <string name="results_empty_default">検査結果の記録はまだありません。\n＋をタップして検査や画像検査の結果を追加してください。</string>
+    <string name="results_empty_no_profile">プロフィールが選択されていません。先にプロフィールを作成または選択してください。</string>
+    <string name="results_unnamed">名称未設定の結果</string>
+    <string name="results_saved">結果を保存しました</string>
+    <string name="results_save_failed">結果を保存できませんでした</string>
+    <string name="results_delete_title">この結果を削除しますか？</string>
+    <string name="results_delete_message">「%1$s」をプロフィールから削除します。</string>
+    <string name="results_delete_cancel">キャンセル</string>
+    <string name="results_delete_confirm">削除</string>
+    <string name="results_date_unknown">日付不明</string>
+    <string name="results_ref_short">基準 %1$s</string>
+    <string name="results_derived_blood_group">患者の血液型から</string>
+    <string name="results_derived_blood_group_hint">血液型は「患者」の項目から来ています — そちらで変更してください。</string>
+    <string name="result_form_title_create">🧪  結果を追加</string>
+    <string name="result_form_title_edit">🧪  結果を編集</string>
+    <string name="result_form_label_code">検査項目</string>
+    <string name="result_form_code_hint">タップして検査項目を選択…</string>
+    <string name="result_form_code_clear_desc">検査項目をクリア</string>
+    <string name="result_form_code_picker_title">検査項目を選択</string>
+    <string name="result_form_label_text">または検査名を入力</string>
+    <string name="result_form_text_helper">上で検査項目が選択されていない場合のみ使用される自由記述</string>
+    <string name="result_form_label_category">区分</string>
+    <string name="result_form_category_pick_title">結果の区分</string>
+    <string name="result_form_label_value">値</string>
+    <string name="result_form_value_helper">数値（5.4）または短い文（例：陰性）</string>
+    <string name="result_form_label_unit">単位（UCUM）</string>
+    <string name="result_form_unit_none">単位なし</string>
+    <string name="result_form_unit_pick_title">単位</string>
+    <string name="result_form_label_coded">血液型</string>
+    <string name="result_form_coded_hint">タップして選択…</string>
+    <string name="result_form_coded_pick_title">ABO・Rh(D)血液型</string>
+    <string name="result_form_label_interpretation">判定</string>
+    <string name="result_form_interpretation_none">未指定</string>
+    <string name="result_form_interpretation_pick_title">判定</string>
+    <string name="result_form_label_ref_low">基準下限</string>
+    <string name="result_form_label_ref_high">基準上限</string>
+    <string name="result_form_label_date">検査日</string>
+    <string name="result_form_date_hint">日付不明 — タップして選択</string>
+    <string name="result_form_date_clear_desc">日付をクリア</string>
+    <string name="result_form_date_pick_title">検査日</string>
+    <string name="result_form_label_status">ステータス</string>
+    <string name="result_form_status_pick_title">結果のステータス</string>
+    <string name="result_form_label_performer">検査室・放射線科・医療機関</string>
+    <string name="result_form_label_note">メモ</string>
+    <string name="result_form_note_helper">空腹時採血、コメント、フォローアップ…</string>
+    <string name="result_form_cancel">キャンセル</string>
+    <string name="result_form_delete">削除</string>
+    <string name="result_form_save">保存</string>
+    <string name="result_form_validation_code">検査項目を選択するか名称を入力してください</string>
+    <string name="result_form_validation_value">結果の値を入力してください</string>
+    <string name="result_form_validation_coded">血液型を選択してください</string>
+    <string name="result_form_validation_range_number">基準値は数値で入力してください</string>
+    <string name="result_form_validation_range_order">下限は上限を超えられません</string>
+    <string name="profile_detail_results_title">🧪 検査結果 (%1$d)</string>
+    <plurals name="results_count">
+        <item quantity="zero">結果なし</item>
+        <item quantity="one">%d 件の結果</item>
+        <item quantity="other">%d 件の結果</item>
+    </plurals>
+</resources>

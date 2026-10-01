@@ -424,10 +424,40 @@ Non-régression courte : T1 (section 💉 Kurodo à 4), T4 (édition allergie �
 PASS avec `--expect demo_kurodo=4 --expect-pr demo_kurodo=2`), T7 (Kamekichi : ni 💉 ni 🏥
 ni 📟, tuiles actives sans badge). Résultat dans `verify-t13.md`.
 
+### T14 — Résultats (🧪 pilier natif, sprint 3)
+
+Personas : Kurodo = groupe sanguin A+ (dérivé de `p.bt`) + HbA1c 5.6 % (N) + LDL 131 mg/dL (H) +
+créatinine 0.9 mg/dL ; Haru = O+ (dérivé) + potassium 4.1 + hémoglobine 11.8 g/dL (L) + DFG 48 (L)
++ radio thoracique (imagerie, texte) ; Kamekichi = B+ (dérivé) seul.
+
+1. **Fiche + liste** : fiche Haru → section « 🧪 RÉSULTATS (5) » (valeurs + 🔺/🔻 pour H/L) ;
+   tuile 🧪 active avec badge 5 → liste `results_recycler` (valeur à droite, `5 résultats`).
+   Captures `140-detail-haru-results.png`, `141-results-list.png`.
+2. **Groupe sanguin dérivé** : tap ou appui long sur « Groupe sanguin ABO / Rhésus · O+ » →
+   toast « Le groupe sanguin vient du pilier Patient — modifie-le là », aucun formulaire.
+3. **Création numérique** (Kurodo) : FAB → `result_form_code_card` → taper `kaliemie` → « Potassium
+   (kaliémie) » ; l'unité passe à `mmol/L` ; `result_form_value` = `5,9` (virgule) ; interprétation
+   « Élevé » ; réf. basse `3,5`, haute `5,1` ; date passée ; Save. Attendu : carte « 5.9 mmol/L »,
+   🔺, « réf. 3.5-5.1 ». `verify_profiles.py … --expect-rs demo_kurodo=5` PASS ; dans le Bundle
+   `valueQuantity.value` = 5.9, `code` = `mmol/L`, `system` = UCUM, `referenceRange[0]`.
+4. **Texte libre + imagerie** : FAB → `result_form_text` = `Echographie abdominale`, catégorie
+   « Imagerie », valeur `Normale`, Save → Bundle : `code.text` sans coding, `valueString`,
+   catégorie `imaging`, profil `Observation-results-radiology-uv-ips`.
+5. **Erreurs** : Save vide → erreur inline sur le nom ; test choisi mais valeur vide → erreur
+   inline « Saisis la valeur du résultat » ; réf. basse `9` / haute `3` → « La borne basse ne peut
+   pas dépasser la borne haute » ; réf. `abc` → « Les bornes de référence doivent être des nombres ».
+6. **Test codé** : FAB → « Groupe sanguin ABO / Rhésus » → le champ valeur/unité disparaît,
+   remplacé par le sélecteur 🩸 ; Save sans choix → toast « Choisis le groupe sanguin ».
+   (Un 882-1 saisi à la main remplace le dérivé : vérifie qu'il n'y a qu'un seul 882-1 dans le Bundle.)
+7. **Édition / suppression** des entrées de test (bouton et appui long) → Kurodo revient à 🧪 4 ;
+   `verify … --expect-rs demo_kurodo=4` PASS.
+8. **QR texte** : Haru EN/FR/JA → section `🧪 [ RESULTS ]` / `[ RÉSULTATS ]` / `[ 検査結果 ]` après
+   📟, lignes « Potassium: 4.1 mmol/L — 2026-02-10 », « … : 11.8 g/dL (L) … », groupe « O+ ».
+
 ## 4. Logcat de fin
 
 ```
-adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROCEDURES-EDIT:* JEMMA-PROCEDURES-FORM:* JEMMA-PROCEDURES-ADAPTER:* JEMMA-DEVICES-EDIT:* JEMMA-DEVICES-FORM:* JEMMA-DEVICES-ADAPTER:* JEMMA-PROFILE-DETAIL:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
+adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROCEDURES-EDIT:* JEMMA-PROCEDURES-FORM:* JEMMA-PROCEDURES-ADAPTER:* JEMMA-DEVICES-EDIT:* JEMMA-DEVICES-FORM:* JEMMA-DEVICES-ADAPTER:* JEMMA-RESULTS-EDIT:* JEMMA-RESULTS-FORM:* JEMMA-RESULTS-ADAPTER:* JEMMA-PROFILE-DETAIL:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
 python3 qa/device/scrub_logcat.py $OUT/logs/logcat-ui.txt
 ```
 ⚠️ `logcat -s` n'accepte pas de joker (`JEMMA-*` ne filtre rien) : utilise la liste
@@ -439,7 +469,7 @@ jamais un log à la main.
 
 ## 5. Rapport et publication
 
-Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T13,
+Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T14,
 statut ✅ / ❌ / ⚠️ / ⏭, preuve = nom de capture ou fichier, déviations, bugs avec
 étapes de reproduction). Puis :
 

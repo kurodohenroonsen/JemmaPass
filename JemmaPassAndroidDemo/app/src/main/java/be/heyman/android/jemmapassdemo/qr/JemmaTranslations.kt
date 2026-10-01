@@ -21,6 +21,7 @@ object JemmaTranslations {
             "immunizations_title" to "IMMUNIZATIONS",
             "procedures_title" to "PROCEDURES",
             "devices_title" to "MEDICAL DEVICES",
+            "results_title" to "RESULTS",
             "contacts_title" to "CONTACTS",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
             "empty" to "(none)"
@@ -41,6 +42,7 @@ object JemmaTranslations {
             "immunizations_title" to "VACCINATIONS",
             "procedures_title" to "INTERVENTIONS",
             "devices_title" to "DISPOSITIFS MÉDICAUX",
+            "results_title" to "RÉSULTATS",
             "contacts_title" to "CONTACTS",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
             "empty" to "(aucun)"
@@ -61,6 +63,7 @@ object JemmaTranslations {
             "immunizations_title" to "予防接種",
             "procedures_title" to "処置・手術歴",
             "devices_title" to "医療機器",
+            "results_title" to "検査結果",
             "contacts_title" to "緊急連絡先",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
             "empty" to "(なし)"
@@ -81,6 +84,7 @@ object JemmaTranslations {
             "immunizations_title" to "VACUNAS",
             "procedures_title" to "PROCEDIMIENTOS",
             "devices_title" to "DISPOSITIVOS MÉDICOS",
+            "results_title" to "RESULTADOS",
             "contacts_title" to "CONTACTOS",
             "footer" to "✅ JEMMA en el dispositivo · `_j 1.2`",
             "empty" to "(ninguno)"
@@ -101,6 +105,7 @@ object JemmaTranslations {
             "immunizations_title" to "IMPFUNGEN",
             "procedures_title" to "EINGRIFFE",
             "devices_title" to "MEDIZINPRODUKTE",
+            "results_title" to "BEFUNDE",
             "contacts_title" to "KONTAKTE",
             "footer" to "✅ JEMMA auf dem Gerät · `_j 1.2`",
             "empty" to "(keine)"
@@ -121,6 +126,7 @@ object JemmaTranslations {
             "immunizations_title" to "VACCINAZIONI",
             "procedures_title" to "PROCEDURE",
             "devices_title" to "DISPOSITIVI MEDICI",
+            "results_title" to "RISULTATI",
             "contacts_title" to "CONTATTI",
             "footer" to "✅ JEMMA sul dispositivo · `_j 1.2`",
             "empty" to "(nessuno)"
@@ -141,6 +147,7 @@ object JemmaTranslations {
             "immunizations_title" to "VACINAS",
             "procedures_title" to "PROCEDIMENTOS",
             "devices_title" to "DISPOSITIVOS MÉDICOS",
+            "results_title" to "RESULTADOS",
             "contacts_title" to "CONTATOS",
             "footer" to "✅ JEMMA no dispositivo · `_j 1.2`",
             "empty" to "(nenhum)"
@@ -161,6 +168,7 @@ object JemmaTranslations {
             "immunizations_title" to "VACCINATIES",
             "procedures_title" to "INGREPEN",
             "devices_title" to "MEDISCHE HULPMIDDELEN",
+            "results_title" to "RESULTATEN",
             "contacts_title" to "CONTACTEN",
             "footer" to "✅ JEMMA op apparaat · `_j 1.2`",
             "empty" to "(geen)"
@@ -181,6 +189,7 @@ object JemmaTranslations {
             "immunizations_title" to "免疫接种",
             "procedures_title" to "手术与操作",
             "devices_title" to "医疗器械",
+            "results_title" to "检查结果",
             "contacts_title" to "紧急联系人",
             "footer" to "✅ JEMMA 本地安全防护 · `_j 1.2`",
             "empty" to "(无)"
@@ -201,6 +210,7 @@ object JemmaTranslations {
             "immunizations_title" to "예방접종",
             "procedures_title" to "시술·수술",
             "devices_title" to "의료기기",
+            "results_title" to "검사 결과",
             "contacts_title" to "비상 연락처",
             "footer" to "✅ JEMMA 기기 자체 저장 · `_j 1.2`",
             "empty" to "(없음)"
@@ -221,6 +231,7 @@ object JemmaTranslations {
             "immunizations_title" to "التطعيمات",
             "procedures_title" to "الإجراءات الطبية",
             "devices_title" to "الأجهزة الطبية",
+            "results_title" to "نتائج الفحوص",
             "contacts_title" to "جهات الطوارئ",
             "footer" to "✅ جيما على الجهاز · `_j 1.2`",
             "empty" to "(لا يوجد)"
@@ -241,6 +252,7 @@ object JemmaTranslations {
             "immunizations_title" to "ПРИВИВКИ",
             "procedures_title" to "ПРОЦЕДУРЫ И ОПЕРАЦИИ",
             "devices_title" to "МЕДИЦИНСКИЕ УСТРОЙСТВА",
+            "results_title" to "РЕЗУЛЬТАТЫ АНАЛИЗОВ",
             "contacts_title" to "КОНТАКТЫ",
             "footer" to "✅ JEMMA на устройстве · `_j 1.2`",
             "empty" to "(нет)"
@@ -261,6 +273,7 @@ object JemmaTranslations {
             "immunizations_title" to "टीकाकरण",
             "procedures_title" to "प्रक्रियाएँ",
             "devices_title" to "चिकित्सा उपकरण",
+            "results_title" to "जाँच परिणाम",
             "contacts_title" to "संपर्क",
             "footer" to "✅ जेम्मा डिवाइस पर · `_j 1.2`",
             "empty" to "(कोई नहीं)"
@@ -281,6 +294,7 @@ object JemmaTranslations {
             "immunizations_title" to "টিকা",
             "procedures_title" to "চিকিৎসা প্রক্রিয়া",
             "devices_title" to "চিকিৎসা যন্ত্র",
+            "results_title" to "পরীক্ষার ফলাফল",
             "contacts_title" to "জরুরী যোগাযোগ",
             "footer" to "✅ জেম্মা অন-ডিভাইস · `_j 1.2`",
             "empty" to "(নেই)"
@@ -301,6 +315,7 @@ object JemmaTranslations {
             "immunizations_title" to "AŞILAR",
             "procedures_title" to "GİRİŞİMLER",
             "devices_title" to "TIBBİ CİHAZLAR",
+            "results_title" to "TETKİK SONUÇLARI",
             "contacts_title" to "İLETİŞİM",
             "footer" to "✅ Cihaz üzerinde JEMMA · `_j 1.2`",
             "empty" to "(yok)"
@@ -321,6 +336,7 @@ object JemmaTranslations {
             "immunizations_title" to "SZCZEPIENIA",
             "procedures_title" to "ZABIEGI",
             "devices_title" to "WYROBY MEDYCZNE",
+            "results_title" to "WYNIKI BADAŃ",
             "contacts_title" to "KONTAKTY",
             "footer" to "✅ JEMMA na urządzeniu · `_j 1.2`",
             "empty" to "(brak)"
@@ -341,6 +357,7 @@ object JemmaTranslations {
             "immunizations_title" to "ЩЕПЛЕННЯ",
             "procedures_title" to "ПРОЦЕДУРИ ТА ОПЕРАЦІЇ",
             "devices_title" to "МЕДИЧНІ ПРИСТРОЇ",
+            "results_title" to "РЕЗУЛЬТАТИ АНАЛІЗІВ",
             "contacts_title" to "КОНТАКТИ",
             "footer" to "✅ JEMMA на пристрої · `_j 1.2`",
             "empty" to "(немає)"
@@ -361,6 +378,7 @@ object JemmaTranslations {
             "immunizations_title" to "TIÊM CHỦNG",
             "procedures_title" to "THỦ THUẬT / PHẪU THUẬT",
             "devices_title" to "THIẾT BỊ Y TẾ",
+            "results_title" to "KẾT QUẢ XÉT NGHIỆM",
             "contacts_title" to "LIÊN HỆ KHẨN CẤP",
             "footer" to "✅ JEMMA trên thiết bị · `_j 1.2`",
             "empty" to "(không)"
@@ -381,6 +399,7 @@ object JemmaTranslations {
             "immunizations_title" to "การฉีดวัคซีน",
             "procedures_title" to "หัตถการ",
             "devices_title" to "อุปกรณ์การแพทย์",
+            "results_title" to "ผลการตรวจ",
             "contacts_title" to "ผู้ติดต่อฉุกเฉิน",
             "footer" to "✅ บันทึก JEMMA บนอุปกรณ์ · `_j 1.2`",
             "empty" to "(ไม่มี)"
@@ -401,6 +420,7 @@ object JemmaTranslations {
             "immunizations_title" to "IMUNISASI",
             "procedures_title" to "PROSEDUR",
             "devices_title" to "ALAT KESEHATAN",
+            "results_title" to "HASIL PEMERIKSAAN",
             "contacts_title" to "KONTAK DARURAT",
             "footer" to "✅ JEMMA di dalam perangkat · `_j 1.2`",
             "empty" to "(tidak ada)"
@@ -421,6 +441,7 @@ object JemmaTranslations {
             "immunizations_title" to "VACCINATIONER",
             "procedures_title" to "INGREPP",
             "devices_title" to "MEDICINTEKNISKA PRODUKTER",
+            "results_title" to "PROVSVAR",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheten · `_j 1.2`",
             "empty" to "(inga)"
@@ -441,6 +462,7 @@ object JemmaTranslations {
             "immunizations_title" to "VAKSINER",
             "procedures_title" to "INNGREP",
             "devices_title" to "MEDISINSK UTSTYR",
+            "results_title" to "PRØVESVAR",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheten · `_j 1.2`",
             "empty" to "(ingen)"
@@ -461,6 +483,7 @@ object JemmaTranslations {
             "immunizations_title" to "VACCINATIONER",
             "procedures_title" to "INDGREB",
             "devices_title" to "MEDICINSK UDSTYR",
+            "results_title" to "PRØVESVAR",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheden · `_j 1.2`",
             "empty" to "(ingen)"
@@ -481,6 +504,7 @@ object JemmaTranslations {
             "immunizations_title" to "ROKOTUKSET",
             "procedures_title" to "TOIMENPITEET",
             "devices_title" to "LÄÄKINNÄLLISET LAITTEET",
+            "results_title" to "TUTKIMUSTULOKSET",
             "contacts_title" to "YHTEYSTIEDOT",
             "footer" to "✅ JEMMA laitteessa · `_j 1.2`",
             "empty" to "(ei mitään)"
@@ -501,6 +525,7 @@ object JemmaTranslations {
             "immunizations_title" to "VACCINĂRI",
             "procedures_title" to "PROCEDURI",
             "devices_title" to "DISPOZITIVE MEDICALE",
+            "results_title" to "REZULTATE",
             "contacts_title" to "CONTACTE DE URGENȚĂ",
             "footer" to "✅ JEMMA pe dispozitiv · `_j 1.2`",
             "empty" to "(niciuna)"

@@ -44,6 +44,13 @@ object IpsBloodGroup {
     }
 
     fun snomedCode(raw: String?): String? = normalize(raw)?.let { SNOMED[it]?.first }
+
+    /** "278147001" → "O+" (inverse lookup, null when not an ABO/Rh free-set code). */
+    fun labelFromSnomed(code: String?): String? =
+        if (code.isNullOrBlank()) null else SNOMED.entries.firstOrNull { it.value.first == code }?.key
+
+    /** The 8 canonical labels, in picker order. */
+    val LABELS: List<String> = listOf("O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-")
     fun snomedDisplay(raw: String?): String? = normalize(raw)?.let { SNOMED[it]?.second }
 
     fun derivedId(profileId: String): String = IpsFhirCodec.fhirId(DERIVED_ID_PREFIX + profileId)

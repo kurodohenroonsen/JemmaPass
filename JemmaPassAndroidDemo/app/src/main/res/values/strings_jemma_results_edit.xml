@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_results_edit.xml — JEMMA Pass · IPS pillar "Results" (EN, default) -->
+<resources>
+
+    <string name="results_edit_title">Results</string>
+    <string name="results_edit_hero_title">Results</string>
+    <string name="results_fab_add_desc">Add a result</string>
+    <string name="results_empty_default">No result recorded yet.\nTap + to add a lab test or imaging result.</string>
+    <string name="results_empty_no_profile">No profile selected. Create or select a profile first.</string>
+    <string name="results_unnamed">Unnamed result</string>
+    <string name="results_saved">Results saved</string>
+    <string name="results_save_failed">Could not save the results</string>
+    <string name="results_delete_title">Delete this result?</string>
+    <string name="results_delete_message">“%1$s” will be removed from the profile.</string>
+    <string name="results_delete_cancel">Cancel</string>
+    <string name="results_delete_confirm">Delete</string>
+    <string name="results_date_unknown">Date unknown</string>
+    <string name="results_ref_short">ref %1$s</string>
+    <string name="results_derived_blood_group">from the patient’s blood type</string>
+    <string name="results_derived_blood_group_hint">The blood group comes from the Patient pillar — change it there.</string>
+    <string name="result_form_title_create">🧪  Add a result</string>
+    <string name="result_form_title_edit">🧪  Edit result</string>
+    <string name="result_form_label_code">Test</string>
+    <string name="result_form_code_hint">Tap to choose a test…</string>
+    <string name="result_form_code_clear_desc">Clear test</string>
+    <string name="result_form_code_picker_title">Choose a test</string>
+    <string name="result_form_label_text">Or type the test name</string>
+    <string name="result_form_text_helper">Free text, used only when no test is picked above</string>
+    <string name="result_form_label_category">Category</string>
+    <string name="result_form_category_pick_title">Result category</string>
+    <string name="result_form_label_value">Value</string>
+    <string name="result_form_value_helper">A number (5.4 or 5,4) or a short text (e.g. negative)</string>
+    <string name="result_form_label_unit">Unit (UCUM)</string>
+    <string name="result_form_unit_none">No unit</string>
+    <string name="result_form_unit_pick_title">Unit</string>
+    <string name="result_form_label_coded">Blood group</string>
+    <string name="result_form_coded_hint">Tap to choose…</string>
+    <string name="result_form_coded_pick_title">ABO / Rh(D) blood group</string>
+    <string name="result_form_label_interpretation">Interpretation</string>
+    <string name="result_form_interpretation_none">Not specified</string>
+    <string name="result_form_interpretation_pick_title">Interpretation</string>
+    <string name="result_form_label_ref_low">Ref. low</string>
+    <string name="result_form_label_ref_high">Ref. high</string>
+    <string name="result_form_label_date">Date of the test</string>
+    <string name="result_form_date_hint">Unknown date — tap to pick</string>
+    <string name="result_form_date_clear_desc">Clear date</string>
+    <string name="result_form_date_pick_title">Date of the test</string>
+    <string name="result_form_label_status">Status</string>
+    <string name="result_form_status_pick_title">Result status</string>
+    <string name="result_form_label_performer">Laboratory / radiology / clinic</string>
+    <string name="result_form_label_note">Note</string>
+    <string name="result_form_note_helper">Fasting sample, comment, follow-up…</string>
+    <string name="result_form_cancel">Cancel</string>
+    <string name="result_form_delete">Delete</string>
+    <string name="result_form_save">Save</string>
+    <string name="result_form_validation_code">Pick a test or type its name</string>
+    <string name="result_form_validation_value">Enter the result value</string>
+    <string name="result_form_validation_coded">Choose the blood group</string>
+    <string name="result_form_validation_range_number">Reference bounds must be numbers</string>
+    <string name="result_form_validation_range_order">The low bound cannot exceed the high bound</string>
+    <string name="profile_detail_results_title">🧪 RESULTS (%1$d)</string>
+    <plurals name="results_count">
+        <item quantity="zero">No result</item>
+        <item quantity="one">%d result</item>
+        <item quantity="other">%d results</item>
+    </plurals>
+</resources>

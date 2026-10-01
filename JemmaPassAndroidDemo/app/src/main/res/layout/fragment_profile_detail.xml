@@ -249,7 +249,7 @@
                             android:layout_weight="1" />
                         <include
                             android:id="@+id/profile_detail_tile_results"
-                            layout="@layout/view_pillar_tile_stub"
+                            layout="@layout/view_pillar_tile"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
@@ -480,6 +480,33 @@
 
                 <LinearLayout
                     android:id="@+id/profile_detail_procedures_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <!-- ─── RESULTS (FHIR-native pillar) ─── -->
+            <LinearLayout
+                android:id="@+id/profile_detail_results_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/profile_detail_results_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/jemma_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="🧪 RESULTS (5)" />
+
+                <LinearLayout
+                    android:id="@+id/profile_detail_results_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

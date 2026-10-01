@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_results_edit.xml — JEMMA Pass · IPS-Säule „Befunde“ (DE) -->
+<resources>
+
+    <string name="results_edit_title">Befunde</string>
+    <string name="results_edit_hero_title">Befunde</string>
+    <string name="results_fab_add_desc">Befund hinzufügen</string>
+    <string name="results_empty_default">Noch kein Befund erfasst.\nTippe auf +, um einen Labor- oder Bildgebungsbefund hinzuzufügen.</string>
+    <string name="results_empty_no_profile">Kein Profil ausgewählt. Erstelle oder wähle zuerst ein Profil.</string>
+    <string name="results_unnamed">Unbenannter Befund</string>
+    <string name="results_saved">Befunde gespeichert</string>
+    <string name="results_save_failed">Befunde konnten nicht gespeichert werden</string>
+    <string name="results_delete_title">Diesen Befund löschen?</string>
+    <string name="results_delete_message">„%1$s“ wird aus dem Profil entfernt.</string>
+    <string name="results_delete_cancel">Abbrechen</string>
+    <string name="results_delete_confirm">Löschen</string>
+    <string name="results_date_unknown">Datum unbekannt</string>
+    <string name="results_ref_short">Ref. %1$s</string>
+    <string name="results_derived_blood_group">aus der Blutgruppe des Patienten</string>
+    <string name="results_derived_blood_group_hint">Die Blutgruppe stammt aus der Säule Patient — ändere sie dort.</string>
+    <string name="result_form_title_create">🧪  Befund hinzufügen</string>
+    <string name="result_form_title_edit">🧪  Befund bearbeiten</string>
+    <string name="result_form_label_code">Untersuchung</string>
+    <string name="result_form_code_hint">Tippe, um eine Untersuchung zu wählen…</string>
+    <string name="result_form_code_clear_desc">Untersuchung löschen</string>
+    <string name="result_form_code_picker_title">Untersuchung wählen</string>
+    <string name="result_form_label_text">Oder Namen der Untersuchung eingeben</string>
+    <string name="result_form_text_helper">Freitext, nur verwendet, wenn oben keine Untersuchung gewählt ist</string>
+    <string name="result_form_label_category">Kategorie</string>
+    <string name="result_form_category_pick_title">Befundkategorie</string>
+    <string name="result_form_label_value">Wert</string>
+    <string name="result_form_value_helper">Eine Zahl (5.4 oder 5,4) oder ein kurzer Text (z. B. negativ)</string>
+    <string name="result_form_label_unit">Einheit (UCUM)</string>
+    <string name="result_form_unit_none">Ohne Einheit</string>
+    <string name="result_form_unit_pick_title">Einheit</string>
+    <string name="result_form_label_coded">Blutgruppe</string>
+    <string name="result_form_coded_hint">Tippe zum Wählen…</string>
+    <string name="result_form_coded_pick_title">Blutgruppe ABO / Rh(D)</string>
+    <string name="result_form_label_interpretation">Bewertung</string>
+    <string name="result_form_interpretation_none">Nicht angegeben</string>
+    <string name="result_form_interpretation_pick_title">Bewertung</string>
+    <string name="result_form_label_ref_low">Ref. unten</string>
+    <string name="result_form_label_ref_high">Ref. oben</string>
+    <string name="result_form_label_date">Datum der Untersuchung</string>
+    <string name="result_form_date_hint">Datum unbekannt — tippe zum Wählen</string>
+    <string name="result_form_date_clear_desc">Datum löschen</string>
+    <string name="result_form_date_pick_title">Datum der Untersuchung</string>
+    <string name="result_form_label_status">Status</string>
+    <string name="result_form_status_pick_title">Befundstatus</string>
+    <string name="result_form_label_performer">Labor / Radiologie / Klinik</string>
+    <string name="result_form_label_note">Notiz</string>
+    <string name="result_form_note_helper">Nüchtern, Kommentar, Kontrolle…</string>
+    <string name="result_form_cancel">Abbrechen</string>
+    <string name="result_form_delete">Löschen</string>
+    <string name="result_form_save">Speichern</string>
+    <string name="result_form_validation_code">Wähle eine Untersuchung oder gib ihren Namen ein</string>
+    <string name="result_form_validation_value">Gib den Befundwert ein</string>
+    <string name="result_form_validation_coded">Wähle die Blutgruppe</string>
+    <string name="result_form_validation_range_number">Referenzgrenzen müssen Zahlen sein</string>
+    <string name="result_form_validation_range_order">Die untere Grenze darf die obere nicht überschreiten</string>
+    <string name="profile_detail_results_title">🧪 BEFUNDE (%1$d)</string>
+    <plurals name="results_count">
+        <item quantity="zero">Kein Befund</item>
+        <item quantity="one">%d Befund</item>
+        <item quantity="other">%d Befunde</item>
+    </plurals>
+</resources>

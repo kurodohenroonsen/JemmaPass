@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_results_edit.xml — JEMMA Pass · pilier IPS « Résultats » (FR) -->
+<resources>
+
+    <string name="results_edit_title">Résultats</string>
+    <string name="results_edit_hero_title">Résultats</string>
+    <string name="results_fab_add_desc">Ajouter un résultat</string>
+    <string name="results_empty_default">Aucun résultat enregistré.\nAppuie sur + pour ajouter une analyse ou un examen d’imagerie.</string>
+    <string name="results_empty_no_profile">Aucun profil sélectionné. Crée ou sélectionne d’abord un profil.</string>
+    <string name="results_unnamed">Résultat sans nom</string>
+    <string name="results_saved">Résultats enregistrés</string>
+    <string name="results_save_failed">Impossible d’enregistrer les résultats</string>
+    <string name="results_delete_title">Supprimer ce résultat ?</string>
+    <string name="results_delete_message">« %1$s » sera retiré du profil.</string>
+    <string name="results_delete_cancel">Annuler</string>
+    <string name="results_delete_confirm">Supprimer</string>
+    <string name="results_date_unknown">Date inconnue</string>
+    <string name="results_ref_short">réf. %1$s</string>
+    <string name="results_derived_blood_group">issu du groupe sanguin du patient</string>
+    <string name="results_derived_blood_group_hint">Le groupe sanguin vient du pilier Patient — modifie-le là.</string>
+    <string name="result_form_title_create">🧪  Ajouter un résultat</string>
+    <string name="result_form_title_edit">🧪  Modifier le résultat</string>
+    <string name="result_form_label_code">Analyse / examen</string>
+    <string name="result_form_code_hint">Appuie pour choisir une analyse…</string>
+    <string name="result_form_code_clear_desc">Effacer l’analyse</string>
+    <string name="result_form_code_picker_title">Choisir une analyse</string>
+    <string name="result_form_label_text">Ou saisir le nom de l’examen</string>
+    <string name="result_form_text_helper">Texte libre, utilisé seulement si aucune analyse n’est choisie ci-dessus</string>
+    <string name="result_form_label_category">Catégorie</string>
+    <string name="result_form_category_pick_title">Catégorie du résultat</string>
+    <string name="result_form_label_value">Valeur</string>
+    <string name="result_form_value_helper">Un nombre (5.4 ou 5,4) ou un texte court (ex. négatif)</string>
+    <string name="result_form_label_unit">Unité (UCUM)</string>
+    <string name="result_form_unit_none">Sans unité</string>
+    <string name="result_form_unit_pick_title">Unité</string>
+    <string name="result_form_label_coded">Groupe sanguin</string>
+    <string name="result_form_coded_hint">Appuie pour choisir…</string>
+    <string name="result_form_coded_pick_title">Groupe sanguin ABO / Rh(D)</string>
+    <string name="result_form_label_interpretation">Interprétation</string>
+    <string name="result_form_interpretation_none">Non précisée</string>
+    <string name="result_form_interpretation_pick_title">Interprétation</string>
+    <string name="result_form_label_ref_low">Réf. basse</string>
+    <string name="result_form_label_ref_high">Réf. haute</string>
+    <string name="result_form_label_date">Date de l’analyse</string>
+    <string name="result_form_date_hint">Date inconnue — appuie pour choisir</string>
+    <string name="result_form_date_clear_desc">Effacer la date</string>
+    <string name="result_form_date_pick_title">Date de l’analyse</string>
+    <string name="result_form_label_status">Statut</string>
+    <string name="result_form_status_pick_title">Statut du résultat</string>
+    <string name="result_form_label_performer">Laboratoire / radiologie / clinique</string>
+    <string name="result_form_label_note">Note</string>
+    <string name="result_form_note_helper">À jeun, commentaire, suivi…</string>
+    <string name="result_form_cancel">Annuler</string>
+    <string name="result_form_delete">Supprimer</string>
+    <string name="result_form_save">Enregistrer</string>
+    <string name="result_form_validation_code">Choisis une analyse ou saisis son nom</string>
+    <string name="result_form_validation_value">Saisis la valeur du résultat</string>
+    <string name="result_form_validation_coded">Choisis le groupe sanguin</string>
+    <string name="result_form_validation_range_number">Les bornes de référence doivent être des nombres</string>
+    <string name="result_form_validation_range_order">La borne basse ne peut pas dépasser la borne haute</string>
+    <string name="profile_detail_results_title">🧪 RÉSULTATS (%1$d)</string>
+    <plurals name="results_count">
+        <item quantity="zero">Aucun résultat</item>
+        <item quantity="one">%d résultat</item>
+        <item quantity="other">%d résultats</item>
+    </plurals>
+</resources>
