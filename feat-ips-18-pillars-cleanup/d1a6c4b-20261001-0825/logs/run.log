@@ -1,0 +1,34 @@
+▶ 0. Device
+▶ 1. JVM unit tests
+▶ 2. assembleDebug
+▶ 3. Install (keeps data — the 6 GB model/KB stay in place)
+▶ 4. Backup profiles + force re-seed of the demo personas only
+▶ 5. Launch, wait for seeding, pull the profiles (no screenshot here: the profiles list may show real profiles)
+total 216
+drwxr-xr-x@  8 kurodohenroonsen  staff    256 Oct  1 08:27 .
+drwxr-xr-x@ 10 kurodohenroonsen  staff    320 Oct  1 08:25 ..
+-rw-r--r--@  1 kurodohenroonsen  staff  38138 Oct  1 08:27 demo_haru.fhir.json
+-rw-r--r--@  1 kurodohenroonsen  staff   3368 Oct  1 08:27 demo_haru.json
+-rw-r--r--@  1 kurodohenroonsen  staff  21328 Oct  1 08:27 demo_kamekichi.fhir.json
+-rw-r--r--@  1 kurodohenroonsen  staff   2952 Oct  1 08:27 demo_kamekichi.json
+-rw-r--r--@  1 kurodohenroonsen  staff  31238 Oct  1 08:27 demo_kurodo.fhir.json
+-rw-r--r--@  1 kurodohenroonsen  staff   3012 Oct  1 08:27 demo_kurodo.json
+▶ 6. verify_profiles.py on the seeded demo personas
+▶ Done — automated part finished. Continue with the UI protocol (README §3), then re-run:
+▶ 0. Device
+▶ 1. JVM unit tests
+▶ 2. assembleDebug
+▶ 3. Install (keeps data — the 6 GB model/KB stay in place)
+▶ 4. Backup profiles + force re-seed of the demo personas only
+▶ 5. Launch, wait for seeding, pull the profiles (no screenshot here: the profiles list may show real profiles)
+total 216
+drwxr-xr-x@  8 kurodohenroonsen  staff    256 Oct  1 08:27 .
+drwxr-xr-x@ 16 kurodohenroonsen  staff    512 Oct  1 09:30 ..
+-rw-r--r--@  1 kurodohenroonsen  staff  38136 Oct  1 09:33 demo_haru.fhir.json
+-rw-r--r--@  1 kurodohenroonsen  staff   3368 Oct  1 09:33 demo_haru.json
+-rw-r--r--@  1 kurodohenroonsen  staff  21327 Oct  1 09:33 demo_kamekichi.fhir.json
+-rw-r--r--@  1 kurodohenroonsen  staff   2952 Oct  1 09:33 demo_kamekichi.json
+-rw-r--r--@  1 kurodohenroonsen  staff  31238 Oct  1 09:33 demo_kurodo.fhir.json
+-rw-r--r--@  1 kurodohenroonsen  staff   3012 Oct  1 09:33 demo_kurodo.json
+▶ 6. verify_profiles.py on the seeded demo personas
+▶ Done — automated part finished. Continue with the UI protocol (README §3), then re-run:
