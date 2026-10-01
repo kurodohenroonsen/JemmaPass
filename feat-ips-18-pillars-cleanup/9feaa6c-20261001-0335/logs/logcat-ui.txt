@@ -1,0 +1,67 @@
+--------- beginning of main
+10-01 04:41:24.971 11838 11838 I JEMMA-PROFILES: [t=1790822484971] [Adapter] 👆 card tap · id=demo_kamekichi
+10-01 04:41:24.971 11838 11838 I JEMMA-PROFILES: [t=1790822484971] 👆 profile tap → detail · id=demo_kamekichi · name=Kamekichi
+10-01 04:41:25.003 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485003] 📋 onViewCreated · id=demo_kamekichi
+10-01 04:41:25.018 11838 11838 I JEMMA-PROFILE-DETAIL: [t=1790822485018] 🧪 hydrating profile (fr)...
+10-01 04:41:25.972 11838 11838 I JEMMA-PROFILE-DETAIL: [t=1790822485972] ✅ hydrated in 952ms · alerts ddi=5 al×md=0
+10-01 04:41:25.996 11838 11838 I JEMMA-PROFILE-DETAIL: [t=1790822485996] 🩺 renderPillars · START · profileId=demo_kamekichi
+10-01 04:41:25.996 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485996] 🩺 counts computed · patient=1 contacts=1 allergies=3 medications=5 conditions=0 immunizations=0 procedures=0 devices=0 results=1 providers=0
+10-01 04:41:25.997 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485996] 🎴 bound tile · key=patient · isActive=true · layout=active · emoji='📝' · label='Patient' · count=1
+10-01 04:41:25.997 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485997] 🎴 bound tile · key=allergies · isActive=true · layout=active · emoji='⚠️' · label='Allergies' · count=3
+10-01 04:41:25.997 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485997] 🎴 bound tile · key=medications · isActive=true · layout=active · emoji='💊' · label='Médicaments' · count=5
+10-01 04:41:25.997 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485997] 🎴 bound tile · key=contacts · isActive=false · layout=stub · emoji='👥' · label='Contacts d'urgence' · count=1
+10-01 04:41:25.997 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485997] 🎴 bound tile · key=conditions · isActive=false · layout=stub · emoji='🩺' · label='Pathologies actives' · count=0
+10-01 04:41:25.997 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485997] 🎴 bound tile · key=pastProblems · isActive=false · layout=stub · emoji='📜' · label='Antécédents médicaux' · count=0
+10-01 04:41:25.998 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485998] 🎴 bound tile · key=immunizations · isActive=true · layout=active · emoji='💉' · label='Vaccinations' · count=0
+10-01 04:41:25.998 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485998] 🎴 bound tile · key=procedures · isActive=true · layout=active · emoji='🏥' · label='Procédures' · count=0
+10-01 04:41:25.998 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485998] 🎴 bound tile · key=devices · isActive=true · layout=active · emoji='📟' · label='Dispositifs médicaux' · count=0
+10-01 04:41:25.998 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485998] 🎴 bound tile · key=functional · isActive=false · layout=stub · emoji='♿' · label='Statut fonctionnel' · count=0
+10-01 04:41:25.998 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485998] 🎴 bound tile · key=pregnancy · isActive=false · layout=stub · emoji='🤰' · label='Grossesse' · count=0
+10-01 04:41:25.999 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485999] 🎴 bound tile · key=results · isActive=false · layout=stub · emoji='🧪' · label='Résultats labo' · count=1
+10-01 04:41:25.999 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485999] 🎴 bound tile · key=advanceDirectives · isActive=false · layout=stub · emoji='📜' · label='Directives anticipées' · count=0
+10-01 04:41:25.999 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485999] 🎴 bound tile · key=consents · isActive=false · layout=stub · emoji='✍️' · label='Consentements' · count=0
+10-01 04:41:25.999 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485999] 🎴 bound tile · key=goals · isActive=false · layout=stub · emoji='🎯' · label='Objectifs de soins' · count=0
+10-01 04:41:25.999 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485999] 🎴 bound tile · key=encounters · isActive=false · layout=stub · emoji='🚑' · label='Rencontres / Visites' · count=0
+10-01 04:41:25.999 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485999] 🎴 bound tile · key=occupational · isActive=false · layout=stub · emoji='💼' · label='Données professionnelles' · count=0
+10-01 04:41:25.999 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822485999] 🎴 bound tile · key=providers · isActive=false · layout=stub · emoji='👨‍⚕️' · label='Équipe de soins' · count=0
+10-01 04:41:25.999 11838 11838 I JEMMA-PROFILE-DETAIL: [t=1790822485999] 🩺 renderPillars · END · active=6/7 · stub=12/11 · missing=0/18 · 3ms
+10-01 04:41:32.200 11838 11838 I JEMMA-PROFILE-DETAIL: [t=1790822492200] 🎴 pillars section toggled · expanded=true
+10-01 04:41:44.934 11838 11838 I JEMMA-PROFILE-DETAIL: [t=1790822504934] 🎴 pillars section toggled · expanded=false
+10-01 04:43:07.196 11838 11838 D JEMMA-PROFILES: [t=1790822587196] 📋 onCreateView (v2.2.16.10)
+10-01 04:43:07.214 11838 11838 D JEMMA-PROFILES: [t=1790822587214] 📋 onViewCreated
+10-01 04:43:07.215 11838 11838 D JEMMA-PROFILES: [t=1790822587215] 📋 renderList · 4 profiles · current=demo_kurodo
+10-01 04:43:07.215 11838 11838 D JEMMA-PROFILES: [t=1790822587215] [Adapter] 📦 submit · 4 profiles · currentId=demo_kurodo
+10-01 04:43:07.220 11838 11838 D JEMMA-PROFILES: [t=1790822587220] [Adapter] 🏗 onCreateViewHolder
+10-01 04:43:07.220 11838 11838 D JEMMA-PROFILES: [t=1790822587220] [Adapter] 🔗 bind pos=0 · id=demo_haru · name=Haru Tanaka · isCurrent=false
+10-01 04:43:07.222 11838 11838 D JEMMA-PROFILES: [t=1790822587222] [Adapter] 🏗 onCreateViewHolder
+10-01 04:43:07.222 11838 11838 D JEMMA-PROFILES: [t=1790822587222] [Adapter] 🔗 bind pos=1 · id=demo_kamekichi · name=Kamekichi · isCurrent=false
+10-01 04:43:07.224 11838 11838 D JEMMA-PROFILES: [t=1790822587224] [Adapter] 🏗 onCreateViewHolder
+10-01 04:43:07.224 11838 11838 D JEMMA-PROFILES: [t=1790822587224] [Adapter] 🔗 bind pos=2 · id=demo_kurodo · name=Kurodo Henro · isCurrent=true
+10-01 04:43:07.225 11838 11838 D JEMMA-PROFILES: [t=1790822587225] [Adapter] 🏗 onCreateViewHolder
+10-01 04:43:12.507 11838 11838 I JEMMA-PROFILES: [t=1790822592507] [Adapter] 👆 card tap · id=demo_haru
+10-01 04:43:12.507 11838 11838 I JEMMA-PROFILES: [t=1790822592507] 👆 profile tap → detail · id=demo_haru · name=Haru Tanaka
+10-01 04:43:12.539 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592539] 📋 onViewCreated · id=demo_haru
+10-01 04:43:12.548 11838 11838 I JEMMA-PROFILE-DETAIL: [t=1790822592548] 🧪 hydrating profile (fr)...
+10-01 04:43:12.744 11838 11838 I JEMMA-PROFILE-DETAIL: [t=1790822592744] ✅ hydrated in 193ms · alerts ddi=0 al×md=0
+10-01 04:43:12.763 11838 11838 I JEMMA-PROFILE-DETAIL: [t=1790822592763] 🩺 renderPillars · START · profileId=demo_haru
+10-01 04:43:12.763 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592763] 🩺 counts computed · patient=1 contacts=0 allergies=1 medications=3 conditions=0 immunizations=3 procedures=2 devices=2 results=5 providers=0
+10-01 04:43:12.763 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592763] 🎴 bound tile · key=patient · isActive=true · layout=active · emoji='📝' · label='Patient' · count=1
+10-01 04:43:12.763 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592763] 🎴 bound tile · key=allergies · isActive=true · layout=active · emoji='⚠️' · label='Allergies' · count=1
+10-01 04:43:12.764 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592763] 🎴 bound tile · key=medications · isActive=true · layout=active · emoji='💊' · label='Médicaments' · count=3
+10-01 04:43:12.764 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592764] 🎴 bound tile · key=contacts · isActive=false · layout=stub · emoji='👥' · label='Contacts d'urgence' · count=0
+10-01 04:43:12.764 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592764] 🎴 bound tile · key=conditions · isActive=false · layout=stub · emoji='🩺' · label='Pathologies actives' · count=0
+10-01 04:43:12.764 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592764] 🎴 bound tile · key=pastProblems · isActive=false · layout=stub · emoji='📜' · label='Antécédents médicaux' · count=0
+10-01 04:43:12.764 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592764] 🎴 bound tile · key=immunizations · isActive=true · layout=active · emoji='💉' · label='Vaccinations' · count=3
+10-01 04:43:12.764 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592764] 🎴 bound tile · key=procedures · isActive=true · layout=active · emoji='🏥' · label='Procédures' · count=2
+10-01 04:43:12.764 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592764] 🎴 bound tile · key=devices · isActive=true · layout=active · emoji='📟' · label='Dispositifs médicaux' · count=2
+10-01 04:43:12.765 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592765] 🎴 bound tile · key=functional · isActive=false · layout=stub · emoji='♿' · label='Statut fonctionnel' · count=0
+10-01 04:43:12.765 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592765] 🎴 bound tile · key=pregnancy · isActive=false · layout=stub · emoji='🤰' · label='Grossesse' · count=0
+10-01 04:43:12.765 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592765] 🎴 bound tile · key=results · isActive=false · layout=stub · emoji='🧪' · label='Résultats labo' · count=5
+10-01 04:43:12.765 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592765] 🎴 bound tile · key=advanceDirectives · isActive=false · layout=stub · emoji='📜' · label='Directives anticipées' · count=0
+10-01 04:43:12.765 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592765] 🎴 bound tile · key=consents · isActive=false · layout=stub · emoji='✍️' · label='Consentements' · count=0
+10-01 04:43:12.765 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592765] 🎴 bound tile · key=goals · isActive=false · layout=stub · emoji='🎯' · label='Objectifs de soins' · count=0
+10-01 04:43:12.766 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592766] 🎴 bound tile · key=encounters · isActive=false · layout=stub · emoji='🚑' · label='Rencontres / Visites' · count=0
+10-01 04:43:12.766 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592766] 🎴 bound tile · key=occupational · isActive=false · layout=stub · emoji='💼' · label='Données professionnelles' · count=0
+10-01 04:43:12.766 11838 11838 D JEMMA-PROFILE-DETAIL: [t=1790822592766] 🎴 bound tile · key=providers · isActive=false · layout=stub · emoji='👨‍⚕️' · label='Équipe de soins' · count=0
+10-01 04:43:12.766 11838 11838 I JEMMA-PROFILE-DETAIL: [t=1790822592766] 🩺 renderPillars · END · active=6/7 · stub=12/11 · missing=0/18 · 3ms
+--------- scrub_logcat: 1 line(s) removed (non-demo profile data)
