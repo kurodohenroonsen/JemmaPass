@@ -25,3 +25,4 @@
 09-30 21:01:54.597 19535 19535 D JEMMA-PROFILES: [t=1790794914597] [Adapter] 🏗 onCreateViewHolder
 --------- scrub_logcat: 1 line(s) removed (non-demo profile data)
 --------- scrub_logcat: 0 line(s) removed (non-demo profile data)
+--------- scrub_logcat: 0 line(s) removed (non-JemmaPass tags or non-demo profile data)

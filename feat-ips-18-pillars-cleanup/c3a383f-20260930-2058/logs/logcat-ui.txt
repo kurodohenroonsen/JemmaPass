@@ -30,3 +30,4 @@
 09-30 21:10:48.528 19703 19783 I JEMMA-PROFILES: [t=1790795448528] 📋 rescanFromDisk · 4 profiles · current=demo_kurodo in 8ms
 09-30 21:10:48.531 19703 19703 I JEMMA-IMMUNIZATIONS-EDIT: [t=1790795448531] 💾 persist · profileId=demo_kurodo · count=4 · ok=true
 --------- scrub_logcat: 0 line(s) removed (non-demo profile data)
+--------- scrub_logcat: 0 line(s) removed (non-JemmaPass tags or non-demo profile data)

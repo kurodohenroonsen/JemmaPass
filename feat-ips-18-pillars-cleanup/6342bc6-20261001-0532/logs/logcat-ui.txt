@@ -31,3 +31,4 @@
 10-01 05:45:50.234 14789 14789 I JEMMA-IMMUNIZATIONS-EDIT: [t=1790826350234] 📋 onCreateView · argProfileId=demo_haru
 10-01 05:45:50.347 14789 14789 I JEMMA-IMMUNIZATIONS-EDIT: [t=1790826350347] 📂 loaded 3 immunizations for demo_haru
 --------- scrub_logcat: 0 line(s) removed (non-demo profile data)
+--------- scrub_logcat: 0 line(s) removed (non-JemmaPass tags or non-demo profile data)

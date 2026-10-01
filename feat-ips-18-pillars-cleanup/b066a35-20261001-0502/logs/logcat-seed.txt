@@ -24,3 +24,4 @@
 10-01 05:04:44.453 14066 14066 D JEMMA-PROFILES: [t=1790823884453] [Adapter] 🔗 bind pos=2 · id=demo_kurodo · name=Kurodo Henro · isCurrent=true
 10-01 05:04:44.457 14066 14066 D JEMMA-PROFILES: [t=1790823884457] [Adapter] 🏗 onCreateViewHolder
 --------- scrub_logcat: 1 line(s) removed (non-demo profile data)
+--------- scrub_logcat: 0 line(s) removed (non-JemmaPass tags or non-demo profile data)

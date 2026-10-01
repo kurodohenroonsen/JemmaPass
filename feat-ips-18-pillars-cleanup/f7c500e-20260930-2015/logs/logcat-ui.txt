@@ -18,3 +18,4 @@
 09-30 20:36:19.919 15287 15287 I JEMMA-IMMUNIZATIONS-EDIT: [t=1790793379919] 💾 persist · profileId=demo_kurodo · count=4 · ok=true
 --------- scrub_logcat: 0 line(s) removed (non-demo profile data)
 --------- scrub_logcat: 0 line(s) removed (non-demo profile data)
+--------- scrub_logcat: 0 line(s) removed (non-JemmaPass tags or non-demo profile data)

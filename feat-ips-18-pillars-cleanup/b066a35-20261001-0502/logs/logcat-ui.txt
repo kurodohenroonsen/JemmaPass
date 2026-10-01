@@ -26,3 +26,4 @@
 10-01 05:17:40.293 14066 14066 D JEMMA-PROFILE-DETAIL: [t=1790824660293] 🎴 bound tile · key=providers · isActive=false · layout=stub · emoji='👨‍⚕️' · label='Équipe de soins' · count=0
 10-01 05:17:40.293 14066 14066 I JEMMA-PROFILE-DETAIL: [t=1790824660293] 🩺 renderPillars · END · active=6/7 · stub=12/11 · missing=0/18 · 6ms
 --------- scrub_logcat: 0 line(s) removed (non-demo profile data)
+--------- scrub_logcat: 0 line(s) removed (non-JemmaPass tags or non-demo profile data)
