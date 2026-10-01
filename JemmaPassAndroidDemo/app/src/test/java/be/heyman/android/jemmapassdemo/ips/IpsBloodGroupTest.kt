@@ -85,6 +85,6 @@ class IpsBloodGroupTest {
         assertEquals(1, results.size)
         assertEquals(IpsBloodGroup.LOINC_ABO_RH, results[0].code)
         assertEquals("278150003", results[0].valueCode)
-        assertEquals(IpsFhirCodec.UDI_ISSUER_GS1, "http://hl7.org/fhir/NamingSystem/gs1")
+        assertFalse("UDI issuer no longer emitted", json.contains("NamingSystem/gs1"))
     }
 }
