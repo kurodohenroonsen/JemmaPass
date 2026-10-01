@@ -171,8 +171,10 @@ object IpsFhirCodec {
     fun fromFhir(r: Immunization): IpsImmunization {
         val coding = r.vaccineCode.coding.firstOrNull()
         val code = coding?.code?.value?.takeIf { it.isNotBlank() }
-        val display = coding?.display?.value?.takeIf { it.isNotBlank() }
-        val text = r.vaccineCode.text?.value?.takeIf { it.isNotBlank() }
+        val (display, text) = IpsOfficialDisplays.friendly(
+            coding?.system?.value, coding?.code?.value,
+            coding?.display?.value?.takeIf { it.isNotBlank() }, r.vaccineCode.text?.value?.takeIf { it.isNotBlank() },
+        )
         val date = r.occurrence.asDateTime()?.value?.value?.toString()
         val protocol = r.protocolApplied.firstOrNull()
         return IpsImmunization(
@@ -200,19 +202,7 @@ object IpsFhirCodec {
             Immunization.ImmunizationStatusCodes.Completed
         }
 
-        val vaccineCode = CodeableConcept.Builder().apply {
-            if (im.hasCode) {
-                coding.add(Coding.Builder().apply {
-                    system = Uri.Builder().apply { value = im.system ?: IpsCodeSystems.SNOMED }
-                    code = Code.Builder().apply { value = im.code }
-                    im.display?.takeIf { it.isNotBlank() }?.let { d ->
-                        display = String.Builder().apply { value = d }
-                    }
-                })
-            }
-            val label = im.text?.takeIf { it.isNotBlank() } ?: im.display?.takeIf { it.isNotBlank() }
-            label?.let { text = String.Builder().apply { value = it } }
-        }
+        val vaccineCode = codeableConcept(if (im.hasCode) im.code else null, im.system, im.display, im.text)
 
         val occurrence: Immunization.Occurrence = im.date?.takeIf { it.isNotBlank() }?.let { d ->
             val parsed = try { FhirDateTime.fromString(d) } catch (e: Throwable) { null }
@@ -270,10 +260,13 @@ object IpsFhirCodec {
     private fun codeableConcept(code: kotlin.String?, system: kotlin.String?, display: kotlin.String?, text: kotlin.String?): CodeableConcept.Builder =
         CodeableConcept.Builder().apply {
             if (!code.isNullOrBlank()) {
+                // Official term only when the friendly label can travel losslessly in `text`.
+                val official = IpsOfficialDisplays.of(system ?: IpsCodeSystems.SNOMED, code)
+                    ?.takeIf { text.isNullOrBlank() || text == display }
                 coding.add(Coding.Builder().apply {
                     this.system = Uri.Builder().apply { value = system ?: IpsCodeSystems.SNOMED }
                     this.code = Code.Builder().apply { value = code }
-                    display?.takeIf { it.isNotBlank() }?.let { d -> this.display = String.Builder().apply { value = d } }
+                    (official ?: display?.takeIf { it.isNotBlank() })?.let { d -> this.display = String.Builder().apply { value = d } }
                 })
             }
             val label = text?.takeIf { it.isNotBlank() } ?: display?.takeIf { it.isNotBlank() }
@@ -307,8 +300,10 @@ object IpsFhirCodec {
     fun fromFhir(r: Procedure): IpsProcedure {
         val coding = firstCoding(r.code)
         val code = coding?.code?.value?.takeIf { it.isNotBlank() }
-        val display = coding?.display?.value?.takeIf { it.isNotBlank() }
-        val text = r.code?.text?.value?.takeIf { it.isNotBlank() }
+        val (display, text) = IpsOfficialDisplays.friendly(
+            coding?.system?.value, coding?.code?.value,
+            coding?.display?.value?.takeIf { it.isNotBlank() }, r.code?.text?.value?.takeIf { it.isNotBlank() },
+        )
         return IpsProcedure(
             id = r.id ?: IpsProcedure.newId(),
             code = code,
@@ -438,8 +433,10 @@ object IpsFhirCodec {
     fun fromFhir(o: Observation): IpsResult {
         val coding = firstCoding(o.code)
         val code = coding?.code?.value?.takeIf { it.isNotBlank() }
-        val display = coding?.display?.value?.takeIf { it.isNotBlank() }
-        val text = o.code.text?.value?.takeIf { it.isNotBlank() }
+        val (display, text) = IpsOfficialDisplays.friendly(
+            coding?.system?.value, coding?.code?.value,
+            coding?.display?.value?.takeIf { it.isNotBlank() }, o.code.text?.value?.takeIf { it.isNotBlank() },
+        )
         val category = o.category.flatMap { it.coding }.mapNotNull { it.code?.value }.firstOrNull { it in IpsResultCategory.ALL }
         val quantity = o.value?.asQuantity()?.value
         val codedValue = o.value?.asCodeableConcept()?.value

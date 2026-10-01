@@ -317,4 +317,17 @@ class IpsResultCodecTest {
         assertNull(back.performer)
         assertEquals("278147001", back.valueCode)
     }
+
+    @Test
+    fun officialDisplayInCodingFriendlyLabelInText() {
+        val o = JSONObject(IpsFhirCodec.encode(IpsFhirCodec.toFhir(potassium, patientUrn).build()))
+        val code = o.getJSONObject("code")
+        assertEquals("Potassium [Moles/volume] in Serum or Plasma", code.getJSONArray("coding").getJSONObject(0).getString("display"))
+        assertEquals("Potassium", code.getString("text"))
+        // round trip restores the friendly label as the domain display
+        assertEquals("Potassium", roundTrip(potassium).display)
+        assertNull(roundTrip(potassium).text)
+        // unmapped codes keep their own display
+        assertEquals(chestXray, roundTrip(chestXray))
+    }
 }
