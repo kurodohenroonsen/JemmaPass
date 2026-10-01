@@ -13,6 +13,7 @@ import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
 import be.heyman.android.jemmapassdemo.ips.IpsConditionSeverity
 import be.heyman.android.jemmapassdemo.ips.IpsPastProblem
 import be.heyman.android.jemmapassdemo.ips.IpsProblem
+import be.heyman.android.jemmapassdemo.ips.IpsPregnancyObs
 import be.heyman.android.jemmapassdemo.ips.IpsProcedure
 import be.heyman.android.jemmapassdemo.ips.IpsResult
 import be.heyman.android.jemmapassdemo.ips.IpsResultCategory
@@ -173,6 +174,12 @@ object JemmaPersonasSeeder {
                     category = IpsResultCategory.IMAGING, valueText = "Mild cardiomegaly, no pleural effusion",
                     performer = "Radiology, Matsuyama Red Cross Hospital",
                 ),
+            ),
+            // 🤰 obstetric summary (sprint 6): two term live births (one by cesarean, 1975).
+            pregnancy = listOf(
+                IpsPregnancyObs(id = "pg-haru-births-total", code = "11640-0", count = 2, date = "2026-02-10"),
+                IpsPregnancyObs(id = "pg-haru-births-live", code = "11636-8", count = 2, date = "2026-02-10"),
+                IpsPregnancyObs(id = "pg-haru-births-term", code = "11639-2", count = 2, date = "2026-02-10"),
             ),
             problems = listOf(
                 IpsProblem(

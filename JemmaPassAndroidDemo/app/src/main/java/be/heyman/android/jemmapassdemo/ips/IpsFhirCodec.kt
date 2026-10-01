@@ -71,6 +71,15 @@ object IpsFhirCodec {
     const val SYSTEM_OBSERVATION_CATEGORY = "http://terminology.hl7.org/CodeSystem/observation-category"
     const val SYSTEM_OBSERVATION_INTERPRETATION = "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
     const val SYSTEM_UCUM = "http://unitsofmeasure.org"
+    const val LOINC_SECTION_PREGNANCY = "10162-6"
+    const val TITLE_SECTION_PREGNANCY = "History of Pregnancy"
+    const val PROFILE_PREGNANCY_STATUS_UV_IPS =
+        "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-pregnancy-status-uv-ips"
+    const val PROFILE_PREGNANCY_EDD_UV_IPS =
+        "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-pregnancy-edd-uv-ips"
+    const val PROFILE_PREGNANCY_OUTCOME_UV_IPS =
+        "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-pregnancy-outcome-uv-ips"
+
     const val LOINC_SECTION_PROBLEMS = "11450-4"
     const val TITLE_SECTION_PROBLEMS = "Problems"
     const val SYSTEM_CONDITION_CATEGORY = "http://terminology.hl7.org/CodeSystem/condition-category"
@@ -211,6 +220,7 @@ object IpsFhirCodec {
         results = resultsOf(bundle),
         pastProblems = pastProblemsOf(bundle),
         problems = problemsOf(bundle),
+        pregnancy = resourcesOf(bundle).filterIsInstance<Observation>().mapNotNull { pregnancyFromFhir(it) },
     )
 
     /** Deterministic `urn:uuid:` for intra-bundle references (stable across rebuilds). */
@@ -231,6 +241,9 @@ object IpsFhirCodec {
 
     fun resultUrn(profileSid: kotlin.String, resultId: kotlin.String): kotlin.String =
         stableUrn("$profileSid|Observation|$resultId")
+
+    fun pregnancyUrn(profileSid: kotlin.String, obsId: kotlin.String): kotlin.String =
+        stableUrn("$profileSid|Observation|pregnancy|$obsId")
 
     fun problemUrn(profileSid: kotlin.String, problemId: kotlin.String): kotlin.String =
         stableUrn("$profileSid|Condition|problem|$problemId")
@@ -692,6 +705,54 @@ object IpsFhirCodec {
     }
 
     // ──────────────────────────────────────────────────────────────────────
+    // Observation (pregnancy status / EDD / outcome) ⇄ IpsPregnancyObs
+    // ──────────────────────────────────────────────────────────────────────
+
+    /** Null when the Observation is not one of the pregnancy section codes. */
+    fun pregnancyFromFhir(o: Observation): IpsPregnancyObs? {
+        val code = o.code.coding.firstOrNull { it.system?.value == IpsCodeSystems.LOINC }?.code?.value
+            ?.takeIf { IpsPregnancyCodes.isPregnancyCode(it) } ?: return null
+        val base = IpsPregnancyObs(
+            id = o.id ?: IpsPregnancyObs.newId(),
+            code = code,
+            date = o.effective?.asDateTime()?.value?.value?.toString(),
+            note = o.note.firstOrNull()?.text?.value?.takeIf { it.isNotBlank() },
+        )
+        return when (base.kind) {
+            IpsPregnancyKind.STATUS -> base.copy(valueCode = o.value?.asCodeableConcept()?.value?.coding?.firstOrNull()?.code?.value)
+            IpsPregnancyKind.EDD -> base.copy(valueDate = o.value?.asDateTime()?.value?.value?.toString())
+            IpsPregnancyKind.OUTCOME -> base.copy(count = o.value?.asInteger()?.value?.value)
+        }
+    }
+
+    fun toFhir(pg: IpsPregnancyObs, patientUrn: kotlin.String): Observation.Builder {
+        val profile = when (pg.kind) {
+            IpsPregnancyKind.STATUS -> PROFILE_PREGNANCY_STATUS_UV_IPS
+            IpsPregnancyKind.EDD -> PROFILE_PREGNANCY_EDD_UV_IPS
+            IpsPregnancyKind.OUTCOME -> PROFILE_PREGNANCY_OUTCOME_UV_IPS
+        }
+        return Observation.Builder(
+            Enumeration.of(Observation.ObservationStatus.Final, null),
+            codeableConcept(pg.code, IpsCodeSystems.LOINC, IpsPregnancyCodes.display(pg.code), null),
+        ).apply {
+            id = fhirId(pg.id)
+            meta = ipsMeta(profile)
+            subject = urnReference(patientUrn)
+            effective = Observation.Effective.DateTime(
+                (parseFhirDate(pg.date)?.let { dateTimeBuilder(it) } ?: unknownDateTimeBuilder()).build()
+            )
+            value = when (pg.kind) {
+                IpsPregnancyKind.STATUS -> pg.valueCode?.takeIf { it.isNotBlank() }?.let {
+                    Observation.Value.CodeableConcept(codeableConcept(it, IpsCodeSystems.LOINC, IpsPregnancyCodes.STATUS_ANSWERS[it], null).build())
+                }
+                IpsPregnancyKind.EDD -> parseFhirDate(pg.valueDate)?.let { Observation.Value.DateTime(dateTimeBuilder(it).build()) }
+                IpsPregnancyKind.OUTCOME -> pg.count?.let { n -> Observation.Value.Integer(dev.ohs.fhir.model.r4.Integer.Builder().apply { value = n }.build()) }
+            }
+            pg.note?.takeIf { it.isNotBlank() }?.let { note.add(Annotation.Builder(Markdown.Builder().apply { value = it })) }
+        }
+    }
+
+    // ──────────────────────────────────────────────────────────────────────
     // Condition (problem list) ⇄ IpsProblem
     // ──────────────────────────────────────────────────────────────────────
 
@@ -780,6 +841,9 @@ object IpsFhirCodec {
 
     fun resultSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
         section(TITLE_SECTION_RESULTS, LOINC_SECTION_RESULTS, "Relevant diagnostic tests/laboratory data note", entryUrns)
+
+    fun pregnancySection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
+        section(TITLE_SECTION_PREGNANCY, LOINC_SECTION_PREGNANCY, "History of pregnancies Narrative", entryUrns)
 
     fun problemSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
         section(TITLE_SECTION_PROBLEMS, LOINC_SECTION_PROBLEMS, "Problem list - Reported", entryUrns)

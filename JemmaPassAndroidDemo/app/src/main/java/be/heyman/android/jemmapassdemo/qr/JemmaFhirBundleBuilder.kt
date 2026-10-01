@@ -81,7 +81,7 @@ object JemmaFhirBundleBuilder {
         // `_j` projections so the Bundle still carries every pillar.
         val raw = hydrated.raw
         val native = if (nativeIn.isEmpty) {
-            IpsNativePillars.fromJEntries(raw.im, raw.pr, raw.dv, raw.rs, raw.ph, raw.cn)
+            IpsNativePillars.fromJEntries(raw.im, raw.pr, raw.dv, raw.rs, raw.ph, raw.cn, raw.pg)
         } else nativeIn
 
         // URNs pour cross-référencement intra-bundle — déterministes (sid + identité).
@@ -93,6 +93,7 @@ object JemmaFhirBundleBuilder {
         val medStatementUrns = hydrated.medications.mapIndexed { i, m -> IpsFhirCodec.stableUrn("$sid|MedicationStatement|$i|${m.raw.c.orEmpty()}") }
         val medRefUrns = hydrated.medications.mapIndexed { i, m -> IpsFhirCodec.stableUrn("$sid|Medication|$i|${m.raw.c.orEmpty()}") }
         val problemUrns = native.problems.map { pb -> IpsFhirCodec.problemUrn(sid, pb.id) }
+        val pregnancyUrns = native.pregnancy.map { pg -> IpsFhirCodec.pregnancyUrn(sid, pg.id) }
         val immunizationUrns = native.immunizations.map { im -> IpsFhirCodec.immunizationUrn(sid, im.id) }
         val procedureUrns = native.procedures.map { pr -> IpsFhirCodec.procedureUrn(sid, pr.id) }
         val deviceStatementUrns = native.devices.map { dv -> IpsFhirCodec.deviceUseStatementUrn(sid, dv.id) }
@@ -347,12 +348,20 @@ object JemmaFhirBundleBuilder {
             })
         }
 
+        native.pregnancy.forEachIndexed { i, pg ->
+            bundleEntries.add(Bundle.Entry.Builder().apply {
+                fullUrl = Uri.Builder().apply { value = pregnancyUrns[i] }
+                resource = IpsFhirCodec.toFhir(pg, patientUrn)
+            })
+        }
+
         // 3. Composition Resource
         val sections = listOfNotNull(
             sectionStub("Allergies", "48765-2", allergyUrns, hydrated.allergies),
             sectionStub("Medications", "10160-0", medStatementUrns, hydrated.medications),
             IpsFhirCodec.problemSection(problemUrns),
             IpsFhirCodec.pastProblemSection(pastProblemUrns),
+            IpsFhirCodec.pregnancySection(pregnancyUrns),
             IpsFhirCodec.immunizationSection(immunizationUrns),
             IpsFhirCodec.procedureSection(procedureUrns),
             IpsFhirCodec.deviceSection(deviceStatementUrns),

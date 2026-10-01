@@ -211,6 +211,16 @@ object JemmaTextPayloadBuilder {
             formatter = { ph -> formatPastProblem(ph, hydrated.pastProblemLabels) },
         )
 
+        // ─── Pregnancy history (FHIR-native pillar, `_j.pg` projection) ──
+        appendSection(
+            sb = sb,
+            icon = "🤰",
+            title = JemmaTranslations.getLabel(lang, "pregnancy_title"),
+            items = hydrated.raw.pg.mapIndexedNotNull { i, e -> be.heyman.android.jemmapassdemo.ips.IpsPregnancyObs.fromJEntry(e, i) },
+            empty = JemmaTranslations.getLabel(lang, "empty"),
+            formatter = { pg -> "${pg.label()}: ${pg.valueLabel()}" + (pg.date?.let { " — $it" } ?: "") },
+        )
+
         sb.append(JemmaTranslations.getLabel(lang, "footer")).append("\r\n")
 
         // Cap byte-size en UTF-8.

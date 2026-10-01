@@ -565,6 +565,20 @@ les médicaments DDInter dont `atc_codes` contient l'ATC du profil.
 3. Pour chaque alerte : vérifie qu'elle correspond à une ligne du dump (médicament + maladie).
    Signale toute alerte qui te paraît cliniquement absurde (faux positif de correspondance).
 
+### T20 — Grossesses (🤰 pilier natif, sprint 6 — fondation, sans écran d'édition)
+
+Seed : Haru = résumé obstétrical (naissances totales 2, vivantes 2, à terme 2 ; LOINC
+11640-0 / 11636-8 / 11639-2, `valueInteger`, effectif 2026-02-10) ; Kurodo et Kamekichi = rien.
+
+1. `run_device_qa.sh` vert avec 🤰 K0 H3 Ka0 (et tous les autres compteurs inchangés).
+2. Bundle Haru (copie brute de 1 Observation + de la section `10162-6`) : profil
+   `Observation-pregnancy-outcome-uv-ips`, `valueInteger` = 2 ; la section liste les 3 fullUrls ;
+   ces Observations n'apparaissent PAS dans la section Résultats 30954-2 (🧪 H5 inchangé).
+3. Validateur HL7 3 personas → 0 erreur (`validator/<persona>.txt`) — c'est le point clé de ce
+   cycle : premiers profils `Observation-pregnancy-*`.
+4. QR texte Haru EN/FR/JA (`qr/qr-haru-<lang>.txt`) : section `🤰 [ PREGNANCY HISTORY ]` /
+   `[ GROSSESSES ]` / `[ 妊娠歴 ]`, taille ≤ 2 200 octets.
+
 ## 4. Logcat de fin
 
 ```
@@ -580,7 +594,7 @@ jamais un log à la main.
 
 ## 5. Rapport et publication
 
-Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T19,
+Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T20,
 statut ✅ / ❌ / ⚠️ / ⏭, preuve = nom de capture ou fichier, déviations, bugs avec
 étapes de reproduction). Puis :
 

@@ -138,6 +138,17 @@ numbers on disk (`5.4`, `120.0`); `IpsDecimal.trimZeros` restores the typed text
 | Seeds | Kurodo hypercholesterolemia · Haru heart failure + CKD 3 · Kamekichi hypertension + AF + angina |
 | QA | `verify_profiles.py` 🩺 `cn` (P4–P6, P6e st), README T16 |
 
+## Sprint 6 — Pregnancy 🤰 (LOINC 10162-6) — foundation
+
+| Layer | Pregnancy |
+|---|---|
+| Domain | `ips/IpsPregnancy.kt` — one Observation kind per LOINC code: status 82810-3 (LA answers), EDD (edd-method codes, valueDateTime), outcome (pregnancies-summary codes, valueInteger); all codes from the KB value sets |
+| FHIR | Observation-pregnancy-status / -edd / -outcome-uv-ips; section 10162-6 |
+| Membership | LOINC code ∈ pregnancy codes — never mixed with 🧪 results (no category) |
+| `_j` | `pg` (`c`, `vc` status answer, `v` EDD date or count, `dt`) |
+| Seeds | Haru obstetric summary (3 counts) |
+| Next | edit screen (status + EDD + counts), FR/JA labels |
+
 ### Checklist for the next pillar (Functional status, Pregnancy, Vital signs…)
 
 1. Tests first: FHIR round trip (full / minimal / edge dates / status

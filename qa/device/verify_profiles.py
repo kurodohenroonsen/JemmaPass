@@ -65,6 +65,9 @@ PILLARS = [
     dict(key="rs", emoji="🧪", label="Observation", rtype="Observation", loinc="30954-2",
          profile=IPS + "Observation-results", code_path="code", patient_path="subject",
          date=("effectiveDateTime",), string=None, profile_prefix=True),
+    dict(key="pg", emoji="🤰", label="Observation (pregnancy)", rtype="Observation", loinc="10162-6",
+         profile=IPS + "Observation-pregnancy", code_path="code", patient_path="subject",
+         date=("effectiveDateTime",), string=None, profile_prefix=True),
     dict(key="cn", emoji="🩺", label="Condition (problem list)", rtype="Condition", loinc="11450-4",
          profile=IPS + "Condition-uv-ips", code_path="code", patient_path="subject",
          date=("onsetDateTime",), string=None),
@@ -73,6 +76,8 @@ PILLARS = [
          date=("onsetDateTime",), string=None),
 ]
 PAST_STATUSES = ("resolved", "inactive", "remission")
+PREGNANCY_CODES = {"82810-3", "11778-8", "11779-6", "11780-4", "11640-0", "11636-8", "11639-2", "11637-6",
+                   "11638-4", "11612-9", "11614-5", "11613-7", "33065-4"}
 CURRENT_STATUSES = ("active", "recurrence", "relapse")
 PROBLEMS_LOINC = "11450-4"
 PAST_ILLNESS_LOINC = "11348-0"
@@ -192,8 +197,10 @@ def observation_value(r):
 def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
     key, label, loinc = spec["key"], spec["label"], spec["loinc"]
     res_entries = entries_of_type(b, spec["rtype"])
-    if spec["rtype"] == "Observation":
+    if key == "rs":
         res_entries = [e for e in res_entries if is_results_observation(e["resource"])]
+    if key == "pg":
+        res_entries = [e for e in res_entries if coding_code(e["resource"].get("code")) in PREGNANCY_CODES]
     if spec["rtype"] == "Condition":
         keep = is_problem if key == "cn" else is_past_problem
         res_entries = [e for e in res_entries if keep(b, e)]
@@ -285,7 +292,9 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
                     bad.append(f"{dev.get('id')}:device-patient-ref")
                 if not (coding_code(dev.get("type")) or (dev.get("type") or {}).get("text") or dev.get("deviceName")):
                     bad.append(f"{dev.get('id')}:device-no-type")
-        if spec["rtype"] == "Observation":
+        if key == "pg" and not any(k in r for k in ("valueCodeableConcept", "valueDateTime", "valueInteger")):
+            bad.append(f"{r.get('id')}:no-value")
+        if key == "rs":
             cats = [c.get("code") for cc in (r.get("category") or []) for c in (cc.get("coding") or [])]
             if not any(c in RESULT_CATEGORIES for c in cats):
                 bad.append(f"{r.get('id')}:no-category")
@@ -411,6 +420,7 @@ def main():
     ap.add_argument("--expect-pr", action="append", default=[], help="<profileId>=<n Procedure>, repeatable")
     ap.add_argument("--expect-dv", action="append", default=[], help="<profileId>=<n DeviceUseStatement>, repeatable")
     ap.add_argument("--expect-rs", action="append", default=[], help="<profileId>=<n results Observation>, repeatable")
+    ap.add_argument("--expect-pg", action="append", default=[], help="<profileId>=<n pregnancy Observation>, repeatable")
     ap.add_argument("--expect-cn", action="append", default=[], help="<profileId>=<n problem-list Condition>, repeatable")
     ap.add_argument("--expect-ph", action="append", default=[], help="<profileId>=<n past-problem Condition>, repeatable")
     ap.add_argument("--only", action="append", default=[], help="restrict to these profile ids (repeatable)")
@@ -426,6 +436,7 @@ def main():
     parse_expectations(args.expect_rs, "rs", expectations)
     parse_expectations(args.expect_ph, "ph", expectations)
     parse_expectations(args.expect_cn, "cn", expectations)
+    parse_expectations(args.expect_pg, "pg", expectations)
 
     ids = sorted(p.name[:-5] for p in folder.glob("*.json")
                  if not p.name.endswith(".fhir.json") and p.name != "meta.json")

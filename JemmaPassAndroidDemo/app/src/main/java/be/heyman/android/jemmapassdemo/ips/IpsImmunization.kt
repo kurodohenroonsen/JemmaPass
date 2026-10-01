@@ -111,9 +111,10 @@ data class IpsNativePillars(
     val results: List<IpsResult> = emptyList(),
     val pastProblems: List<IpsPastProblem> = emptyList(),
     val problems: List<IpsProblem> = emptyList(),
+    val pregnancy: List<IpsPregnancyObs> = emptyList(),
 ) {
     val isEmpty: Boolean get() = immunizations.isEmpty() && procedures.isEmpty() && devices.isEmpty() &&
-        results.isEmpty() && pastProblems.isEmpty() && problems.isEmpty()
+        results.isEmpty() && pastProblems.isEmpty() && problems.isEmpty() && pregnancy.isEmpty()
 
     companion object {
         val EMPTY = IpsNativePillars()
@@ -126,6 +127,7 @@ data class IpsNativePillars(
             rs: List<JEntryGeneric> = emptyList(),
             ph: List<JEntryGeneric> = emptyList(),
             cn: List<be.heyman.android.jemmapassdemo.qr.JCondition> = emptyList(),
+            pg: List<JEntryGeneric> = emptyList(),
         ): IpsNativePillars = IpsNativePillars(
             immunizations = im.mapIndexed { i, e -> IpsImmunization.fromJEntry(e, i) },
             procedures = pr.mapIndexed { i, e -> IpsProcedure.fromJEntry(e, i) },
@@ -133,6 +135,7 @@ data class IpsNativePillars(
             results = rs.mapIndexed { i, e -> IpsResult.fromJEntry(e, i) },
             pastProblems = ph.mapIndexed { i, e -> IpsPastProblem.fromJEntry(e, i) },
             problems = cn.mapIndexed { i, c -> IpsProblem.fromJCondition(c, i) },
+            pregnancy = pg.mapIndexedNotNull { i, e -> IpsPregnancyObs.fromJEntry(e, i) },
         )
     }
 }
