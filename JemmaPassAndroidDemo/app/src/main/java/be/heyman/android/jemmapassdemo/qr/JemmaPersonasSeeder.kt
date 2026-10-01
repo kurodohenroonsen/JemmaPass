@@ -190,7 +190,7 @@ object JemmaPersonasSeeder {
                     category = "medication"
                 ),
                 JAllergy(
-                    c = "232347008",
+                    c = "417532002",  // Allergy to fish (KB: UMLS C0856904 → SNOMED 417532002; 232347008 was animal dander)
                     s = "H",
                     st = "A",
                     d = "Allergy to fish",
@@ -340,12 +340,12 @@ object JemmaPersonasSeeder {
             ),
             al = listOf(
                 JAllergy(
-                    c = "419474003",
+                    c = "782594005",  // Allergy to soy protein (IPS free set; 419474003 was mold)
                     s = "L",
                     st = "A",
-                    d = "Allergy to soy",
+                    d = "Allergy to soy protein",
                     m = "Mild GI symptoms",
-                    displayLabel = "大豆アレルギー · Allergie au soja",
+                    displayLabel = "大豆タンパク質アレルギー · Allergie aux protéines de soja",
                     codeSystem = "http://snomed.info/sct",
                     category = "food"
                 )

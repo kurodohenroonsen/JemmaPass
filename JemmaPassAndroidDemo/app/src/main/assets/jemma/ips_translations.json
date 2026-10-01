@@ -1639,7 +1639,7 @@
     "fr": "Maïs",
     "ja": "トウモロコシ"
   },
-  "232347008": {
+  "417532002": {
     "en": "Allergy to fish",
     "fr": "Allergie au poisson",
     "ja": "魚アレルギー"
@@ -1655,9 +1655,9 @@
     "ja": "ラテックスアレルギー"
   },
   "419474003": {
-    "en": "Allergy to soy",
-    "fr": "Allergie au soja",
-    "ja": "大豆アレルギー"
+    "en": "Allergy to mold",
+    "fr": "Allergie aux moisissures",
+    "ja": "カビアレルギー"
   },
   "I10": {
     "en": "Essential hypertension",
