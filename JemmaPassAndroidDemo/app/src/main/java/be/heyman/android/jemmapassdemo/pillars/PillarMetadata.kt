@@ -8,9 +8,10 @@
  * encode its values, and the ordered list of editable fields with their
  * cardinality + FHIR datatype.
  *
- * 9 pillars are marked `isActive=true` (patient, contacts, allergies,
- * medications, past problems, immunizations, procedures, devices, results) —
- * these are the ones the app lets you edit. The remaining 9 are read-only "info" pages that
+ * 8 pillars are marked `isActive=true` (patient, allergies, medications, past
+ * problems, immunizations, procedures, devices, results — contacts is parked as
+ * a stub for the demo) — these are the ones the app lets you edit. The remaining
+ * 10 are read-only "info" pages that
  * surface their FHIR structure for transparency while they are being
  * ported to FHIR-native editing (feat/ips-18-pillars-cleanup).
  *

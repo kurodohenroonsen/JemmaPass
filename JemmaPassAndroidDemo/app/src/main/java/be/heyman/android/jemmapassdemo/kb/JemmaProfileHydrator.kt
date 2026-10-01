@@ -79,9 +79,12 @@ class JemmaProfileHydrator @Inject constructor(
                     }
                 }
 
+                val pastProblemLabelsAsync = async { localizePastProblems(profile, uiLang) }
+
                 val allergies = allergiesAsync.await()
                 val medications = medicationsAsync.await()
                 val conditions = conditionsAsync.await()
+                val pastProblemLabels = pastProblemLabelsAsync.await()
 
                 // Cross-checks : run in parallel (independent queries).
                 val ddiAlertsAsync = async { batchCrossCheckDdi(medications) }
@@ -127,9 +130,25 @@ class JemmaProfileHydrator @Inject constructor(
                     allergyAlerts = allergyAlerts,
                     drugDiseaseAlerts = drugDiseaseAlerts,
                     hydrationMs = durMs,
+                    pastProblemLabels = pastProblemLabels,
                 )
             }
         }
+
+    /** 📜 One batch query: SNOMED past-illness codes → labels in [uiLang] (empty for English). */
+    private suspend fun localizePastProblems(profile: JemmaProfileJ, uiLang: String): Map<String, String> {
+        val lang = uiLang.lowercase().take(2)
+        if (lang == "en") return emptyMap()
+        val codes = profile.ph.filter { (it.codeSystem ?: KnowledgeBaseService.SYSTEM_SNOMED) == KnowledgeBaseService.SYSTEM_SNOMED }
+            .mapNotNull { it.c?.takeIf { c -> c.isNotBlank() } }
+        if (codes.isEmpty()) return emptyMap()
+        return try {
+            kb.getLocalizedDisplays(codes, KnowledgeBaseService.SYSTEM_SNOMED, lang)
+        } catch (e: Throwable) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ past-problem labels ($lang) failed : ${e.message}")
+            emptyMap()
+        }
+    }
 
     // ──────────────────────────────────────────────────────────────────────
     // Per-entry hydration (with localization)
@@ -808,6 +827,8 @@ data class HydratedProfile(
     /** Drug × disease contraindications detected against profile conditions. */
     val drugDiseaseAlerts: List<DrugDiseaseAlert>,
     val hydrationMs: Long,
+    /** 📜 SNOMED code → past-illness label in [uiLang] (KB free-set translation; absent = English term). */
+    val pastProblemLabels: Map<String, String> = emptyMap(),
 ) {
     val hasAlerts: Boolean
         get() = ddiAlerts.isNotEmpty() || allergyAlerts.isNotEmpty() || drugDiseaseAlerts.isNotEmpty()

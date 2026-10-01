@@ -1070,7 +1070,7 @@ class KnowledgeBaseService @Inject constructor(
                 """.trimIndent(),
                 arrayOf(code, system, lang),
             ).use { c ->
-                if (c.moveToFirst()) c.getStringOrNull(0) else null
+                if (c.moveToFirst()) KbTranslations.clean(c.getStringOrNull(0)) else null
             }
         } catch (e: Exception) {
             Log.d(
@@ -1128,7 +1128,7 @@ class KnowledgeBaseService @Inject constructor(
                 ).use { c ->
                     while (c.moveToNext()) {
                         val code = c.getStringOrNull(0) ?: continue
-                        val display = c.getStringOrNull(1) ?: continue
+                        val display = KbTranslations.clean(c.getStringOrNull(1)) ?: continue
                         out.putIfAbsent(code, display)
                     }
                 }

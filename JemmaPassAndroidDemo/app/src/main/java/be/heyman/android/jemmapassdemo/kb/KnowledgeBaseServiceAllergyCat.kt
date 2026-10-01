@@ -441,7 +441,7 @@ suspend fun KnowledgeBaseService.searchIpsProblems(
             while (cursor.moveToNext()) {
                 val code = cursor.getString(0) ?: continue
                 val display = cursor.getString(1) ?: continue
-                out.add(AllergyReactionItem(code = code, display = display))
+                out.add(AllergyReactionItem(code = code, display = KbTranslations.unwrap(display)))
             }
         }
     } catch (e: Exception) {

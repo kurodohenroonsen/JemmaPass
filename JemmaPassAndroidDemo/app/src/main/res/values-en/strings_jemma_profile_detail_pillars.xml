@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="profile_detail_pillars_title">🩺  Profile pillars</string>
-    <string name="profile_detail_pillars_subtitle">Tap a pillar to edit. 9 active pillars, 9 more coming.</string>
+    <string name="profile_detail_pillars_subtitle">Tap a pillar to edit. 8 active pillars, 10 more coming.</string>
 </resources>

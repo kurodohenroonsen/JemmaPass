@@ -1376,7 +1376,9 @@ class ProfileDetailFragment : Fragment() {
         }
         val elapsed = System.currentTimeMillis() - tStart
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🩺 renderPillars · END · " +
-            "active=$boundActive/9 · stub=$boundStub/9 · missing=$missing/18 · ${elapsed}ms")
+            "active=$boundActive/${be.heyman.android.jemmapassdemo.pillars.PillarRegistry.ALL.count { it.isActive }} · " +
+            "stub=$boundStub/${be.heyman.android.jemmapassdemo.pillars.PillarRegistry.ALL.count { !it.isActive }} · " +
+            "missing=$missing/${be.heyman.android.jemmapassdemo.pillars.PillarRegistry.ALL.size} · ${elapsed}ms")
         if (missing > 0) {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ $missing tile(s) failed to bind · " +
                 "vérifier que les ids profile_detail_tile_<key> existent dans fragment_profile_detail.xml")

@@ -208,7 +208,7 @@ object JemmaTextPayloadBuilder {
                     .thenByDescending { it.date ?: "" }
             ),
             empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { ph -> formatPastProblem(ph) },
+            formatter = { ph -> formatPastProblem(ph, hydrated.pastProblemLabels) },
         )
 
         sb.append(JemmaTranslations.getLabel(lang, "footer")).append("\r\n")
@@ -263,8 +263,8 @@ object JemmaTextPayloadBuilder {
     }
 
     /** "Appendicitis — 1995-07-10 → 1995-07-12", status appended when not resolved. */
-    private fun formatPastProblem(ph: be.heyman.android.jemmapassdemo.qr.JEntryGeneric): String {
-        val sb = StringBuilder(ph.displayLabel?.takeIf { it.isNotBlank() } ?: ph.c.orEmpty())
+    private fun formatPastProblem(ph: be.heyman.android.jemmapassdemo.qr.JEntryGeneric, labels: Map<String, String>): String {
+        val sb = StringBuilder(ph.c?.let { labels[it] } ?: ph.displayLabel?.takeIf { it.isNotBlank() } ?: ph.c.orEmpty())
         val onset = ph.date?.takeIf { it.isNotBlank() }
         val abatement = ph.abatement?.takeIf { it.isNotBlank() }
         when {
