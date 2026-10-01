@@ -1,0 +1,30 @@
+=== SQL QUERY 1: drug_disease_interactions (8 ATC) ===
+SELECT drug_atc, disease_name_en, severity FROM drug_disease_interactions WHERE drug_atc IN ('C07AB07','B01AA03','M01AE01','G04BE03','C01DA08','C03CA01','R06AX26','R05DA09') ORDER BY drug_atc, severity, disease_name_en;
+
+drug_atc  disease_name_en                  severity
+--------  -------------------------------  --------
+B01AA03   Diabetes Mellitus                Major   
+B01AA03   Hemorrhage                       Major   
+B01AA03   Hypertension                     Major   
+B01AA03   Liver Diseases                   Major   
+B01AA03   Protein C Deficiency             Major   
+B01AA03   Coumarin Resistance              Moderate
+B01AA03   Coumarin Sensitivity             Moderate
+B01AA03   Kidney Diseases                  Moderate
+C01DA08   Anemia                           Major   
+C01DA08   Diseases requiring hemodialysis  Major   
+C01DA08   Hypotension                      Major   
+C01DA08   Intracranial Hypertension        Major   
+C01DA08   Myocardial Infarction            Major   
+C01DA08   Glaucoma                         Minor   
+C01DA08   Cardiomyopathy, Hypertrophic     Moderate
+R06AX26   Kidney Diseases                  Moderate
+
+
+=== SQL QUERY 2: total count ===
+SELECT COUNT(*) FROM drug_disease_interactions;
+
+COUNT(*)
+--------
+8121    
+
