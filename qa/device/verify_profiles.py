@@ -15,10 +15,11 @@ Checks, for every profile :
       when their `_j` arrays are non-empty
 
 and, for each FHIR-native pillar  💉 im / Immunization · 🏥 pr / Procedure · 📟 dv / DeviceUseStatement(+Device)
-· 🧪 rs / Observation (results) · 📜 ph / Condition (past illness, section 11348-0) :
+· 🧪 rs / Observation (results) · 🤰 pg / Observation (pregnancy) · 🩺 cn / Condition (problem list, section 11450-4)
+· 📜 ph / Condition (past illness, section 11348-0) · ♿ fs / Condition (functional status, section 47420-5) :
   P4  the `_j.<key>` projection has exactly one entry per resource, same codes (set-wise)
       and same dates (occurrenceDateTime / performedDateTime / timingDateTime ⇄ dt)
-  P4b optional expected count (--expect / --expect-pr / --expect-dv / --expect-rs / --expect-ph)
+  P4b optional expected count (--expect / --expect-pr / --expect-dv / --expect-rs / --expect-ph / --expect-fs …)
   P5  the Composition has the pillar section (LOINC 11369-6 / 47519-4 / 46264-8) iff there
       are resources, and its entry references are exactly the resource fullUrls
   P6  every resource declares its *-uv-ips profile, references the Patient fullUrl, has a
@@ -27,7 +28,10 @@ and, for each FHIR-native pillar  💉 im / Immunization · 🏥 pr / Procedure 
       a category and one value[x] (valueQuantity with UCUM / valueCodeableConcept / valueString)
       matching the `_j.rs` projection (`v`, `u`) ; every past-problem Condition has a
       clinicalStatus resolved / inactive / remission, no abatement before its onset, and
-      the `_j.ph` projection carries the same abatement dates (`ab`) and severities (`sv`)
+      the `_j.ph` projection carries the same abatement dates (`ab`) and severities (`sv`) ;
+      every functional-status Condition (membership = referenced by section 47420-5, never
+      counted in cn / ph) has a clinicalStatus active / inactive / resolved, mirrored by
+      `_j.fs[].st` (omitted when active)
 
 Optional expectations :
   --expect demo_kurodo=4        (Immunization resources — kept for backward compatibility)
@@ -37,6 +41,7 @@ Optional expectations :
   --expect-rs demo_kurodo=3     (results Observation resources)
   --expect-ph demo_haru=2       (past-problem Condition resources)
   --expect-cn demo_haru=2       (problem-list Condition resources)
+  --expect-fs demo_haru=2       (functional-status Condition resources)
 
 Exit code 0 when everything passes, 1 otherwise. --markdown writes a report table.
 """
@@ -74,6 +79,9 @@ PILLARS = [
     dict(key="ph", emoji="📜", label="Condition", rtype="Condition", loinc="11348-0",
          profile=IPS + "Condition-uv-ips", code_path="code", patient_path="subject",
          date=("onsetDateTime",), string=None),
+    dict(key="fs", emoji="♿", label="Condition (functional status)", rtype="Condition", loinc="47420-5",
+         profile=IPS + "Condition-uv-ips", code_path="code", patient_path="subject",
+         date=("onsetDateTime",), string=None),
 ]
 PAST_STATUSES = ("resolved", "inactive", "remission")
 PREGNANCY_CODES = {"82810-3", "11778-8", "11779-6", "11780-4", "11640-0", "11636-8", "11639-2", "11637-6",
@@ -81,6 +89,8 @@ PREGNANCY_CODES = {"82810-3", "11778-8", "11779-6", "11780-4", "11640-0", "11636
 CURRENT_STATUSES = ("active", "recurrence", "relapse")
 PROBLEMS_LOINC = "11450-4"
 PAST_ILLNESS_LOINC = "11348-0"
+FUNCTIONAL_LOINC = "47420-5"
+FUNCTIONAL_STATUSES = ("active", "inactive", "resolved")
 PROFILE_DEVICE_UV_IPS = IPS + "Device-uv-ips"
 RESULT_CATEGORIES = ("laboratory", "imaging", "procedure")
 UCUM = "http://unitsofmeasure.org"
@@ -160,8 +170,15 @@ def section_refs(bundle, loinc):
             for r in (s.get("entry") or [])}
 
 
+def is_functional(bundle, entry):
+    """Functional-status Condition: referenced by the 47420-5 section, and nothing else (no fallback)."""
+    return entry.get("fullUrl") in section_refs(bundle, FUNCTIONAL_LOINC)
+
+
 def is_problem(bundle, entry):
     """Mirror of IpsFhirCodec.isProblemCondition: in the 11450-4 section, or IPS profile + current status."""
+    if is_functional(bundle, entry):
+        return False
     if entry.get("fullUrl") in section_refs(bundle, PROBLEMS_LOINC):
         return True
     r = entry.get("resource") or {}
@@ -171,6 +188,8 @@ def is_problem(bundle, entry):
 
 def is_past_problem(bundle, entry):
     """Mirror of IpsFhirCodec.isPastProblemCondition: in the 11348-0 section, or IPS profile + past status."""
+    if is_functional(bundle, entry):
+        return False
     if entry.get("fullUrl") in past_section_refs(bundle):
         return True
     r = entry.get("resource") or {}
@@ -202,7 +221,7 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
     if key == "pg":
         res_entries = [e for e in res_entries if coding_code(e["resource"].get("code")) in PREGNANCY_CODES]
     if spec["rtype"] == "Condition":
-        keep = is_problem if key == "cn" else is_past_problem
+        keep = {"cn": is_problem, "fs": is_functional}.get(key, is_past_problem)
         res_entries = [e for e in res_entries if keep(b, e)]
     res = [e["resource"] for e in res_entries]
     jarr = j.get(key, []) or []
@@ -265,14 +284,14 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
         if pref != patient_url:
             bad.append(f"{r.get('id')}:patient-ref")
         if spec["rtype"] == "Condition":
-            allowed = CURRENT_STATUSES if key == "cn" else PAST_STATUSES
+            allowed = {"cn": CURRENT_STATUSES, "fs": FUNCTIONAL_STATUSES}.get(key, PAST_STATUSES)
             if coding_code(r.get("clinicalStatus")) not in allowed:
                 bad.append(f"{r.get('id')}:clinicalStatus-{coding_code(r.get('clinicalStatus'))}")
             if key == "cn" and r.get("abatementDateTime"):
                 bad.append(f"{r.get('id')}:current-problem-with-abatement")
             onset, abate = r.get("onsetDateTime") or "", r.get("abatementDateTime") or ""
             n = min(len(onset), len(abate))
-            if onset and abate and abate[:n] < onset[:n]:
+            if key != "fs" and onset and abate and abate[:n] < onset[:n]:
                 bad.append(f"{r.get('id')}:abatement-before-onset")
             if not (coding_code(r.get("code")) or (r.get("code") or {}).get("text")):
                 bad.append(f"{r.get('id')}:no-code-nor-text")
@@ -306,7 +325,8 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
     what = "profile · patient ref · status · date/string" + (" · Device resolved + Device-uv-ips" if key == "dv" else "") \
         + (" · category · value[x]" if key == "rs" else "") \
         + (" · past clinicalStatus · onset ≤ abatement" if key == "ph" else "") \
-        + (" · current clinicalStatus · no abatement" if key == "cn" else "")
+        + (" · current clinicalStatus · no abatement" if key == "cn" else "") \
+        + (" · clinicalStatus active/inactive/resolved" if key == "fs" else "")
     name = f"P6 {label}-uv-ips {what}"
     if res and not bad:
         rep.ok(pid, name)
@@ -335,6 +355,19 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
         name = "P6e `_j.cn` st ⇄ Condition clinicalStatus"
         if fhir_st == j_st:
             rep.ok(pid, name, f"{len(res)} problems")
+        else:
+            rep.fail(pid, name, f"fhir={fhir_st} j={j_st}")
+
+    if key == "fs" and res:
+        # P6f: `st` is omitted for "active", present otherwise.
+        def fs_st(r):
+            st = coding_code(r.get("clinicalStatus")) or ""
+            return "" if st == "active" else st
+        fhir_st = sorted(fs_st(r) for r in res)
+        j_st = sorted(e.get("st") or "" for e in jarr)
+        name = "P6f `_j.fs` st ⇄ Condition clinicalStatus"
+        if fhir_st == j_st:
+            rep.ok(pid, name, f"{len(res)} entries")
         else:
             rep.fail(pid, name, f"fhir={fhir_st} j={j_st}")
 
@@ -423,6 +456,7 @@ def main():
     ap.add_argument("--expect-pg", action="append", default=[], help="<profileId>=<n pregnancy Observation>, repeatable")
     ap.add_argument("--expect-cn", action="append", default=[], help="<profileId>=<n problem-list Condition>, repeatable")
     ap.add_argument("--expect-ph", action="append", default=[], help="<profileId>=<n past-problem Condition>, repeatable")
+    ap.add_argument("--expect-fs", action="append", default=[], help="<profileId>=<n functional-status Condition>, repeatable")
     ap.add_argument("--only", action="append", default=[], help="restrict to these profile ids (repeatable)")
     ap.add_argument("--markdown", help="write the report table to this file")
     ap.add_argument("--title", default="verify_profiles")
@@ -437,6 +471,7 @@ def main():
     parse_expectations(args.expect_ph, "ph", expectations)
     parse_expectations(args.expect_cn, "cn", expectations)
     parse_expectations(args.expect_pg, "pg", expectations)
+    parse_expectations(args.expect_fs, "fs", expectations)
 
     ids = sorted(p.name[:-5] for p in folder.glob("*.json")
                  if not p.name.endswith(".fhir.json") and p.name != "meta.json")

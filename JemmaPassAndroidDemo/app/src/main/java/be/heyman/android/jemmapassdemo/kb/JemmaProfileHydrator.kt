@@ -139,7 +139,7 @@ class JemmaProfileHydrator @Inject constructor(
     private suspend fun localizePastProblems(profile: JemmaProfileJ, uiLang: String): Map<String, String> {
         val lang = uiLang.lowercase().take(2)
         if (lang == "en") return emptyMap()
-        val codes = profile.ph.filter { (it.codeSystem ?: KnowledgeBaseService.SYSTEM_SNOMED) == KnowledgeBaseService.SYSTEM_SNOMED }
+        val codes = (profile.ph + profile.fs).filter { (it.codeSystem ?: KnowledgeBaseService.SYSTEM_SNOMED) == KnowledgeBaseService.SYSTEM_SNOMED }
             .mapNotNull { it.c?.takeIf { c -> c.isNotBlank() } }
         if (codes.isEmpty()) return emptyMap()
         return try {

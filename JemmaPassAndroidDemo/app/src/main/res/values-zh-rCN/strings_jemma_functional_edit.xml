@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_functional_edit.xml — JEMMA Pass · IPS「功能状态与残障」(ZH-CN) -->
+<resources>
+
+    <string name="functional_edit_title">功能状态与残障</string>
+    <string name="functional_edit_hero_title">功能状态与残障</string>
+    <string name="functional_fab_add_desc">添加功能受限或辅助器具</string>
+    <string name="functional_empty_default">尚未记录功能受限。\n点击 + 添加残障、功能受限或你所依赖的辅助器具。</string>
+    <plurals name="functional_count">
+        <item quantity="zero">无功能受限</item>
+        <item quantity="one">%d 项功能受限</item>
+        <item quantity="other">%d 项功能受限</item>
+    </plurals>
+    <string name="functional_saved">已保存功能状态</string>
+    <string name="functional_save_failed">无法保存功能状态</string>
+    <string name="functional_delete_title">删除此条目？</string>
+    <string name="functional_form_title_create">♿  添加功能受限</string>
+    <string name="functional_form_title_edit">♿  编辑功能受限</string>
+    <string name="functional_form_code_picker_title">选择功能受限或残障</string>
+    <string name="functional_status_active">♿ 存在</string>
+    <string name="functional_status_inactive">💤 非活动</string>
+    <string name="functional_status_resolved">✅ 已解决</string>
+    <string name="profile_detail_functional_title">♿ 功能状态 (%1$d)</string>
+</resources>

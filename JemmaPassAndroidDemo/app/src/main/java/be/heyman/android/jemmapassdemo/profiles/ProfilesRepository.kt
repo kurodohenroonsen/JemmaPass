@@ -145,7 +145,7 @@ class ProfilesRepository @Inject constructor(
                         // Seed both files (JSON projection + FHIR Bundle) through the
                         // single write path so the demo immunizations land in the Bundle.
                         val native = JemmaPersonasSeeder.getDemoNativePillars(id)
-                            ?: IpsNativePillars.fromJEntries(demo.im, demo.pr, demo.dv, demo.rs, demo.ph, demo.cn, demo.pg)
+                            ?: IpsNativePillars.fromJEntries(demo.im, demo.pr, demo.dv, demo.rs, demo.ph, demo.cn, demo.pg, demo.fs)
                         writeProfileFiles(id, demo, native)
                         Log.d(TAG, "⭐ Seeded demo profile files for $id")
                     } else {
@@ -255,6 +255,12 @@ class ProfilesRepository @Inject constructor(
     suspend fun loadResults(id: String): List<IpsResult> =
         loadNativePillars(id).results
 
+    suspend fun loadFunctional(id: String): List<be.heyman.android.jemmapassdemo.ips.IpsFunctional> =
+        loadNativePillars(id).functional
+
+    suspend fun saveFunctional(id: String, entries: List<be.heyman.android.jemmapassdemo.ips.IpsFunctional>): Boolean =
+        saveNativePillars(id, "♿ ${entries.size} functional") { it.copy(functional = entries) }
+
     suspend fun loadPregnancy(id: String): List<be.heyman.android.jemmapassdemo.ips.IpsPregnancyObs> =
         loadNativePillars(id).pregnancy
 
@@ -328,7 +334,7 @@ class ProfilesRepository @Inject constructor(
                 null
             }
         } else null
-        val fromJ = IpsNativePillars.fromJEntries(profile.im, profile.pr, profile.dv, profile.rs, profile.ph, profile.cn, profile.pg)
+        val fromJ = IpsNativePillars.fromJEntries(profile.im, profile.pr, profile.dv, profile.rs, profile.ph, profile.cn, profile.pg, profile.fs)
         if (fromBundle == null) return fromJ
         // Pillar by pillar: a Bundle written before a pillar went FHIR-native has no
         // resources for it, while the `_j` array may still carry legacy entries.
@@ -340,6 +346,7 @@ class ProfilesRepository @Inject constructor(
             pastProblems = fromBundle.pastProblems.ifEmpty { fromJ.pastProblems },
             problems = fromBundle.problems.ifEmpty { fromJ.problems },
             pregnancy = fromBundle.pregnancy.ifEmpty { fromJ.pregnancy },
+            functional = fromBundle.functional.ifEmpty { fromJ.functional },
         )
     }
 
@@ -352,7 +359,7 @@ class ProfilesRepository @Inject constructor(
      *   • anything else (QR / mesh / legacy imports) → the incoming `_j` arrays
      */
     private fun resolveNativePillars(id: String, profile: JemmaProfileJ, sourceFormat: String): IpsNativePillars {
-        val fromJ = IpsNativePillars.fromJEntries(profile.im, profile.pr, profile.dv, profile.rs, profile.ph, profile.cn, profile.pg)
+        val fromJ = IpsNativePillars.fromJEntries(profile.im, profile.pr, profile.dv, profile.rs, profile.ph, profile.cn, profile.pg, profile.fs)
         return when {
             sourceFormat == SOURCE_DEMO_SEED ->
                 JemmaPersonasSeeder.getDemoNativePillars(id) ?: fromJ
@@ -381,6 +388,7 @@ class ProfilesRepository @Inject constructor(
             ph = native.pastProblems.map { it.toJEntry() },
             cn = native.problems.map { it.toJCondition() },
             pg = native.pregnancy.map { it.toJEntry() },
+            fs = native.functional.map { it.toJEntry() },
         )
         // 1. `_j` projection (QR / Nearby / legacy screens)
         file.writeText(profileAdapter.toJson(projected))

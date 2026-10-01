@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_functional_edit.xml — JEMMA Pass · IPS-Säule „Selbstständigkeit und Behinderungen“ (DE) -->
+<resources>
+
+    <string name="functional_edit_title">Selbstständigkeit und Behinderungen</string>
+    <string name="functional_edit_hero_title">Selbstständigkeit und Behinderungen</string>
+    <string name="functional_fab_add_desc">Einschränkung oder Hilfsmittel hinzufügen</string>
+    <string name="functional_empty_default">Keine funktionelle Einschränkung erfasst.\nTippe auf +, um eine Behinderung, eine Einschränkung oder ein Hilfsmittel hinzuzufügen, auf das du angewiesen bist.</string>
+    <plurals name="functional_count">
+        <item quantity="zero">Keine Einschränkung</item>
+        <item quantity="one">%d Einschränkung</item>
+        <item quantity="other">%d Einschränkungen</item>
+    </plurals>
+    <string name="functional_saved">Funktionsstatus gespeichert</string>
+    <string name="functional_save_failed">Funktionsstatus konnte nicht gespeichert werden</string>
+    <string name="functional_delete_title">Diesen Eintrag löschen?</string>
+    <string name="functional_form_title_create">♿  Einschränkung hinzufügen</string>
+    <string name="functional_form_title_edit">♿  Einschränkung bearbeiten</string>
+    <string name="functional_form_code_picker_title">Einschränkung oder Behinderung wählen</string>
+    <string name="functional_status_active">♿ Vorhanden</string>
+    <string name="functional_status_inactive">💤 Inaktiv</string>
+    <string name="functional_status_resolved">✅ Behoben</string>
+    <string name="profile_detail_functional_title">♿ FUNKTIONSSTATUS (%1$d)</string>
+</resources>

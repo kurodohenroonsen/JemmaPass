@@ -24,6 +24,7 @@ object JemmaTranslations {
             "results_title" to "RESULTS",
             "past_problems_title" to "PAST ILLNESSES",
             "pregnancy_title" to "PREGNANCY HISTORY",
+            "functional_title" to "FUNCTIONAL STATUS",
             "contacts_title" to "CONTACTS",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
             "empty" to "(none)"
@@ -47,6 +48,7 @@ object JemmaTranslations {
             "results_title" to "RÉSULTATS",
             "past_problems_title" to "ANTÉCÉDENTS MÉDICAUX",
             "pregnancy_title" to "GROSSESSES",
+            "functional_title" to "AUTONOMIE",
             "contacts_title" to "CONTACTS",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
             "empty" to "(aucun)"
@@ -70,6 +72,7 @@ object JemmaTranslations {
             "results_title" to "検査結果",
             "past_problems_title" to "既往歴",
             "pregnancy_title" to "妊娠歴",
+            "functional_title" to "生活機能",
             "contacts_title" to "緊急連絡先",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
             "empty" to "(なし)"
@@ -93,6 +96,7 @@ object JemmaTranslations {
             "results_title" to "RESULTADOS",
             "past_problems_title" to "ANTECEDENTES PATOLÓGICOS",
             "pregnancy_title" to "HISTORIA OBSTÉTRICA",
+            "functional_title" to "ESTADO FUNCIONAL",
             "contacts_title" to "CONTACTOS",
             "footer" to "✅ JEMMA en el dispositivo · `_j 1.2`",
             "empty" to "(ninguno)"
@@ -116,6 +120,7 @@ object JemmaTranslations {
             "results_title" to "BEFUNDE",
             "past_problems_title" to "FRÜHERE ERKRANKUNGEN",
             "pregnancy_title" to "SCHWANGERSCHAFTEN",
+            "functional_title" to "FUNKTIONSSTATUS",
             "contacts_title" to "KONTAKTE",
             "footer" to "✅ JEMMA auf dem Gerät · `_j 1.2`",
             "empty" to "(keine)"
@@ -139,6 +144,7 @@ object JemmaTranslations {
             "results_title" to "RISULTATI",
             "past_problems_title" to "ANAMNESI PATOLOGICA REMOTA",
             "pregnancy_title" to "STORIA OSTETRICA",
+            "functional_title" to "STATO FUNZIONALE",
             "contacts_title" to "CONTATTI",
             "footer" to "✅ JEMMA sul dispositivo · `_j 1.2`",
             "empty" to "(nessuno)"
@@ -162,6 +168,7 @@ object JemmaTranslations {
             "results_title" to "RESULTADOS",
             "past_problems_title" to "DOENÇAS ANTERIORES",
             "pregnancy_title" to "HISTÓRICO OBSTÉTRICO",
+            "functional_title" to "ESTADO FUNCIONAL",
             "contacts_title" to "CONTATOS",
             "footer" to "✅ JEMMA no dispositivo · `_j 1.2`",
             "empty" to "(nenhum)"
@@ -185,6 +192,7 @@ object JemmaTranslations {
             "results_title" to "RESULTATEN",
             "past_problems_title" to "DOORGEMAAKTE ZIEKTEN",
             "pregnancy_title" to "ZWANGERSCHAPPEN",
+            "functional_title" to "FUNCTIONELE STATUS",
             "contacts_title" to "CONTACTEN",
             "footer" to "✅ JEMMA op apparaat · `_j 1.2`",
             "empty" to "(geen)"
@@ -208,6 +216,7 @@ object JemmaTranslations {
             "results_title" to "检查结果",
             "past_problems_title" to "既往病史",
             "pregnancy_title" to "妊娠史",
+            "functional_title" to "功能状态",
             "contacts_title" to "紧急联系人",
             "footer" to "✅ JEMMA 本地安全防护 · `_j 1.2`",
             "empty" to "(无)"
@@ -231,6 +240,7 @@ object JemmaTranslations {
             "results_title" to "검사 결과",
             "past_problems_title" to "과거 병력",
             "pregnancy_title" to "임신력",
+            "functional_title" to "기능 상태",
             "contacts_title" to "비상 연락처",
             "footer" to "✅ JEMMA 기기 자체 저장 · `_j 1.2`",
             "empty" to "(없음)"
@@ -254,6 +264,7 @@ object JemmaTranslations {
             "results_title" to "نتائج الفحوص",
             "past_problems_title" to "الأمراض السابقة",
             "pregnancy_title" to "تاريخ الحمل",
+            "functional_title" to "الحالة الوظيفية",
             "contacts_title" to "جهات الطوارئ",
             "footer" to "✅ جيما على الجهاز · `_j 1.2`",
             "empty" to "(لا يوجد)"
@@ -277,6 +288,7 @@ object JemmaTranslations {
             "results_title" to "РЕЗУЛЬТАТЫ АНАЛИЗОВ",
             "past_problems_title" to "ПЕРЕНЕСЁННЫЕ ЗАБОЛЕВАНИЯ",
             "pregnancy_title" to "БЕРЕМЕННОСТИ",
+            "functional_title" to "ФУНКЦИОНАЛЬНЫЙ СТАТУС",
             "contacts_title" to "КОНТАКТЫ",
             "footer" to "✅ JEMMA на устройстве · `_j 1.2`",
             "empty" to "(нет)"
@@ -300,6 +312,7 @@ object JemmaTranslations {
             "results_title" to "जाँच परिणाम",
             "past_problems_title" to "पिछली बीमारियाँ",
             "pregnancy_title" to "गर्भावस्था इतिहास",
+            "functional_title" to "कार्यात्मक स्थिति",
             "contacts_title" to "संपर्क",
             "footer" to "✅ जेम्मा डिवाइस पर · `_j 1.2`",
             "empty" to "(कोई नहीं)"
@@ -323,6 +336,7 @@ object JemmaTranslations {
             "results_title" to "পরীক্ষার ফলাফল",
             "past_problems_title" to "পূর্ববর্তী রোগসমূহ",
             "pregnancy_title" to "গর্ভাবস্থার ইতিহাস",
+            "functional_title" to "কার্যক্ষম অবস্থা",
             "contacts_title" to "জরুরী যোগাযোগ",
             "footer" to "✅ জেম্মা অন-ডিভাইস · `_j 1.2`",
             "empty" to "(নেই)"
@@ -346,6 +360,7 @@ object JemmaTranslations {
             "results_title" to "TETKİK SONUÇLARI",
             "past_problems_title" to "GEÇİRİLMİŞ HASTALIKLAR",
             "pregnancy_title" to "GEBELİK ÖYKÜSÜ",
+            "functional_title" to "FONKSİYONEL DURUM",
             "contacts_title" to "İLETİŞİM",
             "footer" to "✅ Cihaz üzerinde JEMMA · `_j 1.2`",
             "empty" to "(yok)"
@@ -369,6 +384,7 @@ object JemmaTranslations {
             "results_title" to "WYNIKI BADAŃ",
             "past_problems_title" to "PRZEBYTE CHOROBY",
             "pregnancy_title" to "CIĄŻE",
+            "functional_title" to "STAN FUNKCJONALNY",
             "contacts_title" to "KONTAKTY",
             "footer" to "✅ JEMMA na urządzeniu · `_j 1.2`",
             "empty" to "(brak)"
@@ -392,6 +408,7 @@ object JemmaTranslations {
             "results_title" to "РЕЗУЛЬТАТИ АНАЛІЗІВ",
             "past_problems_title" to "ПЕРЕНЕСЕНІ ЗАХВОРЮВАННЯ",
             "pregnancy_title" to "ВАГІТНОСТІ",
+            "functional_title" to "ФУНКЦІОНАЛЬНИЙ СТАТУС",
             "contacts_title" to "КОНТАКТИ",
             "footer" to "✅ JEMMA на пристрої · `_j 1.2`",
             "empty" to "(немає)"
@@ -415,6 +432,7 @@ object JemmaTranslations {
             "results_title" to "KẾT QUẢ XÉT NGHIỆM",
             "past_problems_title" to "TIỀN SỬ BỆNH",
             "pregnancy_title" to "TIỀN SỬ THAI SẢN",
+            "functional_title" to "TÌNH TRẠNG CHỨC NĂNG",
             "contacts_title" to "LIÊN HỆ KHẨN CẤP",
             "footer" to "✅ JEMMA trên thiết bị · `_j 1.2`",
             "empty" to "(không)"
@@ -438,6 +456,7 @@ object JemmaTranslations {
             "results_title" to "ผลการตรวจ",
             "past_problems_title" to "โรคในอดีต",
             "pregnancy_title" to "ประวัติการตั้งครรภ์",
+            "functional_title" to "สถานะการทำงาน",
             "contacts_title" to "ผู้ติดต่อฉุกเฉิน",
             "footer" to "✅ บันทึก JEMMA บนอุปกรณ์ · `_j 1.2`",
             "empty" to "(ไม่มี)"
@@ -461,6 +480,7 @@ object JemmaTranslations {
             "results_title" to "HASIL PEMERIKSAAN",
             "past_problems_title" to "RIWAYAT PENYAKIT",
             "pregnancy_title" to "RIWAYAT KEHAMILAN",
+            "functional_title" to "STATUS FUNGSIONAL",
             "contacts_title" to "KONTAK DARURAT",
             "footer" to "✅ JEMMA di dalam perangkat · `_j 1.2`",
             "empty" to "(tidak ada)"
@@ -484,6 +504,7 @@ object JemmaTranslations {
             "results_title" to "PROVSVAR",
             "past_problems_title" to "TIDIGARE SJUKDOMAR",
             "pregnancy_title" to "GRAVIDITETER",
+            "functional_title" to "FUNKTIONSSTATUS",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheten · `_j 1.2`",
             "empty" to "(inga)"
@@ -507,6 +528,7 @@ object JemmaTranslations {
             "results_title" to "PRØVESVAR",
             "past_problems_title" to "TIDLIGERE SYKDOMMER",
             "pregnancy_title" to "SVANGERSKAP",
+            "functional_title" to "FUNKSJONSSTATUS",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheten · `_j 1.2`",
             "empty" to "(ingen)"
@@ -530,6 +552,7 @@ object JemmaTranslations {
             "results_title" to "PRØVESVAR",
             "past_problems_title" to "TIDLIGERE SYGDOMME",
             "pregnancy_title" to "GRAVIDITETER",
+            "functional_title" to "FUNKTIONSSTATUS",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheden · `_j 1.2`",
             "empty" to "(ingen)"
@@ -553,6 +576,7 @@ object JemmaTranslations {
             "results_title" to "TUTKIMUSTULOKSET",
             "past_problems_title" to "AIEMMAT SAIRAUDET",
             "pregnancy_title" to "RASKAUDET",
+            "functional_title" to "TOIMINTAKYKY",
             "contacts_title" to "YHTEYSTIEDOT",
             "footer" to "✅ JEMMA laitteessa · `_j 1.2`",
             "empty" to "(ei mitään)"
@@ -576,6 +600,7 @@ object JemmaTranslations {
             "results_title" to "REZULTATE",
             "past_problems_title" to "BOLI ANTERIOARE",
             "pregnancy_title" to "SARCINI",
+            "functional_title" to "STARE FUNCȚIONALĂ",
             "contacts_title" to "CONTACTE DE URGENȚĂ",
             "footer" to "✅ JEMMA pe dispozitiv · `_j 1.2`",
             "empty" to "(niciuna)"

@@ -606,6 +606,24 @@ obstétrical (9 compteurs optionnels) + date du bilan. Libellés localisés (cat
    (`validator/<persona>-pregnant.txt`, `validator/<persona>.txt`).
 8. Ligne `renderPillars · END` : `active=10/10 · stub=8/8`, sous-titre « 10 piliers actifs, 8 à venir ».
 
+### T22 — Autonomie et handicaps (♿ pilier natif, sprint 7)
+
+Seed : Haru = 2 entrées (« Hearing loss » SNOMED 15188001 depuis 2019, et un texte libre
+« Walks with a cane outdoors » depuis 2021) ; Kurodo et Kamekichi = 0. L'écran réutilise celui
+de 📜/🩺 : pas de nouveau tag logcat, ce sont les tags `JEMMA-PASTPROBLEMS-*` qui tracent ce pilier.
+
+1. **Seed** : `run_device_qa.sh` vert avec ♿ K0 H2 Ka0 (et tous les autres compteurs inchangés).
+2. **Fiche + tuile** (Haru) : section « ♿ AUTONOMIE (2) » ; tuile ♿ active → écran « Autonomie et
+   handicaps » (même écran que 📜/🩺, sans bloc de fin, statuts Présente / Inactive / Résolue).
+3. **Création texte libre** (Kurodo) : `Fauteuil roulant exterieur`, statut Présente, année 2020 ;
+   Save. Bundle : `Condition` `Condition-uv-ips`, `clinicalStatus` = `active`, `code.text` sans
+   `coding`, référencée par la section `47420-5` et PAS par `11450-4`.
+   `verify … --expect-fs demo_kurodo=1 --expect-cn demo_kurodo=1` PASS.
+4. **Édition** : statut → Inactive (`_j.fs[].st` = `inactive`, P6f PASS), puis **suppression** →
+   retour à 0 (`--expect-fs demo_kurodo=0`, plus de section `47420-5`).
+5. **QR texte** Haru FR : section `♿` (fichier `qr/qr-haru-fr.txt` via `decode_qr.py`).
+6. **Validateur HL7** : `qa/device/validate_all.sh $OUT` → 0 erreur.
+
 ## 3 bis. Outils (ne plus improviser — un appel, un résultat)
 
 | Besoin | Commande | Sortie |
@@ -630,7 +648,7 @@ jamais un log à la main.
 
 ## 5. Rapport et publication
 
-Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T21,
+Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T22,
 statut ✅ / ❌ / ⚠️ / ⏭, preuve = nom de capture ou fichier, déviations, bugs avec
 étapes de reproduction). Puis :
 

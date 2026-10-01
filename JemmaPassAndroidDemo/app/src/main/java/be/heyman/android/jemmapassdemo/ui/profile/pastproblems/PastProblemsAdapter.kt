@@ -36,6 +36,7 @@ class PastProblemsAdapter(
     private val scope: LifecycleCoroutineScope,
     private val onTap: (IpsPastProblem, Int) -> Unit,
     private val onLongPress: (IpsPastProblem, Int) -> Unit,
+    private val kind: String = PastProblemFormBottomSheet.KIND_PAST,
 ) : ListAdapter<IpsPastProblem, PastProblemsAdapter.VH>(DIFF) {
 
     companion object {
@@ -71,7 +72,7 @@ class PastProblemsAdapter(
         b.pastProblemRowIcon.text = when (pp.clinicalStatus) {
             IpsPastProblemStatus.REMISSION -> "🌗"
             IpsPastProblemStatus.INACTIVE -> "💤"
-            "active" -> "🩺"
+            "active" -> if (kind == PastProblemFormBottomSheet.KIND_FUNCTIONAL) "♿" else "🩺"
             "recurrence" -> "🔁"
             "relapse" -> "⚠️"
             else -> "📜"
@@ -95,7 +96,7 @@ class PastProblemsAdapter(
 
         val parts = mutableListOf<String>()
         parts.add(period(pp.onset, pp.abatement) ?: ctx.getString(R.string.past_problems_date_unknown))
-        parts.add(ctx.getString(PastProblemFormBottomSheet.statusLabelRes(pp.clinicalStatus)))
+        parts.add(ctx.getString(PastProblemFormBottomSheet.statusLabelRes(pp.clinicalStatus, kind)))
         b.pastProblemRowSubtitle.text = parts.joinToString(" · ")
 
         val details = listOfNotNull(

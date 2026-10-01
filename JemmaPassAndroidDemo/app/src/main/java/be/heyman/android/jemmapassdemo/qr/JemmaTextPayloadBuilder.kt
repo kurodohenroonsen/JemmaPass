@@ -221,6 +221,20 @@ object JemmaTextPayloadBuilder {
             formatter = { pg -> be.heyman.android.jemmapassdemo.pillars.IpsPregnancyCatalog.format(pg, lang.isoCode) },
         )
 
+        // ─── Functional status (FHIR-native pillar, `_j.fs` projection) ──
+        appendSection(
+            sb = sb,
+            icon = "♿",
+            title = JemmaTranslations.getLabel(lang, "functional_title"),
+            items = hydrated.raw.fs,
+            empty = JemmaTranslations.getLabel(lang, "empty"),
+            formatter = { fs ->
+                val label = fs.c?.let { hydrated.pastProblemLabels[it] } ?: fs.displayLabel?.takeIf { it.isNotBlank() } ?: fs.c.orEmpty()
+                label + (fs.date?.takeIf { it.isNotBlank() }?.let { " — $it" } ?: "") +
+                    (fs.status?.takeIf { it.isNotBlank() && it != "active" }?.let { " ($it)" } ?: "")
+            },
+        )
+
         sb.append(JemmaTranslations.getLabel(lang, "footer")).append("\r\n")
 
         // Cap byte-size en UTF-8.

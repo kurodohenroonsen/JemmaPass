@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_functional_edit.xml — JEMMA Pass · IPS-pijler „Zelfredzaamheid en beperkingen“ (NL) -->
+<resources>
+
+    <string name="functional_edit_title">Zelfredzaamheid en beperkingen</string>
+    <string name="functional_edit_hero_title">Zelfredzaamheid en beperkingen</string>
+    <string name="functional_fab_add_desc">Beperking of hulpmiddel toevoegen</string>
+    <string name="functional_empty_default">Geen functionele beperking geregistreerd.\nTik op + om een handicap, een beperking of een hulpmiddel waarop je aangewezen bent toe te voegen.</string>
+    <plurals name="functional_count">
+        <item quantity="zero">Geen beperking</item>
+        <item quantity="one">%d beperking</item>
+        <item quantity="other">%d beperkingen</item>
+    </plurals>
+    <string name="functional_saved">Functionele status opgeslagen</string>
+    <string name="functional_save_failed">Kon de functionele status niet opslaan</string>
+    <string name="functional_delete_title">Dit item verwijderen?</string>
+    <string name="functional_form_title_create">♿  Beperking toevoegen</string>
+    <string name="functional_form_title_edit">♿  Beperking bewerken</string>
+    <string name="functional_form_code_picker_title">Kies een beperking of handicap</string>
+    <string name="functional_status_active">♿ Aanwezig</string>
+    <string name="functional_status_inactive">💤 Inactief</string>
+    <string name="functional_status_resolved">✅ Opgelost</string>
+    <string name="profile_detail_functional_title">♿ FUNCTIONELE STATUS (%1$d)</string>
+</resources>

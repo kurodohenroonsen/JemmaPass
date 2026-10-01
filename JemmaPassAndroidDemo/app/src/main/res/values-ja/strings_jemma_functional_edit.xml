@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_functional_edit.xml — JEMMA Pass · IPS「生活機能・障害」(JA) -->
+<resources>
+
+    <string name="functional_edit_title">生活機能・障害</string>
+    <string name="functional_edit_hero_title">生活機能・障害</string>
+    <string name="functional_fab_add_desc">機能制限または補助具を追加</string>
+    <string name="functional_empty_default">機能制限の記録はありません。\n＋をタップして、障害・機能制限・使用している補助具を追加してください。</string>
+    <plurals name="functional_count">
+        <item quantity="zero">機能制限なし</item>
+        <item quantity="one">%d 件の機能制限</item>
+        <item quantity="other">%d 件の機能制限</item>
+    </plurals>
+    <string name="functional_saved">生活機能を保存しました</string>
+    <string name="functional_save_failed">生活機能を保存できませんでした</string>
+    <string name="functional_delete_title">この項目を削除しますか？</string>
+    <string name="functional_form_title_create">♿  機能制限を追加</string>
+    <string name="functional_form_title_edit">♿  機能制限を編集</string>
+    <string name="functional_form_code_picker_title">機能制限または障害を選択</string>
+    <string name="functional_status_active">♿ あり</string>
+    <string name="functional_status_inactive">💤 非活動性</string>
+    <string name="functional_status_resolved">✅ 解消</string>
+    <string name="profile_detail_functional_title">♿ 生活機能 (%1$d)</string>
+</resources>

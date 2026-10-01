@@ -315,6 +315,7 @@
 
             <!-- ─── Severity ────────────────────────────────── -->
             <TextView
+                android:id="@+id/past_problem_form_severity_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"

@@ -13,6 +13,7 @@ import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
 import be.heyman.android.jemmapassdemo.ips.IpsConditionSeverity
 import be.heyman.android.jemmapassdemo.ips.IpsPastProblem
 import be.heyman.android.jemmapassdemo.ips.IpsProblem
+import be.heyman.android.jemmapassdemo.ips.IpsFunctional
 import be.heyman.android.jemmapassdemo.ips.IpsPregnancyObs
 import be.heyman.android.jemmapassdemo.ips.IpsProcedure
 import be.heyman.android.jemmapassdemo.ips.IpsResult
@@ -174,6 +175,12 @@ object JemmaPersonasSeeder {
                     category = IpsResultCategory.IMAGING, valueText = "Mild cardiomegaly, no pleural effusion",
                     performer = "Radiology, Matsuyama Red Cross Hospital",
                 ),
+            ),
+            // ♿ functional status (sprint 7)
+            functional = listOf(
+                IpsFunctional(id = "fs-haru-hearing-loss", code = "15188001", system = IpsCodeSystems.SNOMED,
+                    display = "Hearing loss", onset = "2019", note = "Bilateral hearing aids"),
+                IpsFunctional(id = "fs-haru-cane", text = "Walks with a cane outdoors", onset = "2021"),
             ),
             // 🤰 obstetric summary (sprint 6): two term live births (one by cesarean, 1975).
             pregnancy = listOf(

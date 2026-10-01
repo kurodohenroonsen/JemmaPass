@@ -72,13 +72,27 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
         const val ARG_KIND = "kind"
         const val KIND_PAST = "past"
         const val KIND_CURRENT = "current"
+        const val KIND_FUNCTIONAL = "functional"
+        const val RESULT_KEY_FUNCTIONAL = "functional_form_result"
 
-        fun resultKey(kind: String): String = if (kind == KIND_CURRENT) RESULT_KEY_CURRENT else RESULT_KEY
+        fun resultKey(kind: String): String = when (kind) {
+            KIND_CURRENT -> RESULT_KEY_CURRENT
+            KIND_FUNCTIONAL -> RESULT_KEY_FUNCTIONAL
+            else -> RESULT_KEY
+        }
 
-        fun statusCodes(kind: String): List<String> = if (kind == KIND_CURRENT) IpsProblemStatus.ALL else IpsPastProblemStatus.ALL
+        fun statusCodes(kind: String): List<String> = when (kind) {
+            KIND_CURRENT -> IpsProblemStatus.ALL
+            KIND_FUNCTIONAL -> be.heyman.android.jemmapassdemo.ips.IpsFunctionalStatus.ALL
+            else -> IpsPastProblemStatus.ALL
+        }
 
         fun normalizeStatus(kind: String, raw: String?): String =
-            if (kind == KIND_CURRENT) IpsProblemStatus.normalize(raw) else IpsPastProblemStatus.normalize(raw)
+            when (kind) {
+                KIND_CURRENT -> IpsProblemStatus.normalize(raw)
+                KIND_FUNCTIONAL -> be.heyman.android.jemmapassdemo.ips.IpsFunctionalStatus.normalize(raw)
+                else -> IpsPastProblemStatus.normalize(raw)
+            }
         const val ARG_MODE = "mode"
         const val ARG_ID = "id"
         const val ARG_LANG = "lang"
@@ -114,8 +128,8 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
                 )
             }
 
-        fun statusLabelRes(code: String): Int = when (code) {
-            IpsProblemStatus.ACTIVE -> R.string.problem_status_active
+        fun statusLabelRes(code: String, kind: String = KIND_PAST): Int = when (code) {
+            IpsProblemStatus.ACTIVE -> if (kind == KIND_FUNCTIONAL) R.string.functional_status_active else R.string.problem_status_active
             IpsProblemStatus.RECURRENCE -> R.string.problem_status_recurrence
             IpsProblemStatus.RELAPSE -> R.string.problem_status_relapse
             IpsPastProblemStatus.INACTIVE -> R.string.past_problem_status_inactive
@@ -139,7 +153,9 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
     private val mode: PastProblemFormMode by lazy { PastProblemFormMode.valueOf(arguments?.getString(ARG_MODE) ?: PastProblemFormMode.CREATE.name) }
     private val lang: String by lazy { arguments?.getString(ARG_LANG) ?: "en" }
     private val kind: String by lazy { arguments?.getString(ARG_KIND) ?: KIND_PAST }
-    private val isCurrent: Boolean get() = kind == KIND_CURRENT
+    /** No end date for the current problem list and for the functional status. */
+    private val isCurrent: Boolean get() = kind == KIND_CURRENT || kind == KIND_FUNCTIONAL
+    private val isFunctional: Boolean get() = kind == KIND_FUNCTIONAL
 
     private var pickedCode: String? = null
     private var pickedCodeSystem: String? = null
@@ -170,6 +186,8 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.pastProblemFormTitle.setText(
             when {
+                isFunctional && mode == PastProblemFormMode.CREATE -> R.string.functional_form_title_create
+                isFunctional -> R.string.functional_form_title_edit
                 isCurrent && mode == PastProblemFormMode.CREATE -> R.string.problem_form_title_create
                 isCurrent -> R.string.problem_form_title_edit
                 mode == PastProblemFormMode.CREATE -> R.string.past_problem_form_title_create
@@ -180,6 +198,11 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
             // A current problem has no end: hide the whole abatement block.
             binding.pastProblemFormAbatementHeader.visibility = View.GONE
             binding.pastProblemFormAbatementRow.visibility = View.GONE
+        }
+        if (isFunctional) {
+            // IpsFunctional carries no severity.
+            binding.pastProblemFormSeverityHeader.visibility = View.GONE
+            binding.pastProblemFormSeverityRow.visibility = View.GONE
         }
 
         pickedCode = arguments?.getString(ARG_CODE)?.takeIf { it.isNotBlank() }
@@ -257,7 +280,11 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 📋 open past-illness picker · lang=$lang")
         KbConditionPicker
             .newInstance(
-                title = getString(if (isCurrent) R.string.problem_form_code_picker_title else R.string.past_problem_form_code_picker_title),
+                title = getString(when {
+                    isFunctional -> R.string.functional_form_code_picker_title
+                    isCurrent -> R.string.problem_form_code_picker_title
+                    else -> R.string.past_problem_form_code_picker_title
+                }),
                 lang = lang,
             )
             .setOnPicked { picked ->
@@ -363,7 +390,7 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
 
     // ─── Status / severity ───────────────────────────────────────────
 
-    private fun renderStatusLabel() { binding.pastProblemFormStatusLabel.setText(statusLabelRes(pickedStatus)) }
+    private fun renderStatusLabel() { binding.pastProblemFormStatusLabel.setText(statusLabelRes(pickedStatus, kind)) }
 
     private fun renderSeverityLabel() { binding.pastProblemFormSeverityLabel.setText(severityLabelRes(pickedSeverity)) }
 
@@ -371,7 +398,7 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
         val codes = statusCodes(kind)
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.past_problem_form_status_pick_title)
-            .setItems(codes.map { getString(statusLabelRes(it)) }.toTypedArray()) { _, which ->
+            .setItems(codes.map { getString(statusLabelRes(it, kind)) }.toTypedArray()) { _, which ->
                 pickedStatus = codes[which]
                 renderStatusLabel()
                 Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ status picked: $pickedStatus")
@@ -430,7 +457,7 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
                 ARG_ONSET to onset,
                 ARG_ABATEMENT to abatement,
                 ARG_STATUS to pickedStatus,
-                ARG_SEVERITY to pickedSeverity,
+                ARG_SEVERITY to (if (isFunctional) null else pickedSeverity),
                 ARG_NOTE to binding.pastProblemFormNote.text?.toString()?.trim()?.ifBlank { null },
             ),
         )

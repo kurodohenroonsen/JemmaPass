@@ -302,6 +302,7 @@ class ProfileDetailFragment : Fragment() {
         renderResults(h)
         renderPastProblems(h)
         renderPregnancy(h)
+        renderFunctional(h)
 
         // ── Alerts section ──
         renderAlerts(h)
@@ -581,6 +582,36 @@ class ProfileDetailFragment : Fragment() {
             val tv = makeListItemTextView()
             tv.text = "•  $label — $date$status"
             listView.addView(tv)
+        }
+    }
+
+    /** ♿ FHIR-native pillar — rendered from the `_j.fs` projection (Bundle = source of truth). */
+    private fun renderFunctional(h: HydratedProfile) {
+        val entries = h.raw.fs
+        if (entries.isEmpty()) {
+            binding.profileDetailFunctionalSection.isVisible = false
+            return
+        }
+        binding.profileDetailFunctionalSection.isVisible = true
+        binding.profileDetailFunctionalTitle.text = getString(R.string.profile_detail_functional_title, entries.size)
+        val lang = java.util.Locale.getDefault().language.lowercase().take(2)
+        val listView = binding.profileDetailFunctionalList
+        listView.removeAllViews()
+        for (fs in entries) {
+            val tv = makeListItemTextView()
+            val since = fs.date?.takeIf { it.isNotBlank() }?.let { " — $it" } ?: ""
+            val base = fs.displayLabel?.takeIf { it.isNotBlank() } ?: fs.c.orEmpty()
+            tv.text = "•  $base$since"
+            listView.addView(tv)
+            val code = fs.c
+            if (!code.isNullOrBlank() && lang != "en") {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val localized = try {
+                        kb.getLocalizedDisplay(code, fs.codeSystem ?: "http://snomed.info/sct", lang)
+                    } catch (e: Throwable) { null }
+                    if (!localized.isNullOrBlank()) tv.text = "•  $localized$since"
+                }
+            }
         }
     }
 
@@ -1362,6 +1393,8 @@ class ProfileDetailFragment : Fragment() {
                         "conditions" -> R.id.action_detail_to_problems to true
                         // 🤰 FHIR-native pregnancy history (sprint 6)
                         "pregnancy" -> R.id.action_detail_to_pregnancy to true
+                        // ♿ FHIR-native functional status (sprint 7)
+                        "functional" -> R.id.action_detail_to_functional to true
                         else -> R.id.action_detail_to_pillar_stub to false
                     }
                     val args = if (includeProfileId) {

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_functional_edit.xml — JEMMA Pass · IPS pillar "Functional Status" (EN, default) -->
+<resources>
+
+    <string name="functional_edit_title">Functional status</string>
+    <string name="functional_edit_hero_title">Functional status</string>
+    <string name="functional_fab_add_desc">Add a limitation or aid</string>
+    <string name="functional_empty_default">No functional limitation recorded.\nTap + to add a disability, a limitation or an aid you rely on.</string>
+    <plurals name="functional_count">
+        <item quantity="zero">No limitation</item>
+        <item quantity="one">%d limitation</item>
+        <item quantity="other">%d limitations</item>
+    </plurals>
+    <string name="functional_saved">Functional status saved</string>
+    <string name="functional_save_failed">Could not save the functional status</string>
+    <string name="functional_delete_title">Delete this entry?</string>
+    <string name="functional_form_title_create">♿  Add a limitation</string>
+    <string name="functional_form_title_edit">♿  Edit limitation</string>
+    <string name="functional_form_code_picker_title">Choose a limitation or disability</string>
+    <string name="functional_status_active">♿ Present</string>
+    <string name="functional_status_inactive">💤 Inactive</string>
+    <string name="functional_status_resolved">✅ Resolved</string>
+    <string name="profile_detail_functional_title">♿ FUNCTIONAL STATUS (%1$d)</string>
+</resources>
