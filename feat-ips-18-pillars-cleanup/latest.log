@@ -12,8 +12,8 @@ Daemon will be stopped at the end of the build
 > Task :app:processDebugNavigationResources
 > Task :app:mergeDebugResources
 > Task :app:generateDebugBuildConfig
-> Task :app:checkDebugAarMetadata
 > Task :app:compileDebugNavigationResources
+> Task :app:checkDebugAarMetadata
 > Task :app:mapDebugSourceSetPaths
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
@@ -25,10 +25,10 @@ Daemon will be stopped at the end of the build
 
 > Task :app:dataBindingGenBaseClassesDebug
 > Task :app:processDebugManifest
-> Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:javaPreCompileDebugUnitTest
 > Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
@@ -38,16 +38,16 @@ Daemon will be stopped at the end of the build
 > Task :app:desugarDebugFileDependencies
 > Task :app:mergeDebugJniLibFolders
 > Task :app:checkDebugDuplicateClasses
-> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugNativeLibs
-> Task :app:processDebugResources
-> Task :app:validateSigningDebug
-> Task :app:writeDebugAppMetadata
-> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeLibDexDebug
 
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libLiteRt.so, libLiteRtClGlAccelerator.so, libandroidx.graphics.path.so, libbarhopper_v3.so, libimage_processing_util_jni.so, liblitertlm_jni.so, libsqlite3x.so, libsurface_util_jni.so, libtensorflowlite_jni_gms_client.so. Run with --info option to learn more.
 
+> Task :app:processDebugResources
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
 > Task :app:mergeExtDexDebug
 > Task :app:kspDebugKotlin
 > Task :app:compileDebugKotlin
@@ -764,9 +764,9 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 > Task :app:processDebugUnitTestJavaRes
 > Task :app:transformDebugUnitTestClassesWithAsm
 > Task :app:testDebugUnitTest
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790870095794.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790874305501.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
 
-BUILD SUCCESSFUL in 2m 55s
+BUILD SUCCESSFUL in 2m 54s
 55 actionable tasks: 55 executed
