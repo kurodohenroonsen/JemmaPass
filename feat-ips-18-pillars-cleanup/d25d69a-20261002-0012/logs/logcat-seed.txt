@@ -1,0 +1,26 @@
+--------- beginning of main
+10-02 00:16:37.799 27987 28036 D JEMMA-PROFILES: [t=1790892997799] 🔍 loadProfile(demo_kurodo) → not found
+10-02 00:16:37.872 27987 27987 D JEMMA-PROFILES: [t=1790892997872] 📋 onCreateView (v2.2.16.10)
+10-02 00:16:37.909 27987 27987 D JEMMA-PROFILES: [t=1790892997909] 📋 onViewCreated
+10-02 00:16:37.912 27987 27987 D JEMMA-PROFILES: [t=1790892997912] 📋 renderList · 0 profiles · current=demo_kurodo
+10-02 00:16:37.912 27987 27987 D JEMMA-PROFILES: [t=1790892997912] [Adapter] 📦 submit · 0 profiles · currentId=demo_kurodo
+10-02 00:16:38.331 27987 28036 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 83ms : 18 entries
+10-02 00:16:38.331 27987 28036 I JEMMA-PROFILES: [t=1790892998331] 🏥 IPS FHIR profile saved for demo_kurodo (38513 bytes · 4 immunizations · 2 procedures · 0 devices · 4 results · 2 past problems · 1 problems · 0 pregnancy obs)
+10-02 00:16:38.332 27987 28036 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_kurodo
+10-02 00:16:39.333 27987 28036 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 22ms : 19 entries
+10-02 00:16:39.333 27987 28036 I JEMMA-PROFILES: [t=1790892999333] 🏥 IPS FHIR profile saved for demo_kamekichi (28040 bytes · 0 immunizations · 0 procedures · 0 devices · 1 results · 0 past problems · 3 problems · 0 pregnancy obs)
+10-02 00:16:39.333 27987 28036 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_kamekichi
+10-02 00:16:39.586 27987 28078 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 56ms : 30 entries
+10-02 00:16:39.587 27987 28078 I JEMMA-PROFILES: [t=1790892999587] 🏥 IPS FHIR profile saved for demo_haru (51431 bytes · 3 immunizations · 2 procedures · 2 devices · 5 results · 2 past problems · 2 problems · 3 pregnancy obs)
+10-02 00:16:39.587 27987 28078 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_haru
+10-02 00:16:39.602 27987 28078 I JEMMA-PROFILES: [t=1790892999602] 📋 rescanFromDisk · 4 profiles · current=demo_kurodo in 15ms
+10-02 00:16:39.603 27987 27987 D JEMMA-PROFILES: [t=1790892999603] 📋 renderList · 4 profiles · current=demo_kurodo
+10-02 00:16:39.603 27987 27987 D JEMMA-PROFILES: [t=1790892999603] [Adapter] 📦 submit · 4 profiles · currentId=demo_kurodo
+10-02 00:16:39.617 27987 27987 D JEMMA-PROFILES: [t=1790892999617] [Adapter] 🏗 onCreateViewHolder
+10-02 00:16:39.618 27987 27987 D JEMMA-PROFILES: [t=1790892999618] [Adapter] 🔗 bind pos=0 · id=demo_haru · name=Haru Tanaka · isCurrent=false
+10-02 00:16:39.624 27987 27987 D JEMMA-PROFILES: [t=1790892999624] [Adapter] 🏗 onCreateViewHolder
+10-02 00:16:39.624 27987 27987 D JEMMA-PROFILES: [t=1790892999624] [Adapter] 🔗 bind pos=1 · id=demo_kamekichi · name=Kamekichi · isCurrent=false
+10-02 00:16:39.627 27987 27987 D JEMMA-PROFILES: [t=1790892999627] [Adapter] 🏗 onCreateViewHolder
+10-02 00:16:39.627 27987 27987 D JEMMA-PROFILES: [t=1790892999627] [Adapter] 🔗 bind pos=2 · id=demo_kurodo · name=Kurodo Henro · isCurrent=true
+10-02 00:16:39.629 27987 27987 D JEMMA-PROFILES: [t=1790892999629] [Adapter] 🏗 onCreateViewHolder
+--------- scrub_logcat: 1 line(s) removed (non-JemmaPass tags or non-demo profile data)

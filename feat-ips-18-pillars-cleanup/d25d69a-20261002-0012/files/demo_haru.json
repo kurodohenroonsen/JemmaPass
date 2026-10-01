@@ -1,0 +1,217 @@
+{
+  "_j": "1.2",
+  "p": {
+    "gn": "Haru",
+    "fn": "Tanaka",
+    "gs": "F",
+    "bd": "1946-02-08",
+    "nat": "JP",
+    "bt": "O+",
+    "adr": "Aomori, Japan",
+    "idn": "JP-12345678",
+    "ids": [],
+    "adrs": [],
+    "tels": [],
+    "lang": "ja-JP",
+    "ct": []
+  },
+  "al": [
+    {
+      "c": "782594005",
+      "s": "L",
+      "st": "A",
+      "d": "Allergy to soy protein",
+      "m": "Mild GI symptoms",
+      "d_display": "大豆タンパク質アレルギー · Allergie aux protéines de soja",
+      "cs": "http://snomed.info/sct",
+      "cat": "food",
+      "rxns": []
+    }
+  ],
+  "md": [
+    {
+      "c": "R06AX26",
+      "t": "Allegra FX (fexofenadine 60mg)",
+      "r": "O",
+      "v": "1",
+      "u": "tab",
+      "rs": "BID",
+      "rc": "J30",
+      "d_display": "Antihistamine · 抗ヒスタミン薬",
+      "cs": "http://www.whocc.no/atc",
+      "ms": "active"
+    },
+    {
+      "c": "R05DA09",
+      "t": "Medicon Pro (dextromethorphan)",
+      "r": "O",
+      "v": "1",
+      "u": "tab",
+      "rs": "PRN cough",
+      "d_display": "Antitussive · 鎮咳薬",
+      "cs": "http://www.whocc.no/atc",
+      "ms": "active"
+    },
+    {
+      "c": "C03CA01",
+      "t": "Furosemide 20mg",
+      "r": "O",
+      "v": "1",
+      "u": "tab",
+      "rs": "Daily",
+      "rc": "I50",
+      "d_display": "Diuretic for heart failure · 心不全用利尿薬",
+      "cs": "http://www.whocc.no/atc",
+      "ms": "active"
+    }
+  ],
+  "cn": [
+    {
+      "c": "84114007",
+      "s": "moderate",
+      "st": "active",
+      "d": "NYHA II, on furosemide",
+      "d_display": "Heart failure",
+      "dt": "2020-11"
+    },
+    {
+      "c": "433144002",
+      "st": "active",
+      "d": "eGFR 48 (2026-02)",
+      "d_display": "Chronic kidney disease stage 3",
+      "dt": "2022"
+    }
+  ],
+  "ph": [
+    {
+      "c": "22298006",
+      "d": "Treated by coronary bypass (2015-09)",
+      "d_display": "Myocardial infarction",
+      "dt": "2015-08-27",
+      "ab": "2015-09",
+      "sv": "LA6750-9"
+    },
+    {
+      "c": "56717001",
+      "d": "Pulmonary, treated — calcified scar on chest X-ray",
+      "d_display": "Tuberculosis",
+      "dt": "1962",
+      "ab": "1963"
+    }
+  ],
+  "im": [
+    {
+      "c": "1181000221105",
+      "d": "定期接種（高齢者）",
+      "d_display": "Seasonal influenza vaccine",
+      "dt": "2025-10-14"
+    },
+    {
+      "c": "1801000221105",
+      "d_display": "Pneumococcal conjugate vaccine (PCV)",
+      "dt": "2021-04-06",
+      "dn": 1
+    },
+    {
+      "c": "1119349007",
+      "d_display": "COVID-19 mRNA vaccine",
+      "dt": "2024-11-02",
+      "dn": 7
+    }
+  ],
+  "pr": [
+    {
+      "c": "232717009",
+      "d_display": "Coronary artery bypass graft",
+      "dt": "2015-09-02"
+    },
+    {
+      "c": "11466000",
+      "d_display": "Cesarean section",
+      "dt": "1975"
+    }
+  ],
+  "dv": [
+    {
+      "c": "14106009",
+      "d": "MRI-conditional",
+      "d_display": "Cardiac pacemaker",
+      "dt": "2021-03-15"
+    },
+    {
+      "c": "6012004",
+      "d_display": "Hearing aid",
+      "dt": "2019-06"
+    }
+  ],
+  "fs": [],
+  "pg": [
+    {
+      "c": "11640-0",
+      "d_display": "[#] Births total",
+      "dt": "2026-02-10",
+      "v": "2"
+    },
+    {
+      "c": "11636-8",
+      "d_display": "[#] Births.live",
+      "dt": "2026-02-10",
+      "v": "2"
+    },
+    {
+      "c": "11639-2",
+      "d_display": "[#] Births.term",
+      "dt": "2026-02-10",
+      "v": "2"
+    }
+  ],
+  "rs": [
+    {
+      "c": "882-1",
+      "d_display": "ABO and Rh blood group",
+      "v": "Blood group O Rh(D) positive",
+      "vc": "278147001"
+    },
+    {
+      "c": "2823-3",
+      "d_display": "Potassium",
+      "dt": "2026-02-10",
+      "v": "4.1",
+      "u": "mmol/L",
+      "ip": "N",
+      "rr": "3.5-5.1"
+    },
+    {
+      "c": "718-7",
+      "d_display": "Hemoglobin",
+      "dt": "2026-02-10",
+      "v": "11.8",
+      "u": "g/dL",
+      "ip": "L",
+      "rr": "12-16"
+    },
+    {
+      "c": "33914-3",
+      "d": "CKD stage 3a — adjust renally cleared drugs",
+      "d_display": "eGFR (MDRD)",
+      "dt": "2026-02-10",
+      "v": "48",
+      "u": "mL/min/{1.73_m2}",
+      "ip": "L",
+      "rr": "≥60"
+    },
+    {
+      "d_display": "Chest X-ray",
+      "dt": "2025-12-03",
+      "v": "Mild cardiomegaly, no pleural effusion",
+      "ct": "imaging"
+    }
+  ],
+  "ad": [],
+  "cs": [],
+  "gl": [],
+  "en": [],
+  "oc": [],
+  "pv": [],
+  "sid": "demo_haru"
+}

@@ -1,0 +1,220 @@
+--------- beginning of main
+10-02 00:16:37.799 27987 28036 D JEMMA-PROFILES: [t=1790892997799] 🔍 loadProfile(demo_kurodo) → not found
+10-02 00:16:37.872 27987 27987 D JEMMA-PROFILES: [t=1790892997872] 📋 onCreateView (v2.2.16.10)
+10-02 00:16:37.909 27987 27987 D JEMMA-PROFILES: [t=1790892997909] 📋 onViewCreated
+10-02 00:16:37.912 27987 27987 D JEMMA-PROFILES: [t=1790892997912] 📋 renderList · 0 profiles · current=demo_kurodo
+10-02 00:16:37.912 27987 27987 D JEMMA-PROFILES: [t=1790892997912] [Adapter] 📦 submit · 0 profiles · currentId=demo_kurodo
+10-02 00:16:38.242 27987 28036 I JEMMA-HYDRATOR: [t=1790892998242] ✅ hydrated · al=3 · md=0 · cn=1 · ddi=0 · al×md=0 · drug×disease=0 · in 64ms
+10-02 00:16:38.331 27987 28036 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 83ms : 18 entries
+10-02 00:16:38.331 27987 28036 I JEMMA-PROFILES: [t=1790892998331] 🏥 IPS FHIR profile saved for demo_kurodo (38513 bytes · 4 immunizations · 2 procedures · 0 devices · 4 results · 2 past problems · 1 problems · 0 pregnancy obs)
+10-02 00:16:38.332 27987 28036 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_kurodo
+10-02 00:16:39.284 27987 28080 I JEMMA-HYDRATOR: [t=1790892999284] 🩹 hydrator inferred ATC 'J01CA01' from allergy name 'allergy to penicillin' (KB had no SNOMED→ATC mapping)
+10-02 00:16:39.310 27987 28036 I JEMMA-HYDRATOR: [t=1790892999310] ✅ hydrated · al=3 · md=5 · cn=3 · ddi=5 · al×md=0 · drug×disease=2 · in 974ms
+10-02 00:16:39.333 27987 28036 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 22ms : 19 entries
+10-02 00:16:39.333 27987 28036 I JEMMA-PROFILES: [t=1790892999333] 🏥 IPS FHIR profile saved for demo_kamekichi (28040 bytes · 0 immunizations · 0 procedures · 0 devices · 1 results · 0 past problems · 3 problems · 0 pregnancy obs)
+10-02 00:16:39.333 27987 28036 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_kamekichi
+10-02 00:16:39.528 27987 28078 I JEMMA-HYDRATOR: [t=1790892999528] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 190ms
+10-02 00:16:39.586 27987 28078 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 56ms : 30 entries
+10-02 00:16:39.587 27987 28078 I JEMMA-PROFILES: [t=1790892999587] 🏥 IPS FHIR profile saved for demo_haru (51431 bytes · 3 immunizations · 2 procedures · 2 devices · 5 results · 2 past problems · 2 problems · 3 pregnancy obs)
+10-02 00:16:39.587 27987 28078 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_haru
+10-02 00:16:39.602 27987 28078 I JEMMA-PROFILES: [t=1790892999602] 📋 rescanFromDisk · 4 profiles · current=demo_kurodo in 15ms
+10-02 00:16:39.603 27987 27987 D JEMMA-PROFILES: [t=1790892999603] 📋 renderList · 4 profiles · current=demo_kurodo
+10-02 00:16:39.603 27987 27987 D JEMMA-PROFILES: [t=1790892999603] [Adapter] 📦 submit · 4 profiles · currentId=demo_kurodo
+10-02 00:16:39.617 27987 27987 D JEMMA-PROFILES: [t=1790892999617] [Adapter] 🏗 onCreateViewHolder
+10-02 00:16:39.618 27987 27987 D JEMMA-PROFILES: [t=1790892999618] [Adapter] 🔗 bind pos=0 · id=demo_haru · name=Haru Tanaka · isCurrent=false
+10-02 00:16:39.624 27987 27987 D JEMMA-PROFILES: [t=1790892999624] [Adapter] 🏗 onCreateViewHolder
+10-02 00:16:39.624 27987 27987 D JEMMA-PROFILES: [t=1790892999624] [Adapter] 🔗 bind pos=1 · id=demo_kamekichi · name=Kamekichi · isCurrent=false
+10-02 00:16:39.627 27987 27987 D JEMMA-PROFILES: [t=1790892999627] [Adapter] 🏗 onCreateViewHolder
+10-02 00:16:39.627 27987 27987 D JEMMA-PROFILES: [t=1790892999627] [Adapter] 🔗 bind pos=2 · id=demo_kurodo · name=Kurodo Henro · isCurrent=true
+10-02 00:16:39.629 27987 27987 D JEMMA-PROFILES: [t=1790892999629] [Adapter] 🏗 onCreateViewHolder
+10-02 00:19:51.651 28343 28343 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:19:51.657 28343 28343 I AndroidRuntime: Using default boot image
+10-02 00:19:51.657 28343 28343 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:19:51.746 28343 28343 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:19:52.858 28343 28343 D AndroidRuntime: Shutting down VM
+10-02 00:19:59.310 28361 28361 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:19:59.315 28361 28361 I AndroidRuntime: Using default boot image
+10-02 00:19:59.315 28361 28361 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:19:59.389 28361 28361 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:20:00.488 28361 28361 D AndroidRuntime: Shutting down VM
+10-02 00:20:01.757 27987 27987 I JEMMA-PROFILES: [t=1790893201757] [Adapter] 👆 card tap · id=demo_haru
+10-02 00:20:01.757 27987 27987 I JEMMA-PROFILES: [t=1790893201757] 👆 profile tap → detail · id=demo_haru · name=Haru Tanaka
+10-02 00:20:01.847 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893201847] 📋 onViewCreated · id=demo_haru
+10-02 00:20:01.862 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893201862] 🧪 hydrating profile (fr)...
+10-02 00:20:02.031 27987 28080 I JEMMA-HYDRATOR: [t=1790893202031] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 169ms
+10-02 00:20:02.031 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893202031] ✅ hydrated in 169ms · alerts ddi=0 al×md=0
+10-02 00:20:02.065 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893202065] 🩺 renderPillars · START · profileId=demo_haru
+10-02 00:20:02.065 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202065] 🩺 counts computed · patient=1 contacts=0 allergies=1 medications=3 conditions=2 immunizations=3 procedures=2 devices=2 results=5 providers=0
+10-02 00:20:02.066 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202066] 🎴 bound tile · key=patient · isActive=true · layout=active · emoji='📝' · label='Patient' · count=1
+10-02 00:20:02.066 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202066] 🎴 bound tile · key=allergies · isActive=true · layout=active · emoji='⚠️' · label='Allergies' · count=1
+10-02 00:20:02.066 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202066] 🎴 bound tile · key=medications · isActive=true · layout=active · emoji='💊' · label='Médicaments' · count=3
+10-02 00:20:02.067 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202067] 🎴 bound tile · key=contacts · isActive=false · layout=stub · emoji='👥' · label='Contacts d'urgence' · count=0
+10-02 00:20:02.067 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202067] 🎴 bound tile · key=conditions · isActive=true · layout=active · emoji='🩺' · label='Pathologies actives' · count=2
+10-02 00:20:02.067 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202067] 🎴 bound tile · key=pastProblems · isActive=true · layout=active · emoji='📜' · label='Antécédents médicaux' · count=2
+10-02 00:20:02.067 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202067] 🎴 bound tile · key=immunizations · isActive=true · layout=active · emoji='💉' · label='Vaccinations' · count=3
+10-02 00:20:02.068 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202068] 🎴 bound tile · key=procedures · isActive=true · layout=active · emoji='🏥' · label='Procédures' · count=2
+10-02 00:20:02.068 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202068] 🎴 bound tile · key=devices · isActive=true · layout=active · emoji='📟' · label='Dispositifs médicaux' · count=2
+10-02 00:20:02.068 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202068] 🎴 bound tile · key=functional · isActive=false · layout=stub · emoji='♿' · label='Statut fonctionnel' · count=0
+10-02 00:20:02.069 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202069] 🎴 bound tile · key=pregnancy · isActive=false · layout=stub · emoji='🤰' · label='Grossesse' · count=3
+10-02 00:20:02.069 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202069] 🎴 bound tile · key=results · isActive=true · layout=active · emoji='🧪' · label='Résultats labo' · count=5
+10-02 00:20:02.069 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202069] 🎴 bound tile · key=advanceDirectives · isActive=false · layout=stub · emoji='📜' · label='Directives anticipées' · count=0
+10-02 00:20:02.069 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202069] 🎴 bound tile · key=consents · isActive=false · layout=stub · emoji='✍️' · label='Consentements' · count=0
+10-02 00:20:02.070 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202070] 🎴 bound tile · key=goals · isActive=false · layout=stub · emoji='🎯' · label='Objectifs de soins' · count=0
+10-02 00:20:02.070 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202070] 🎴 bound tile · key=encounters · isActive=false · layout=stub · emoji='🚑' · label='Rencontres / Visites' · count=0
+10-02 00:20:02.070 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202070] 🎴 bound tile · key=occupational · isActive=false · layout=stub · emoji='💼' · label='Données professionnelles' · count=0
+10-02 00:20:02.071 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893202071] 🎴 bound tile · key=providers · isActive=false · layout=stub · emoji='👨‍⚕️' · label='Équipe de soins' · count=0
+10-02 00:20:02.071 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893202071] 🩺 renderPillars · END · active=9/9 · stub=9/9 · missing=0/18 · 6ms
+10-02 00:20:05.227 28467 28467 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:20:05.231 28467 28467 I AndroidRuntime: Using default boot image
+10-02 00:20:05.231 28467 28467 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:20:05.308 28467 28467 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:20:06.459 28467 28467 D AndroidRuntime: Shutting down VM
+10-02 00:20:10.240 28498 28498 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:20:10.245 28498 28498 I AndroidRuntime: Using default boot image
+10-02 00:20:10.245 28498 28498 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:20:10.326 28498 28498 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:20:11.410 28498 28498 D AndroidRuntime: Shutting down VM
+10-02 00:20:18.350 28521 28521 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:20:18.356 28521 28521 I AndroidRuntime: Using default boot image
+10-02 00:20:18.356 28521 28521 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:20:18.432 28521 28521 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:20:19.512 28521 28521 D AndroidRuntime: Shutting down VM
+10-02 00:20:20.808 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893220808] 📤 Option QR Codes clicked → navigating to QrViewer
+10-02 00:20:20.871 27987 27987 I JEMMA-QR: [t=1790893220871] 📤 onViewCreated · profileId=demo_haru · initialChannel=PRUNED
+10-02 00:20:20.925 27987 27987 I JEMMA-QR: [t=1790893220925] 📂 loadProfile(demo_haru) → ok in 30ms
+10-02 00:20:21.128 27987 28082 I JEMMA-HYDRATOR: [t=1790893221128] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 202ms
+10-02 00:20:21.130 27987 27987 I JEMMA-QR: [t=1790893221130] 🧪 hydrate ok in 205ms · al=1 md=3 cn=2
+10-02 00:20:21.159 27987 28082 I JEMMA-CODEC: [t=1790893221159] ✂️ prune ok in 9ms : raw=2918b → pruned=2866b (98%)
+10-02 00:20:21.160 27987 28082 I JEMMA-CODEC: [t=1790893221159] 📦 encode ok in 27ms : pruned=2866b → compressed=1904b (66%)
+10-02 00:20:21.168 27987 28082 I JEMMA-CODEC: [t=1790893221168] 🪟 multi-frame split: 1904 bytes → 2 frames (targetByteSize=952 bytes, usable=1390 bytes, maxSingle=1800 bytes, frameChunk=1400 bytes)
+10-02 00:20:21.429 27987 28082 D JEMMA-CODEC: [t=1790893221429] 🖼️ qr encode ok in 256ms : len=959b → raw 121×121 scaled to 726×726px · EC=M
+10-02 00:20:21.441 27987 27987 D JEMMA-QR: [t=1790893221441] 🖼️ rendered frame 1/2 (959b)
+10-02 00:20:24.159 28569 28569 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:20:24.163 28569 28569 I AndroidRuntime: Using default boot image
+10-02 00:20:24.163 28569 28569 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:20:24.247 28569 28569 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:20:25.331 28569 28569 D AndroidRuntime: Shutting down VM
+10-02 00:20:26.607 27987 27987 D JEMMA-QR: [t=1790893226607] 🔀 channel switch PRUNED → TEXT
+10-02 00:20:26.809 27987 28078 I JEMMA-HYDRATOR: [t=1790893226809] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 200ms
+10-02 00:20:26.812 27987 28078 I JEMMA-CODEC: [t=1790893226812] 📝 text build FR in 2ms : 1463 chars → 1463 chars (1651 bytes)
+10-02 00:20:26.813 27987 28078 D JEMMA-CODEC: [t=1790893226813] 🪟 single frame (1651 bytes ≤ 1800 bytes)
+10-02 00:20:26.859 27987 28078 D JEMMA-CODEC: [t=1790893226859] 🖼️ qr encode ok in 45ms : len=1463b → raw 157×157 scaled to 785×785px · EC=M
+10-02 00:20:26.874 27987 27987 D JEMMA-QR: [t=1790893226874] 🖼️ rendered frame 1/1 (1463b)
+10-02 00:20:29.004 28592 28592 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:20:29.011 28592 28592 I AndroidRuntime: Using default boot image
+10-02 00:20:29.011 28592 28592 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:20:29.087 28592 28592 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:20:30.170 28592 28592 D AndroidRuntime: Shutting down VM
+10-02 00:20:39.369 28612 28612 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:20:39.376 28612 28612 I AndroidRuntime: Using default boot image
+10-02 00:20:39.376 28612 28612 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:20:39.449 28612 28612 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:20:40.572 28612 28612 D AndroidRuntime: Shutting down VM
+10-02 00:20:41.875 27987 27987 D JEMMA-QR: [t=1790893241875] 🌐 lang switch → EN
+10-02 00:20:42.081 27987 28466 I JEMMA-HYDRATOR: [t=1790893242081] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 205ms
+10-02 00:20:42.082 27987 28466 I JEMMA-CODEC: [t=1790893242082] 📝 text build EN in 0ms : 1409 chars → 1409 chars (1578 bytes)
+10-02 00:20:42.083 27987 28466 D JEMMA-CODEC: [t=1790893242083] 🪟 single frame (1578 bytes ≤ 1800 bytes)
+10-02 00:20:42.120 27987 28466 D JEMMA-CODEC: [t=1790893242120] 🖼️ qr encode ok in 36ms : len=1409b → raw 153×153 scaled to 765×765px · EC=M
+10-02 00:20:42.130 27987 27987 D JEMMA-QR: [t=1790893242130] 🖼️ rendered frame 1/1 (1409b)
+10-02 00:21:22.143 28642 28642 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:21:22.151 28642 28642 I AndroidRuntime: Using default boot image
+10-02 00:21:22.151 28642 28642 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:21:22.229 28642 28642 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:21:23.325 28642 28642 D AndroidRuntime: Shutting down VM
+10-02 00:21:24.589 27987 27987 D JEMMA-QR: [t=1790893284589] 🌐 lang switch → FR
+10-02 00:21:24.794 27987 28083 I JEMMA-HYDRATOR: [t=1790893284794] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 202ms
+10-02 00:21:24.795 27987 28083 I JEMMA-CODEC: [t=1790893284795] 📝 text build FR in 0ms : 1463 chars → 1463 chars (1651 bytes)
+10-02 00:21:24.796 27987 28083 D JEMMA-CODEC: [t=1790893284796] 🪟 single frame (1651 bytes ≤ 1800 bytes)
+10-02 00:21:24.827 27987 28083 D JEMMA-CODEC: [t=1790893284827] 🖼️ qr encode ok in 30ms : len=1463b → raw 157×157 scaled to 785×785px · EC=M
+10-02 00:21:24.838 27987 27987 D JEMMA-QR: [t=1790893284838] 🖼️ rendered frame 1/1 (1463b)
+10-02 00:21:34.799 28675 28675 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:21:34.804 28675 28675 I AndroidRuntime: Using default boot image
+10-02 00:21:34.804 28675 28675 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:21:34.890 28675 28675 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:21:35.991 28675 28675 D AndroidRuntime: Shutting down VM
+10-02 00:22:01.537 28699 28699 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:22:01.541 28699 28699 I AndroidRuntime: Using default boot image
+10-02 00:22:01.541 28699 28699 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:22:01.617 28699 28699 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:22:02.731 28699 28699 D AndroidRuntime: Shutting down VM
+10-02 00:22:03.964 27987 27987 D JEMMA-QR: [t=1790893323964] 🌐 lang switch → JA
+10-02 00:22:04.172 27987 28079 I JEMMA-HYDRATOR: [t=1790893324172] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 206ms
+10-02 00:22:04.173 27987 28079 I JEMMA-CODEC: [t=1790893324173] 📝 text build JA in 1ms : 1136 chars → 1136 chars (1687 bytes)
+10-02 00:22:04.173 27987 28079 D JEMMA-CODEC: [t=1790893324173] 🪟 single frame (1687 bytes ≤ 1800 bytes)
+10-02 00:22:04.201 27987 28079 D JEMMA-CODEC: [t=1790893324201] 🖼️ qr encode ok in 26ms : len=1136b → raw 157×157 scaled to 785×785px · EC=M
+10-02 00:22:04.219 27987 27987 D JEMMA-QR: [t=1790893324219] 🖼️ rendered frame 1/1 (1136b)
+10-02 00:23:05.726 28781 28781 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:23:05.732 28781 28781 I AndroidRuntime: Using default boot image
+10-02 00:23:05.732 28781 28781 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:23:05.807 28781 28781 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:23:06.907 28781 28781 D AndroidRuntime: Shutting down VM
+10-02 00:24:21.083 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461083] 📋 onViewCreated · id=demo_haru
+10-02 00:24:21.098 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893461098] 🧪 hydrating profile (fr)...
+10-02 00:24:21.295 27987 28466 I JEMMA-HYDRATOR: [t=1790893461295] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 196ms
+10-02 00:24:21.297 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893461296] ✅ hydrated in 196ms · alerts ddi=0 al×md=0
+10-02 00:24:21.323 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893461323] 🩺 renderPillars · START · profileId=demo_haru
+10-02 00:24:21.323 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461323] 🩺 counts computed · patient=1 contacts=0 allergies=1 medications=3 conditions=2 immunizations=3 procedures=2 devices=2 results=5 providers=0
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=patient · isActive=true · layout=active · emoji='📝' · label='Patient' · count=1
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=allergies · isActive=true · layout=active · emoji='⚠️' · label='Allergies' · count=1
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=medications · isActive=true · layout=active · emoji='💊' · label='Médicaments' · count=3
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=contacts · isActive=false · layout=stub · emoji='👥' · label='Contacts d'urgence' · count=0
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=conditions · isActive=true · layout=active · emoji='🩺' · label='Pathologies actives' · count=2
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=pastProblems · isActive=true · layout=active · emoji='📜' · label='Antécédents médicaux' · count=2
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=immunizations · isActive=true · layout=active · emoji='💉' · label='Vaccinations' · count=3
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=procedures · isActive=true · layout=active · emoji='🏥' · label='Procédures' · count=2
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=devices · isActive=true · layout=active · emoji='📟' · label='Dispositifs médicaux' · count=2
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=functional · isActive=false · layout=stub · emoji='♿' · label='Statut fonctionnel' · count=0
+10-02 00:24:21.324 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461324] 🎴 bound tile · key=pregnancy · isActive=false · layout=stub · emoji='🤰' · label='Grossesse' · count=3
+10-02 00:24:21.325 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461325] 🎴 bound tile · key=results · isActive=true · layout=active · emoji='🧪' · label='Résultats labo' · count=5
+10-02 00:24:21.325 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461325] 🎴 bound tile · key=advanceDirectives · isActive=false · layout=stub · emoji='📜' · label='Directives anticipées' · count=0
+10-02 00:24:21.325 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461325] 🎴 bound tile · key=consents · isActive=false · layout=stub · emoji='✍️' · label='Consentements' · count=0
+10-02 00:24:21.325 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461325] 🎴 bound tile · key=goals · isActive=false · layout=stub · emoji='🎯' · label='Objectifs de soins' · count=0
+10-02 00:24:21.325 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461325] 🎴 bound tile · key=encounters · isActive=false · layout=stub · emoji='🚑' · label='Rencontres / Visites' · count=0
+10-02 00:24:21.325 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461325] 🎴 bound tile · key=occupational · isActive=false · layout=stub · emoji='💼' · label='Données professionnelles' · count=0
+10-02 00:24:21.325 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893461325] 🎴 bound tile · key=providers · isActive=false · layout=stub · emoji='👨‍⚕️' · label='Équipe de soins' · count=0
+10-02 00:24:21.325 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893461325] 🩺 renderPillars · END · active=9/9 · stub=9/9 · missing=0/18 · 2ms
+10-02 00:24:23.524 27987 27987 D JEMMA-PROFILES: [t=1790893463524] 📋 onCreateView (v2.2.16.10)
+10-02 00:24:23.544 27987 27987 D JEMMA-PROFILES: [t=1790893463544] 📋 onViewCreated
+10-02 00:24:23.546 27987 27987 D JEMMA-PROFILES: [t=1790893463546] 📋 renderList · 4 profiles · current=demo_kurodo
+10-02 00:24:23.546 27987 27987 D JEMMA-PROFILES: [t=1790893463546] [Adapter] 📦 submit · 4 profiles · currentId=demo_kurodo
+10-02 00:24:23.552 27987 27987 D JEMMA-PROFILES: [t=1790893463551] [Adapter] 🏗 onCreateViewHolder
+10-02 00:24:23.552 27987 27987 D JEMMA-PROFILES: [t=1790893463552] [Adapter] 🔗 bind pos=0 · id=demo_haru · name=Haru Tanaka · isCurrent=false
+10-02 00:24:23.554 27987 27987 D JEMMA-PROFILES: [t=1790893463554] [Adapter] 🏗 onCreateViewHolder
+10-02 00:24:23.554 27987 27987 D JEMMA-PROFILES: [t=1790893463554] [Adapter] 🔗 bind pos=1 · id=demo_kamekichi · name=Kamekichi · isCurrent=false
+10-02 00:24:23.555 27987 27987 D JEMMA-PROFILES: [t=1790893463555] [Adapter] 🏗 onCreateViewHolder
+10-02 00:24:23.555 27987 27987 D JEMMA-PROFILES: [t=1790893463555] [Adapter] 🔗 bind pos=2 · id=demo_kurodo · name=Kurodo Henro · isCurrent=true
+10-02 00:24:23.557 27987 27987 D JEMMA-PROFILES: [t=1790893463557] [Adapter] 🏗 onCreateViewHolder
+10-02 00:24:25.949 28904 28904 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-02 00:24:25.953 28904 28904 I AndroidRuntime: Using default boot image
+10-02 00:24:25.953 28904 28904 I AndroidRuntime: Leaving lock profiling enabled
+10-02 00:24:26.031 28904 28904 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-02 00:24:27.124 28904 28904 D AndroidRuntime: Shutting down VM
+10-02 00:24:28.398 27987 27987 I JEMMA-PROFILES: [t=1790893468398] [Adapter] 👆 card tap · id=demo_kamekichi
+10-02 00:24:28.399 27987 27987 I JEMMA-PROFILES: [t=1790893468399] 👆 profile tap → detail · id=demo_kamekichi · name=Kamekichi
+10-02 00:24:28.429 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893468429] 📋 onViewCreated · id=demo_kamekichi
+10-02 00:24:28.446 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893468446] 🧪 hydrating profile (fr)...
+10-02 00:24:29.340 27987 28036 I JEMMA-HYDRATOR: [t=1790893469340] 🩹 hydrator inferred ATC 'J01CA01' from allergy name 'allergie à la pénicilline' (KB had no SNOMED→ATC mapping)
+10-02 00:24:29.362 27987 28080 I JEMMA-HYDRATOR: [t=1790893469362] ✅ hydrated · al=3 · md=5 · cn=3 · ddi=5 · al×md=0 · drug×disease=2 · in 916ms
+10-02 00:24:29.363 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893469363] ✅ hydrated in 916ms · alerts ddi=5 al×md=0
+10-02 00:24:29.387 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893469387] 🩺 renderPillars · START · profileId=demo_kamekichi
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🩺 counts computed · patient=1 contacts=1 allergies=3 medications=5 conditions=3 immunizations=0 procedures=0 devices=0 results=1 providers=0
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🎴 bound tile · key=patient · isActive=true · layout=active · emoji='📝' · label='Patient' · count=1
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🎴 bound tile · key=allergies · isActive=true · layout=active · emoji='⚠️' · label='Allergies' · count=3
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🎴 bound tile · key=medications · isActive=true · layout=active · emoji='💊' · label='Médicaments' · count=5
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🎴 bound tile · key=contacts · isActive=false · layout=stub · emoji='👥' · label='Contacts d'urgence' · count=1
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🎴 bound tile · key=conditions · isActive=true · layout=active · emoji='🩺' · label='Pathologies actives' · count=3
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🎴 bound tile · key=pastProblems · isActive=true · layout=active · emoji='📜' · label='Antécédents médicaux' · count=0
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🎴 bound tile · key=immunizations · isActive=true · layout=active · emoji='💉' · label='Vaccinations' · count=0
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🎴 bound tile · key=procedures · isActive=true · layout=active · emoji='🏥' · label='Procédures' · count=0
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🎴 bound tile · key=devices · isActive=true · layout=active · emoji='📟' · label='Dispositifs médicaux' · count=0
+10-02 00:24:29.388 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469388] 🎴 bound tile · key=functional · isActive=false · layout=stub · emoji='♿' · label='Statut fonctionnel' · count=0
+10-02 00:24:29.389 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469389] 🎴 bound tile · key=pregnancy · isActive=false · layout=stub · emoji='🤰' · label='Grossesse' · count=0
+10-02 00:24:29.389 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469389] 🎴 bound tile · key=results · isActive=true · layout=active · emoji='🧪' · label='Résultats labo' · count=1
+10-02 00:24:29.389 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469389] 🎴 bound tile · key=advanceDirectives · isActive=false · layout=stub · emoji='📜' · label='Directives anticipées' · count=0
+10-02 00:24:29.389 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469389] 🎴 bound tile · key=consents · isActive=false · layout=stub · emoji='✍️' · label='Consentements' · count=0
+10-02 00:24:29.389 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469389] 🎴 bound tile · key=goals · isActive=false · layout=stub · emoji='🎯' · label='Objectifs de soins' · count=0
+10-02 00:24:29.389 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469389] 🎴 bound tile · key=encounters · isActive=false · layout=stub · emoji='🚑' · label='Rencontres / Visites' · count=0
+10-02 00:24:29.389 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469389] 🎴 bound tile · key=occupational · isActive=false · layout=stub · emoji='💼' · label='Données professionnelles' · count=0
+10-02 00:24:29.389 27987 27987 D JEMMA-PROFILE-DETAIL: [t=1790893469389] 🎴 bound tile · key=providers · isActive=false · layout=stub · emoji='👨‍⚕️' · label='Équipe de soins' · count=0
+10-02 00:24:29.389 27987 27987 I JEMMA-PROFILE-DETAIL: [t=1790893469389] 🩺 renderPillars · END · active=9/9 · stub=9/9 · missing=0/18 · 2ms
+--------- scrub_logcat: 2 line(s) removed (non-JemmaPass tags or non-demo profile data)
