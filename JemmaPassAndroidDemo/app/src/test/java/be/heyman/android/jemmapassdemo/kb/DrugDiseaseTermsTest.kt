@@ -40,4 +40,14 @@ class DrugDiseaseTermsTest {
         assertEquals(listOf("angina pectoris"), DrugDiseaseTerms.candidates("Angina pectoris", " angina pectoris ", ""))
         assertTrue(DrugDiseaseTerms.candidates(null, null, "—").isEmpty())
     }
+
+    @Test
+    fun pluralsDoNotBlockAMatch() {
+        // cycle 19: fexofenadine (R06AX26) × "Kidney Diseases" vs Haru's CKD stage 3
+        assertTrue(DrugDiseaseTerms.matches("chronic kidney disease stage 3", "Kidney Diseases"))
+        assertTrue(DrugDiseaseTerms.matches("liver disease", "Liver Diseases"))
+        assertEquals("kidney disease", DrugDiseaseTerms.singular("Kidney Diseases"))
+        assertTrue(DrugDiseaseTerms.matches("type 2 diabetes mellitus", "Diabetes Mellitus"))
+        assertFalse(DrugDiseaseTerms.matches("essential hypertension", "Intracranial Hypertension"))
+    }
 }

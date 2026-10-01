@@ -33,10 +33,25 @@ object DrugDiseaseTerms {
         return out.toList()
     }
 
-    /** Containment in both directions, case-insensitive. */
+    /**
+     * Word-wise singular form used on both sides of a comparison (device QA cycle 19:
+     * DDInter says "Kidney Diseases", SNOMED "Chronic kidney disease stage 3").
+     * Deliberately naive — applied symmetrically, it only has to be consistent.
+     */
+    fun singular(text: String): String =
+        text.lowercase().trim().split(Regex("\\s+")).joinToString(" ") { w ->
+            when {
+                w.length > 4 && w.endsWith("ies") -> w.dropLast(3) + "y"
+                w.length > 4 && w.endsWith("ses") -> w.dropLast(1)
+                w.length > 3 && w.endsWith("s") && !w.endsWith("ss") && !w.endsWith("us") && !w.endsWith("is") -> w.dropLast(1)
+                else -> w
+            }
+        }
+
+    /** Containment in both directions, case-insensitive, plural-insensitive. */
     fun matches(term: String, diseaseName: String): Boolean {
-        val t = term.lowercase().trim()
-        val d = diseaseName.lowercase().trim()
+        val t = singular(term)
+        val d = singular(diseaseName)
         if (t.isEmpty() || d.isEmpty()) return false
         return d.contains(t) || (d.length >= MIN_REVERSE_LENGTH && t.contains(d))
     }

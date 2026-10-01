@@ -543,6 +543,15 @@ SNOMED stocké, display primaire KB) puis le libellé localisé, dans les deux s
 4. Interface en **japonais** (`cmd locale set-app-locales … --locales ja`, puis retour `fr`) :
    même nombre d'alertes qu'en français (le calcul ne dépend plus de la langue).
 
+### T18 — Couverture DDInter + pluriels (cycle 19)
+
+1. Haru (fexofénadine R06AX26 × « Kidney Diseases ») : attendu `drug×disease=1` et une alerte
+   Moderate « … + Maladie rénale chronique stade 3 » (capture `195-dd-haru.png`, texte recopié).
+2. Couverture DDInter (copie KB hors dépôt) → `kb/ddinter-coverage.txt`, sorties brutes :
+   `SELECT COUNT(*), COUNT(drug_atc) FROM drug_disease_interactions;`
+   `SELECT drug_name, drug_atc, COUNT(*) FROM drug_disease_interactions WHERE lower(drug_name) IN ('ibuprofen','furosemide','bisoprolol','sildenafil','dextromethorphan','fexofenadine','warfarin','isosorbide dinitrate') GROUP BY 1,2;`
+   `SELECT d.name, d.primary_atc, d.atc_codes FROM ddinter_drugs d WHERE lower(d.name) IN ('ibuprofen','furosemide','bisoprolol','sildenafil');`
+
 ## 4. Logcat de fin
 
 ```
@@ -558,7 +567,7 @@ jamais un log à la main.
 
 ## 5. Rapport et publication
 
-Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T17,
+Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T18,
 statut ✅ / ❌ / ⚠️ / ⏭, preuve = nom de capture ou fichier, déviations, bugs avec
 étapes de reproduction). Puis :
 
