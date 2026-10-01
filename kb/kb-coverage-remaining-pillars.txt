@@ -1,339 +1,458 @@
-# ==============================================================================
-# AUDIT DE COUVERTURE DE LA KB JEMMAPASS POUR LES 11 PILIERS RESTANTS
-# Fichier source : knowledge_full.db (v1.1 · 3,1 Go)
-# Date : 2026-10-01
-# ==============================================================================
-
 ================================================================================
-2.a INVENTAIRE COMPLET DES VALUE SETS (ips_valuesets)
-Query: select vs_id, code_system, count(*) from ips_valuesets group by 1,2 order by 1;
+JEMMAPASS KB COVERAGE AUDIT — REMAINING IPS PILLARS (CYCLE 10)
+Database: knowledge_full.db (3.1 GB pulled from device)
 ================================================================================
-vs_id                                                | code_system                                                       | count
------------------------------------------------------------------------------------------------------------------------------
-absent-or-unknown-allergies-uv-ips                   | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips       | 5
-absent-or-unknown-devices-uv-ips                     | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips       | 2
-absent-or-unknown-immunizations-uv-ips               | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips       | 2
-absent-or-unknown-medications-uv-ips                 | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips       | 2
-absent-or-unknown-problems-uv-ips                    | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips       | 2
-absent-or-unknown-procedures-uv-ips                  | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips       | 2
-allergy-intolerance-snomed-ct-ips-free-set           | http://snomed.info/sct                                            | 292
-allergy-reaction-snomed-ct-ips-free-set              | http://snomed.info/sct                                            | 31
-condition-severity-uv-ips                            | http://loinc.org                                                  | 3
-current-smoking-status-uv-ips                        | http://loinc.org                                                  | 8
-edd-method-uv-ips                                    | http://loinc.org                                                  | 3
-medical-devices-snomed-ct-ips-free-set               | http://snomed.info/sct                                            | 72
-medication-example-uv-ips                            | http://hl7.org/fhir/sid/ndc                                       | 2
-medication-example-uv-ips                            | http://snomed.info/sct                                            | 12
-medication-example-uv-ips                            | http://www.nlm.nih.gov/research/umls/rxnorm                       | 3
-medications-snomed-ct-ips-free-set                   | http://snomed.info/sct                                            | 10
-personal-relationship-uv-ips                         | http://terminology.hl7.org/CodeSystem/v3-RoleCode                 | 39
-pregnancies-summary-uv-ips                           | http://loinc.org                                                  | 9
-pregnancy-status-uv-ips                              | http://loinc.org                                                  | 3
-problem-type-loinc                                   | http://loinc.org                                                  | 1
-problem-type-uv-ips                                  | http://terminology.hl7.org/CodeSystem/condition-category          | 1
-problems-snomed-ct-ips-free-set                      | http://snomed.info/sct                                            | 5622
-procedures-snomed-ct-ips-free-set                    | http://snomed.info/sct                                            | 690
-results-blood-group-snomed-ct-ips-free-set           | http://snomed.info/sct                                            | 13
-results-microorganism-snomed-ct-ips-free-set         | http://snomed.info/sct                                            | 1343
-results-presence-absence-snomed-ct-ips-free-set      | http://snomed.info/sct                                            | 9
-results-radiology-numobs-snomed-dicom-uv-ips         | http://dicom.nema.org/resources/ontology/DCM                      | 10
-results-radiology-numobs-snomed-dicom-uv-ips         | http://snomed.info/sct                                            | 16
-results-radiology-txtobs-snomed-dicom-loinc-uv-ips   | http://dicom.nema.org/resources/ontology/DCM                      | 8
-results-radiology-txtobs-snomed-dicom-loinc-uv-ips   | http://loinc.org                                                  | 2
-results-radiology-txtobs-snomed-dicom-loinc-uv-ips   | http://snomed.info/sct                                            | 1
-results-specimen-collection-method-uv-ips            | http://snomed.info/sct                                            | 10
-results-specimen-type-snomed-ct-ips-free-set         | http://snomed.info/sct                                            | 127
-target-diseases-snomed-ct-ips-free-set               | http://snomed.info/sct                                            | 22
-target-diseases-uv-ips                               | http://snomed.info/sct                                            | 50
-targetDiseases-uv-ips                                | http://snomed.info/sct                                            | 49
-vaccines-snomed-ct-ips-free-set                      | http://snomed.info/sct                                            | 78
------------------------------------------------------------------------------------------------------------------------------
-TOTAL CODES DANS ips_valuesets : 8554
-
-================================================================================
-2.b LES 29 CODES LOINC DANS ips_valuesets
-Query: select vs_id, code, display_en from ips_valuesets where code_system like '%loinc%' order by vs_id;
-================================================================================
-vs_id                               | code         | display_en
-----------------------------------------------------------------------------------------------------
-condition-severity-uv-ips           | LA6750-9     | Severe
-condition-severity-uv-ips           | LA6751-7     | Moderate
-condition-severity-uv-ips           | LA6752-5     | Mild
-current-smoking-status-uv-ips       | LA15920-4    | Former smoker
-current-smoking-status-uv-ips       | LA18976-3    | Current every day smoker
-current-smoking-status-uv-ips       | LA18977-1    | Current some day smoker
-current-smoking-status-uv-ips       | LA18978-9    | Never smoker
-current-smoking-status-uv-ips       | LA18979-7    | Smoker, current status unknown
-current-smoking-status-uv-ips       | LA18980-5    | Unknown if ever smoked
-current-smoking-status-uv-ips       | LA18981-3    | Heavy tobacco smoker
-current-smoking-status-uv-ips       | LA18982-1    | Light tobacco smoker
-edd-method-uv-ips                   | 11778-8      | Delivery date Estimated
-edd-method-uv-ips                   | 11779-6      | Delivery date Estimated from last menstrual period
-edd-method-uv-ips                   | 11780-4      | Delivery date Estimated from ovulation date
-pregnancies-summary-uv-ips          | 11612-9      | [#] Abortions
-pregnancies-summary-uv-ips          | 11613-7      | [#] Abortions.induced
-pregnancies-summary-uv-ips          | 11614-5      | [#] Abortions.spontaneous
-pregnancies-summary-uv-ips          | 11636-8      | [#] Births.live
-pregnancies-summary-uv-ips          | 11637-6      | [#] Births.preterm
-pregnancies-summary-uv-ips          | 11638-4      | [#] Births.still living
-pregnancies-summary-uv-ips          | 11639-2      | [#] Births.term
-pregnancies-summary-uv-ips          | 11640-0      | [#] Births total
-pregnancies-summary-uv-ips          | 33065-4      | [#] Ectopic pregnancy
-pregnancy-status-uv-ips             | LA15173-0    | Pregnant
-pregnancy-status-uv-ips             | LA26683-5    | Not pregnant
-pregnancy-status-uv-ips             | LA4489-6     | Unknown
-problem-type-loinc                  | 75326-9      | Problem
-results-radiology-txtobs-snomed-dicom-loinc-uv-ips | 11329-0      | History
-results-radiology-txtobs-snomed-dicom-loinc-uv-ips | 55115-0      | Request
-----------------------------------------------------------------------------------------------------
-TOTAL CODES LOINC : 29
-
-================================================================================
-2.c ANALYSE PAR THÉMATIQUE (vs_id ciblés)
-Keywords: pregnancy, tobacco, smoking, alcohol, functional, disability, vital, advance, social, problem, condition, severity
-================================================================================
-
-Value Sets correspondants trouvés : 8
-  - absent-or-unknown-problems-uv-ips
-  - condition-severity-uv-ips
-  - current-smoking-status-uv-ips
-  - pregnancies-summary-uv-ips
-  - pregnancy-status-uv-ips
-  - problem-type-loinc
-  - problem-type-uv-ips
-  - problems-snomed-ct-ips-free-set
-
-================================================================================
-
---- ValueSet: absent-or-unknown-problems-uv-ips (Total: 2 codes) ---
-Langues disponibles : Aucune traduction (0)
-10 premières lignes :
-    [no-known-problems] (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips) No known problems
-    [no-problem-info] (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips) No information about current problems
-
---- ValueSet: condition-severity-uv-ips (Total: 3 codes) ---
-Langues disponibles : Aucune traduction (0)
-10 premières lignes :
-    [LA6750-9] (http://loinc.org) Severe
-    [LA6751-7] (http://loinc.org) Moderate
-    [LA6752-5] (http://loinc.org) Mild
-
---- ValueSet: current-smoking-status-uv-ips (Total: 8 codes) ---
-Langues disponibles : Aucune traduction (0)
-10 premières lignes :
-    [LA15920-4] (http://loinc.org) Former smoker
-    [LA18976-3] (http://loinc.org) Current every day smoker
-    [LA18977-1] (http://loinc.org) Current some day smoker
-    [LA18978-9] (http://loinc.org) Never smoker
-    [LA18979-7] (http://loinc.org) Smoker, current status unknown
-    [LA18980-5] (http://loinc.org) Unknown if ever smoked
-    [LA18981-3] (http://loinc.org) Heavy tobacco smoker
-    [LA18982-1] (http://loinc.org) Light tobacco smoker
-
---- ValueSet: pregnancies-summary-uv-ips (Total: 9 codes) ---
-Langues disponibles : Aucune traduction (0)
-10 premières lignes :
-    [11612-9] (http://loinc.org) [#] Abortions
-    [11613-7] (http://loinc.org) [#] Abortions.induced
-    [11614-5] (http://loinc.org) [#] Abortions.spontaneous
-    [11636-8] (http://loinc.org) [#] Births.live
-    [11637-6] (http://loinc.org) [#] Births.preterm
-    [11638-4] (http://loinc.org) [#] Births.still living
-    [11639-2] (http://loinc.org) [#] Births.term
-    [11640-0] (http://loinc.org) [#] Births total
-    [33065-4] (http://loinc.org) [#] Ectopic pregnancy
-
---- ValueSet: pregnancy-status-uv-ips (Total: 3 codes) ---
-Langues disponibles : Aucune traduction (0)
-10 premières lignes :
-    [LA15173-0] (http://loinc.org) Pregnant
-    [LA26683-5] (http://loinc.org) Not pregnant
-    [LA4489-6] (http://loinc.org) Unknown
-
---- ValueSet: problem-type-loinc (Total: 1 codes) ---
-Langues disponibles : Aucune traduction (0)
-10 premières lignes :
-    [75326-9] (http://loinc.org) Problem
-
---- ValueSet: problem-type-uv-ips (Total: 1 codes) ---
-Langues disponibles : Aucune traduction (0)
-10 premières lignes :
-    [problem-list-item] (http://terminology.hl7.org/CodeSystem/condition-category) Problem List Item
-
---- ValueSet: problems-snomed-ct-ips-free-set (Total: 5622 codes) ---
-Langues disponibles : ar: 3524, cs: 3598, de: 3580, es: 5265, et: 3524, fi: 3550, fr: 3596, hu: 3524, is: 3524, it: 3583, ja: 3512, ko: 3524, lt: 3524, lv: 3524, nl: 3562, no: 1782, pl: 3555, pt: 3587, ru: 3555, sv: 3563
-10 premières lignes :
-    [1003488007] (http://snomed.info/sct) Angle closure glaucoma suspect
-    [1003614009] (http://snomed.info/sct) Open angle glaucoma suspect
-    [1003721002] (http://snomed.info/sct) Pain of joint of knee
-    [1003722009] (http://snomed.info/sct) Pain of knee region
-    [1004081001] (http://snomed.info/sct) Neonatal disorder due to disease in mother
-    [10050004] (http://snomed.info/sct) Contusion of chest
-    [10085004] (http://snomed.info/sct) Metatarsalgia
-    [1010215007] (http://snomed.info/sct) Congenital subluxation of left hip joint
-    [1010217004] (http://snomed.info/sct) Congenital subluxation of right hip joint
-    [1010568002] (http://snomed.info/sct) Undescended left testicle
 
 --------------------------------------------------------------------------------
-MOTS-CLÉS SANS AUCUN VALUE SET DANS ips_valuesets :
-  - "alcohol" : 0 Value Set trouvé
-  - "functional" : 0 Value Set trouvé
-  - "disability" : 0 Value Set trouvé
-  - "vital" : 0 Value Set trouvé
-  - "advance" : 0 Value Set trouvé
-  - "social" : 0 Value Set trouvé
+2.a. select vs_id, code_system, count(*) from ips_valuesets group by 1,2 order by 1
 --------------------------------------------------------------------------------
+absent-or-unknown-allergies-uv-ips                      | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips            |      5
+absent-or-unknown-devices-uv-ips                        | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips            |      2
+absent-or-unknown-immunizations-uv-ips                  | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips            |      2
+absent-or-unknown-medications-uv-ips                    | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips            |      2
+absent-or-unknown-problems-uv-ips                       | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips            |      2
+absent-or-unknown-procedures-uv-ips                     | http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips            |      2
+allergy-intolerance-snomed-ct-ips-free-set              | http://snomed.info/sct                                                 |    292
+allergy-reaction-snomed-ct-ips-free-set                 | http://snomed.info/sct                                                 |     31
+condition-severity-uv-ips                               | http://loinc.org                                                       |      3
+current-smoking-status-uv-ips                           | http://loinc.org                                                       |      8
+edd-method-uv-ips                                       | http://loinc.org                                                       |      3
+medical-devices-snomed-ct-ips-free-set                  | http://snomed.info/sct                                                 |     72
+medication-example-uv-ips                               | http://hl7.org/fhir/sid/ndc                                            |      2
+medication-example-uv-ips                               | http://snomed.info/sct                                                 |     12
+medication-example-uv-ips                               | http://www.nlm.nih.gov/research/umls/rxnorm                            |      3
+medications-snomed-ct-ips-free-set                      | http://snomed.info/sct                                                 |     10
+personal-relationship-uv-ips                            | http://terminology.hl7.org/CodeSystem/v3-RoleCode                      |     39
+pregnancies-summary-uv-ips                              | http://loinc.org                                                       |      9
+pregnancy-status-uv-ips                                 | http://loinc.org                                                       |      3
+problem-type-loinc                                      | http://loinc.org                                                       |      1
+problem-type-uv-ips                                     | http://terminology.hl7.org/CodeSystem/condition-category               |      1
+problems-snomed-ct-ips-free-set                         | http://snomed.info/sct                                                 |   5622
+procedures-snomed-ct-ips-free-set                       | http://snomed.info/sct                                                 |    690
+results-blood-group-snomed-ct-ips-free-set              | http://snomed.info/sct                                                 |     13
+results-microorganism-snomed-ct-ips-free-set            | http://snomed.info/sct                                                 |   1343
+results-presence-absence-snomed-ct-ips-free-set         | http://snomed.info/sct                                                 |      9
+results-radiology-numobs-snomed-dicom-uv-ips            | http://dicom.nema.org/resources/ontology/DCM                           |     10
+results-radiology-numobs-snomed-dicom-uv-ips            | http://snomed.info/sct                                                 |     16
+results-radiology-txtobs-snomed-dicom-loinc-uv-ips      | http://dicom.nema.org/resources/ontology/DCM                           |      8
+results-radiology-txtobs-snomed-dicom-loinc-uv-ips      | http://loinc.org                                                       |      2
+results-radiology-txtobs-snomed-dicom-loinc-uv-ips      | http://snomed.info/sct                                                 |      1
+results-specimen-collection-method-uv-ips               | http://snomed.info/sct                                                 |     10
+results-specimen-type-snomed-ct-ips-free-set            | http://snomed.info/sct                                                 |    127
+target-diseases-snomed-ct-ips-free-set                  | http://snomed.info/sct                                                 |     22
+target-diseases-uv-ips                                  | http://snomed.info/sct                                                 |     50
+targetDiseases-uv-ips                                   | http://snomed.info/sct                                                 |     49
+vaccines-snomed-ct-ips-free-set                         | http://snomed.info/sct                                                 |     78
 
-================================================================================
-2.d RÈGLES DE CHAMPS DES PILIERS RESTANTS (ips_field_rules)
-Query: select * from ips_field_rules where resource in ('Condition','Observation','Consent','ClinicalImpression','CarePlan','Flag') order by resource, field_path;
-================================================================================
-Total règles trouvées : 125
-resource       | field_path                                         | card   | req  | type            | binding_vs
-----------------------------------------------------------------------------------------------------------------------------------
-Condition      | Condition.abatement[x]                             | 0..1   | 0    | dateTime        | 
-Condition      | Condition.asserter                                 | 0..1   | 0    | Reference       | 
-Condition      | Condition.bodySite                                 | 0..*   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/body-site
-Condition      | Condition.category                                 | 0..*   | 0    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/problem-type-loinc
-Condition      | Condition.category                                 | 0..*   | 0    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/problem-type-uv-ips
-Condition      | Condition.clinicalStatus                           | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/ValueSet/condition-clinical|4.0.1
-Condition      | Condition.code                                     | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/absent-or-unknown-problems-uv-ips
-Condition      | Condition.code                                     | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/problems-snomed-absent-unknown-uv-ips
-Condition      | Condition.code                                     | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/problems-snomed-ct-ips-free-set
-Condition      | Condition.contained                                | 0..*   | 0    | Resource        | 
-Condition      | Condition.encounter                                | 0..1   | 0    | Reference       | 
-Condition      | Condition.evidence                                 | 0..*   | 0    | BackboneElement | 
-Condition      | Condition.evidence.code                            | 0..*   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/manifestation-or-symptom
-Condition      | Condition.evidence.detail                          | 0..*   | 0    | Reference       | 
-Condition      | Condition.evidence.extension                       | 0..*   | 0    | Extension       | 
-Condition      | Condition.evidence.id                              | 0..1   | 0    | http://hl7.org/fhirpath/System.String | 
-Condition      | Condition.evidence.modifierExtension               | 0..*   | 0    | Extension       | 
-Condition      | Condition.extension                                | 0..*   | 0    | Extension       | 
-Condition      | Condition.id                                       | 0..1   | 0    | http://hl7.org/fhirpath/System.String | 
-Condition      | Condition.identifier                               | 0..*   | 0    | Identifier      | 
-Condition      | Condition.implicitRules                            | 0..1   | 0    | uri             | 
-Condition      | Condition.language                                 | 0..1   | 0    | code            | http://hl7.org/fhir/ValueSet/languages
-Condition      | Condition.meta                                     | 0..1   | 0    | Meta            | 
-Condition      | Condition.modifierExtension                        | 0..*   | 0    | Extension       | 
-Condition      | Condition.note                                     | 0..*   | 0    | Annotation      | 
-Condition      | Condition.onset[x]                                 | 0..1   | 0    | dateTime        | 
-Condition      | Condition.recordedDate                             | 0..1   | 0    | dateTime        | 
-Condition      | Condition.recorder                                 | 0..1   | 0    | Reference       | 
-Condition      | Condition.severity                                 | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/condition-severity
-Condition      | Condition.severity                                 | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/condition-severity-uv-ips
-Condition      | Condition.stage                                    | 0..*   | 0    | BackboneElement | 
-Condition      | Condition.stage.assessment                         | 0..*   | 0    | Reference       | 
-Condition      | Condition.stage.extension                          | 0..*   | 0    | Extension       | 
-Condition      | Condition.stage.id                                 | 0..1   | 0    | http://hl7.org/fhirpath/System.String | 
-Condition      | Condition.stage.modifierExtension                  | 0..*   | 0    | Extension       | 
-Condition      | Condition.stage.summary                            | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/condition-stage
-Condition      | Condition.stage.type                               | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/condition-stage-type
-Condition      | Condition.subject                                  | 1..1   | 1    | Reference       | 
-Condition      | Condition.subject.display                          | 0..1   | 0    | string          | 
-Condition      | Condition.subject.extension                        | 0..*   | 0    | Extension       | 
-Condition      | Condition.subject.id                               | 0..1   | 0    | http://hl7.org/fhirpath/System.String | 
-Condition      | Condition.subject.identifier                       | 0..1   | 0    | Identifier      | 
-Condition      | Condition.subject.reference                        | 1..1   | 1    | string          | 
-Condition      | Condition.subject.type                             | 0..1   | 0    | uri             | http://hl7.org/fhir/ValueSet/resource-types
-Condition      | Condition.text                                     | 0..1   | 0    | Narrative       | 
-Condition      | Condition.verificationStatus                       | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/condition-ver-status|4.0.1
-Observation    | Observation.basedOn                                | 0..*   | 0    | Reference       | 
-Observation    | Observation.bodySite                               | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/body-site
-Observation    | Observation.category                               | 0..*   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/observation-category
-Observation    | Observation.code                                   | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/ValueSet/observation-codes
-Observation    | Observation.code                                   | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/edd-method-uv-ips
-Observation    | Observation.code                                   | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/pregnancies-summary-uv-ips
-Observation    | Observation.code                                   | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/results-laboratory-observations-uv-ips
-Observation    | Observation.code                                   | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/results-pathology-observations-uv-ips
-Observation    | Observation.code                                   | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/results-radiology-observations-uv-ips
-Observation    | Observation.component                              | 0..0   | 0    | BackboneElement | 
-Observation    | Observation.component.code                         | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/ValueSet/observation-codes
-Observation    | Observation.component.code                         | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/results-radiology-numobs-snomed-dicom-uv-ips
-Observation    | Observation.component.code                         | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/results-radiology-observations-uv-ips
-Observation    | Observation.component.code                         | 1..1   | 1    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/results-radiology-txtobs-snomed-dicom-loinc-uv-ips
-Observation    | Observation.component.dataAbsentReason             | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/data-absent-reason
-Observation    | Observation.component.extension                    | 0..*   | 0    | Extension       | 
-Observation    | Observation.component.id                           | 0..1   | 0    | http://hl7.org/fhirpath/System.String | 
-Observation    | Observation.component.interpretation               | 0..*   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/observation-interpretation
-Observation    | Observation.component.modifierExtension            | 0..*   | 0    | Extension       | 
-Observation    | Observation.component.referenceRange               | 0..*   | 0    | None            | 
-Observation    | Observation.component.value[x]                     | 0..1   | 0    | Quantity        | 
-Observation    | Observation.contained                              | 0..*   | 0    | Resource        | 
-Observation    | Observation.dataAbsentReason                       | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/data-absent-reason
-Observation    | Observation.derivedFrom                            | 0..*   | 0    | Reference       | 
-Observation    | Observation.device                                 | 0..1   | 0    | Reference       | 
-Observation    | Observation.effective[x]                           | 1..1   | 1    | dateTime        | 
-Observation    | Observation.effective[x].extension                 | 0..1   | 0    | Extension       | 
-Observation    | Observation.effective[x].id                        | 0..1   | 0    | http://hl7.org/fhirpath/System.String | 
-Observation    | Observation.effective[x].value                     | 0..1   | 0    | http://hl7.org/fhirpath/System.DateTime | 
-Observation    | Observation.encounter                              | 0..1   | 0    | Reference       | 
-Observation    | Observation.extension                              | 0..*   | 0    | Extension       | 
-Observation    | Observation.focus                                  | 0..*   | 0    | Reference       | 
-Observation    | Observation.hasMember                              | 0..*   | 0    | Reference       | 
-Observation    | Observation.hasMember.display                      | 0..1   | 0    | string          | 
-Observation    | Observation.hasMember.extension                    | 0..*   | 0    | Extension       | 
-Observation    | Observation.hasMember.id                           | 0..1   | 0    | http://hl7.org/fhirpath/System.String | 
-Observation    | Observation.hasMember.identifier                   | 0..1   | 0    | Identifier      | 
-Observation    | Observation.hasMember.reference                    | 0..1   | 0    | string          | 
-Observation    | Observation.hasMember.type                         | 0..1   | 0    | uri             | http://hl7.org/fhir/ValueSet/resource-types
-Observation    | Observation.id                                     | 0..1   | 0    | http://hl7.org/fhirpath/System.String | 
-Observation    | Observation.identifier                             | 0..*   | 0    | Identifier      | 
-Observation    | Observation.implicitRules                          | 0..1   | 0    | uri             | 
-Observation    | Observation.interpretation                         | 0..*   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/observation-interpretation
-Observation    | Observation.issued                                 | 0..1   | 0    | instant         | 
-Observation    | Observation.language                               | 0..1   | 0    | code            | http://hl7.org/fhir/ValueSet/languages
-Observation    | Observation.meta                                   | 0..1   | 0    | Meta            | 
-Observation    | Observation.method                                 | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/observation-methods
-Observation    | Observation.modifierExtension                      | 0..*   | 0    | Extension       | 
-Observation    | Observation.note                                   | 0..*   | 0    | Annotation      | 
-Observation    | Observation.partOf                                 | 0..*   | 0    | Reference       | 
-Observation    | Observation.performer                              | 0..*   | 0    | Reference       | 
-Observation    | Observation.referenceRange                         | 0..*   | 0    | BackboneElement | 
-Observation    | Observation.referenceRange.age                     | 0..1   | 0    | Range           | 
-Observation    | Observation.referenceRange.appliesTo               | 0..*   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/referencerange-appliesto
-Observation    | Observation.referenceRange.extension               | 0..*   | 0    | Extension       | 
-Observation    | Observation.referenceRange.high                    | 0..1   | 0    | Quantity        | 
-Observation    | Observation.referenceRange.id                      | 0..1   | 0    | http://hl7.org/fhirpath/System.String | 
-Observation    | Observation.referenceRange.low                     | 0..1   | 0    | Quantity        | 
-Observation    | Observation.referenceRange.modifierExtension       | 0..*   | 0    | Extension       | 
-Observation    | Observation.referenceRange.text                    | 0..1   | 0    | string          | 
-Observation    | Observation.referenceRange.type                    | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/ValueSet/referencerange-meaning
-Observation    | Observation.specimen                               | 0..1   | 0    | Reference       | 
-Observation    | Observation.status                                 | 1..1   | 1    | code            | http://hl7.org/fhir/ValueSet/observation-status|4.0.1
-Observation    | Observation.subject                                | 1..1   | 1    | Reference       | 
-Observation    | Observation.subject.display                        | 0..1   | 0    | string          | 
-Observation    | Observation.subject.extension                      | 0..*   | 0    | Extension       | 
-Observation    | Observation.subject.id                             | 0..1   | 0    | http://hl7.org/fhirpath/System.String | 
-Observation    | Observation.subject.identifier                     | 0..1   | 0    | Identifier      | 
-Observation    | Observation.subject.reference                      | 1..1   | 1    | string          | 
-Observation    | Observation.subject.type                           | 0..1   | 0    | uri             | http://hl7.org/fhir/ValueSet/resource-types
-Observation    | Observation.text                                   | 0..1   | 0    | Narrative       | 
-Observation    | Observation.value[x]                               | 0..1   | 0    | Quantity        | 
-Observation    | Observation.value[x]                               | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/current-smoking-status-uv-ips
-Observation    | Observation.value[x]                               | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/pregnancy-status-uv-ips
-Observation    | Observation.value[x]                               | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/result-coded-value-pathology-uv-ips
-Observation    | Observation.value[x]                               | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/results-blood-group-snomed-ct-ips-free-set
-Observation    | Observation.value[x]                               | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/results-coded-values-laboratory-uv-ips
-Observation    | Observation.value[x]                               | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/results-microorganism-snomed-ct-ips-free-set
-Observation    | Observation.value[x]                               | 0..1   | 0    | CodeableConcept | http://hl7.org/fhir/uv/ips/ValueSet/results-presence-absence-snomed-ct-ips-free-set
-----------------------------------------------------------------------------------------------------------------------------------
-Ressources présentes dans ips_field_rules : ['Condition', 'Observation']
-Ressources ABSENTES de ips_field_rules : ['CarePlan', 'ClinicalImpression', 'Consent', 'Flag']
 
-================================================================================
-2.e INVENTAIRE terminology_codes PAR CATÉGORIE ET CONDITIONS SNOMED
-Query 1: select category, count(*) from terminology_codes group by category;
-Query 2: select count(*) from terminology_codes where snomed_code is not null and category = 'Condition';
-================================================================================
-None                      :     780182 codes
-Chemical_Allergen         :     232744 codes
-Protein_Allergen          :     162465 codes
-Medication                :     135541 codes
-Condition                 :      69523 codes
-Procedure                 :      51470 codes
-Device                    :      14048 codes
-Mineral                   :       3498 codes
-Food                      :       2856 codes
-Vitamin_DFI               :        124 codes
---------------------------------------------------
-Total Condition avec snomed_code renseigné : 46638
+--------------------------------------------------------------------------------
+2.b. select vs_id, code, display_en from ips_valuesets where code_system like "%loinc%" order by vs_id
+--------------------------------------------------------------------------------
+Total LOINC codes in ips_valuesets: 29
+
+condition-severity-uv-ips                            | LA6750-9     | Severe
+condition-severity-uv-ips                            | LA6751-7     | Moderate
+condition-severity-uv-ips                            | LA6752-5     | Mild
+current-smoking-status-uv-ips                        | LA15920-4    | Former smoker
+current-smoking-status-uv-ips                        | LA18976-3    | Current every day smoker
+current-smoking-status-uv-ips                        | LA18977-1    | Current some day smoker
+current-smoking-status-uv-ips                        | LA18978-9    | Never smoker
+current-smoking-status-uv-ips                        | LA18979-7    | Smoker, current status unknown
+current-smoking-status-uv-ips                        | LA18980-5    | Unknown if ever smoked
+current-smoking-status-uv-ips                        | LA18981-3    | Heavy tobacco smoker
+current-smoking-status-uv-ips                        | LA18982-1    | Light tobacco smoker
+edd-method-uv-ips                                    | 11778-8      | Delivery date Estimated
+edd-method-uv-ips                                    | 11779-6      | Delivery date Estimated from last menstrual period
+edd-method-uv-ips                                    | 11780-4      | Delivery date Estimated from ovulation date
+pregnancies-summary-uv-ips                           | 11612-9      | [#] Abortions
+pregnancies-summary-uv-ips                           | 11613-7      | [#] Abortions.induced
+pregnancies-summary-uv-ips                           | 11614-5      | [#] Abortions.spontaneous
+pregnancies-summary-uv-ips                           | 11636-8      | [#] Births.live
+pregnancies-summary-uv-ips                           | 11637-6      | [#] Births.preterm
+pregnancies-summary-uv-ips                           | 11638-4      | [#] Births.still living
+pregnancies-summary-uv-ips                           | 11639-2      | [#] Births.term
+pregnancies-summary-uv-ips                           | 11640-0      | [#] Births total
+pregnancies-summary-uv-ips                           | 33065-4      | [#] Ectopic pregnancy
+pregnancy-status-uv-ips                              | LA15173-0    | Pregnant
+pregnancy-status-uv-ips                              | LA26683-5    | Not pregnant
+pregnancy-status-uv-ips                              | LA4489-6     | Unknown
+problem-type-loinc                                   | 75326-9      | Problem
+results-radiology-txtobs-snomed-dicom-loinc-uv-ips   | 11329-0      | History
+results-radiology-txtobs-snomed-dicom-loinc-uv-ips   | 55115-0      | Request
+
+
+--------------------------------------------------------------------------------
+2.c. Value sets matching keywords: pregnancy/pregnanc, tobacco, smoking, alcohol,
+     functional, disability, vital, advance, social, problem, condition, severity, absent, unknown
+--------------------------------------------------------------------------------
+>>> ValueSet: absent-or-unknown-allergies-uv-ips
+    Count: 5 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - no-allergy-info    | No information about allergies (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+      - no-known-allergies | No known allergies (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+      - no-known-environmental-allergies | No known environmental allergies (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+      - no-known-food-allergies | No known food allergies (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+      - no-known-medication-allergies | No known medication allergies (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+
+>>> ValueSet: absent-or-unknown-devices-uv-ips
+    Count: 2 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - no-device-info     | No information about device (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+      - no-known-devices   | No known devices in use (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+
+>>> ValueSet: absent-or-unknown-immunizations-uv-ips
+    Count: 2 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - no-immunization-info | No information about immunizations (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+      - no-known-immunizations | No known immunizations (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+
+>>> ValueSet: absent-or-unknown-medications-uv-ips
+    Count: 2 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - no-known-medications | No known medications (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+      - no-medication-info | No information about medications (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+
+>>> ValueSet: absent-or-unknown-problems-uv-ips
+    Count: 2 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - no-known-problems  | No known problems (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+      - no-problem-info    | No information about current problems (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+
+>>> ValueSet: absent-or-unknown-procedures-uv-ips
+    Count: 2 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - no-known-procedures | No known procedures (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+      - no-procedure-info  | No information about past history of procedures (http://hl7.org/fhir/uv/ips/CodeSystem/absent-unknown-uv-ips)
+
+>>> ValueSet: condition-severity-uv-ips
+    Count: 3 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - LA6750-9           | Severe (http://loinc.org)
+      - LA6751-7           | Moderate (http://loinc.org)
+      - LA6752-5           | Mild (http://loinc.org)
+
+>>> ValueSet: current-smoking-status-uv-ips
+    Count: 8 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - LA15920-4          | Former smoker (http://loinc.org)
+      - LA18976-3          | Current every day smoker (http://loinc.org)
+      - LA18977-1          | Current some day smoker (http://loinc.org)
+      - LA18978-9          | Never smoker (http://loinc.org)
+      - LA18979-7          | Smoker, current status unknown (http://loinc.org)
+      - LA18980-5          | Unknown if ever smoked (http://loinc.org)
+      - LA18981-3          | Heavy tobacco smoker (http://loinc.org)
+      - LA18982-1          | Light tobacco smoker (http://loinc.org)
+
+>>> ValueSet: edd-method-uv-ips
+    Count: 3 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - 11778-8            | Delivery date Estimated (http://loinc.org)
+      - 11779-6            | Delivery date Estimated from last menstrual period (http://loinc.org)
+      - 11780-4            | Delivery date Estimated from ovulation date (http://loinc.org)
+
+>>> ValueSet: pregnancies-summary-uv-ips
+    Count: 9 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - 11612-9            | [#] Abortions (http://loinc.org)
+      - 11613-7            | [#] Abortions.induced (http://loinc.org)
+      - 11614-5            | [#] Abortions.spontaneous (http://loinc.org)
+      - 11636-8            | [#] Births.live (http://loinc.org)
+      - 11637-6            | [#] Births.preterm (http://loinc.org)
+      - 11638-4            | [#] Births.still living (http://loinc.org)
+      - 11639-2            | [#] Births.term (http://loinc.org)
+      - 11640-0            | [#] Births total (http://loinc.org)
+      - 33065-4            | [#] Ectopic pregnancy (http://loinc.org)
+
+>>> ValueSet: pregnancy-status-uv-ips
+    Count: 3 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - LA15173-0          | Pregnant (http://loinc.org)
+      - LA26683-5          | Not pregnant (http://loinc.org)
+      - LA4489-6           | Unknown (http://loinc.org)
+
+>>> ValueSet: problem-type-loinc
+    Count: 1 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - 75326-9            | Problem (http://loinc.org)
+
+>>> ValueSet: problem-type-uv-ips
+    Count: 1 concepts
+    Translations in ips_valuesets_translations: None (English display_en only)
+    First 10 rows (code | display_en):
+      - problem-list-item  | Problem List Item (http://terminology.hl7.org/CodeSystem/condition-category)
+
+>>> ValueSet: problems-snomed-ct-ips-free-set
+    Count: 5622 concepts
+    Translations in ips_valuesets_translations: ar: 3524, cs: 3598, de: 3580, es: 5265, et: 3524, fi: 3550, fr: 3596, hu: 3524, is: 3524, it: 3583, ja: 3512, ko: 3524, lt: 3524, lv: 3524, nl: 3562, no: 1782, pl: 3555, pt: 3587, ru: 3555, sv: 3563
+    First 10 rows (code | display_en):
+      - 1003488007         | Angle closure glaucoma suspect (http://snomed.info/sct)
+      - 1003614009         | Open angle glaucoma suspect (http://snomed.info/sct)
+      - 1003721002         | Pain of joint of knee (http://snomed.info/sct)
+      - 1003722009         | Pain of knee region (http://snomed.info/sct)
+      - 1004081001         | Neonatal disorder due to disease in mother (http://snomed.info/sct)
+      - 10050004           | Contusion of chest (http://snomed.info/sct)
+      - 10085004           | Metatarsalgia (http://snomed.info/sct)
+      - 1010215007         | Congenital subluxation of left hip joint (http://snomed.info/sct)
+      - 1010217004         | Congenital subluxation of right hip joint (http://snomed.info/sct)
+      - 1010568002         | Undescended left testicle (http://snomed.info/sct)
+
+
+
+--------------------------------------------------------------------------------
+2.d. select * from ips_field_rules where resource in ('Condition','Observation','Consent','ClinicalImpression','CarePlan','Flag','AllergyIntolerance','MedicationStatement') order by resource, field_path
+--------------------------------------------------------------------------------
+Total field rules: 222
+
+AllergyIntolerance   | AllergyIntolerance.asserter         | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | Source of the information about the allergy
+AllergyIntolerance   | AllergyIntolerance.category         | card=0..*   | req=0     | vs=http://hl7.org/fhir/ValueSet/allergy-intolerance-category|4.0.1 | str=required   | type=code            | food | medication | environment | biologic
+AllergyIntolerance   | AllergyIntolerance.clinicalStatus   | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/allergyintolerance-clinical|4.0.1 | str=required   | type=CodeableConcept | Concept - reference to a terminology or just  text
+AllergyIntolerance   | AllergyIntolerance.code             | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/absent-or-unknown-allergies-uv-ips | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+AllergyIntolerance   | AllergyIntolerance.code             | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/allergy-intolerance-snomed-ct-ips-free-set | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+AllergyIntolerance   | AllergyIntolerance.code             | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/allergy-intolerance-uv-ips | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+AllergyIntolerance   | AllergyIntolerance.code             | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/whoatc-uv-ips | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+AllergyIntolerance   | AllergyIntolerance.contained        | card=0..*   | req=0     | vs=                                       | str=           | type=Resource        | Contained, inline Resources
+AllergyIntolerance   | AllergyIntolerance.criticality      | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/allergy-intolerance-criticality|4.0.1 | str=required   | type=code            | low | high | unable-to-assess
+AllergyIntolerance   | AllergyIntolerance.encounter        | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | Encounter when the allergy or intolerance was asserted
+AllergyIntolerance   | AllergyIntolerance.extension        | card=0..1   | req=0     | vs=                                       | str=           | type=Extension       | Abatement datetime
+AllergyIntolerance   | AllergyIntolerance.id               | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Logical id of this artifact
+AllergyIntolerance   | AllergyIntolerance.identifier       | card=0..*   | req=0     | vs=                                       | str=           | type=Identifier      | External ids for this item
+AllergyIntolerance   | AllergyIntolerance.implicitRules    | card=0..1   | req=0     | vs=                                       | str=           | type=uri             | A set of rules under which this content was created
+AllergyIntolerance   | AllergyIntolerance.language         | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/languages | str=preferred  | type=code            | Language of the resource content
+AllergyIntolerance   | AllergyIntolerance.lastOccurrence   | card=0..1   | req=0     | vs=                                       | str=           | type=dateTime        | Date(/time) of last known occurrence of a reaction
+AllergyIntolerance   | AllergyIntolerance.meta             | card=0..1   | req=0     | vs=                                       | str=           | type=Meta            | Metadata about the resource
+AllergyIntolerance   | AllergyIntolerance.modifierExtension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Extensions that cannot be ignored
+AllergyIntolerance   | AllergyIntolerance.note             | card=0..*   | req=0     | vs=                                       | str=           | type=Annotation      | Additional text not captured in other fields
+AllergyIntolerance   | AllergyIntolerance.onset[x]         | card=0..1   | req=0     | vs=                                       | str=           | type=dateTime        | When allergy or intolerance was identified
+AllergyIntolerance   | AllergyIntolerance.patient          | card=1..1   | req=1     | vs=                                       | str=           | type=Reference       | Who the sensitivity is for
+AllergyIntolerance   | AllergyIntolerance.patient.display  | card=0..1   | req=0     | vs=                                       | str=           | type=string          | Text alternative for the resource
+AllergyIntolerance   | AllergyIntolerance.patient.extension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+AllergyIntolerance   | AllergyIntolerance.patient.id       | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+AllergyIntolerance   | AllergyIntolerance.patient.identifier | card=0..1   | req=0     | vs=                                       | str=           | type=Identifier      | Logical reference, when literal reference is not known
+AllergyIntolerance   | AllergyIntolerance.patient.reference | card=1..1   | req=1     | vs=                                       | str=           | type=string          | Literal reference, Relative, internal or absolute URL
+AllergyIntolerance   | AllergyIntolerance.patient.type     | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/resource-types | str=extensible | type=uri             | Type the reference refers to (e.g. "Patient")
+AllergyIntolerance   | AllergyIntolerance.reaction         | card=0..*   | req=0     | vs=                                       | str=           | type=BackboneElement | Adverse Reaction Events linked to exposure to substance
+AllergyIntolerance   | AllergyIntolerance.reaction.description | card=0..1   | req=0     | vs=                                       | str=           | type=string          | Description of the event as a whole
+AllergyIntolerance   | AllergyIntolerance.reaction.exposureRoute | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/route-codes | str=example    | type=CodeableConcept | How the subject was exposed to the substance
+AllergyIntolerance   | AllergyIntolerance.reaction.extension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+AllergyIntolerance   | AllergyIntolerance.reaction.id      | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+AllergyIntolerance   | AllergyIntolerance.reaction.manifestation | card=1..*   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-snomed-ct-ips-free-set | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+AllergyIntolerance   | AllergyIntolerance.reaction.modifierExtension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Extensions that cannot be ignored even if unrecognized
+AllergyIntolerance   | AllergyIntolerance.reaction.note    | card=0..*   | req=0     | vs=                                       | str=           | type=Annotation      | Text about event not captured in other fields
+AllergyIntolerance   | AllergyIntolerance.reaction.onset   | card=0..1   | req=0     | vs=                                       | str=           | type=dateTime        | Date(/time) when manifestations showed
+AllergyIntolerance   | AllergyIntolerance.reaction.severity | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/reaction-event-severity|4.0.1 | str=required   | type=code            | mild | moderate | severe (of event as a whole)
+AllergyIntolerance   | AllergyIntolerance.reaction.substance | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/substance-code | str=example    | type=CodeableConcept | Specific substance or pharmaceutical product considered to be responsible for event
+AllergyIntolerance   | AllergyIntolerance.recordedDate     | card=0..1   | req=0     | vs=                                       | str=           | type=dateTime        | Date first version of the resource instance was recorded
+AllergyIntolerance   | AllergyIntolerance.recorder         | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | Who recorded the sensitivity
+AllergyIntolerance   | AllergyIntolerance.text             | card=0..1   | req=0     | vs=                                       | str=           | type=Narrative       | Text summary of the resource, for human interpretation
+AllergyIntolerance   | AllergyIntolerance.type             | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/allergy-intolerance-type|4.0.1 | str=required   | type=code            | allergy | intolerance - Underlying mechanism (if known)
+AllergyIntolerance   | AllergyIntolerance.verificationStatus | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/allergyintolerance-verification|4.0.1 | str=required   | type=CodeableConcept | Concept - reference to a terminology or just  text
+Condition            | Condition.abatement[x]              | card=0..1   | req=0     | vs=                                       | str=           | type=dateTime        | When in resolution/remission
+Condition            | Condition.asserter                  | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | Person who asserts this condition
+Condition            | Condition.bodySite                  | card=0..*   | req=0     | vs=http://hl7.org/fhir/ValueSet/body-site | str=example    | type=CodeableConcept | Concept - reference to a terminology or just  text
+Condition            | Condition.category                  | card=0..*   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/problem-type-loinc | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Condition            | Condition.category                  | card=0..*   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/problem-type-uv-ips | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Condition            | Condition.clinicalStatus            | card=1..1   | req=1     | vs=http://hl7.org/fhir/ValueSet/condition-clinical|4.0.1 | str=required   | type=CodeableConcept | Concept - reference to a terminology or just  text
+Condition            | Condition.code                      | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/absent-or-unknown-problems-uv-ips | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Condition            | Condition.code                      | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/problems-snomed-absent-unknown-uv-ips | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Condition            | Condition.code                      | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/problems-snomed-ct-ips-free-set | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Condition            | Condition.contained                 | card=0..*   | req=0     | vs=                                       | str=           | type=Resource        | Contained, inline Resources
+Condition            | Condition.encounter                 | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | Encounter created as part of
+Condition            | Condition.evidence                  | card=0..*   | req=0     | vs=                                       | str=           | type=BackboneElement | Supporting evidence
+Condition            | Condition.evidence.code             | card=0..*   | req=0     | vs=http://hl7.org/fhir/ValueSet/manifestation-or-symptom | str=example    | type=CodeableConcept | Manifestation/symptom
+Condition            | Condition.evidence.detail           | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Supporting information found elsewhere
+Condition            | Condition.evidence.extension        | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+Condition            | Condition.evidence.id               | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+Condition            | Condition.evidence.modifierExtension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Extensions that cannot be ignored even if unrecognized
+Condition            | Condition.extension                 | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+Condition            | Condition.id                        | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Logical id of this artifact
+Condition            | Condition.identifier                | card=0..*   | req=0     | vs=                                       | str=           | type=Identifier      | External Ids for this condition
+Condition            | Condition.implicitRules             | card=0..1   | req=0     | vs=                                       | str=           | type=uri             | A set of rules under which this content was created
+Condition            | Condition.language                  | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/languages | str=preferred  | type=code            | Language of the resource content
+Condition            | Condition.meta                      | card=0..1   | req=0     | vs=                                       | str=           | type=Meta            | Metadata about the resource
+Condition            | Condition.modifierExtension         | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Extensions that cannot be ignored
+Condition            | Condition.note                      | card=0..*   | req=0     | vs=                                       | str=           | type=Annotation      | Additional information about the Condition
+Condition            | Condition.onset[x]                  | card=0..1   | req=0     | vs=                                       | str=           | type=dateTime        | Estimated or actual date,  date-time, or age
+Condition            | Condition.recordedDate              | card=0..1   | req=0     | vs=                                       | str=           | type=dateTime        | Date record was first recorded
+Condition            | Condition.recorder                  | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | Who recorded the condition
+Condition            | Condition.severity                  | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/condition-severity | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Condition            | Condition.severity                  | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/condition-severity-uv-ips | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Condition            | Condition.stage                     | card=0..*   | req=0     | vs=                                       | str=           | type=BackboneElement | Stage/grade, usually assessed formally
+Condition            | Condition.stage.assessment          | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Formal record of assessment
+Condition            | Condition.stage.extension           | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+Condition            | Condition.stage.id                  | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+Condition            | Condition.stage.modifierExtension   | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Extensions that cannot be ignored even if unrecognized
+Condition            | Condition.stage.summary             | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/condition-stage | str=example    | type=CodeableConcept | Simple summary (disease specific)
+Condition            | Condition.stage.type                | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/condition-stage-type | str=example    | type=CodeableConcept | Kind of staging
+Condition            | Condition.subject                   | card=1..1   | req=1     | vs=                                       | str=           | type=Reference       | Who has the condition?
+Condition            | Condition.subject.display           | card=0..1   | req=0     | vs=                                       | str=           | type=string          | Text alternative for the resource
+Condition            | Condition.subject.extension         | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+Condition            | Condition.subject.id                | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+Condition            | Condition.subject.identifier        | card=0..1   | req=0     | vs=                                       | str=           | type=Identifier      | Logical reference, when literal reference is not known
+Condition            | Condition.subject.reference         | card=1..1   | req=1     | vs=                                       | str=           | type=string          | Literal reference, Relative, internal or absolute URL
+Condition            | Condition.subject.type              | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/resource-types | str=extensible | type=uri             | Type the reference refers to (e.g. "Patient")
+Condition            | Condition.text                      | card=0..1   | req=0     | vs=                                       | str=           | type=Narrative       | Text summary of the resource, for human interpretation
+Condition            | Condition.verificationStatus        | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/condition-ver-status|4.0.1 | str=required   | type=CodeableConcept | Concept - reference to a terminology or just  text
+MedicationStatement  | MedicationStatement.basedOn         | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Fulfils plan, proposal or order
+MedicationStatement  | MedicationStatement.category        | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/medication-statement-category | str=preferred  | type=CodeableConcept | Type of medication usage
+MedicationStatement  | MedicationStatement.contained       | card=0..*   | req=0     | vs=                                       | str=           | type=Resource        | Contained, inline Resources
+MedicationStatement  | MedicationStatement.context         | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | Encounter / Episode associated with MedicationStatement
+MedicationStatement  | MedicationStatement.dateAsserted    | card=0..1   | req=0     | vs=                                       | str=           | type=dateTime        | When the statement was asserted?
+MedicationStatement  | MedicationStatement.derivedFrom     | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Additional supporting information
+MedicationStatement  | MedicationStatement.dosage          | card=0..*   | req=0     | vs=                                       | str=           | type=Dosage          | Details of how medication is/was taken or should be taken
+MedicationStatement  | MedicationStatement.dosage.additionalInstruction | card=0..*   | req=0     | vs=http://hl7.org/fhir/ValueSet/additional-instruction-codes | str=example    | type=CodeableConcept | Supplemental instruction or warnings to the patient - e.g. "with meals", "may cause drowsiness"
+MedicationStatement  | MedicationStatement.dosage.asNeeded[x] | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/medication-as-needed-reason | str=example    | type=boolean         | Take "as needed" (for x)
+MedicationStatement  | MedicationStatement.dosage.doseAndRate | card=0..*   | req=0     | vs=                                       | str=           | type=Element         | Amount of medication administered
+MedicationStatement  | MedicationStatement.dosage.doseAndRate.dose[x] | card=0..1   | req=0     | vs=                                       | str=           | type=Range           | Amount of medication per dose
+MedicationStatement  | MedicationStatement.dosage.doseAndRate.extension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+MedicationStatement  | MedicationStatement.dosage.doseAndRate.id | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+MedicationStatement  | MedicationStatement.dosage.doseAndRate.rate[x] | card=0..1   | req=0     | vs=                                       | str=           | type=Ratio           | Amount of medication per unit of time
+MedicationStatement  | MedicationStatement.dosage.doseAndRate.type | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/dose-rate-type | str=example    | type=CodeableConcept | The kind of dose or rate specified
+MedicationStatement  | MedicationStatement.dosage.extension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+MedicationStatement  | MedicationStatement.dosage.id       | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+MedicationStatement  | MedicationStatement.dosage.maxDosePerAdministration | card=0..1   | req=0     | vs=                                       | str=           | type=Quantity        | Upper limit on medication per administration
+MedicationStatement  | MedicationStatement.dosage.maxDosePerLifetime | card=0..1   | req=0     | vs=                                       | str=           | type=Quantity        | Upper limit on medication per lifetime of the patient
+MedicationStatement  | MedicationStatement.dosage.maxDosePerPeriod | card=0..1   | req=0     | vs=                                       | str=           | type=Ratio           | Upper limit on medication per unit of time
+MedicationStatement  | MedicationStatement.dosage.method   | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/administration-method-codes | str=example    | type=CodeableConcept | Technique for administering medication
+MedicationStatement  | MedicationStatement.dosage.modifierExtension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Extensions that cannot be ignored even if unrecognized
+MedicationStatement  | MedicationStatement.dosage.patientInstruction | card=0..1   | req=0     | vs=                                       | str=           | type=string          | Patient or consumer oriented instructions
+MedicationStatement  | MedicationStatement.dosage.route    | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/medicine-route-of-administration | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+MedicationStatement  | MedicationStatement.dosage.sequence | card=0..1   | req=0     | vs=                                       | str=           | type=integer         | The order of the dosage instructions
+MedicationStatement  | MedicationStatement.dosage.site     | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/approach-site-codes | str=example    | type=CodeableConcept | Body site to administer to
+MedicationStatement  | MedicationStatement.dosage.text     | card=0..1   | req=0     | vs=                                       | str=           | type=string          | Free text dosage instructions e.g. SIG
+MedicationStatement  | MedicationStatement.dosage.timing   | card=0..1   | req=0     | vs=                                       | str=           | type=Timing          | When medication should be administered
+MedicationStatement  | MedicationStatement.effective[x]    | card=1..1   | req=1     | vs=                                       | str=           | type=dateTime        | The date/time or interval when the medication is/was/will be taken
+MedicationStatement  | MedicationStatement.effective[x].extension | card=0..1   | req=0     | vs=                                       | str=           | type=Extension       | effective[x] absence reason
+MedicationStatement  | MedicationStatement.effective[x].id | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+MedicationStatement  | MedicationStatement.extension       | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+MedicationStatement  | MedicationStatement.id              | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Logical id of this artifact
+MedicationStatement  | MedicationStatement.identifier      | card=0..*   | req=0     | vs=                                       | str=           | type=Identifier      | External identifier
+MedicationStatement  | MedicationStatement.implicitRules   | card=0..1   | req=0     | vs=                                       | str=           | type=uri             | A set of rules under which this content was created
+MedicationStatement  | MedicationStatement.informationSource | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | Person or organization that provided the information about the taking of this medication
+MedicationStatement  | MedicationStatement.language        | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/languages | str=preferred  | type=code            | Language of the resource content
+MedicationStatement  | MedicationStatement.medication[x]   | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/medication-snomed-absent-unknown-uv-ips | str=preferred  | type=Reference       | What medication was taken
+MedicationStatement  | MedicationStatement.meta            | card=0..1   | req=0     | vs=                                       | str=           | type=Meta            | Metadata about the resource
+MedicationStatement  | MedicationStatement.modifierExtension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Extensions that cannot be ignored
+MedicationStatement  | MedicationStatement.note            | card=0..*   | req=0     | vs=                                       | str=           | type=Annotation      | Further information about the statement
+MedicationStatement  | MedicationStatement.partOf          | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Part of referenced event
+MedicationStatement  | MedicationStatement.reasonCode      | card=0..*   | req=0     | vs=http://hl7.org/fhir/ValueSet/condition-code | str=example    | type=CodeableConcept | Reason for why the medication is being/was taken
+MedicationStatement  | MedicationStatement.reasonReference | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Condition or observation that supports why the medication is being/was taken
+MedicationStatement  | MedicationStatement.status          | card=1..1   | req=1     | vs=http://hl7.org/fhir/ValueSet/medication-statement-status|4.0.1 | str=required   | type=code            | active | completed | entered-in-error | intended | stopped | on-hold | unknown | not-taken
+MedicationStatement  | MedicationStatement.statusReason    | card=0..*   | req=0     | vs=http://hl7.org/fhir/ValueSet/reason-medication-status-codes | str=example    | type=CodeableConcept | Reason for current status
+MedicationStatement  | MedicationStatement.subject         | card=1..1   | req=1     | vs=                                       | str=           | type=Reference       | Who is/was taking  the medication
+MedicationStatement  | MedicationStatement.subject.display | card=0..1   | req=0     | vs=                                       | str=           | type=string          | Text alternative for the resource
+MedicationStatement  | MedicationStatement.subject.extension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+MedicationStatement  | MedicationStatement.subject.id      | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+MedicationStatement  | MedicationStatement.subject.identifier | card=0..1   | req=0     | vs=                                       | str=           | type=Identifier      | Logical reference, when literal reference is not known
+MedicationStatement  | MedicationStatement.subject.reference | card=1..1   | req=1     | vs=                                       | str=           | type=string          | Literal reference, Relative, internal or absolute URL
+MedicationStatement  | MedicationStatement.subject.type    | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/resource-types | str=extensible | type=uri             | Type the reference refers to (e.g. "Patient")
+MedicationStatement  | MedicationStatement.text            | card=0..1   | req=0     | vs=                                       | str=           | type=Narrative       | Text summary of the resource, for human interpretation
+Observation          | Observation.basedOn                 | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Fulfills plan, proposal or order
+Observation          | Observation.bodySite                | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/body-site | str=example    | type=CodeableConcept | Observed body part
+Observation          | Observation.category                | card=0..*   | req=0     | vs=http://hl7.org/fhir/ValueSet/observation-category | str=preferred  | type=CodeableConcept | Classification of  type of observation
+Observation          | Observation.code                    | card=1..1   | req=1     | vs=http://hl7.org/fhir/ValueSet/observation-codes | str=example    | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.code                    | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/edd-method-uv-ips | str=required   | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.code                    | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/pregnancies-summary-uv-ips | str=required   | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.code                    | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/results-laboratory-observations-uv-ips | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.code                    | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/results-pathology-observations-uv-ips | str=extensible | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.code                    | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/results-radiology-observations-uv-ips | str=extensible | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.component               | card=0..0   | req=0     | vs=                                       | str=           | type=BackboneElement | Component results
+Observation          | Observation.component.code          | card=1..1   | req=1     | vs=http://hl7.org/fhir/ValueSet/observation-codes | str=example    | type=CodeableConcept | Type of component observation (code / type)
+Observation          | Observation.component.code          | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/results-radiology-numobs-snomed-dicom-uv-ips | str=extensible | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.component.code          | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/results-radiology-observations-uv-ips | str=extensible | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.component.code          | card=1..1   | req=1     | vs=http://hl7.org/fhir/uv/ips/ValueSet/results-radiology-txtobs-snomed-dicom-loinc-uv-ips | str=extensible | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.component.dataAbsentReason | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/data-absent-reason | str=extensible | type=CodeableConcept | Why the component result is missing
+Observation          | Observation.component.extension     | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+Observation          | Observation.component.id            | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+Observation          | Observation.component.interpretation | card=0..*   | req=0     | vs=http://hl7.org/fhir/ValueSet/observation-interpretation | str=extensible | type=CodeableConcept | High, low, normal, etc.
+Observation          | Observation.component.modifierExtension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Extensions that cannot be ignored even if unrecognized
+Observation          | Observation.component.referenceRange | card=0..*   | req=0     | vs=                                       | str=           | type=None            | Provides guide for interpretation of component result
+Observation          | Observation.component.value[x]      | card=0..1   | req=0     | vs=                                       | str=           | type=Quantity        | Actual component result
+Observation          | Observation.contained               | card=0..*   | req=0     | vs=                                       | str=           | type=Resource        | Contained, inline Resources
+Observation          | Observation.dataAbsentReason        | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/data-absent-reason | str=extensible | type=CodeableConcept | Why the result is missing
+Observation          | Observation.derivedFrom             | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Related measurements the observation is made from
+Observation          | Observation.device                  | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | (Measurement) Device
+Observation          | Observation.effective[x]            | card=1..1   | req=1     | vs=                                       | str=           | type=dateTime        | Clinically relevant time/time-period for observation
+Observation          | Observation.effective[x].extension  | card=0..1   | req=0     | vs=                                       | str=           | type=Extension       | effective[x] absence reason
+Observation          | Observation.effective[x].id         | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | xml:id (or equivalent in JSON)
+Observation          | Observation.effective[x].value      | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.DateTime | Primitive value for dateTime
+Observation          | Observation.encounter               | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | Healthcare event during which this observation is made
+Observation          | Observation.extension               | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+Observation          | Observation.focus                   | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | What the observation is about, when it is not about the subject of record
+Observation          | Observation.hasMember               | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Related resource that belongs to the Observation group
+Observation          | Observation.hasMember.display       | card=0..1   | req=0     | vs=                                       | str=           | type=string          | Text alternative for the resource
+Observation          | Observation.hasMember.extension     | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+Observation          | Observation.hasMember.id            | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+Observation          | Observation.hasMember.identifier    | card=0..1   | req=0     | vs=                                       | str=           | type=Identifier      | Logical reference, when literal reference is not known
+Observation          | Observation.hasMember.reference     | card=0..1   | req=0     | vs=                                       | str=           | type=string          | Literal reference, Relative, internal or absolute URL
+Observation          | Observation.hasMember.type          | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/resource-types | str=extensible | type=uri             | Type the reference refers to (e.g. "Patient")
+Observation          | Observation.id                      | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Logical id of this artifact
+Observation          | Observation.identifier              | card=0..*   | req=0     | vs=                                       | str=           | type=Identifier      | Business Identifier for observation
+Observation          | Observation.implicitRules           | card=0..1   | req=0     | vs=                                       | str=           | type=uri             | A set of rules under which this content was created
+Observation          | Observation.interpretation          | card=0..*   | req=0     | vs=http://hl7.org/fhir/ValueSet/observation-interpretation | str=extensible | type=CodeableConcept | High, low, normal, etc.
+Observation          | Observation.issued                  | card=0..1   | req=0     | vs=                                       | str=           | type=instant         | Date/Time this version was made available
+Observation          | Observation.language                | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/languages | str=preferred  | type=code            | Language of the resource content
+Observation          | Observation.meta                    | card=0..1   | req=0     | vs=                                       | str=           | type=Meta            | Metadata about the resource
+Observation          | Observation.method                  | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/observation-methods | str=example    | type=CodeableConcept | How it was done
+Observation          | Observation.modifierExtension       | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Extensions that cannot be ignored
+Observation          | Observation.note                    | card=0..*   | req=0     | vs=                                       | str=           | type=Annotation      | Comments about the observation
+Observation          | Observation.partOf                  | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Part of referenced event
+Observation          | Observation.performer               | card=0..*   | req=0     | vs=                                       | str=           | type=Reference       | Who is responsible for the observation
+Observation          | Observation.referenceRange          | card=0..*   | req=0     | vs=                                       | str=           | type=BackboneElement | Provides guide for interpretation
+Observation          | Observation.referenceRange.age      | card=0..1   | req=0     | vs=                                       | str=           | type=Range           | Applicable age range, if relevant
+Observation          | Observation.referenceRange.appliesTo | card=0..*   | req=0     | vs=http://hl7.org/fhir/ValueSet/referencerange-appliesto | str=example    | type=CodeableConcept | Reference range population
+Observation          | Observation.referenceRange.extension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+Observation          | Observation.referenceRange.high     | card=0..1   | req=0     | vs=                                       | str=           | type=Quantity        | High Range, if relevant
+Observation          | Observation.referenceRange.id       | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+Observation          | Observation.referenceRange.low      | card=0..1   | req=0     | vs=                                       | str=           | type=Quantity        | Low Range, if relevant
+Observation          | Observation.referenceRange.modifierExtension | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Extensions that cannot be ignored even if unrecognized
+Observation          | Observation.referenceRange.text     | card=0..1   | req=0     | vs=                                       | str=           | type=string          | Text based reference range in an observation
+Observation          | Observation.referenceRange.type     | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/referencerange-meaning | str=preferred  | type=CodeableConcept | Reference range qualifier
+Observation          | Observation.specimen                | card=0..1   | req=0     | vs=                                       | str=           | type=Reference       | Specimen used for this observation
+Observation          | Observation.status                  | card=1..1   | req=1     | vs=http://hl7.org/fhir/ValueSet/observation-status|4.0.1 | str=required   | type=code            | registered | preliminary | final | amended +
+Observation          | Observation.subject                 | card=1..1   | req=1     | vs=                                       | str=           | type=Reference       | Who and/or what the observation is about
+Observation          | Observation.subject.display         | card=0..1   | req=0     | vs=                                       | str=           | type=string          | Text alternative for the resource
+Observation          | Observation.subject.extension       | card=0..*   | req=0     | vs=                                       | str=           | type=Extension       | Additional content defined by implementations
+Observation          | Observation.subject.id              | card=0..1   | req=0     | vs=                                       | str=           | type=http://hl7.org/fhirpath/System.String | Unique id for inter-element referencing
+Observation          | Observation.subject.identifier      | card=0..1   | req=0     | vs=                                       | str=           | type=Identifier      | Logical reference, when literal reference is not known
+Observation          | Observation.subject.reference       | card=1..1   | req=1     | vs=                                       | str=           | type=string          | Literal reference, Relative, internal or absolute URL
+Observation          | Observation.subject.type            | card=0..1   | req=0     | vs=http://hl7.org/fhir/ValueSet/resource-types | str=extensible | type=uri             | Type the reference refers to (e.g. "Patient")
+Observation          | Observation.text                    | card=0..1   | req=0     | vs=                                       | str=           | type=Narrative       | Text summary of the resource, for human interpretation
+Observation          | Observation.value[x]                | card=0..1   | req=0     | vs=                                       | str=           | type=Quantity        | Actual result
+Observation          | Observation.value[x]                | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/current-smoking-status-uv-ips | str=required   | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.value[x]                | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/pregnancy-status-uv-ips | str=required   | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.value[x]                | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/result-coded-value-pathology-uv-ips | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.value[x]                | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/results-blood-group-snomed-ct-ips-free-set | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.value[x]                | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/results-coded-values-laboratory-uv-ips | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.value[x]                | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/results-microorganism-snomed-ct-ips-free-set | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+Observation          | Observation.value[x]                | card=0..1   | req=0     | vs=http://hl7.org/fhir/uv/ips/ValueSet/results-presence-absence-snomed-ct-ips-free-set | str=preferred  | type=CodeableConcept | Concept - reference to a terminology or just  text
+
+
+--------------------------------------------------------------------------------
+2.e. Terminology Codes Categories & Condition SNOMED Count
+--------------------------------------------------------------------------------
+select category, count(*) from terminology_codes group by category:
+  None                :   780182
+  Chemical_Allergen   :   232744
+  Protein_Allergen    :   162465
+  Medication          :   135541
+  Condition           :    69523
+  Procedure           :    51470
+  Device              :    14048
+  Mineral             :     3498
+  Food                :     2856
+  Vitamin_DFI         :      124
+
+select count(*) from terminology_codes where snomed_code is not null and category = "Condition":
+  Total Condition with SNOMED code: 46638

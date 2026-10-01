@@ -1,0 +1,32 @@
+FHIR Validation tool Version 6.10.4 (Git# 1b90fb13f77b). Built 2026-09-04T05:45:41.468Z (27 days old)
+  Java:   24.0.1 from /Users/kurodohenroonsen/Library/Java/JavaVirtualMachines/openjdk-24.0.1/Contents/Home on x86_64 (64bit). 8192MB available
+  Paths:  Current = /Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL, Package Cache = /Users/kurodohenroonsen/.fhir/packages
+  Params: qa/device/out/08947ec-20261001-0604/files/demo_kamekichi.fhir.json -version 4.0.1 -ig hl7.fhir.uv.ips#1.1.0 -locale en -output qa/device/out/08947ec-20261001-0604/validator/demo_kamekichi-tx.xml
+  Locale: /
+  Jurisdiction: None specified (locale = )
+  Note that exceptions and validation failures may happen in the absence of a locale
+Loading
+  Loading FHIR v4.0.1 from hl7.fhir.r4.core#4.0.1
+  Load hl7.terminology.r4#6.2.0 - 4288 resources (00:20.391)
+  Load hl7.fhir.uv.extensions.r4#5.2.0 - 759 resources (00:13.436)
+  Loaded FHIR - 8268 resources (00:00.002)
+  Terminology server https://tx.fhir.org - Version Connected to Terminology Server at https://tx.fhir.org (00:03.489)
+  Load hl7.terminology#7.4.0 - 4181 resources (00:03.808)
+  Load hl7.fhir.uv.extensions.r5#5.2.0 - 759 resources (00:00.328)
+  Load hl7.terminology.r5#7.1.0 - 4072 resources (00:04.148)
+  Load hl7.fhir.uv.extensions#5.3.0 - 856 resources (00:00.027)
+  Load hl7.terminology.r4#5.0.0 - 4175 resources (00:04.657)
+  Load fhir.dicom#2022.4.20221006 - 1319 resources (00:00.043)
+  Load hl7.fhir.uv.ips#1.1.0 - 104 resources (00:00.002)
+  Package Summary: [hl7.fhir.r4.core#4.0.1, hl7.fhir.xver-extensions#0.1.0, hl7.terminology.r4#6.2.0, hl7.fhir.uv.extensions.r4#5.2.0, hl7.terminology#7.4.0, hl7.fhir.uv.extensions.r5#5.2.0, hl7.terminology.r5#7.1.0, hl7.fhir.uv.extensions#5.3.0, hl7.terminology.r4#5.0.0, fhir.dicom#2022.4.20221006, hl7.fhir.uv.ips#1.1.0]
+  Terminology Cache at /var/folders/fc/5y9pkhbx2fd64dkgd_f6ybnr0000gp/T/default-tx-cache
+  Get set... 
+  ...go! (00:05.560)
+Cached new session. Cache size = 1
+Sources to validate: qa/device/out/08947ec-20261001-0604/files/demo_kamekichi.fhir.json
+Validating
+  Validate qa/device/out/08947ec-20261001-0604/files/demo_kamekichi.fhir.json
+ 00:01.842
+Done. Times: Loading: 00:55.979, validation: 00:01.842. Memory = 472Mb
+
+Done. Times: Loading: 00:55.979, validation: 00:01.842. Max Memory = 8Gb
