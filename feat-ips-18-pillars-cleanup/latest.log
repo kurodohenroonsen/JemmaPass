@@ -16,20 +16,19 @@ Daemon will be stopped at the end of the build
 > Task :app:compileDebugNavigationResources
 > Task :app:mapDebugSourceSetPaths
 > Task :app:createDebugCompatibleScreenManifests
-> Task :app:parseDebugLocalResources
 > Task :app:extractDeepLinksDebug
-> Task :app:dataBindingGenBaseClassesDebug
+> Task :app:parseDebugLocalResources
 
 > Task :app:processDebugMainManifest
 /home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/AndroidManifest.xml:165:9-168:35 Warning:
 	provider#com.google.firebase.provider.FirebaseInitProvider was tagged at AndroidManifest.xml:165 to remove other declarations but no other declaration present
 
+> Task :app:dataBindingGenBaseClassesDebug
 > Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
-> Task :app:javaPreCompileDebug
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:javaPreCompileDebug
 > Task :app:javaPreCompileDebugUnitTest
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
@@ -39,6 +38,7 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugJniLibFolders
 > Task :app:checkDebugDuplicateClasses
 > Task :app:mergeDebugNativeLibs
+> Task :app:processDebugManifestForPackage
 > Task :app:mergeLibDexDebug
 
 > Task :app:stripDebugDebugSymbols
@@ -650,6 +650,16 @@ w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/mai
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:376:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaProfileJ.kt:378:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
+- To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/radar/RadarController.kt:76:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
 - To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
@@ -730,8 +740,8 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 > Task :app:bundleDebugClassesToCompileJar
 > Task :app:transformDebugClassesWithAsm
 > Task :app:kspDebugUnitTestKotlin
-> Task :app:bundleDebugClassesToRuntimeJar
 > Task :app:mergeDebugJavaResource
+> Task :app:bundleDebugClassesToRuntimeJar
 > Task :app:dexBuilderDebug
 > Task :app:mergeProjectDexDebug
 > Task :app:packageDebug
@@ -744,9 +754,9 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 > Task :app:processDebugUnitTestJavaRes
 > Task :app:transformDebugUnitTestClassesWithAsm
 > Task :app:testDebugUnitTest
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790834669865.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790841513731.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
 
-BUILD SUCCESSFUL in 2m 46s
+BUILD SUCCESSFUL in 2m 34s
 55 actionable tasks: 55 executed
