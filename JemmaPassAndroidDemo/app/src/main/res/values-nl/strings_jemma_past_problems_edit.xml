@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_past_problems_edit.xml — JEMMA Pass · IPS-pijler „Doorgemaakte ziekten“ (NL) -->
+<resources>
+
+    <string name="past_problems_edit_title">Doorgemaakte ziekten</string>
+    <string name="past_problems_edit_hero_title">Doorgemaakte ziekten</string>
+    <string name="past_problems_fab_add_desc">Doorgemaakte ziekte toevoegen</string>
+    <string name="past_problems_empty_default">Nog geen doorgemaakte ziekte geregistreerd.\nTik op + om een genezen of inactieve aandoening toe te voegen.</string>
+    <string name="past_problems_empty_no_profile">Geen profiel geselecteerd. Maak of kies eerst een profiel.</string>
+    <string name="past_problems_unnamed">Naamloze aandoening</string>
+    <plurals name="past_problems_count">
+        <item quantity="zero">Geen doorgemaakte ziekte</item>
+        <item quantity="one">%d doorgemaakte ziekte</item>
+        <item quantity="other">%d doorgemaakte ziekten</item>
+    </plurals>
+    <string name="past_problems_saved">Doorgemaakte ziekten opgeslagen</string>
+    <string name="past_problems_save_failed">Kon de doorgemaakte ziekten niet opslaan</string>
+    <string name="past_problems_delete_title">Deze doorgemaakte ziekte verwijderen?</string>
+    <string name="past_problems_delete_message">“%1$s” wordt uit het profiel verwijderd.</string>
+    <string name="past_problems_delete_cancel">Annuleren</string>
+    <string name="past_problems_delete_confirm">Verwijderen</string>
+    <string name="past_problems_date_unknown">Begin onbekend</string>
+    <string name="past_problem_form_title_create">📜  Doorgemaakte ziekte toevoegen</string>
+    <string name="past_problem_form_title_edit">📜  Doorgemaakte ziekte bewerken</string>
+    <string name="past_problem_form_label_code">Ziekte / aandoening</string>
+    <string name="past_problem_form_code_hint">Tik om een aandoening te kiezen…</string>
+    <string name="past_problem_form_code_clear_desc">Aandoening wissen</string>
+    <string name="past_problem_form_code_picker_title">Kies een doorgemaakte ziekte</string>
+    <string name="past_problem_form_label_text">Of typ de naam van de aandoening</string>
+    <string name="past_problem_form_text_helper">Vrije tekst, alleen gebruikt als hierboven geen aandoening is gekozen</string>
+    <string name="past_problem_form_label_onset">Begin</string>
+    <string name="past_problem_form_onset_hint">Begin onbekend — tik om in te stellen</string>
+    <string name="past_problem_form_onset_clear_desc">Begin wissen</string>
+    <string name="past_problem_form_onset_pick_title">Wanneer begon het?</string>
+    <string name="past_problem_form_label_abatement">Genezen op</string>
+    <string name="past_problem_form_abatement_hint">Einde onbekend — tik om in te stellen</string>
+    <string name="past_problem_form_abatement_clear_desc">Einddatum wissen</string>
+    <string name="past_problem_form_abatement_pick_title">Wanneer was het genezen?</string>
+    <string name="past_problem_form_date_mode_exact">📅  Exacte datum</string>
+    <string name="past_problem_form_date_mode_year">🗓  Alleen jaar</string>
+    <string name="past_problem_form_year_hint">Jaar (bijv. 1962)</string>
+    <string name="past_problem_form_year_invalid">Vul een jaar in tussen 1900 en dit jaar</string>
+    <string name="past_problem_form_ok">OK</string>
+    <string name="past_problem_form_label_status">Klinische status</string>
+    <string name="past_problem_form_status_pick_title">Klinische status</string>
+    <string name="past_problem_status_resolved">✅ Genezen</string>
+    <string name="past_problem_status_inactive">💤 Inactief</string>
+    <string name="past_problem_status_remission">🌗 In remissie</string>
+    <string name="past_problem_form_label_severity">Ernst</string>
+    <string name="past_problem_form_severity_pick_title">Ernst</string>
+    <string name="past_problem_severity_none">— Niet opgegeven</string>
+    <string name="past_problem_severity_mild">🟢 Licht</string>
+    <string name="past_problem_severity_moderate">🟠 Matig</string>
+    <string name="past_problem_severity_severe">🔴 Ernstig</string>
+    <string name="past_problem_form_label_note">Notitie</string>
+    <string name="past_problem_form_note_helper">Behandeling, complicaties, restverschijnselen…</string>
+    <string name="past_problem_form_cancel">Annuleren</string>
+    <string name="past_problem_form_delete">Verwijderen</string>
+    <string name="past_problem_form_save">Opslaan</string>
+    <string name="past_problem_form_validation_code">Kies een aandoening of typ de naam</string>
+    <string name="past_problem_form_validation_chronology">De einddatum kan niet vóór het begin liggen</string>
+    <string name="profile_detail_past_problems_title">📜 DOORGEMAAKTE ZIEKTEN (%1$d)</string>
+</resources>

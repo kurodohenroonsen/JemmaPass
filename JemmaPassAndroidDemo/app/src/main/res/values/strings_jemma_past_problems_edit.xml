@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_past_problems_edit.xml — JEMMA Pass · IPS pillar "History of Past Illness" (EN, default) -->
+<resources>
+
+    <string name="past_problems_edit_title">Past illnesses</string>
+    <string name="past_problems_edit_hero_title">Past illnesses</string>
+    <string name="past_problems_fab_add_desc">Add a past illness</string>
+    <string name="past_problems_empty_default">No past illness recorded yet.\nTap + to add a resolved or inactive condition.</string>
+    <string name="past_problems_empty_no_profile">No profile selected. Create or select a profile first.</string>
+    <string name="past_problems_unnamed">Unnamed illness</string>
+    <plurals name="past_problems_count">
+        <item quantity="zero">No past illness</item>
+        <item quantity="one">%d past illness</item>
+        <item quantity="other">%d past illnesses</item>
+    </plurals>
+    <string name="past_problems_saved">Past illnesses saved</string>
+    <string name="past_problems_save_failed">Could not save the past illnesses</string>
+    <string name="past_problems_delete_title">Delete this past illness?</string>
+    <string name="past_problems_delete_message">“%1$s” will be removed from the profile.</string>
+    <string name="past_problems_delete_cancel">Cancel</string>
+    <string name="past_problems_delete_confirm">Delete</string>
+    <string name="past_problems_date_unknown">Onset unknown</string>
+    <string name="past_problem_form_title_create">📜  Add a past illness</string>
+    <string name="past_problem_form_title_edit">📜  Edit past illness</string>
+    <string name="past_problem_form_label_code">Illness / condition</string>
+    <string name="past_problem_form_code_hint">Tap to choose an illness…</string>
+    <string name="past_problem_form_code_clear_desc">Clear illness</string>
+    <string name="past_problem_form_code_picker_title">Choose a past illness</string>
+    <string name="past_problem_form_label_text">Or type the illness name</string>
+    <string name="past_problem_form_text_helper">Free text, used only when no illness is picked above</string>
+    <string name="past_problem_form_label_onset">Onset</string>
+    <string name="past_problem_form_onset_hint">Unknown onset — tap to set</string>
+    <string name="past_problem_form_onset_clear_desc">Clear onset</string>
+    <string name="past_problem_form_onset_pick_title">When did it start?</string>
+    <string name="past_problem_form_label_abatement">Resolved on</string>
+    <string name="past_problem_form_abatement_hint">Unknown end — tap to set</string>
+    <string name="past_problem_form_abatement_clear_desc">Clear end date</string>
+    <string name="past_problem_form_abatement_pick_title">When did it resolve?</string>
+    <string name="past_problem_form_date_mode_exact">📅  Exact date</string>
+    <string name="past_problem_form_date_mode_year">🗓  Year only</string>
+    <string name="past_problem_form_year_hint">Year (e.g. 1962)</string>
+    <string name="past_problem_form_year_invalid">Enter a year between 1900 and this year</string>
+    <string name="past_problem_form_ok">OK</string>
+    <string name="past_problem_form_label_status">Clinical status</string>
+    <string name="past_problem_form_status_pick_title">Clinical status</string>
+    <string name="past_problem_status_resolved">✅ Resolved</string>
+    <string name="past_problem_status_inactive">💤 Inactive</string>
+    <string name="past_problem_status_remission">🌗 In remission</string>
+    <string name="past_problem_form_label_severity">Severity</string>
+    <string name="past_problem_form_severity_pick_title">Severity</string>
+    <string name="past_problem_severity_none">— Not specified</string>
+    <string name="past_problem_severity_mild">🟢 Mild</string>
+    <string name="past_problem_severity_moderate">🟠 Moderate</string>
+    <string name="past_problem_severity_severe">🔴 Severe</string>
+    <string name="past_problem_form_label_note">Note</string>
+    <string name="past_problem_form_note_helper">Treatment, complications, sequelae…</string>
+    <string name="past_problem_form_cancel">Cancel</string>
+    <string name="past_problem_form_delete">Delete</string>
+    <string name="past_problem_form_save">Save</string>
+    <string name="past_problem_form_validation_code">Pick an illness or type its name</string>
+    <string name="past_problem_form_validation_chronology">The end date cannot be before the onset</string>
+    <string name="profile_detail_past_problems_title">📜 PAST ILLNESSES (%1$d)</string>
+</resources>

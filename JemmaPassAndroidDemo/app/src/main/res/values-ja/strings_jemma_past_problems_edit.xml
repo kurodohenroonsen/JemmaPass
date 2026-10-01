@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_past_problems_edit.xml — JEMMA Pass · IPS「既往歴」(JA) -->
+<resources>
+
+    <string name="past_problems_edit_title">既往歴</string>
+    <string name="past_problems_edit_hero_title">既往歴</string>
+    <string name="past_problems_fab_add_desc">既往歴を追加</string>
+    <string name="past_problems_empty_default">既往歴の記録はまだありません。\n＋をタップして治癒・非活動の病気を追加してください。</string>
+    <string name="past_problems_empty_no_profile">プロフィールが選択されていません。先にプロフィールを作成または選択してください。</string>
+    <string name="past_problems_unnamed">名称未設定の疾患</string>
+    <plurals name="past_problems_count">
+        <item quantity="zero">既往歴なし</item>
+        <item quantity="one">%d 件の既往歴</item>
+        <item quantity="other">%d 件の既往歴</item>
+    </plurals>
+    <string name="past_problems_saved">既往歴を保存しました</string>
+    <string name="past_problems_save_failed">既往歴を保存できませんでした</string>
+    <string name="past_problems_delete_title">この既往歴を削除しますか？</string>
+    <string name="past_problems_delete_message">「%1$s」をプロフィールから削除します。</string>
+    <string name="past_problems_delete_cancel">キャンセル</string>
+    <string name="past_problems_delete_confirm">削除</string>
+    <string name="past_problems_date_unknown">発症日不明</string>
+    <string name="past_problem_form_title_create">📜  既往歴を追加</string>
+    <string name="past_problem_form_title_edit">📜  既往歴を編集</string>
+    <string name="past_problem_form_label_code">疾患・病態</string>
+    <string name="past_problem_form_code_hint">タップして疾患を選択…</string>
+    <string name="past_problem_form_code_clear_desc">疾患をクリア</string>
+    <string name="past_problem_form_code_picker_title">既往疾患を選択</string>
+    <string name="past_problem_form_label_text">または疾患名を入力</string>
+    <string name="past_problem_form_text_helper">上で疾患が選択されていない場合のみ使用される自由記述</string>
+    <string name="past_problem_form_label_onset">発症</string>
+    <string name="past_problem_form_onset_hint">発症日不明 — タップして設定</string>
+    <string name="past_problem_form_onset_clear_desc">発症日をクリア</string>
+    <string name="past_problem_form_onset_pick_title">いつ発症しましたか？</string>
+    <string name="past_problem_form_label_abatement">治癒・終了</string>
+    <string name="past_problem_form_abatement_hint">終了日不明 — タップして設定</string>
+    <string name="past_problem_form_abatement_clear_desc">終了日をクリア</string>
+    <string name="past_problem_form_abatement_pick_title">いつ治癒しましたか？</string>
+    <string name="past_problem_form_date_mode_exact">📅  正確な日付</string>
+    <string name="past_problem_form_date_mode_year">🗓  年のみ</string>
+    <string name="past_problem_form_year_hint">年（例：1962）</string>
+    <string name="past_problem_form_year_invalid">1900年から今年までの年を入力してください</string>
+    <string name="past_problem_form_ok">OK</string>
+    <string name="past_problem_form_label_status">臨床状態</string>
+    <string name="past_problem_form_status_pick_title">臨床状態</string>
+    <string name="past_problem_status_resolved">✅ 治癒</string>
+    <string name="past_problem_status_inactive">💤 非活動</string>
+    <string name="past_problem_status_remission">🌗 寛解</string>
+    <string name="past_problem_form_label_severity">重症度</string>
+    <string name="past_problem_form_severity_pick_title">重症度</string>
+    <string name="past_problem_severity_none">— 未指定</string>
+    <string name="past_problem_severity_mild">🟢 軽度</string>
+    <string name="past_problem_severity_moderate">🟠 中等度</string>
+    <string name="past_problem_severity_severe">🔴 重度</string>
+    <string name="past_problem_form_label_note">メモ</string>
+    <string name="past_problem_form_note_helper">治療・合併症・後遺症など</string>
+    <string name="past_problem_form_cancel">キャンセル</string>
+    <string name="past_problem_form_delete">削除</string>
+    <string name="past_problem_form_save">保存</string>
+    <string name="past_problem_form_validation_code">疾患を選択するか名前を入力してください</string>
+    <string name="past_problem_form_validation_chronology">終了日は発症日より前にできません</string>
+    <string name="profile_detail_past_problems_title">📜 既往歴 (%1$d)</string>
+</resources>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_past_problems_edit.xml — JEMMA Pass · IPS-Säule „Frühere Erkrankungen“ (DE) -->
+<resources>
+
+    <string name="past_problems_edit_title">Frühere Erkrankungen</string>
+    <string name="past_problems_edit_hero_title">Frühere Erkrankungen</string>
+    <string name="past_problems_fab_add_desc">Frühere Erkrankung hinzufügen</string>
+    <string name="past_problems_empty_default">Noch keine frühere Erkrankung erfasst.\nTippe auf +, um eine ausgeheilte oder inaktive Erkrankung hinzuzufügen.</string>
+    <string name="past_problems_empty_no_profile">Kein Profil ausgewählt. Erstelle oder wähle zuerst ein Profil.</string>
+    <string name="past_problems_unnamed">Unbenannte Erkrankung</string>
+    <plurals name="past_problems_count">
+        <item quantity="zero">Keine frühere Erkrankung</item>
+        <item quantity="one">%d frühere Erkrankung</item>
+        <item quantity="other">%d frühere Erkrankungen</item>
+    </plurals>
+    <string name="past_problems_saved">Frühere Erkrankungen gespeichert</string>
+    <string name="past_problems_save_failed">Frühere Erkrankungen konnten nicht gespeichert werden</string>
+    <string name="past_problems_delete_title">Diese frühere Erkrankung löschen?</string>
+    <string name="past_problems_delete_message">„%1$s“ wird aus dem Profil entfernt.</string>
+    <string name="past_problems_delete_cancel">Abbrechen</string>
+    <string name="past_problems_delete_confirm">Löschen</string>
+    <string name="past_problems_date_unknown">Beginn unbekannt</string>
+    <string name="past_problem_form_title_create">📜  Frühere Erkrankung hinzufügen</string>
+    <string name="past_problem_form_title_edit">📜  Frühere Erkrankung bearbeiten</string>
+    <string name="past_problem_form_label_code">Erkrankung</string>
+    <string name="past_problem_form_code_hint">Tippe, um eine Erkrankung zu wählen…</string>
+    <string name="past_problem_form_code_clear_desc">Erkrankung löschen</string>
+    <string name="past_problem_form_code_picker_title">Frühere Erkrankung wählen</string>
+    <string name="past_problem_form_label_text">Oder Namen der Erkrankung eingeben</string>
+    <string name="past_problem_form_text_helper">Freitext, nur verwendet, wenn oben keine Erkrankung gewählt ist</string>
+    <string name="past_problem_form_label_onset">Beginn</string>
+    <string name="past_problem_form_onset_hint">Beginn unbekannt — tippe zum Festlegen</string>
+    <string name="past_problem_form_onset_clear_desc">Beginn löschen</string>
+    <string name="past_problem_form_onset_pick_title">Wann hat sie begonnen?</string>
+    <string name="past_problem_form_label_abatement">Ausgeheilt am</string>
+    <string name="past_problem_form_abatement_hint">Ende unbekannt — tippe zum Festlegen</string>
+    <string name="past_problem_form_abatement_clear_desc">Enddatum löschen</string>
+    <string name="past_problem_form_abatement_pick_title">Wann ist sie ausgeheilt?</string>
+    <string name="past_problem_form_date_mode_exact">📅  Genaues Datum</string>
+    <string name="past_problem_form_date_mode_year">🗓  Nur Jahr</string>
+    <string name="past_problem_form_year_hint">Jahr (z. B. 1962)</string>
+    <string name="past_problem_form_year_invalid">Gib ein Jahr zwischen 1900 und diesem Jahr ein</string>
+    <string name="past_problem_form_ok">OK</string>
+    <string name="past_problem_form_label_status">Klinischer Status</string>
+    <string name="past_problem_form_status_pick_title">Klinischer Status</string>
+    <string name="past_problem_status_resolved">✅ Ausgeheilt</string>
+    <string name="past_problem_status_inactive">💤 Inaktiv</string>
+    <string name="past_problem_status_remission">🌗 In Remission</string>
+    <string name="past_problem_form_label_severity">Schweregrad</string>
+    <string name="past_problem_form_severity_pick_title">Schweregrad</string>
+    <string name="past_problem_severity_none">— Nicht angegeben</string>
+    <string name="past_problem_severity_mild">🟢 Leicht</string>
+    <string name="past_problem_severity_moderate">🟠 Mittelschwer</string>
+    <string name="past_problem_severity_severe">🔴 Schwer</string>
+    <string name="past_problem_form_label_note">Notiz</string>
+    <string name="past_problem_form_note_helper">Behandlung, Komplikationen, Folgeschäden…</string>
+    <string name="past_problem_form_cancel">Abbrechen</string>
+    <string name="past_problem_form_delete">Löschen</string>
+    <string name="past_problem_form_save">Speichern</string>
+    <string name="past_problem_form_validation_code">Wähle eine Erkrankung oder gib ihren Namen ein</string>
+    <string name="past_problem_form_validation_chronology">Das Ende darf nicht vor dem Beginn liegen</string>
+    <string name="profile_detail_past_problems_title">📜 FRÜHERE ERKRANKUNGEN (%1$d)</string>
+</resources>

@@ -129,6 +129,9 @@
         <action
             android:id="@+id/action_gallery_to_results"
             app:destination="@id/dest_results" />
+        <action
+            android:id="@+id/action_gallery_to_past_problems"
+            app:destination="@id/dest_past_problems" />
     </fragment>
 
     <!--
@@ -350,6 +353,19 @@
         android:name="be.heyman.android.jemmapassdemo.ui.profile.devices.DevicesEditFragment"
         android:label="@string/devices_edit_title"
         tools:layout="@layout/fragment_devices_edit">
+        <argument
+            android:name="profileId"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+
+    <!-- 📜 IPS pillar "History of Past Illness" — FHIR-native Condition (`_j.ph` is a projection). -->
+    <fragment
+        android:id="@+id/dest_past_problems"
+        android:name="be.heyman.android.jemmapassdemo.ui.profile.pastproblems.PastProblemsEditFragment"
+        android:label="@string/past_problems_edit_title"
+        tools:layout="@layout/fragment_past_problems_edit">
         <argument
             android:name="profileId"
             app:argType="string"
@@ -602,6 +618,10 @@
         <action
             android:id="@+id/action_detail_to_results"
             app:destination="@id/dest_results" />
+        <!-- 📜 Active pillar: past illnesses edit (FHIR-native) -->
+        <action
+            android:id="@+id/action_detail_to_past_problems"
+            app:destination="@id/dest_past_problems" />
         <action
             android:id="@+id/action_detail_to_pillar_stub"
             app:destination="@id/dest_pillar_stub" />

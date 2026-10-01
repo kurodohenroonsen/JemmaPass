@@ -442,7 +442,8 @@ créatinine 0.9 mg/dL ; Haru = O+ (dérivé) + potassium 4.1 + hémoglobine 11.8
    `valueQuantity.value` = 5.9, `code` = `mmol/L`, `system` = UCUM, `referenceRange[0]`.
 4. **Texte libre + imagerie** : FAB → `result_form_text` = `Echographie abdominale`, catégorie
    « Imagerie », valeur `Normale`, Save → Bundle : `code.text` sans coding, `valueString`,
-   catégorie `imaging`, profil `Observation-results-radiology-uv-ips`.
+   catégorie `imaging`, profil `Observation-results-radiology-uv-ips` si la date est au jour près,
+   sinon `Observation-results-uv-ips` (contrainte ips-1, cycle 15).
 5. **Erreurs** : Save vide → erreur inline sur le nom ; test choisi mais valeur vide → erreur
    inline « Saisis la valeur du résultat » ; réf. basse `9` / haute `3` → « La borne basse ne peut
    pas dépasser la borne haute » ; réf. `abc` → « Les bornes de référence doivent être des nombres ».
@@ -454,10 +455,48 @@ créatinine 0.9 mg/dL ; Haru = O+ (dérivé) + potassium 4.1 + hémoglobine 11.8
 8. **QR texte** : Haru EN/FR/JA → section `🧪 [ RESULTS ]` / `[ RÉSULTATS ]` / `[ 検査結果 ]` après
    📟, lignes « Potassium: 4.1 mmol/L — 2026-02-10 », « … : 11.8 g/dL (L) … », groupe « O+ ».
 
+### T15 — Antécédents médicaux (📜 pilier natif, sprint 4)
+
+Personas : Kurodo = appendicite (1995-07-10 → 1995-07-12, modérée) + pneumonie (2018-02 →
+2018-03, légère) ; Haru = infarctus du myocarde (2015-08-27 → 2015-09, sévère) + tuberculose
+(1962 → 1963) ; Kamekichi = aucun. Codes SNOMED du `problems-snomed-ct-ips-free-set` (KB),
+`Coding.display` en anglais, libellés FR/JA lus dans la KB à l'affichage.
+
+1. **Fiche + liste** : fiche Haru → section « 📜 ANTÉCÉDENTS (2) » (libellés FR de la KB +
+   période) ; tuile 📜 active avec badge 2 → liste `past_problems_recycler` (« 2 antécédents »,
+   sous-titre « 2015-08-27 → 2015-09 · ✅ Guérie », détails « 🔴 Sévère · … »).
+   Captures `160-detail-haru-past-problems.png`, `161-past-problems-list.png`.
+2. **Création codée** (Kurodo) : FAB → `past_problem_form_code_card` → picker des problèmes IPS →
+   taper `rougeole` → choisir la rougeole ; Début → « Année seulement » → `1975` ; Fin → « Année
+   seulement » → `1975` ; statut « Guérie » ; sévérité « Légère » ; Save. Attendu : carte avec le
+   libellé FR, « 1975 → 1975 · ✅ Guérie ». `verify_profiles.py … --expect-ph demo_kurodo=3` PASS ;
+   dans le Bundle : `Condition` profil `Condition-uv-ips`, `clinicalStatus` = `resolved`,
+   `code.coding[0]` SNOMED avec un `display` **anglais** (pas le libellé FR), `onsetDateTime` =
+   `abatementDateTime` = `1975`, `severity` = `LA6752-5`, référencée par la section `11348-0`.
+3. **Texte libre** : FAB → `past_problem_form_text` = `Hepatite virale enfance`, statut
+   « Inactive », aucune date, Save → Bundle : `code.text` sans coding, `clinicalStatus` =
+   `inactive`, pas d'`onsetDateTime` ni d'`abatementDateTime`, pas de `severity`.
+4. **Erreurs** : Save vide → erreur inline sur le nom ; Début date exacte `2010-05-01`, Fin
+   « Année seulement » `2005` → message rouge « La fin ne peut pas précéder le début » sous la fin,
+   toast au Save et rien n'est enregistré ; année `1850` → toast « Saisis une année entre 1900 et
+   cette année ».
+5. **Édition** : tap « Appendicite » → sévérité « Sévère » → Save → Bundle `severity` =
+   `LA6750-9`, `_j.ph[].sv` identique (P6d PASS). Puis remets « Modérée ».
+6. **Suppression** des entrées de test (bouton Supprimer et appui long) → Kurodo revient à 📜 2 ;
+   `verify … --expect-ph demo_kurodo=2` PASS.
+7. **QR texte** : Haru EN/FR/JA → section `📜 [ PAST ILLNESSES ]` / `[ ANTÉCÉDENTS MÉDICAUX ]` /
+   `[ 既往歴 ]` après 🧪, lignes « Myocardial infarction — 2015-08-27 → 2015-09 »,
+   « Tuberculosis — 1962 → 1963 » ; taille en octets ≤ 2 200 (1 frame).
+8. **Validateur HL7** : 3 personas, `-ig hl7.fhir.uv.ips#1.1.0 -locale en -tx n/a` → 0 erreur.
+9. **KB** (copie hors dépôt, supprimée ensuite) :
+   `SELECT code, display_en FROM ips_valuesets WHERE vs_id='problems-snomed-ct-ips-free-set' AND code IN ('74400008','233604007','22298006','56717001');`
+   puis la même chose sur `ips_valuesets_translations` pour `lang IN ('fr','ja')` — colle la
+   sortie brute dans le rapport (les 4 codes du seed doivent y être).
+
 ## 4. Logcat de fin
 
 ```
-adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROCEDURES-EDIT:* JEMMA-PROCEDURES-FORM:* JEMMA-PROCEDURES-ADAPTER:* JEMMA-DEVICES-EDIT:* JEMMA-DEVICES-FORM:* JEMMA-DEVICES-ADAPTER:* JEMMA-RESULTS-EDIT:* JEMMA-RESULTS-FORM:* JEMMA-RESULTS-ADAPTER:* JEMMA-PROFILE-DETAIL:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
+adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROCEDURES-EDIT:* JEMMA-PROCEDURES-FORM:* JEMMA-PROCEDURES-ADAPTER:* JEMMA-DEVICES-EDIT:* JEMMA-DEVICES-FORM:* JEMMA-DEVICES-ADAPTER:* JEMMA-RESULTS-EDIT:* JEMMA-RESULTS-FORM:* JEMMA-RESULTS-ADAPTER:* JEMMA-PASTPROBLEMS-EDIT:* JEMMA-PASTPROBLEMS-FORM:* JEMMA-PASTPROBLEMS-ADAPTER:* JEMMA-KB-CONDITION-PICKER:* JEMMA-SNOMED-CAT:* JEMMA-PROFILE-DETAIL:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
 python3 qa/device/scrub_logcat.py $OUT/logs/logcat-ui.txt
 ```
 ⚠️ `logcat -s` n'accepte pas de joker (`JEMMA-*` ne filtre rien) : utilise la liste
@@ -469,7 +508,7 @@ jamais un log à la main.
 
 ## 5. Rapport et publication
 
-Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T14,
+Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T15,
 statut ✅ / ❌ / ⚠️ / ⏭, preuve = nom de capture ou fichier, déviations, bugs avec
 étapes de reproduction). Puis :
 

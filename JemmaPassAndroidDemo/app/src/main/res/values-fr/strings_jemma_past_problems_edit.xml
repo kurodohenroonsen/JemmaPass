@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_past_problems_edit.xml — JEMMA Pass · pilier IPS « Antécédents médicaux » (FR) -->
+<resources>
+
+    <string name="past_problems_edit_title">Antécédents médicaux</string>
+    <string name="past_problems_edit_hero_title">Antécédents médicaux</string>
+    <string name="past_problems_fab_add_desc">Ajouter un antécédent</string>
+    <string name="past_problems_empty_default">Aucun antécédent enregistré.\nAppuie sur + pour ajouter une maladie guérie ou inactive.</string>
+    <string name="past_problems_empty_no_profile">Aucun profil sélectionné. Crée ou sélectionne d’abord un profil.</string>
+    <string name="past_problems_unnamed">Antécédent sans nom</string>
+    <plurals name="past_problems_count">
+        <item quantity="zero">Aucun antécédent</item>
+        <item quantity="one">%d antécédent</item>
+        <item quantity="other">%d antécédents</item>
+    </plurals>
+    <string name="past_problems_saved">Antécédents enregistrés</string>
+    <string name="past_problems_save_failed">Impossible d’enregistrer les antécédents</string>
+    <string name="past_problems_delete_title">Supprimer cet antécédent ?</string>
+    <string name="past_problems_delete_message">« %1$s » sera retiré du profil.</string>
+    <string name="past_problems_delete_cancel">Annuler</string>
+    <string name="past_problems_delete_confirm">Supprimer</string>
+    <string name="past_problems_date_unknown">Début inconnu</string>
+    <string name="past_problem_form_title_create">📜  Ajouter un antécédent</string>
+    <string name="past_problem_form_title_edit">📜  Modifier l’antécédent</string>
+    <string name="past_problem_form_label_code">Maladie / affection</string>
+    <string name="past_problem_form_code_hint">Appuie pour choisir une maladie…</string>
+    <string name="past_problem_form_code_clear_desc">Effacer la maladie</string>
+    <string name="past_problem_form_code_picker_title">Choisir un antécédent</string>
+    <string name="past_problem_form_label_text">Ou saisir le nom de la maladie</string>
+    <string name="past_problem_form_text_helper">Texte libre, utilisé seulement si aucune maladie n’est choisie ci-dessus</string>
+    <string name="past_problem_form_label_onset">Début</string>
+    <string name="past_problem_form_onset_hint">Début inconnu — appuie pour renseigner</string>
+    <string name="past_problem_form_onset_clear_desc">Effacer le début</string>
+    <string name="past_problem_form_onset_pick_title">Quand a-t-elle commencé ?</string>
+    <string name="past_problem_form_label_abatement">Guérison / fin</string>
+    <string name="past_problem_form_abatement_hint">Fin inconnue — appuie pour renseigner</string>
+    <string name="past_problem_form_abatement_clear_desc">Effacer la fin</string>
+    <string name="past_problem_form_abatement_pick_title">Quand s’est-elle terminée ?</string>
+    <string name="past_problem_form_date_mode_exact">📅  Date précise</string>
+    <string name="past_problem_form_date_mode_year">🗓  Année seulement</string>
+    <string name="past_problem_form_year_hint">Année (ex. 1962)</string>
+    <string name="past_problem_form_year_invalid">Saisis une année entre 1900 et cette année</string>
+    <string name="past_problem_form_ok">OK</string>
+    <string name="past_problem_form_label_status">Statut clinique</string>
+    <string name="past_problem_form_status_pick_title">Statut clinique</string>
+    <string name="past_problem_status_resolved">✅ Guérie</string>
+    <string name="past_problem_status_inactive">💤 Inactive</string>
+    <string name="past_problem_status_remission">🌗 En rémission</string>
+    <string name="past_problem_form_label_severity">Sévérité</string>
+    <string name="past_problem_form_severity_pick_title">Sévérité</string>
+    <string name="past_problem_severity_none">— Non précisée</string>
+    <string name="past_problem_severity_mild">🟢 Légère</string>
+    <string name="past_problem_severity_moderate">🟠 Modérée</string>
+    <string name="past_problem_severity_severe">🔴 Sévère</string>
+    <string name="past_problem_form_label_note">Note</string>
+    <string name="past_problem_form_note_helper">Traitement, complications, séquelles…</string>
+    <string name="past_problem_form_cancel">Annuler</string>
+    <string name="past_problem_form_delete">Supprimer</string>
+    <string name="past_problem_form_save">Enregistrer</string>
+    <string name="past_problem_form_validation_code">Choisis une maladie ou saisis son nom</string>
+    <string name="past_problem_form_validation_chronology">La fin ne peut pas précéder le début</string>
+    <string name="profile_detail_past_problems_title">📜 ANTÉCÉDENTS (%1$d)</string>
+</resources>

@@ -300,6 +300,7 @@ class ProfileDetailFragment : Fragment() {
         renderProcedures(h)
         renderDevices(h)
         renderResults(h)
+        renderPastProblems(h)
 
         // ── Alerts section ──
         renderAlerts(h)
@@ -579,6 +580,41 @@ class ProfileDetailFragment : Fragment() {
             val tv = makeListItemTextView()
             tv.text = "•  $label — $date$status"
             listView.addView(tv)
+        }
+    }
+
+    /** 📜 FHIR-native pillar — rendered from the `_j.ph` projection (Bundle = source of truth). */
+    private fun renderPastProblems(h: HydratedProfile) {
+        val entries = h.raw.ph
+        if (entries.isEmpty()) {
+            binding.profileDetailPastProblemsSection.isVisible = false
+            return
+        }
+        binding.profileDetailPastProblemsSection.isVisible = true
+        binding.profileDetailPastProblemsTitle.text = getString(R.string.profile_detail_past_problems_title, entries.size)
+        val lang = java.util.Locale.getDefault().language.lowercase().take(2)
+        val listView = binding.profileDetailPastProblemsList
+        listView.removeAllViews()
+        val sorted = entries.sortedWith(
+            compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
+                .thenByDescending { it.date ?: "" }
+        )
+        for (ph in sorted) {
+            val tv = makeListItemTextView()
+            val period = be.heyman.android.jemmapassdemo.ui.profile.pastproblems.PastProblemsAdapter.period(ph.date, ph.abatement)
+                ?.let { " — $it" } ?: ""
+            val base = ph.displayLabel?.takeIf { it.isNotBlank() } ?: ph.c.orEmpty()
+            tv.text = "•  $base$period"
+            listView.addView(tv)
+            val code = ph.c
+            if (!code.isNullOrBlank() && lang != "en") {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val localized = try {
+                        kb.getLocalizedDisplay(code, ph.codeSystem ?: "http://snomed.info/sct", lang)
+                    } catch (e: Throwable) { null }
+                    if (!localized.isNullOrBlank()) tv.text = "•  $localized$period"
+                }
+            }
         }
     }
 
@@ -1300,6 +1336,8 @@ class ProfileDetailFragment : Fragment() {
                         "procedures" -> R.id.action_detail_to_procedures to true
                         "devices" -> R.id.action_detail_to_devices to true
                         "results" -> R.id.action_detail_to_results to true
+                        // 📜 FHIR-native pillar (sprint 4)
+                        "pastProblems" -> R.id.action_detail_to_past_problems to true
                         else -> R.id.action_detail_to_pillar_stub to false
                     }
                     val args = if (includeProfileId) {
@@ -1338,7 +1376,7 @@ class ProfileDetailFragment : Fragment() {
         }
         val elapsed = System.currentTimeMillis() - tStart
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🩺 renderPillars · END · " +
-            "active=$boundActive/8 · stub=$boundStub/10 · missing=$missing/18 · ${elapsed}ms")
+            "active=$boundActive/9 · stub=$boundStub/9 · missing=$missing/18 · ${elapsed}ms")
         if (missing > 0) {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ $missing tile(s) failed to bind · " +
                 "vérifier que les ids profile_detail_tile_<key> existent dans fragment_profile_detail.xml")

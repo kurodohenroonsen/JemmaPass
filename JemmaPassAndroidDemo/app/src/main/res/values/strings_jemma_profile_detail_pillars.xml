@@ -2,5 +2,5 @@
 <resources>
     <!-- Clickable pillars section in the profile detail page -->
     <string name="profile_detail_pillars_title">🩺  Profile pillars</string>
-    <string name="profile_detail_pillars_subtitle">Tap a pillar to edit it. 8 active pillars, 10 more coming.</string>
+    <string name="profile_detail_pillars_subtitle">Tap a pillar to edit it. 9 active pillars, 9 more coming.</string>
 </resources>

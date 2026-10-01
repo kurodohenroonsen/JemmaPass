@@ -112,6 +112,19 @@ English display name into an error.
 Decimals travel as exact `BigDecimal` (bignum) in the Kotlin FHIR model and as JSON
 numbers on disk (`5.4`, `120.0`); `IpsDecimal.trimZeros` restores the typed text.
 
+## Sprint 4 — Past Problems 📜 (History of Past Illness, LOINC 11348-0)
+
+| Layer | Past Problems |
+|---|---|
+| Domain | `ips/IpsPastProblem.kt` — clinicalStatus resolved / inactive / remission, onset + abatement (partial dates, abatement ≥ onset), severity = IPS LOINC answers (LA6752-5 / LA6751-7 / LA6750-9) |
+| FHIR | `Condition` (Condition-uv-ips), no category, no verificationStatus; section 11348-0 "History of Past illness note" |
+| Membership | entries of the 11348-0 section; fallback Condition-uv-ips + past status — the legacy problem-list Conditions (`_j.cn`, active, no profile) never leak in |
+| `_j` | `ph` (`c d d_display dt cs st` + new `ab` abatement, `sv` severity) |
+| Terminology | KB `problems-snomed-ct-ips-free-set` (5 622 SNOMED, FR/JA… translations) via `KbConditionPicker`; `Coding.display` = `ips_valuesets.display_en` (`getIpsDisplayEn`), localised labels at render time; `searchIpsProblems` now serves English from `display_en` |
+| UI | `ui/profile/pastproblems/*` — dates "exact" or "year only" |
+| Seeds | Kurodo appendicitis + pneumonia · Haru myocardial infarction + tuberculosis · Kamekichi none |
+| QA | `verify_profiles.py` 📜 `ph` (P4–P6, P6d ab/sv), README T15 |
+
 ### Checklist for the next pillar (Functional status, Pregnancy, Vital signs…)
 
 1. Tests first: FHIR round trip (full / minimal / edge dates / status

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_past_problems_edit.xml — JEMMA Pass · IPS「既往病史」(ZH-CN) -->
+<resources>
+
+    <string name="past_problems_edit_title">既往病史</string>
+    <string name="past_problems_edit_hero_title">既往病史</string>
+    <string name="past_problems_fab_add_desc">添加既往病史</string>
+    <string name="past_problems_empty_default">尚未记录任何既往病史。\n点击 + 添加已治愈或非活动的疾病。</string>
+    <string name="past_problems_empty_no_profile">未选择档案。请先创建或选择一个档案。</string>
+    <string name="past_problems_unnamed">未命名的疾病</string>
+    <plurals name="past_problems_count">
+        <item quantity="zero">无既往病史</item>
+        <item quantity="one">%d 项既往病史</item>
+        <item quantity="other">%d 项既往病史</item>
+    </plurals>
+    <string name="past_problems_saved">已保存既往病史</string>
+    <string name="past_problems_save_failed">无法保存既往病史</string>
+    <string name="past_problems_delete_title">删除此项既往病史？</string>
+    <string name="past_problems_delete_message">“%1$s”将从档案中移除。</string>
+    <string name="past_problems_delete_cancel">取消</string>
+    <string name="past_problems_delete_confirm">删除</string>
+    <string name="past_problems_date_unknown">发病日期未知</string>
+    <string name="past_problem_form_title_create">📜  添加既往病史</string>
+    <string name="past_problem_form_title_edit">📜  编辑既往病史</string>
+    <string name="past_problem_form_label_code">疾病/病症</string>
+    <string name="past_problem_form_code_hint">点击选择疾病…</string>
+    <string name="past_problem_form_code_clear_desc">清除疾病</string>
+    <string name="past_problem_form_code_picker_title">选择既往疾病</string>
+    <string name="past_problem_form_label_text">或输入疾病名称</string>
+    <string name="past_problem_form_text_helper">自由文本，仅在上方未选择时使用</string>
+    <string name="past_problem_form_label_onset">发病</string>
+    <string name="past_problem_form_onset_hint">发病日期未知 — 点击设置</string>
+    <string name="past_problem_form_onset_clear_desc">清除发病日期</string>
+    <string name="past_problem_form_onset_pick_title">何时发病？</string>
+    <string name="past_problem_form_label_abatement">治愈/结束</string>
+    <string name="past_problem_form_abatement_hint">结束日期未知 — 点击设置</string>
+    <string name="past_problem_form_abatement_clear_desc">清除结束日期</string>
+    <string name="past_problem_form_abatement_pick_title">何时治愈？</string>
+    <string name="past_problem_form_date_mode_exact">📅  具体日期</string>
+    <string name="past_problem_form_date_mode_year">🗓  仅年份</string>
+    <string name="past_problem_form_year_hint">年份（如 1962）</string>
+    <string name="past_problem_form_year_invalid">请输入 1900 年至今年之间的年份</string>
+    <string name="past_problem_form_ok">确定</string>
+    <string name="past_problem_form_label_status">临床状态</string>
+    <string name="past_problem_form_status_pick_title">临床状态</string>
+    <string name="past_problem_status_resolved">✅ 已治愈</string>
+    <string name="past_problem_status_inactive">💤 非活动</string>
+    <string name="past_problem_status_remission">🌗 缓解期</string>
+    <string name="past_problem_form_label_severity">严重程度</string>
+    <string name="past_problem_form_severity_pick_title">严重程度</string>
+    <string name="past_problem_severity_none">— 未指定</string>
+    <string name="past_problem_severity_mild">🟢 轻度</string>
+    <string name="past_problem_severity_moderate">🟠 中度</string>
+    <string name="past_problem_severity_severe">🔴 重度</string>
+    <string name="past_problem_form_label_note">备注</string>
+    <string name="past_problem_form_note_helper">治疗、并发症、后遗症…</string>
+    <string name="past_problem_form_cancel">取消</string>
+    <string name="past_problem_form_delete">删除</string>
+    <string name="past_problem_form_save">保存</string>
+    <string name="past_problem_form_validation_code">请选择疾病或输入名称</string>
+    <string name="past_problem_form_validation_chronology">结束日期不能早于发病日期</string>
+    <string name="profile_detail_past_problems_title">📜 既往病史 (%1$d)</string>
+</resources>
