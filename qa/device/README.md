@@ -29,6 +29,11 @@ L'agent **architecte** (Claude, via GitHub) lit le rapport et livre les correcti
 7. **Aucun identifiant matériel** dans ce qui est publié : le script masque déjà le
    numéro de série dans `adb-devices.txt` ; ne le recopie pas dans `report.md` ni
    `env.txt` (modèle + version Android suffisent).
+8. **Sorties citées = sorties brutes** : un texte décodé (QR), une sortie de validateur,
+   un résultat SQL se recopient par copier-coller depuis la sortie de la commande, jamais
+   reformulés ni « résumés » ligne par ligne. Les fichiers correspondants sont publiés dans
+   le dossier du run (`qr/qr-<persona>-<lang>.txt`, `validator/<persona>.txt`) ; un tableau
+   qui cite une preuve absente du dossier publié est invalide.
 
 ## 1. Préparation
 
