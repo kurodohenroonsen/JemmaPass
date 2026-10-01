@@ -1,0 +1,48 @@
+# Exploration KB JemmaPass · Recherche codes SNOMED pour Poisson et Soja
+# Base de connaissances : knowledge_full.db (v1.1 · 3,1 Go)
+# Date : 2026-10-01
+
+================================================================================
+1. RECHERCHE DANS LE FREE SET IPS ALLERGIES
+Query: select code, display_en from ips_valuesets where vs_id='allergy-intolerance-snomed-ct-ips-free-set' and (display_en like '%fish%' or display_en like '%soy%' or display_en like '%soya%');
+================================================================================
+227144008       | Tuna fish
+256355007       | Soyabean
+406774009       | Fish derived omega 3 fatty acid
+726759005       | Cuttlefish
+735029006       | Shellfish
+735341005       | Fish oil
+735971005       | Fish
+7791007         | Soybean protein
+782594005       | Allergy to soy protein
+
+================================================================================
+2. TRADUCTIONS FR / JA DES CODES IDENTIFIÉS
+Query: select code, lang, display from ips_valuesets_translations where code in (...) and lang in ('fr','ja');
+================================================================================
+256355007       | fr   | Soja
+256355007       | ja   | 大豆
+735341005       | fr   | Huiles de poisson
+735341005       | ja   | 魚油
+
+================================================================================
+3. VÉRIFICATION DES ANCIENS CODES UTILISÉS (232347008 et 419474003)
+Query: select code, display_en from ips_valuesets where code in ('232347008','419474003');
+Query bis: select code, snomed_code, primary_display from terminology_codes where snomed_code in ('232347008','419474003') or code in ('232347008','419474003');
+================================================================================
+(0 résultat dans ips_valuesets : ces deux codes ne font PAS partie du free set IPS !)
+terminology_codes: UMLS=C1096734 | SNOMED=419474003 | Display=Allergy to mold
+
+Note ontologique SNOMED CT :
+- 232347008 = Allergy to animal dander (allergie aux squames animales, et non au poisson)
+- 419474003 = Allergy to mold (allergie aux moisissures, et non au soja)
+
+================================================================================
+4. RECHERCHE DANS terminology_codes POUR Allergy to fish% ET Allergy to soy%
+Query: select code, snomed_code, primary_display, category from terminology_codes where (primary_display like 'Allergy to fish%' or primary_display like 'Allergy to soy%') limit 20;
+================================================================================
+UMLS: 782594005  | SNOMED: 782594005       | Category: None         | Display: Allergy to soy protein
+UMLS: C0571871   | SNOMED: 294968004       | Category: Condition    | Display: Allergy to fish oil
+UMLS: C0571872   | SNOMED: 294969007       | Category: Condition    | Display: Allergy to fish derived omega 3 fatty acid
+UMLS: C0856904   | SNOMED: 417532002       | Category: Condition    | Display: Allergy to fish
+UMLS: C4758660   | SNOMED: 782594005       | Category: Condition    | Display: Allergy to soy protein
