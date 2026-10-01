@@ -606,6 +606,15 @@ obstétrical (9 compteurs optionnels) + date du bilan. Libellés localisés (cat
    (`validator/<persona>-pregnant.txt`, `validator/<persona>.txt`).
 8. Ligne `renderPillars · END` : `active=10/10 · stub=8/8`, sous-titre « 10 piliers actifs, 8 à venir ».
 
+## 3 bis. Outils (ne plus improviser — un appel, un résultat)
+
+| Besoin | Commande | Sortie |
+|---|---|---|
+| Décoder un QR | `python3 qa/device/decode_qr.py <capture.png> $OUT/qr/qr-<persona>-<lang>.txt` | texte brut + taille en octets |
+| Valider les 3 personas **en parallèle** | `qa/device/validate_all.sh $OUT [suffixe]` | `validator/<persona><suffixe>.txt` + `summary<suffixe>.txt` |
+| Réduire un run audité | `qa/device/prune_run.sh <dossier run>…` | ne garde que `report.md` + `screenshots/` |
+| Galerie d'écrans | `python3 qa/device/build_gallery.py <checkout device-reports>` | `screens/<pilier>/` + `INDEX.md`, classement par nom de fichier (aucune analyse d'image) |
+
 ## 4. Logcat de fin
 
 ```
