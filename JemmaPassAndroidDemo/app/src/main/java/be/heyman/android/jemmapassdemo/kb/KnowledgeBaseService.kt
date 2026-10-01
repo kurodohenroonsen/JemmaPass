@@ -688,6 +688,51 @@ class KnowledgeBaseService @Inject constructor(
      * @param diseaseName English free-text disease name (case-insensitive
      *                    LIKE match on `disease_name_en`)
      */
+    /**
+     * Drug × disease for one ATC against several candidate terms of one condition
+     * ([DrugDiseaseTerms.candidates]: English first). All DDInter rows of the drug are
+     * read once and matched in Kotlin in both containment directions; the most severe
+     * match of the first matching term wins.
+     */
+    suspend fun queryDrugDiseaseTerms(atc: String?, terms: List<String>): DrugDiseaseResult =
+        withContext(Dispatchers.IO) {
+            val tStart = System.currentTimeMillis()
+            if (atc.isNullOrBlank() || terms.isEmpty()) {
+                return@withContext DrugDiseaseResult.Error("atc and terms required", 0L)
+            }
+            val db = awaitDb() ?: return@withContext DrugDiseaseResult.Error("KB not ready", System.currentTimeMillis() - tStart)
+            val a = atc.trim().uppercase()
+            data class Row(val severity: String?, val description: String?, val management: String?, val disease: String)
+            val rows = mutableListOf<Row>()
+            try {
+                db.rawQuery(
+                    "SELECT severity, description_en, management_en, disease_name_en FROM drug_disease_interactions WHERE drug_atc = ?",
+                    arrayOf(a),
+                ).use { c ->
+                    while (c.moveToNext()) {
+                        val disease = c.getStringOrNull(3) ?: continue
+                        rows += Row(c.getStringOrNull(0), c.getStringOrNull(1), c.getStringOrNull(2), disease)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ queryDrugDiseaseTerms failed : ${e.message}")
+                return@withContext DrugDiseaseResult.Error(e.message ?: "unknown", System.currentTimeMillis() - tStart)
+            }
+            val rank = { sev: String? -> when (sev) { "Major" -> 1; "Moderate" -> 2; "Minor" -> 3; else -> 4 } }
+            for (term in terms) {
+                val hit = rows.filter { DrugDiseaseTerms.matches(term, it.disease) }.minByOrNull { rank(it.severity) } ?: continue
+                return@withContext DrugDiseaseResult.Found(
+                    severity = DDIResult.Severity.fromString(hit.severity),
+                    description = hit.description,
+                    management = hit.management,
+                    drugAtc = a,
+                    diseaseName = hit.disease,
+                    queryDurationMs = System.currentTimeMillis() - tStart,
+                )
+            }
+            DrugDiseaseResult.None(System.currentTimeMillis() - tStart)
+        }
+
     suspend fun queryDrugDisease(atc: String?, diseaseName: String?): DrugDiseaseResult =
         withContext(Dispatchers.IO) {
             val tStart = System.currentTimeMillis()

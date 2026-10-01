@@ -495,7 +495,9 @@ class KbCrossCheck @Inject constructor(
             }
             if (condDisplay.isBlank()) continue
 
-            val result = kb.queryDrugDisease(candidateAtc, condDisplay)
+            val concept = condCode?.takeIf { it.isNotEmpty() }?.let { resolveCodeBestEffort(it) }
+            val terms = DrugDiseaseTerms.candidates(condition.displayLabel, concept?.primaryDisplay, condDisplay)
+            val result = kb.queryDrugDiseaseTerms(candidateAtc, terms)
             if (result is DrugDiseaseResult.Found) {
                 out.add(
                     DrugDiseaseHit(

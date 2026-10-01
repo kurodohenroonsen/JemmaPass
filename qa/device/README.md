@@ -527,6 +527,22 @@ contrôles médicament × maladie (`KbCrossCheck`) ont maintenant de quoi travai
 8. **KB** (copie hors dépôt) : `display_en` + traductions fr/ja des codes 13644009, 84114007,
    433144002, 59621000, 49436004, 194828000 dans `problems-snomed-ct-ips-free-set` (sortie brute).
 
+### T17 — Médicament × maladie (cycle 18 : 0 alerte)
+
+Correctif `kb/DrugDiseaseTerms` : la condition est cherchée avec ses termes anglais (display
+SNOMED stocké, display primaire KB) puis le libellé localisé, dans les deux sens de contenance.
+
+1. **Dump KB brut** (copie hors dépôt, règle 8) dans `kb/drug-disease.txt` :
+   `SELECT drug_atc, disease_name_en, severity FROM drug_disease_interactions WHERE drug_atc IN ('C07AB07','B01AA03','M01AE01','G04BE03','C01DA08','C03CA01','R06AX26','R05DA09') ORDER BY drug_atc, severity, disease_name_en;`
+   puis `SELECT COUNT(*) FROM drug_disease_interactions;`.
+2. **Hydrateur** : relance le seed puis ouvre Kamekichi et Haru ; recopie les lignes
+   `JEMMA-HYDRATOR … drug×disease=N` (attendu : N > 0 pour Kamekichi si le dump contient
+   hypertension / heart failure / angina / atrial fibrillation pour ses ATC).
+3. **Affichage** : capture de chaque alerte médicament × maladie sur la fiche
+   (`190-dd-kamekichi.png`, `191-dd-haru.png`) et texte recopié tel quel.
+4. Interface en **japonais** (`cmd locale set-app-locales … --locales ja`, puis retour `fr`) :
+   même nombre d'alertes qu'en français (le calcul ne dépend plus de la langue).
+
 ## 4. Logcat de fin
 
 ```
@@ -542,7 +558,7 @@ jamais un log à la main.
 
 ## 5. Rapport et publication
 
-Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T16,
+Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T17,
 statut ✅ / ❌ / ⚠️ / ⏭, preuve = nom de capture ou fichier, déviations, bugs avec
 étapes de reproduction). Puis :
 

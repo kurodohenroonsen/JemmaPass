@@ -527,7 +527,7 @@ class JemmaProfileHydrator @Inject constructor(
         conditions: List<HydratedGenericEntry>,
     ): List<DrugDiseaseAlert> = withContext(Dispatchers.IO) {
         if (meds.isEmpty() || conditions.isEmpty()) return@withContext emptyList()
-        val db = kbManager.database() ?: return@withContext emptyList()
+        kbManager.database() ?: return@withContext emptyList()
 
         val out = mutableListOf<DrugDiseaseAlert>()
         // For each med × condition pair, ask the KB.
@@ -536,45 +536,22 @@ class JemmaProfileHydrator @Inject constructor(
         for (med in meds) {
             val atc = med.atcCode ?: continue
             for (cond in conditions) {
-                val condName = cond.displayLocalized.takeIf { it.isNotBlank() && it != "—" }
-                    ?: continue
-                if (condName.length < 4) continue // skip nonsense
-
-                try {
-                    db.rawQuery(
-                        """
-                        SELECT severity, description_en, management_en, drug_atc, disease_name_en
-                        FROM drug_disease_interactions
-                        WHERE drug_atc = ?
-                          AND disease_name_en LIKE ? COLLATE NOCASE
-                        ORDER BY
-                            CASE severity
-                                WHEN 'Major'    THEN 1
-                                WHEN 'Moderate' THEN 2
-                                WHEN 'Minor'    THEN 3
-                                ELSE 4
-                            END
-                        LIMIT 1
-                        """.trimIndent(),
-                        arrayOf(atc.uppercase(), "%$condName%"),
-                    ).use { c ->
-                        if (c.moveToFirst()) {
-                            out.add(
-                                DrugDiseaseAlert(
-                                    medication = med,
-                                    condition = cond,
-                                    severity = DDIResult.Severity.fromString(c.getStringOrNull(0)),
-                                    description = c.getStringOrNull(1),
-                                    management = c.getStringOrNull(2),
-                                    diseaseNameMatched = c.getStringOrNull(4) ?: condName,
-                                )
-                            )
-                        }
-                    }
-                } catch (e: Exception) {
-                    Log.d(
-                        TAG,
-                        "[t=${System.currentTimeMillis()}] 🔍 drug×disease query failed : ${e.message}"
+                // English first (stored SNOMED display, KB primary display), UI label last.
+                val terms = DrugDiseaseTerms.candidates(
+                    cond.raw.displayLabel, cond.resolvedConcept?.primaryDisplay, cond.displayLocalized,
+                )
+                if (terms.isEmpty()) continue
+                val r = kb.queryDrugDiseaseTerms(atc, terms)
+                if (r is DrugDiseaseResult.Found) {
+                    out.add(
+                        DrugDiseaseAlert(
+                            medication = med,
+                            condition = cond,
+                            severity = r.severity,
+                            description = r.description,
+                            management = r.management,
+                            diseaseNameMatched = r.diseaseName,
+                        )
                     )
                 }
             }
