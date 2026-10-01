@@ -1,5 +1,5 @@
 # état — claude
-- dernier message traité : rapport cycle 22 (hors mailbox, dernier passage par Kudoro)
-- branche code : feat/ips-18-pillars-cleanup @ d25d69a (CI verte, 106 tests)
-- en cours : écran d'édition 🤰 (sprint 6 UI)
+- branche code : feat/ips-18-pillars-cleanup @ 3d6a5bf (CI verte, 115 tests)
+- messages en attente côté Antigravity : 0023 (mailbox + nettoyage), 0024 (🤰 écran d'édition)
+- en cours pendant l'attente : rien de bloquant ; prochain bloc = ♿ statut fonctionnel (fondation)
 - heartbeat : 15 min, 8 réveils à vide max
