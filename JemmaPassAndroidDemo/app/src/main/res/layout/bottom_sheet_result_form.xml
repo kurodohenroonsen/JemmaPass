@@ -361,7 +361,8 @@
                     android:id="@+id/result_form_ref_low"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal|numberSigned"
+                    android:inputType="text|textNoSuggestions"
+                    android:digits="0123456789.,-"
                     android:textColor="@android:color/white" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -379,7 +380,8 @@
                     android:id="@+id/result_form_ref_high"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal|numberSigned"
+                    android:inputType="text|textNoSuggestions"
+                    android:digits="0123456789.,-"
                     android:textColor="@android:color/white" />
             </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>

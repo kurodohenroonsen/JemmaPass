@@ -110,7 +110,7 @@ class IpsResultCodecTest {
         assertEquals("Chest X-ray", textual.getJSONObject("code").getString("text"))
         assertFalse(textual.getJSONObject("code").has("coding"))
         assertEquals("imaging", textual.getJSONArray("category").getJSONObject(0).getJSONArray("coding").getJSONObject(0).getString("code"))
-        assertEquals(IpsFhirCodec.PROFILE_OBSERVATION_RESULTS_RADIOLOGY_UV_IPS, textual.getJSONObject("meta").getJSONArray("profile").getString(0))
+        assertEquals(IpsFhirCodec.PROFILE_OBSERVATION_RESULTS_UV_IPS, textual.getJSONObject("meta").getJSONArray("profile").getString(0))
         assertEquals("2025-12", textual.getString("effectiveDateTime"))
     }
 
@@ -329,5 +329,17 @@ class IpsResultCodecTest {
         assertNull(roundTrip(potassium).text)
         // unmapped codes keep their own display
         assertEquals(chestXray, roundTrip(chestXray))
+    }
+
+    @Test
+    fun imagingWithoutDayPreciseDateUsesTheGenericResultsProfile() {
+        // Observation-results-radiology-uv-ips enforces ips-1 (day precision) — device QA cycle 14.
+        fun profileOf(r: IpsResult) = JSONObject(IpsFhirCodec.encode(IpsFhirCodec.toFhir(r, patientUrn).build()))
+            .getJSONObject("meta").getJSONArray("profile").getString(0)
+        assertEquals(IpsFhirCodec.PROFILE_OBSERVATION_RESULTS_UV_IPS, profileOf(chestXray))                 // "2025-12"
+        assertEquals(IpsFhirCodec.PROFILE_OBSERVATION_RESULTS_UV_IPS, profileOf(chestXray.copy(date = null)))
+        assertEquals(IpsFhirCodec.PROFILE_OBSERVATION_RESULTS_RADIOLOGY_UV_IPS, profileOf(chestXray.copy(date = "2025-12-03")))
+        // still read back as imaging (category drives the domain, not the profile)
+        assertEquals(IpsResultCategory.IMAGING, roundTrip(chestXray).category)
     }
 }

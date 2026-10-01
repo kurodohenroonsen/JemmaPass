@@ -475,8 +475,11 @@ object IpsFhirCodec {
             Observation.ObservationStatus.Final
         }
         val category = IpsResultCategory.normalize(rs.category)
+        // Radiology profile constraint ips-1: effectiveDateTime precise to the day (device QA
+        // cycle 14). An imaging result without a full date falls back to the generic results profile.
+        val dayPrecise = rs.date?.matches(Regex("^\\d{4}-\\d{2}-\\d{2}.*")) == true
         val profile = when (category) {
-            IpsResultCategory.IMAGING -> PROFILE_OBSERVATION_RESULTS_RADIOLOGY_UV_IPS
+            IpsResultCategory.IMAGING -> if (dayPrecise) PROFILE_OBSERVATION_RESULTS_RADIOLOGY_UV_IPS else PROFILE_OBSERVATION_RESULTS_UV_IPS
             IpsResultCategory.LABORATORY -> PROFILE_OBSERVATION_RESULTS_LABORATORY_UV_IPS
             else -> PROFILE_OBSERVATION_RESULTS_UV_IPS
         }
