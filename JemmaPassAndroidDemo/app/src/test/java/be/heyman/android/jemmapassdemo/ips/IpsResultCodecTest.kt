@@ -296,4 +296,25 @@ class IpsResultCodecTest {
         assertFalse(IpsFhirCodec.isResultsObservation(parsed))
         assertTrue(IpsFhirCodec.isResultsObservation(IpsFhirCodec.toFhir(chestXray, patientUrn).build()))
     }
+
+    @Test
+    fun undatedAndUnattributedResultsStillMeetTheIpsCardinalities() {
+        val bare = bloodGroup.copy(id = "rs-blood-group-demo_x", date = null, performer = null)
+        val o = JSONObject(IpsFhirCodec.encode(IpsFhirCodec.toFhir(bare, patientUrn).build()))
+        // id sanitised: FHIR ids allow [A-Za-z0-9-.] only
+        assertEquals("rs-blood-group-demo-x", o.getString("id"))
+        // effective[x] 1..1 → data-absent-reason "unknown"
+        assertFalse(o.has("effectiveDateTime"))
+        val dar = o.getJSONObject("_effectiveDateTime").getJSONArray("extension").getJSONObject(0)
+        assertEquals(IpsFhirCodec.EXT_DATA_ABSENT_REASON, dar.getString("url"))
+        assertEquals("unknown", dar.getString("valueCode"))
+        // performer 1..* → the patient (self-reported)
+        val perf = o.getJSONArray("performer").getJSONObject(0)
+        assertEquals(patientUrn, perf.getString("reference"))
+        // …and both read back as "unknown" in the domain
+        val back = IpsFhirCodec.fromFhir(IpsFhirCodec.json.decodeFromString(o.toString()) as Observation)
+        assertNull(back.date)
+        assertNull(back.performer)
+        assertEquals("278147001", back.valueCode)
+    }
 }

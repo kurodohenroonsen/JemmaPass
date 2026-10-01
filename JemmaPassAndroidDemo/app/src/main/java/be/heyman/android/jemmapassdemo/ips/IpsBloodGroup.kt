@@ -46,7 +46,7 @@ object IpsBloodGroup {
     fun snomedCode(raw: String?): String? = normalize(raw)?.let { SNOMED[it]?.first }
     fun snomedDisplay(raw: String?): String? = normalize(raw)?.let { SNOMED[it]?.second }
 
-    fun derivedId(profileId: String): String = DERIVED_ID_PREFIX + profileId
+    fun derivedId(profileId: String): String = IpsFhirCodec.fhirId(DERIVED_ID_PREFIX + profileId)
 
     fun isDerived(result: IpsResult): Boolean = result.id.startsWith(DERIVED_ID_PREFIX)
 

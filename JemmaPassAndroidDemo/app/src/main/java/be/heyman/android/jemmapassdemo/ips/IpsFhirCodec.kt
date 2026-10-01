@@ -21,6 +21,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.DeviceUseStatement
 import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
 import dev.ohs.fhir.model.r4.FhirR4Json
 import dev.ohs.fhir.model.r4.Immunization
@@ -56,7 +57,7 @@ object IpsFhirCodec {
         "http://hl7.org/fhir/uv/ips/StructureDefinition/DeviceUseStatement-uv-ips"
     const val PROFILE_DEVICE_UV_IPS =
         "http://hl7.org/fhir/uv/ips/StructureDefinition/Device-uv-ips"
-    const val UDI_ISSUER_GS1 = "http://hl7.org/fhir/NamingSystem/gs1"
+    const val UDI_ISSUER_GS1 = "http://hl7.org/fhir/NamingSystem/gs1-di"  // spec value; not emitted (optional, unresolvable by validators)
 
     const val LOINC_SECTION_RESULTS = "30954-2"
     const val TITLE_SECTION_RESULTS = "Results"
@@ -69,6 +70,12 @@ object IpsFhirCodec {
     const val SYSTEM_OBSERVATION_CATEGORY = "http://terminology.hl7.org/CodeSystem/observation-category"
     const val SYSTEM_OBSERVATION_INTERPRETATION = "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
     const val SYSTEM_UCUM = "http://unitsofmeasure.org"
+    const val EXT_DATA_ABSENT_REASON = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+    const val PATIENT_REPORTED = "Patient-reported"
+
+    /** FHIR resource ids allow [A-Za-z0-9\-.]{1,64} only (profile sids carry underscores). */
+    fun fhirId(raw: kotlin.String): kotlin.String =
+        raw.replace(Regex("[^A-Za-z0-9.-]"), "-").take(64)
 
     /** Placeholder used by FHIR when the occurrence date is genuinely unknown. */
     const val OCCURRENCE_UNKNOWN = "unknown"
@@ -389,7 +396,6 @@ object IpsFhirCodec {
             dv.udi?.takeIf { it.isNotBlank() }?.let { u ->
                 udiCarrier.add(Device.UdiCarrier.Builder().apply {
                     deviceIdentifier = String.Builder().apply { value = u }
-                    issuer = Uri.Builder().apply { value = UDI_ISSUER_GS1 }
                     carrierHRF = String.Builder().apply { value = u }
                 })
             }
@@ -458,7 +464,9 @@ object IpsFhirCodec {
             interpretation = IpsResultInterpretation.normalize(o.interpretation.flatMap { it.coding }.firstOrNull()?.code?.value),
             refLow = range?.low?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
             refHigh = range?.high?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
-            performer = o.performer.firstOrNull()?.display?.value?.takeIf { it.isNotBlank() },
+            performer = o.performer.firstOrNull()
+                ?.takeUnless { it.reference?.value != null && it.reference?.value == o.subject?.reference?.value }
+                ?.display?.value?.takeIf { it.isNotBlank() },
             note = o.note.firstOrNull()?.text?.value?.takeIf { it.isNotBlank() },
         )
     }
@@ -479,11 +487,14 @@ object IpsFhirCodec {
             Enumeration.of(statusCode, null),
             codeableConcept(rs.code, rs.system ?: IpsCodeSystems.LOINC, rs.display, rs.text),
         ).apply {
-            id = rs.id
+            id = fhirId(rs.id)
             meta = ipsMeta(profile)
             this.category.add(codeableConcept(category, SYSTEM_OBSERVATION_CATEGORY, categoryDisplay(category), null))
             subject = urnReference(patientUrn)
-            parseFhirDate(rs.date)?.let { effective = Observation.Effective.DateTime(dateTimeBuilder(it).build()) }
+            // IPS results profiles: effective[x] 1..1 and performer 1..* (HL7 validator, cycle 7).
+            effective = Observation.Effective.DateTime(
+                (parseFhirDate(rs.date)?.let { dateTimeBuilder(it) } ?: unknownDateTimeBuilder()).build()
+            )
             value = observationValue(rs)
             IpsResultInterpretation.normalize(rs.interpretation)?.let { ip ->
                 interpretation.add(codeableConcept(ip, SYSTEM_OBSERVATION_INTERPRETATION, interpretationDisplay(ip), null))
@@ -496,9 +507,19 @@ object IpsFhirCodec {
                     hi?.let { high = quantity(it, rs.unit) }
                 })
             }
-            rs.performer?.takeIf { it.isNotBlank() }?.let { performer.add(displayReference(it)) }
+            performer.add(
+                rs.performer?.takeIf { it.isNotBlank() }?.let { displayReference(it) }
+                    ?: urnReference(patientUrn).apply { display = String.Builder().apply { value = PATIENT_REPORTED } }
+            )
             rs.note?.takeIf { it.isNotBlank() }?.let { note.add(Annotation.Builder(Markdown.Builder().apply { value = it })) }
         }
+    }
+
+    /** `_effectiveDateTime` carrying only a data-absent-reason "unknown" extension. */
+    private fun unknownDateTimeBuilder(): DateTime.Builder = DateTime.Builder().apply {
+        extension.add(Extension.Builder(EXT_DATA_ABSENT_REASON).apply {
+            value = Extension.Value.Code(Code.Builder().apply { value = "unknown" }.build())
+        })
     }
 
     private fun observationValue(rs: IpsResult): Observation.Value? {

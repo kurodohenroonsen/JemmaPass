@@ -40,7 +40,7 @@ class IpsBloodGroupTest {
         assertEquals(2, once.size)
         assertTrue(IpsBloodGroup.isDerived(once.first()))
         assertEquals("278147001", once.first().valueCode)
-        assertEquals("rs-blood-group-demo_haru", once.first().id)
+        assertEquals("rs-blood-group-demo-haru", once.first().id)
 
         // Idempotent, and the blood type change is picked up.
         val again = IpsBloodGroup.sync(once, "demo_haru", "A-")

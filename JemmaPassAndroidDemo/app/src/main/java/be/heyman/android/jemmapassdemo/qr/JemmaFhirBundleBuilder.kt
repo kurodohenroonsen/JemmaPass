@@ -73,6 +73,8 @@ object JemmaFhirBundleBuilder {
      * Construit un Bundle FHIR R4 type "document" depuis le profile
      * hydraté. Retourne le JSON sérialisé pretty-printed.
      */
+    private val NON_UCUM_DOSE_UNITS = setOf("tab", "tabs", "tablet", "tablets", "cp", "comp", "cap", "caps", "capsule", "capsules", "puff", "puffs", "drop", "drops", "gtt", "sachet", "patch", "unit", "units", "dose", "doses")
+
     fun build(hydrated: HydratedProfile, native: IpsNativePillars = IpsNativePillars.EMPTY): kotlin.String {
         val t0 = java.lang.System.currentTimeMillis()
 
@@ -274,9 +276,13 @@ object JemmaFhirBundleBuilder {
                                 value = Decimal.Builder().apply {
                                     value = dv.toBigDecimal()
                                 }
-                                unit = String.Builder().apply { value = m.doseUnit ?: "" }
-                                system = Uri.Builder().apply { value = SYS_UCUM }
-                                code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = m.doseUnit ?: "" }
+                                val u = m.doseUnit?.trim().orEmpty()
+                                if (u.isNotBlank()) unit = String.Builder().apply { value = u }
+                                // Count units ("tab", "caps", "puff"…) are not UCUM codes (HL7 validator, cycle 7).
+                                if (u.isNotBlank() && u.lowercase() !in NON_UCUM_DOSE_UNITS) {
+                                    system = Uri.Builder().apply { value = SYS_UCUM }
+                                    code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = u }
+                                }
                             }.build())
                         })
                     }
