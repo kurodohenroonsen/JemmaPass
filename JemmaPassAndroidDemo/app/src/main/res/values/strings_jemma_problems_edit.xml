@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_problems_edit.xml — JEMMA Pass · IPS pillar "Problem List" (EN, default) -->
+<resources>
+
+    <string name="problems_edit_title">Current problems</string>
+    <string name="problems_edit_hero_title">Current problems</string>
+    <string name="problems_fab_add_desc">Add a current problem</string>
+    <string name="problems_empty_default">No current problem recorded.\nTap + to add a chronic or ongoing condition.</string>
+    <plurals name="problems_count">
+        <item quantity="zero">No current problem</item>
+        <item quantity="one">%d current problem</item>
+        <item quantity="other">%d current problems</item>
+    </plurals>
+    <string name="problems_saved">Problem list saved</string>
+    <string name="problems_save_failed">Could not save the problem list</string>
+    <string name="problems_delete_title">Delete this problem?</string>
+    <string name="problem_form_title_create">🩺  Add a current problem</string>
+    <string name="problem_form_title_edit">🩺  Edit problem</string>
+    <string name="problem_form_code_picker_title">Choose a condition</string>
+    <string name="problem_status_active">🩺 Active</string>
+    <string name="problem_status_recurrence">🔁 Recurrence</string>
+    <string name="problem_status_relapse">⚠️ Relapse</string>
+</resources>

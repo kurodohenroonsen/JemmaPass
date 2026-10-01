@@ -145,7 +145,7 @@ class ProfilesRepository @Inject constructor(
                         // Seed both files (JSON projection + FHIR Bundle) through the
                         // single write path so the demo immunizations land in the Bundle.
                         val native = JemmaPersonasSeeder.getDemoNativePillars(id)
-                            ?: IpsNativePillars.fromJEntries(demo.im, demo.pr, demo.dv, demo.rs, demo.ph)
+                            ?: IpsNativePillars.fromJEntries(demo.im, demo.pr, demo.dv, demo.rs, demo.ph, demo.cn)
                         writeProfileFiles(id, demo, native)
                         Log.d(TAG, "⭐ Seeded demo profile files for $id")
                     } else {
@@ -255,6 +255,9 @@ class ProfilesRepository @Inject constructor(
     suspend fun loadResults(id: String): List<IpsResult> =
         loadNativePillars(id).results
 
+    suspend fun loadProblems(id: String): List<be.heyman.android.jemmapassdemo.ips.IpsProblem> =
+        loadNativePillars(id).problems
+
     suspend fun loadPastProblems(id: String): List<be.heyman.android.jemmapassdemo.ips.IpsPastProblem> =
         loadNativePillars(id).pastProblems
 
@@ -274,6 +277,9 @@ class ProfilesRepository @Inject constructor(
 
     suspend fun saveResults(id: String, results: List<IpsResult>): Boolean =
         saveNativePillars(id, "🧪 ${results.size} results") { it.copy(results = results) }
+
+    suspend fun saveProblems(id: String, problems: List<be.heyman.android.jemmapassdemo.ips.IpsProblem>): Boolean =
+        saveNativePillars(id, "🩺 ${problems.size} problems") { it.copy(problems = problems) }
 
     suspend fun savePastProblems(id: String, pastProblems: List<be.heyman.android.jemmapassdemo.ips.IpsPastProblem>): Boolean =
         saveNativePillars(id, "📜 ${pastProblems.size} past problems") { it.copy(pastProblems = pastProblems) }
@@ -316,7 +322,7 @@ class ProfilesRepository @Inject constructor(
                 null
             }
         } else null
-        val fromJ = IpsNativePillars.fromJEntries(profile.im, profile.pr, profile.dv, profile.rs, profile.ph)
+        val fromJ = IpsNativePillars.fromJEntries(profile.im, profile.pr, profile.dv, profile.rs, profile.ph, profile.cn)
         if (fromBundle == null) return fromJ
         // Pillar by pillar: a Bundle written before a pillar went FHIR-native has no
         // resources for it, while the `_j` array may still carry legacy entries.
@@ -326,6 +332,7 @@ class ProfilesRepository @Inject constructor(
             devices = fromBundle.devices.ifEmpty { fromJ.devices },
             results = fromBundle.results.ifEmpty { fromJ.results },
             pastProblems = fromBundle.pastProblems.ifEmpty { fromJ.pastProblems },
+            problems = fromBundle.problems.ifEmpty { fromJ.problems },
         )
     }
 
@@ -338,7 +345,7 @@ class ProfilesRepository @Inject constructor(
      *   • anything else (QR / mesh / legacy imports) → the incoming `_j` arrays
      */
     private fun resolveNativePillars(id: String, profile: JemmaProfileJ, sourceFormat: String): IpsNativePillars {
-        val fromJ = IpsNativePillars.fromJEntries(profile.im, profile.pr, profile.dv, profile.rs, profile.ph)
+        val fromJ = IpsNativePillars.fromJEntries(profile.im, profile.pr, profile.dv, profile.rs, profile.ph, profile.cn)
         return when {
             sourceFormat == SOURCE_DEMO_SEED ->
                 JemmaPersonasSeeder.getDemoNativePillars(id) ?: fromJ
@@ -365,6 +372,7 @@ class ProfilesRepository @Inject constructor(
             dv = native.devices.map { it.toJEntry() },
             rs = native.results.map { it.toJEntry() },
             ph = native.pastProblems.map { it.toJEntry() },
+            cn = native.problems.map { it.toJCondition() },
         )
         // 1. `_j` projection (QR / Nearby / legacy screens)
         file.writeText(profileAdapter.toJson(projected))
@@ -373,7 +381,7 @@ class ProfilesRepository @Inject constructor(
             val hydrated = hydrator.hydrate(projected)
             val fhirJson = JemmaFhirBundleBuilder.build(hydrated, native)
             fhirFile.writeText(fhirJson)
-            Log.i(TAG, "[t=${System.currentTimeMillis()}] 🏥 IPS FHIR profile saved for $id (${fhirJson.length} bytes · ${native.immunizations.size} immunizations · ${native.procedures.size} procedures · ${native.devices.size} devices · ${native.results.size} results · ${native.pastProblems.size} past problems)")
+            Log.i(TAG, "[t=${System.currentTimeMillis()}] 🏥 IPS FHIR profile saved for $id (${fhirJson.length} bytes · ${native.immunizations.size} immunizations · ${native.procedures.size} procedures · ${native.devices.size} devices · ${native.results.size} results · ${native.pastProblems.size} past problems · ${native.problems.size} problems)")
         } catch (e: Throwable) {
             Log.e(TAG, "⚠️ Failed to generate FHIR IPS for $id : ${e.message}", e)
         }

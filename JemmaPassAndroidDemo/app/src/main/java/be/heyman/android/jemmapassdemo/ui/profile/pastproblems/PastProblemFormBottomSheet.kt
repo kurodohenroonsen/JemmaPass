@@ -13,6 +13,9 @@
  *
  * Validation errors are inline + toast + Log.w ; Save is debounced ; Delete in EDIT mode.
  *
+ * Sprint 5: the same sheet edits the 🩺 current problem list (kind = "current"): no
+ * end date, statuses active / recurrence / relapse.
+ *
  * Logging : tag JEMMA-PASTPROBLEMS-FORM
  */
 package be.heyman.android.jemmapassdemo.ui.profile.pastproblems
@@ -37,6 +40,7 @@ import be.heyman.android.jemmapassdemo.ips.IpsCodeSystems
 import be.heyman.android.jemmapassdemo.ips.IpsConditionSeverity
 import be.heyman.android.jemmapassdemo.ips.IpsPastProblem
 import be.heyman.android.jemmapassdemo.ips.IpsPastProblemStatus
+import be.heyman.android.jemmapassdemo.ips.IpsProblemStatus
 import be.heyman.android.jemmapassdemo.kb.KnowledgeBaseService
 import be.heyman.android.jemmapassdemo.pillars.IpsTranslationsRepository
 import be.heyman.android.jemmapassdemo.ui.common.KbConditionPicker
@@ -64,6 +68,17 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
         private const val TAG = "JEMMA-PASTPROBLEMS-FORM"
 
         const val RESULT_KEY = "past_problem_form_result"
+        const val RESULT_KEY_CURRENT = "problem_form_result"
+        const val ARG_KIND = "kind"
+        const val KIND_PAST = "past"
+        const val KIND_CURRENT = "current"
+
+        fun resultKey(kind: String): String = if (kind == KIND_CURRENT) RESULT_KEY_CURRENT else RESULT_KEY
+
+        fun statusCodes(kind: String): List<String> = if (kind == KIND_CURRENT) IpsProblemStatus.ALL else IpsPastProblemStatus.ALL
+
+        fun normalizeStatus(kind: String, raw: String?): String =
+            if (kind == KIND_CURRENT) IpsProblemStatus.normalize(raw) else IpsPastProblemStatus.normalize(raw)
         const val ARG_MODE = "mode"
         const val ARG_ID = "id"
         const val ARG_LANG = "lang"
@@ -80,9 +95,10 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
 
         private val ISO_DATE_REGEX = Regex("^\\d{4}(-\\d{2}(-\\d{2})?)?$")
 
-        fun newInstance(mode: PastProblemFormMode, lang: String, existing: IpsPastProblem? = null): PastProblemFormBottomSheet =
+        fun newInstance(mode: PastProblemFormMode, lang: String, existing: IpsPastProblem? = null, kind: String = KIND_PAST): PastProblemFormBottomSheet =
             PastProblemFormBottomSheet().apply {
                 arguments = bundleOf(
+                    ARG_KIND to kind,
                     ARG_MODE to mode.name,
                     ARG_ID to existing?.id,
                     ARG_LANG to lang,
@@ -99,6 +115,9 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
             }
 
         fun statusLabelRes(code: String): Int = when (code) {
+            IpsProblemStatus.ACTIVE -> R.string.problem_status_active
+            IpsProblemStatus.RECURRENCE -> R.string.problem_status_recurrence
+            IpsProblemStatus.RELAPSE -> R.string.problem_status_relapse
             IpsPastProblemStatus.INACTIVE -> R.string.past_problem_status_inactive
             IpsPastProblemStatus.REMISSION -> R.string.past_problem_status_remission
             else -> R.string.past_problem_status_resolved
@@ -119,6 +138,8 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
 
     private val mode: PastProblemFormMode by lazy { PastProblemFormMode.valueOf(arguments?.getString(ARG_MODE) ?: PastProblemFormMode.CREATE.name) }
     private val lang: String by lazy { arguments?.getString(ARG_LANG) ?: "en" }
+    private val kind: String by lazy { arguments?.getString(ARG_KIND) ?: KIND_PAST }
+    private val isCurrent: Boolean get() = kind == KIND_CURRENT
 
     private var pickedCode: String? = null
     private var pickedCodeSystem: String? = null
@@ -128,12 +149,12 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
     private var pickedLabel: String? = null
     private var onsetIso: String? = null
     private var abatementIso: String? = null
-    private var pickedStatus: String = IpsPastProblemStatus.RESOLVED
+    private var pickedStatus: String = IpsPastProblemStatus.RESOLVED  // re-set from the kind in onViewCreated
     private var pickedSeverity: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = BottomSheetPastProblemFormBinding.inflate(inflater, container, false)
-        Log.i(TAG, "[t=${System.currentTimeMillis()}] 📋 onCreateView · mode=$mode · lang=$lang")
+        Log.i(TAG, "[t=${System.currentTimeMillis()}] 📋 onCreateView · kind=$kind · mode=$mode · lang=$lang")
         return binding.root
     }
 
@@ -148,15 +169,25 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.pastProblemFormTitle.setText(
-            if (mode == PastProblemFormMode.CREATE) R.string.past_problem_form_title_create else R.string.past_problem_form_title_edit
+            when {
+                isCurrent && mode == PastProblemFormMode.CREATE -> R.string.problem_form_title_create
+                isCurrent -> R.string.problem_form_title_edit
+                mode == PastProblemFormMode.CREATE -> R.string.past_problem_form_title_create
+                else -> R.string.past_problem_form_title_edit
+            }
         )
+        if (isCurrent) {
+            // A current problem has no end: hide the whole abatement block.
+            binding.pastProblemFormAbatementHeader.visibility = View.GONE
+            binding.pastProblemFormAbatementRow.visibility = View.GONE
+        }
 
         pickedCode = arguments?.getString(ARG_CODE)?.takeIf { it.isNotBlank() }
         pickedCodeSystem = arguments?.getString(ARG_CODE_SYSTEM)?.takeIf { it.isNotBlank() }
         pickedDisplay = arguments?.getString(ARG_DISPLAY)?.takeIf { it.isNotBlank() }
         onsetIso = arguments?.getString(ARG_ONSET)?.takeIf { it.isNotBlank() }
-        abatementIso = arguments?.getString(ARG_ABATEMENT)?.takeIf { it.isNotBlank() }
-        pickedStatus = IpsPastProblemStatus.normalize(arguments?.getString(ARG_STATUS))
+        abatementIso = if (isCurrent) null else arguments?.getString(ARG_ABATEMENT)?.takeIf { it.isNotBlank() }
+        pickedStatus = normalizeStatus(kind, arguments?.getString(ARG_STATUS))
         pickedSeverity = IpsConditionSeverity.normalize(arguments?.getString(ARG_SEVERITY))
 
         binding.pastProblemFormText.setText(arguments?.getString(ARG_TEXT).orEmpty())
@@ -180,7 +211,7 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
         binding.pastProblemFormDeleteBtn.visibility = if (mode == PastProblemFormMode.EDIT) View.VISIBLE else View.GONE
         binding.pastProblemFormDeleteBtn.setOnClickListener {
             Log.i(TAG, "[t=${System.currentTimeMillis()}] 🗑 delete requested · id=${arguments?.getString(ARG_ID)}")
-            setFragmentResult(RESULT_KEY, bundleOf(ARG_MODE to mode.name, ARG_ID to arguments?.getString(ARG_ID), ARG_DELETE to true))
+            setFragmentResult(resultKey(kind), bundleOf(ARG_MODE to mode.name, ARG_ID to arguments?.getString(ARG_ID), ARG_DELETE to true))
             dismiss()
         }
     }
@@ -225,7 +256,10 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
     private fun openPicker() {
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 📋 open past-illness picker · lang=$lang")
         KbConditionPicker
-            .newInstance(title = getString(R.string.past_problem_form_code_picker_title), lang = lang)
+            .newInstance(
+                title = getString(if (isCurrent) R.string.problem_form_code_picker_title else R.string.past_problem_form_code_picker_title),
+                lang = lang,
+            )
             .setOnPicked { picked ->
                 Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ illness picked · code=${picked.code} · system=${picked.system} · display='${picked.display}'")
                 pickedCode = picked.code
@@ -251,7 +285,7 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
         renderDate(onsetIso, binding.pastProblemFormOnsetLabel, binding.pastProblemFormOnsetClear, R.string.past_problem_form_onset_hint)
         renderDate(abatementIso, binding.pastProblemFormAbatementLabel, binding.pastProblemFormAbatementClear, R.string.past_problem_form_abatement_hint)
         binding.pastProblemFormAbatementError.visibility =
-            if (IpsPastProblem.isChronologyValid(onsetIso, abatementIso)) View.GONE else View.VISIBLE
+            if (isCurrent || IpsPastProblem.isChronologyValid(onsetIso, abatementIso)) View.GONE else View.VISIBLE
     }
 
     private fun renderDate(iso: String?, label: android.widget.TextView, clear: View, hintRes: Int) {
@@ -334,7 +368,7 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
     private fun renderSeverityLabel() { binding.pastProblemFormSeverityLabel.setText(severityLabelRes(pickedSeverity)) }
 
     private fun openStatusPicker() {
-        val codes = IpsPastProblemStatus.ALL
+        val codes = statusCodes(kind)
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.past_problem_form_status_pick_title)
             .setItems(codes.map { getString(statusLabelRes(it)) }.toTypedArray()) { _, which ->
@@ -374,7 +408,7 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
             return
         }
         val onset = onsetIso?.takeIf { it.isNotBlank() && ISO_DATE_REGEX.matches(it) }
-        val abatement = abatementIso?.takeIf { it.isNotBlank() && ISO_DATE_REGEX.matches(it) }
+        val abatement = if (isCurrent) null else abatementIso?.takeIf { it.isNotBlank() && ISO_DATE_REGEX.matches(it) }
         if (!IpsPastProblem.isChronologyValid(onset, abatement)) {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ validation: abatement $abatement before onset $onset")
             binding.pastProblemFormAbatementError.visibility = View.VISIBLE
@@ -383,9 +417,9 @@ class PastProblemFormBottomSheet : BottomSheetDialogFragment() {
             return
         }
 
-        Log.i(TAG, "[t=${System.currentTimeMillis()}] 💾 submit · mode=$mode · code=$code · display='${pickedDisplay ?: ""}' · text='$freeText' · onset=$onset · abatement=$abatement · status=$pickedStatus · severity=${pickedSeverity ?: "none"}")
+        Log.i(TAG, "[t=${System.currentTimeMillis()}] 💾 submit · kind=$kind · mode=$mode · code=$code · display='${pickedDisplay ?: ""}' · text='$freeText' · onset=$onset · abatement=$abatement · status=$pickedStatus · severity=${pickedSeverity ?: "none"}")
         setFragmentResult(
-            RESULT_KEY,
+            resultKey(kind),
             bundleOf(
                 ARG_MODE to mode.name,
                 ARG_ID to arguments?.getString(ARG_ID),

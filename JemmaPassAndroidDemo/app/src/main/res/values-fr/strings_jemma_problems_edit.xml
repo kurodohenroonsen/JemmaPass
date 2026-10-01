@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_problems_edit.xml — JEMMA Pass · pilier IPS « Problèmes actifs » (FR) -->
+<resources>
+
+    <string name="problems_edit_title">Problèmes actifs</string>
+    <string name="problems_edit_hero_title">Problèmes actifs</string>
+    <string name="problems_fab_add_desc">Ajouter un problème actif</string>
+    <string name="problems_empty_default">Aucun problème actif enregistré.\nAppuie sur + pour ajouter une maladie chronique ou en cours.</string>
+    <plurals name="problems_count">
+        <item quantity="zero">Aucun problème actif</item>
+        <item quantity="one">%d problème actif</item>
+        <item quantity="other">%d problèmes actifs</item>
+    </plurals>
+    <string name="problems_saved">Problèmes actifs enregistrés</string>
+    <string name="problems_save_failed">Impossible d’enregistrer les problèmes actifs</string>
+    <string name="problems_delete_title">Supprimer ce problème ?</string>
+    <string name="problem_form_title_create">🩺  Ajouter un problème actif</string>
+    <string name="problem_form_title_edit">🩺  Modifier le problème</string>
+    <string name="problem_form_code_picker_title">Choisir une maladie</string>
+    <string name="problem_status_active">🩺 Active</string>
+    <string name="problem_status_recurrence">🔁 Récidive</string>
+    <string name="problem_status_relapse">⚠️ Rechute</string>
+</resources>

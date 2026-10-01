@@ -12,6 +12,7 @@ import be.heyman.android.jemmapassdemo.ips.IpsImmunization
 import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
 import be.heyman.android.jemmapassdemo.ips.IpsConditionSeverity
 import be.heyman.android.jemmapassdemo.ips.IpsPastProblem
+import be.heyman.android.jemmapassdemo.ips.IpsProblem
 import be.heyman.android.jemmapassdemo.ips.IpsProcedure
 import be.heyman.android.jemmapassdemo.ips.IpsResult
 import be.heyman.android.jemmapassdemo.ips.IpsResultCategory
@@ -85,6 +86,13 @@ object JemmaPersonasSeeder {
                     display = "Creatinine (serum/plasma)", date = "2026-01-15", value = "0.9", unit = "mg/dL",
                     interpretation = IpsResultInterpretation.NORMAL, refLow = "0.7", refHigh = "1.2",
                     performer = "Laboratoire CHU UCL Namur",
+                ),
+            ),
+            problems = listOf(
+                IpsProblem(
+                    id = "cn-kurodo-hypercholesterolemia", code = "13644009", system = IpsCodeSystems.SNOMED,
+                    display = "Hypercholesterolemia", onset = "2026-01",
+                    severity = IpsConditionSeverity.MILD, note = "LDL 131 mg/dL — lifestyle first",
                 ),
             ),
             pastProblems = listOf(
@@ -166,6 +174,18 @@ object JemmaPersonasSeeder {
                     performer = "Radiology, Matsuyama Red Cross Hospital",
                 ),
             ),
+            problems = listOf(
+                IpsProblem(
+                    id = "cn-haru-heart-failure", code = "84114007", system = IpsCodeSystems.SNOMED,
+                    display = "Heart failure", onset = "2020-11",
+                    severity = IpsConditionSeverity.MODERATE, note = "NYHA II, on furosemide",
+                ),
+                IpsProblem(
+                    id = "cn-haru-ckd3", code = "433144002", system = IpsCodeSystems.SNOMED,
+                    display = "Chronic kidney disease stage 3", onset = "2022",
+                    note = "eGFR 48 (2026-02)",
+                ),
+            ),
             pastProblems = listOf(
                 IpsPastProblem(
                     id = "ph-haru-mi-2015", code = "22298006", system = IpsCodeSystems.SNOMED,
@@ -176,6 +196,24 @@ object JemmaPersonasSeeder {
                     id = "ph-haru-tb-1962", code = "56717001", system = IpsCodeSystems.SNOMED,
                     display = "Tuberculosis", onset = "1962", abatement = "1963",
                     note = "Pulmonary, treated — calcified scar on chest X-ray",
+                ),
+            ),
+        )
+        // Kamekichi: problem list only (bisoprolol, warfarin and isosorbide dinitrate in `md`).
+        SID_KAMEKICHI -> IpsNativePillars(
+            problems = listOf(
+                IpsProblem(
+                    id = "cn-kamekichi-hypertension", code = "59621000", system = IpsCodeSystems.SNOMED,
+                    display = "Essential hypertension", onset = "2010",
+                ),
+                IpsProblem(
+                    id = "cn-kamekichi-af", code = "49436004", system = IpsCodeSystems.SNOMED,
+                    display = "Atrial fibrillation", onset = "2018-06",
+                    severity = IpsConditionSeverity.MODERATE, note = "Anticoagulated (warfarin)",
+                ),
+                IpsProblem(
+                    id = "cn-kamekichi-angina", code = "194828000", system = IpsCodeSystems.SNOMED,
+                    display = "Angina pectoris", onset = "2021",
                 ),
             ),
         )

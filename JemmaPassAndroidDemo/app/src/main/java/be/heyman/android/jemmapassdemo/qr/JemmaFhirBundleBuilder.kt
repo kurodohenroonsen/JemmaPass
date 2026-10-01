@@ -75,8 +75,14 @@ object JemmaFhirBundleBuilder {
      */
     private val NON_UCUM_DOSE_UNITS = setOf("tab", "tabs", "tablet", "tablets", "cp", "comp", "cap", "caps", "capsule", "capsules", "puff", "puffs", "drop", "drops", "gtt", "sachet", "patch", "unit", "units", "dose", "doses")
 
-    fun build(hydrated: HydratedProfile, native: IpsNativePillars = IpsNativePillars.EMPTY): kotlin.String {
+    fun build(hydrated: HydratedProfile, nativeIn: IpsNativePillars = IpsNativePillars.EMPTY): kotlin.String {
         val t0 = java.lang.System.currentTimeMillis()
+        // Callers without the stored native pillars (FHIR QR channel) rebuild them from the
+        // `_j` projections so the Bundle still carries every pillar.
+        val raw = hydrated.raw
+        val native = if (nativeIn.isEmpty) {
+            IpsNativePillars.fromJEntries(raw.im, raw.pr, raw.dv, raw.rs, raw.ph, raw.cn)
+        } else nativeIn
 
         // URNs pour cross-référencement intra-bundle — déterministes (sid + identité).
         val sid = hydrated.raw.sid?.takeIf { it.isNotBlank() } ?: "no-sid"
@@ -86,7 +92,7 @@ object JemmaFhirBundleBuilder {
         val allergyUrns = hydrated.allergies.mapIndexed { i, a -> IpsFhirCodec.stableUrn("$sid|AllergyIntolerance|$i|${a.raw.c.orEmpty()}") }
         val medStatementUrns = hydrated.medications.mapIndexed { i, m -> IpsFhirCodec.stableUrn("$sid|MedicationStatement|$i|${m.raw.c.orEmpty()}") }
         val medRefUrns = hydrated.medications.mapIndexed { i, m -> IpsFhirCodec.stableUrn("$sid|Medication|$i|${m.raw.c.orEmpty()}") }
-        val conditionUrns = hydrated.conditions.mapIndexed { i, c -> IpsFhirCodec.stableUrn("$sid|Condition|$i|${c.raw.c.orEmpty()}") }
+        val problemUrns = native.problems.map { pb -> IpsFhirCodec.problemUrn(sid, pb.id) }
         val immunizationUrns = native.immunizations.map { im -> IpsFhirCodec.immunizationUrn(sid, im.id) }
         val procedureUrns = native.procedures.map { pr -> IpsFhirCodec.procedureUrn(sid, pr.id) }
         val deviceStatementUrns = native.devices.map { dv -> IpsFhirCodec.deviceUseStatementUrn(sid, dv.id) }
@@ -296,46 +302,11 @@ object JemmaFhirBundleBuilder {
             })
         }
 
-        // Condition entries
-        hydrated.conditions.forEachIndexed { i, c ->
-            val codeStr = c.raw.c.orEmpty()
-            val displayStr = c.displayLocalized.ifBlank { codeStr }
-            
-            val condition = Condition.Builder(
-                Reference.Builder().apply { reference = String.Builder().apply { value = patientUrn } }
-            ).apply {
-                clinicalStatus = CodeableConcept.Builder().apply {
-                    coding.add(Coding.Builder().apply {
-                        system = Uri.Builder().apply { value = SYS_COND_CLINICAL }
-                        code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = "active" }
-                    })
-                }
-                verificationStatus = CodeableConcept.Builder().apply {
-                    coding.add(Coding.Builder().apply {
-                        system = Uri.Builder().apply { value = SYS_COND_VERIF }
-                        code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = "confirmed" }
-                    })
-                }
-                category.add(CodeableConcept.Builder().apply {
-                    coding.add(Coding.Builder().apply {
-                        system = Uri.Builder().apply { value = SYS_COND_CATEGORY }
-                        code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = "problem-list-item" }
-                        display = String.Builder().apply { value = "Problem List Item" }
-                    })
-                })
-                code = CodeableConcept.Builder().apply {
-                    coding.add(Coding.Builder().apply {
-                        system = Uri.Builder().apply { value = SYS_SNOMED }
-                        code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = codeStr }
-                        display = String.Builder().apply { value = displayStr }
-                    })
-                    text = String.Builder().apply { value = displayStr }
-                }
-            }
-            
+        // Problem list (FHIR-native since sprint 5; `_j.cn` is its projection)
+        native.problems.forEachIndexed { i, pb ->
             bundleEntries.add(Bundle.Entry.Builder().apply {
-                fullUrl = Uri.Builder().apply { value = conditionUrns[i] }
-                resource = condition
+                fullUrl = Uri.Builder().apply { value = problemUrns[i] }
+                resource = IpsFhirCodec.toFhir(pb, patientUrn)
             })
         }
 
@@ -380,7 +351,7 @@ object JemmaFhirBundleBuilder {
         val sections = listOfNotNull(
             sectionStub("Allergies", "48765-2", allergyUrns, hydrated.allergies),
             sectionStub("Medications", "10160-0", medStatementUrns, hydrated.medications),
-            sectionStub("Problems", "11450-4", conditionUrns, hydrated.conditions),
+            IpsFhirCodec.problemSection(problemUrns),
             IpsFhirCodec.pastProblemSection(pastProblemUrns),
             IpsFhirCodec.immunizationSection(immunizationUrns),
             IpsFhirCodec.procedureSection(procedureUrns),

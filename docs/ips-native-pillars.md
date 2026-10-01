@@ -125,6 +125,19 @@ numbers on disk (`5.4`, `120.0`); `IpsDecimal.trimZeros` restores the typed text
 | Seeds | Kurodo appendicitis + pneumonia · Haru myocardial infarction + tuberculosis · Kamekichi none |
 | QA | `verify_profiles.py` 📜 `ph` (P4–P6, P6d ab/sv), README T15 |
 
+## Sprint 5 — Problem List 🩺 (LOINC 11450-4, required IPS section)
+
+| Layer | Problem list |
+|---|---|
+| Domain | `ips/IpsProblem.kt` — clinicalStatus active / recurrence / relapse, onset, severity (IPS LOINC answers), note |
+| FHIR | `Condition` (Condition-uv-ips, category problem-list-item); section 11450-4 "Problem list - Reported" |
+| Membership | entries of 11450-4 (legacy Conditions without id get a stable id from their fullUrl), fallback Condition-uv-ips + current status — disjoint from 📜 |
+| `_j` | `cn` keeps the legacy JCondition shape for KbCrossCheck / Gemma tools (`st` = clinicalStatus, `s` = mild/moderate/severe) + `dt`, `cs` |
+| Bundle builder | without stored native pillars (FHIR QR channel) the pillars are rebuilt from the `_j` projections |
+| UI | the 📜 screen and form in `kind = "current"` mode (no end date) |
+| Seeds | Kurodo hypercholesterolemia · Haru heart failure + CKD 3 · Kamekichi hypertension + AF + angina |
+| QA | `verify_profiles.py` 🩺 `cn` (P4–P6, P6e st), README T16 |
+
 ### Checklist for the next pillar (Functional status, Pregnancy, Vital signs…)
 
 1. Tests first: FHIR round trip (full / minimal / edge dates / status

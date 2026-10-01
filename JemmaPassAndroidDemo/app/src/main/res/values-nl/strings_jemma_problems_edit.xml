@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_problems_edit.xml — JEMMA Pass · IPS-pijler „Actuele aandoeningen“ (NL) -->
+<resources>
+
+    <string name="problems_edit_title">Actuele aandoeningen</string>
+    <string name="problems_edit_hero_title">Actuele aandoeningen</string>
+    <string name="problems_fab_add_desc">Actuele aandoening toevoegen</string>
+    <string name="problems_empty_default">Geen actuele aandoening geregistreerd.\nTik op + om een chronische of lopende aandoening toe te voegen.</string>
+    <plurals name="problems_count">
+        <item quantity="zero">Geen actuele aandoening</item>
+        <item quantity="one">%d actuele aandoening</item>
+        <item quantity="other">%d actuele aandoeningen</item>
+    </plurals>
+    <string name="problems_saved">Aandoeningen opgeslagen</string>
+    <string name="problems_save_failed">Kon de aandoeningen niet opslaan</string>
+    <string name="problems_delete_title">Deze aandoening verwijderen?</string>
+    <string name="problem_form_title_create">🩺  Actuele aandoening toevoegen</string>
+    <string name="problem_form_title_edit">🩺  Aandoening bewerken</string>
+    <string name="problem_form_code_picker_title">Kies een aandoening</string>
+    <string name="problem_status_active">🩺 Actief</string>
+    <string name="problem_status_recurrence">🔁 Recidief</string>
+    <string name="problem_status_relapse">⚠️ Terugval</string>
+</resources>

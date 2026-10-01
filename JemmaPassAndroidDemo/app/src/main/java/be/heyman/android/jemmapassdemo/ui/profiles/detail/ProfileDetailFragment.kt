@@ -1338,6 +1338,8 @@ class ProfileDetailFragment : Fragment() {
                         "results" -> R.id.action_detail_to_results to true
                         // 📜 FHIR-native pillar (sprint 4)
                         "pastProblems" -> R.id.action_detail_to_past_problems to true
+                        // 🩺 FHIR-native problem list (sprint 5)
+                        "conditions" -> R.id.action_detail_to_problems to true
                         else -> R.id.action_detail_to_pillar_stub to false
                     }
                     val args = if (includeProfileId) {

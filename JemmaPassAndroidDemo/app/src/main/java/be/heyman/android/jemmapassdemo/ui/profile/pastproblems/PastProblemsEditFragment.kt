@@ -6,6 +6,10 @@
  * rewritten (source of truth) and `_j.ph` is re-projected for QR / mesh.
  * Same pattern as ProceduresEditFragment.
  *
+ * Sprint 5: with the nav argument kind = "current" the same screen edits the 🩺
+ * problem list (ProfilesRepository.loadProblems() / saveProblems(), `_j.cn`); the
+ * rows are shown through the same UI model (IpsPastProblem without end date).
+ *
  * Logging : tag JEMMA-PASTPROBLEMS-EDIT
  */
 package be.heyman.android.jemmapassdemo.ui.profile.pastproblems
@@ -39,6 +43,18 @@ class PastProblemsEditFragment : Fragment() {
     companion object {
         private const val TAG = "JEMMA-PASTPROBLEMS-EDIT"
         private const val ARG_PROFILE_ID = "profileId"
+        private const val ARG_KIND = "kind"
+
+        fun toUi(p: be.heyman.android.jemmapassdemo.ips.IpsProblem): IpsPastProblem = IpsPastProblem(
+            id = p.id, code = p.code, system = p.system, display = p.display, text = p.text,
+            onset = p.onset, abatement = null, clinicalStatus = p.clinicalStatus, severity = p.severity, note = p.note,
+        )
+
+        fun toProblem(u: IpsPastProblem): be.heyman.android.jemmapassdemo.ips.IpsProblem = be.heyman.android.jemmapassdemo.ips.IpsProblem(
+            id = u.id, code = u.code, system = u.system, display = u.display, text = u.text, onset = u.onset,
+            clinicalStatus = be.heyman.android.jemmapassdemo.ips.IpsProblemStatus.normalize(u.clinicalStatus),
+            severity = u.severity, note = u.note,
+        )
     }
 
     @Inject lateinit var profilesRepo: ProfilesRepository
@@ -48,6 +64,8 @@ class PastProblemsEditFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val argProfileId: String? by lazy { arguments?.getString(ARG_PROFILE_ID) }
+    private val kind: String by lazy { arguments?.getString(ARG_KIND) ?: PastProblemFormBottomSheet.KIND_PAST }
+    private val isCurrent: Boolean get() = kind == PastProblemFormBottomSheet.KIND_CURRENT
     private var profileId: String? = null
     private var loaded = false
     private val problems = mutableListOf<IpsPastProblem>()
@@ -75,7 +93,11 @@ class PastProblemsEditFragment : Fragment() {
         binding.pastProblemsRecycler.adapter = adapter
         binding.pastProblemsFabAdd.setOnClickListener { openForm(PastProblemFormMode.CREATE) }
 
-        parentFragmentManager.setFragmentResultListener(PastProblemFormBottomSheet.RESULT_KEY, viewLifecycleOwner) { _, bundle ->
+        if (isCurrent) {
+            binding.pastProblemsHeroTitle.setText(R.string.problems_edit_hero_title)
+            binding.pastProblemsHeroEmoji.text = "🩺"
+        }
+        parentFragmentManager.setFragmentResultListener(PastProblemFormBottomSheet.resultKey(kind), viewLifecycleOwner) { _, bundle ->
             handleFormResult(bundle)
         }
 
@@ -95,9 +117,9 @@ class PastProblemsEditFragment : Fragment() {
                 Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ profile $pid not found")
                 showEmptyStateNoProfile(); return@launch
             }
-            val list = profilesRepo.loadPastProblems(pid)
+            val list = if (isCurrent) profilesRepo.loadProblems(pid).map { toUi(it) } else profilesRepo.loadPastProblems(pid)
             problems.clear(); problems.addAll(list); loaded = true
-            Log.i(TAG, "[t=${System.currentTimeMillis()}] 📂 loaded ${list.size} past problems for $pid")
+            Log.i(TAG, "[t=${System.currentTimeMillis()}] 📂 loaded ${list.size} ${if (isCurrent) "problems" else "past problems"} for $pid")
             if (_binding != null) renderList()
         }
     }
@@ -111,9 +133,9 @@ class PastProblemsEditFragment : Fragment() {
         val empty = problems.isEmpty()
         binding.pastProblemsEmptyState.visibility = if (empty) View.VISIBLE else View.GONE
         binding.pastProblemsRecycler.visibility = if (empty) View.GONE else View.VISIBLE
-        binding.pastProblemsEmptyText.setText(R.string.past_problems_empty_default)
+        binding.pastProblemsEmptyText.setText(if (isCurrent) R.string.problems_empty_default else R.string.past_problems_empty_default)
         binding.pastProblemsFabAdd.isEnabled = true
-        binding.pastProblemsCount.text = resources.getQuantityString(R.plurals.past_problems_count, problems.size, problems.size)
+        binding.pastProblemsCount.text = resources.getQuantityString(if (isCurrent) R.plurals.problems_count else R.plurals.past_problems_count, problems.size, problems.size)
     }
 
     private fun showEmptyStateNoProfile() {
@@ -121,12 +143,12 @@ class PastProblemsEditFragment : Fragment() {
         binding.pastProblemsRecycler.visibility = View.GONE
         binding.pastProblemsEmptyText.setText(R.string.past_problems_empty_no_profile)
         binding.pastProblemsFabAdd.isEnabled = false
-        binding.pastProblemsCount.text = resources.getQuantityString(R.plurals.past_problems_count, 0, 0)
+        binding.pastProblemsCount.text = resources.getQuantityString(if (isCurrent) R.plurals.problems_count else R.plurals.past_problems_count, 0, 0)
     }
 
     private fun openForm(mode: PastProblemFormMode, existing: IpsPastProblem? = null, index: Int = -1) {
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 📝 openForm · mode=$mode · idx=$index · id=${existing?.id}")
-        PastProblemFormBottomSheet.newInstance(mode, currentLang, existing).show(parentFragmentManager, "past_problem_form")
+        PastProblemFormBottomSheet.newInstance(mode, currentLang, existing, kind).show(parentFragmentManager, "past_problem_form")
     }
 
     private fun handleFormResult(bundle: Bundle) {
@@ -148,7 +170,7 @@ class PastProblemsEditFragment : Fragment() {
             text = if (code == null) freeText else null,
             onset = bundle.getString(PastProblemFormBottomSheet.ARG_ONSET)?.takeIf { it.isNotBlank() },
             abatement = bundle.getString(PastProblemFormBottomSheet.ARG_ABATEMENT)?.takeIf { it.isNotBlank() },
-            clinicalStatus = IpsPastProblemStatus.normalize(bundle.getString(PastProblemFormBottomSheet.ARG_STATUS)),
+            clinicalStatus = PastProblemFormBottomSheet.normalizeStatus(kind, bundle.getString(PastProblemFormBottomSheet.ARG_STATUS)),
             severity = IpsConditionSeverity.normalize(bundle.getString(PastProblemFormBottomSheet.ARG_SEVERITY)),
             note = bundle.getString(PastProblemFormBottomSheet.ARG_NOTE)?.takeIf { it.isNotBlank() },
         )
@@ -167,7 +189,7 @@ class PastProblemsEditFragment : Fragment() {
     private fun confirmDelete(pp: IpsPastProblem, position: Int) {
         val label = pp.label().takeIf { it.isNotBlank() } ?: getString(R.string.past_problems_unnamed)
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.past_problems_delete_title)
+            .setTitle(if (isCurrent) R.string.problems_delete_title else R.string.past_problems_delete_title)
             .setMessage(getString(R.string.past_problems_delete_message, label))
             .setNegativeButton(R.string.past_problems_delete_cancel) { d, _ -> d.dismiss() }
             .setPositiveButton(R.string.past_problems_delete_confirm) { d, _ ->
@@ -183,14 +205,19 @@ class PastProblemsEditFragment : Fragment() {
         val snapshot = problems.toList()
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val ok = profilesRepo.savePastProblems(pid, snapshot)
+                val ok = if (isCurrent) profilesRepo.saveProblems(pid, snapshot.map { toProblem(it) }) else profilesRepo.savePastProblems(pid, snapshot)
                 Log.i(TAG, "[t=${System.currentTimeMillis()}] 💾 persist · profileId=$pid · count=${snapshot.size} · ok=$ok")
                 if (_binding != null) {
-                    Toast.makeText(requireContext(), if (ok) R.string.past_problems_saved else R.string.past_problems_save_failed, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), when {
+                        isCurrent && ok -> R.string.problems_saved
+                        isCurrent -> R.string.problems_save_failed
+                        ok -> R.string.past_problems_saved
+                        else -> R.string.past_problems_save_failed
+                    }, Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ persist failed : ${e.message}", e)
-                if (_binding != null) Toast.makeText(requireContext(), R.string.past_problems_save_failed, Toast.LENGTH_SHORT).show()
+                if (_binding != null) Toast.makeText(requireContext(), if (isCurrent) R.string.problems_save_failed else R.string.past_problems_save_failed, Toast.LENGTH_SHORT).show()
             }
         }
     }

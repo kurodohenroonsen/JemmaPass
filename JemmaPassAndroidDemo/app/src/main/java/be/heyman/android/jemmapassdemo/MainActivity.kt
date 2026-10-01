@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             "dest_devices",
             "dest_results",
             "dest_past_problems",
+            "dest_problems",
             // 🆕 Lot 14.5c1 — écrans Assistant Jemma. Le pipeline screen
             // affiche une preview pleine largeur + 3 steps progressives ;
             // la bottom nav volerait l'attention et la place utile.

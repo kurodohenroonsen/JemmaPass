@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- strings_jemma_problems_edit.xml — JEMMA Pass · IPS-Säule „Aktuelle Erkrankungen“ (DE) -->
+<resources>
+
+    <string name="problems_edit_title">Aktuelle Erkrankungen</string>
+    <string name="problems_edit_hero_title">Aktuelle Erkrankungen</string>
+    <string name="problems_fab_add_desc">Aktuelle Erkrankung hinzufügen</string>
+    <string name="problems_empty_default">Keine aktuelle Erkrankung erfasst.\nTippe auf +, um eine chronische oder laufende Erkrankung hinzuzufügen.</string>
+    <plurals name="problems_count">
+        <item quantity="zero">Keine aktuelle Erkrankung</item>
+        <item quantity="one">%d aktuelle Erkrankung</item>
+        <item quantity="other">%d aktuelle Erkrankungen</item>
+    </plurals>
+    <string name="problems_saved">Erkrankungen gespeichert</string>
+    <string name="problems_save_failed">Erkrankungen konnten nicht gespeichert werden</string>
+    <string name="problems_delete_title">Diese Erkrankung löschen?</string>
+    <string name="problem_form_title_create">🩺  Aktuelle Erkrankung hinzufügen</string>
+    <string name="problem_form_title_edit">🩺  Erkrankung bearbeiten</string>
+    <string name="problem_form_code_picker_title">Erkrankung wählen</string>
+    <string name="problem_status_active">🩺 Aktiv</string>
+    <string name="problem_status_recurrence">🔁 Rezidiv</string>
+    <string name="problem_status_relapse">⚠️ Rückfall</string>
+</resources>

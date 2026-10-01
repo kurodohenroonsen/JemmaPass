@@ -197,8 +197,9 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
-            <!-- ─── Abatement (resolution) ──────────────────── -->
+            <!-- ─── Abatement (resolution) — hidden for the current problem list ── -->
             <TextView
+                android:id="@+id/past_problem_form_abatement_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"

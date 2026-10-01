@@ -71,6 +71,10 @@ object IpsFhirCodec {
     const val SYSTEM_OBSERVATION_CATEGORY = "http://terminology.hl7.org/CodeSystem/observation-category"
     const val SYSTEM_OBSERVATION_INTERPRETATION = "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
     const val SYSTEM_UCUM = "http://unitsofmeasure.org"
+    const val LOINC_SECTION_PROBLEMS = "11450-4"
+    const val TITLE_SECTION_PROBLEMS = "Problems"
+    const val SYSTEM_CONDITION_CATEGORY = "http://terminology.hl7.org/CodeSystem/condition-category"
+
     const val LOINC_SECTION_PAST_ILLNESS = "11348-0"
     const val TITLE_SECTION_PAST_ILLNESS = "History of Past Illness"
     const val PROFILE_CONDITION_UV_IPS =
@@ -162,6 +166,36 @@ object IpsFhirCodec {
         }
     }
 
+    private fun sectionRefs(bundle: Bundle, loinc: kotlin.String): Set<kotlin.String> =
+        resourcesOf(bundle).filterIsInstance<Composition>()
+            .flatMap { it.section }
+            .filter { s -> s.code?.coding?.any { it.code?.value == loinc } == true }
+            .flatMap { s -> s.entry.mapNotNull { it.reference?.value } }
+            .toSet()
+
+    /**
+     * Conditions of the 🩺 Problem List pillar : the entries of the 11450-4 section
+     * (including the legacy `_j.cn` Conditions written before sprint 5, which carry
+     * no id — a stable one is derived from their fullUrl), plus Condition-uv-ips
+     * resources whose clinicalStatus is active / recurrence / relapse.
+     */
+    fun problemsOf(bundle: Bundle): List<IpsProblem> {
+        val inSection = sectionRefs(bundle, LOINC_SECTION_PROBLEMS)
+        return bundle.entry.mapNotNull { e ->
+            val c = e.resource as? Condition ?: return@mapNotNull null
+            val url = e.fullUrl?.value
+            if (!isProblemCondition(c, url != null && url in inSection)) return@mapNotNull null
+            problemFromFhir(c, fallbackId = url?.let { UUID.nameUUIDFromBytes(it.toByteArray(Charsets.UTF_8)).toString() })
+        }
+    }
+
+    fun isProblemCondition(c: Condition, inSection: Boolean): Boolean {
+        if (inSection) return true
+        val ipsProfile = c.meta?.profile?.any { it.value == PROFILE_CONDITION_UV_IPS } == true
+        val status = c.clinicalStatus?.coding?.firstOrNull()?.code?.value
+        return ipsProfile && status in IpsProblemStatus.ALL
+    }
+
     fun isPastProblemCondition(c: Condition, inSection: Boolean): Boolean {
         if (inSection) return true
         val ipsProfile = c.meta?.profile?.any { it.value == PROFILE_CONDITION_UV_IPS } == true
@@ -176,6 +210,7 @@ object IpsFhirCodec {
         devices = devicesOf(bundle),
         results = resultsOf(bundle),
         pastProblems = pastProblemsOf(bundle),
+        problems = problemsOf(bundle),
     )
 
     /** Deterministic `urn:uuid:` for intra-bundle references (stable across rebuilds). */
@@ -196,6 +231,9 @@ object IpsFhirCodec {
 
     fun resultUrn(profileSid: kotlin.String, resultId: kotlin.String): kotlin.String =
         stableUrn("$profileSid|Observation|$resultId")
+
+    fun problemUrn(profileSid: kotlin.String, problemId: kotlin.String): kotlin.String =
+        stableUrn("$profileSid|Condition|problem|$problemId")
 
     fun pastProblemUrn(profileSid: kotlin.String, problemId: kotlin.String): kotlin.String =
         stableUrn("$profileSid|Condition|past|$problemId")
@@ -654,6 +692,64 @@ object IpsFhirCodec {
     }
 
     // ──────────────────────────────────────────────────────────────────────
+    // Condition (problem list) ⇄ IpsProblem
+    // ──────────────────────────────────────────────────────────────────────
+
+    fun problemFromFhir(c: Condition, fallbackId: kotlin.String? = null): IpsProblem {
+        val coding = firstCoding(c.code)
+        val code = coding?.code?.value?.takeIf { it.isNotBlank() }
+        val (display, text) = IpsOfficialDisplays.friendly(
+            coding?.system?.value, coding?.code?.value,
+            coding?.display?.value?.takeIf { it.isNotBlank() }, c.code?.text?.value?.takeIf { it.isNotBlank() },
+        )
+        return IpsProblem(
+            id = c.id ?: fallbackId ?: IpsProblem.newId(),
+            code = code,
+            system = coding?.system?.value?.takeIf { it.isNotBlank() } ?: IpsCodeSystems.SNOMED,
+            display = display,
+            text = text?.takeIf { it != display },
+            onset = c.onset?.asDateTime()?.value?.value?.toString(),
+            clinicalStatus = IpsProblemStatus.normalize(firstCoding(c.clinicalStatus)?.code?.value),
+            severity = IpsConditionSeverity.normalize(firstCoding(c.severity)?.code?.value),
+            note = c.note.firstOrNull()?.text?.value?.takeIf { it.isNotBlank() },
+        )
+    }
+
+    fun toFhir(p: IpsProblem, patientUrn: kotlin.String): Condition.Builder {
+        val status = IpsProblemStatus.normalize(p.clinicalStatus)
+        return Condition.Builder(urnReference(patientUrn)).apply {
+            id = p.id
+            meta = ipsMeta(PROFILE_CONDITION_UV_IPS)
+            clinicalStatus = CodeableConcept.Builder().apply {
+                coding.add(Coding.Builder().apply {
+                    system = Uri.Builder().apply { value = IpsPastProblemStatus.SYSTEM }
+                    code = Code.Builder().apply { value = status }
+                    display = String.Builder().apply { value = IpsProblemStatus.display(status) }
+                })
+            }
+            category.add(CodeableConcept.Builder().apply {
+                coding.add(Coding.Builder().apply {
+                    system = Uri.Builder().apply { value = SYSTEM_CONDITION_CATEGORY }
+                    code = Code.Builder().apply { value = "problem-list-item" }
+                    display = String.Builder().apply { value = "Problem List Item" }
+                })
+            })
+            IpsConditionSeverity.normalize(p.severity)?.let { sv ->
+                severity = CodeableConcept.Builder().apply {
+                    coding.add(Coding.Builder().apply {
+                        system = Uri.Builder().apply { value = IpsConditionSeverity.SYSTEM }
+                        code = Code.Builder().apply { value = sv }
+                        IpsConditionSeverity.display(sv)?.let { d -> display = String.Builder().apply { value = d } }
+                    })
+                }
+            }
+            code = codeableConcept(p.code, p.system, p.display, p.text)
+            parseFhirDate(p.onset)?.let { onset = Condition.Onset.DateTime(dateTimeBuilder(it).build()) }
+            p.note?.takeIf { it.isNotBlank() }?.let { note.add(Annotation.Builder(Markdown.Builder().apply { value = it })) }
+        }
+    }
+
+    // ──────────────────────────────────────────────────────────────────────
     // Composition sections
     // ──────────────────────────────────────────────────────────────────────
 
@@ -684,6 +780,9 @@ object IpsFhirCodec {
 
     fun resultSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
         section(TITLE_SECTION_RESULTS, LOINC_SECTION_RESULTS, "Relevant diagnostic tests/laboratory data note", entryUrns)
+
+    fun problemSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
+        section(TITLE_SECTION_PROBLEMS, LOINC_SECTION_PROBLEMS, "Problem list - Reported", entryUrns)
 
     fun pastProblemSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
         section(TITLE_SECTION_PAST_ILLNESS, LOINC_SECTION_PAST_ILLNESS, "History of Past illness note", entryUrns)

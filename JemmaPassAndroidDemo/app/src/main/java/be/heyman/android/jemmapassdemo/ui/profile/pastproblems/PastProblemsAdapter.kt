@@ -71,6 +71,9 @@ class PastProblemsAdapter(
         b.pastProblemRowIcon.text = when (pp.clinicalStatus) {
             IpsPastProblemStatus.REMISSION -> "🌗"
             IpsPastProblemStatus.INACTIVE -> "💤"
+            "active" -> "🩺"
+            "recurrence" -> "🔁"
+            "relapse" -> "⚠️"
             else -> "📜"
         }
 

@@ -11,7 +11,7 @@ Checks, for every profile :
   P2  Bundle is a `document`, first entry is the Composition, Patient present
   P3  every Bundle.entry has a fullUrl of the form urn:uuid:<UUIDv3>  (deterministic URNs)
   P7  `_j` has `_j == "1.2"` and `sid == <file id>`
-  P8  legacy sections (Allergies 48765-2 · Medications 10160-0 · Problems 11450-4) present
+  P8  legacy sections (Allergies 48765-2 · Medications 10160-0) present
       when their `_j` arrays are non-empty
 
 and, for each FHIR-native pillar  💉 im / Immunization · 🏥 pr / Procedure · 📟 dv / DeviceUseStatement(+Device)
@@ -36,6 +36,7 @@ Optional expectations :
   --expect-dv demo_haru=2       (DeviceUseStatement resources)
   --expect-rs demo_kurodo=3     (results Observation resources)
   --expect-ph demo_haru=2       (past-problem Condition resources)
+  --expect-cn demo_haru=2       (problem-list Condition resources)
 
 Exit code 0 when everything passes, 1 otherwise. --markdown writes a report table.
 """
@@ -64,11 +65,16 @@ PILLARS = [
     dict(key="rs", emoji="🧪", label="Observation", rtype="Observation", loinc="30954-2",
          profile=IPS + "Observation-results", code_path="code", patient_path="subject",
          date=("effectiveDateTime",), string=None, profile_prefix=True),
+    dict(key="cn", emoji="🩺", label="Condition (problem list)", rtype="Condition", loinc="11450-4",
+         profile=IPS + "Condition-uv-ips", code_path="code", patient_path="subject",
+         date=("onsetDateTime",), string=None),
     dict(key="ph", emoji="📜", label="Condition", rtype="Condition", loinc="11348-0",
          profile=IPS + "Condition-uv-ips", code_path="code", patient_path="subject",
          date=("onsetDateTime",), string=None),
 ]
 PAST_STATUSES = ("resolved", "inactive", "remission")
+CURRENT_STATUSES = ("active", "recurrence", "relapse")
+PROBLEMS_LOINC = "11450-4"
 PAST_ILLNESS_LOINC = "11348-0"
 PROFILE_DEVICE_UV_IPS = IPS + "Device-uv-ips"
 RESULT_CATEGORIES = ("laboratory", "imaging", "procedure")
@@ -143,6 +149,21 @@ def past_section_refs(bundle):
             for r in (s.get("entry") or [])}
 
 
+def section_refs(bundle, loinc):
+    comp = (bundle.get("entry") or [{}])[0].get("resource") or {}
+    return {r.get("reference") for s in (comp.get("section") or []) if coding_code(s.get("code")) == loinc
+            for r in (s.get("entry") or [])}
+
+
+def is_problem(bundle, entry):
+    """Mirror of IpsFhirCodec.isProblemCondition: in the 11450-4 section, or IPS profile + current status."""
+    if entry.get("fullUrl") in section_refs(bundle, PROBLEMS_LOINC):
+        return True
+    r = entry.get("resource") or {}
+    prof = (r.get("meta") or {}).get("profile") or []
+    return IPS + "Condition-uv-ips" in prof and coding_code(r.get("clinicalStatus")) in CURRENT_STATUSES
+
+
 def is_past_problem(bundle, entry):
     """Mirror of IpsFhirCodec.isPastProblemCondition: in the 11348-0 section, or IPS profile + past status."""
     if entry.get("fullUrl") in past_section_refs(bundle):
@@ -174,7 +195,8 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
     if spec["rtype"] == "Observation":
         res_entries = [e for e in res_entries if is_results_observation(e["resource"])]
     if spec["rtype"] == "Condition":
-        res_entries = [e for e in res_entries if is_past_problem(b, e)]
+        keep = is_problem if key == "cn" else is_past_problem
+        res_entries = [e for e in res_entries if keep(b, e)]
     res = [e["resource"] for e in res_entries]
     jarr = j.get(key, []) or []
 
@@ -236,8 +258,11 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
         if pref != patient_url:
             bad.append(f"{r.get('id')}:patient-ref")
         if spec["rtype"] == "Condition":
-            if coding_code(r.get("clinicalStatus")) not in PAST_STATUSES:
-                bad.append(f"{r.get('id')}:clinicalStatus-not-past")
+            allowed = CURRENT_STATUSES if key == "cn" else PAST_STATUSES
+            if coding_code(r.get("clinicalStatus")) not in allowed:
+                bad.append(f"{r.get('id')}:clinicalStatus-{coding_code(r.get('clinicalStatus'))}")
+            if key == "cn" and r.get("abatementDateTime"):
+                bad.append(f"{r.get('id')}:current-problem-with-abatement")
             onset, abate = r.get("onsetDateTime") or "", r.get("abatementDateTime") or ""
             n = min(len(onset), len(abate))
             if onset and abate and abate[:n] < onset[:n]:
@@ -271,7 +296,8 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
                 bad.append(f"{r.get('id')}:unit-not-ucum")
     what = "profile · patient ref · status · date/string" + (" · Device resolved + Device-uv-ips" if key == "dv" else "") \
         + (" · category · value[x]" if key == "rs" else "") \
-        + (" · past clinicalStatus · onset ≤ abatement" if key == "ph" else "")
+        + (" · past clinicalStatus · onset ≤ abatement" if key == "ph" else "") \
+        + (" · current clinicalStatus · no abatement" if key == "cn" else "")
     name = f"P6 {label}-uv-ips {what}"
     if res and not bad:
         rep.ok(pid, name)
@@ -292,6 +318,16 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
         else:
             rep.fail(pid, "P6c `_j.rs` values ⇄ Observation value[x]", f"fhir={fhir_vals} j={j_vals}")
 
+
+    if key == "cn" and res:
+        # P6e: the legacy projection keeps clinicalStatus in `st`.
+        fhir_st = sorted(coding_code(r.get("clinicalStatus")) or "" for r in res)
+        j_st = sorted(e.get("st") or "" for e in jarr)
+        name = "P6e `_j.cn` st ⇄ Condition clinicalStatus"
+        if fhir_st == j_st:
+            rep.ok(pid, name, f"{len(res)} problems")
+        else:
+            rep.fail(pid, name, f"fhir={fhir_st} j={j_st}")
 
     if key == "ph" and res:
         # P6d: the projection carries the same abatement dates and severities.
@@ -355,7 +391,7 @@ def verify_profile(pid, folder, rep, expected):
     # P8: legacy sections still present when their arrays are non-empty
     comp = entries[0]["resource"]
     sections = comp.get("section", []) or []
-    for key, loinc, label in (("al", "48765-2", "Allergies"), ("md", "10160-0", "Medications"), ("cn", "11450-4", "Problems")):
+    for key, loinc, label in (("al", "48765-2", "Allergies"), ("md", "10160-0", "Medications")):
         if j.get(key):
             present = any(coding_code(s.get("code")) == loinc for s in sections)
             (rep.ok if present else rep.fail)(pid, f"P8 legacy section {label} ({loinc}) present", f"{len(j.get(key))} entries")
@@ -375,6 +411,7 @@ def main():
     ap.add_argument("--expect-pr", action="append", default=[], help="<profileId>=<n Procedure>, repeatable")
     ap.add_argument("--expect-dv", action="append", default=[], help="<profileId>=<n DeviceUseStatement>, repeatable")
     ap.add_argument("--expect-rs", action="append", default=[], help="<profileId>=<n results Observation>, repeatable")
+    ap.add_argument("--expect-cn", action="append", default=[], help="<profileId>=<n problem-list Condition>, repeatable")
     ap.add_argument("--expect-ph", action="append", default=[], help="<profileId>=<n past-problem Condition>, repeatable")
     ap.add_argument("--only", action="append", default=[], help="restrict to these profile ids (repeatable)")
     ap.add_argument("--markdown", help="write the report table to this file")
@@ -388,6 +425,7 @@ def main():
     parse_expectations(args.expect_dv, "dv", expectations)
     parse_expectations(args.expect_rs, "rs", expectations)
     parse_expectations(args.expect_ph, "ph", expectations)
+    parse_expectations(args.expect_cn, "cn", expectations)
 
     ids = sorted(p.name[:-5] for p in folder.glob("*.json")
                  if not p.name.endswith(".fhir.json") and p.name != "meta.json")

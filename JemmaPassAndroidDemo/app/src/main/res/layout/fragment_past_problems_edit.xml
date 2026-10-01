@@ -39,6 +39,7 @@
                 app:tint="@android:color/white" />
 
             <TextView
+                android:id="@+id/past_problems_hero_emoji"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -53,6 +54,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/past_problems_hero_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/past_problems_edit_hero_title"

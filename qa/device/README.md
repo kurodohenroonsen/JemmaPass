@@ -498,10 +498,39 @@ Personas : Kurodo = appendicite (1995-07-10 → 1995-07-12, modérée) + pneumon
    puis la même chose sur `ips_valuesets_translations` pour `lang IN ('fr','ja')` — colle la
    sortie brute dans le rapport (les 4 codes du seed doivent y être).
 
+### T16 — Problèmes actifs (🩺 pilier natif, sprint 5)
+
+Personas : Kurodo = hypercholestérolémie (2026-01, légère) ; Haru = insuffisance cardiaque
+(2020-11, modérée) + IRC stade 3 (2022) ; Kamekichi = HTA essentielle (2010) + fibrillation
+auriculaire (2018-06, modérée) + angor (2021). Avant ce sprint `_j.cn` était vide partout : les
+contrôles médicament × maladie (`KbCrossCheck`) ont maintenant de quoi travailler.
+
+1. **Seed** : `run_device_qa.sh` vert avec 🩺 K1 H2 Ka3. Recopie (règle 8) les lignes
+   `JEMMA-HYDRATOR … ✅ hydrated · … cn=… · drug×disease=…` pour Haru et Kamekichi.
+2. **Fiche + tuile** : fiche Kamekichi → section conditions (3, libellés KB) ; tuile 🩺 active
+   avec badge 3 → écran « Problèmes actifs » (`past_problems_hero_emoji` = 🩺, « 3 problèmes
+   actifs »). Captures `180-detail-kamekichi-problems.png`, `181-problems-list.png`.
+3. **Création codée** (Kurodo) : FAB → le formulaire n'a PAS de bloc « Guérison / fin » ; picker →
+   `diabete` → un diabète de type 2 ; Début « Année seulement » `2019` ; statut « 🩺 Active » ;
+   sévérité « Modérée » ; Save. Bundle : `Condition` `Condition-uv-ips`, `category` =
+   `problem-list-item`, `clinicalStatus` = `active`, `onsetDateTime` = `2019`, pas
+   d'`abatementDateTime`, référencée par la section `11450-4` (display « Problem list -
+   Reported ») ; `_j.cn[]` = `{c, d_display, st: "active", s: "moderate", dt: "2019"}`.
+   `verify … --expect-cn demo_kurodo=2` PASS.
+4. **Édition** : statut → « ⚠️ Rechute » → Bundle `clinicalStatus` = `relapse`, `_j.cn[].st` =
+   `relapse` (P6e PASS). **Suppression** (appui long) → retour à 🩺 1.
+5. **Non-mélange** : Haru garde 📜 2 et 🩺 2 (`--expect-ph demo_haru=2 --expect-cn demo_haru=2`) ;
+   aucune Condition « resolved » dans 11450-4, aucune « active » dans 11348-0.
+6. **QR texte** Haru EN/FR/JA → section conditions avec insuffisance cardiaque + IRC (fichiers
+   `qr/qr-haru-<lang>.txt`, règle 8).
+7. **Validateur HL7** 3 personas → 0 erreur (fichiers `validator/<persona>.txt`).
+8. **KB** (copie hors dépôt) : `display_en` + traductions fr/ja des codes 13644009, 84114007,
+   433144002, 59621000, 49436004, 194828000 dans `problems-snomed-ct-ips-free-set` (sortie brute).
+
 ## 4. Logcat de fin
 
 ```
-adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROCEDURES-EDIT:* JEMMA-PROCEDURES-FORM:* JEMMA-PROCEDURES-ADAPTER:* JEMMA-DEVICES-EDIT:* JEMMA-DEVICES-FORM:* JEMMA-DEVICES-ADAPTER:* JEMMA-RESULTS-EDIT:* JEMMA-RESULTS-FORM:* JEMMA-RESULTS-ADAPTER:* JEMMA-PASTPROBLEMS-EDIT:* JEMMA-PASTPROBLEMS-FORM:* JEMMA-PASTPROBLEMS-ADAPTER:* JEMMA-KB-CONDITION-PICKER:* JEMMA-SNOMED-CAT:* JEMMA-PROFILE-DETAIL:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
+adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROCEDURES-EDIT:* JEMMA-PROCEDURES-FORM:* JEMMA-PROCEDURES-ADAPTER:* JEMMA-DEVICES-EDIT:* JEMMA-DEVICES-FORM:* JEMMA-DEVICES-ADAPTER:* JEMMA-RESULTS-EDIT:* JEMMA-RESULTS-FORM:* JEMMA-RESULTS-ADAPTER:* JEMMA-PASTPROBLEMS-EDIT:* JEMMA-PASTPROBLEMS-FORM:* JEMMA-PASTPROBLEMS-ADAPTER:* JEMMA-KB-CONDITION-PICKER:* JEMMA-SNOMED-CAT:* JEMMA-PROFILE-DETAIL:* JEMMA-HYDRATOR:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
 python3 qa/device/scrub_logcat.py $OUT/logs/logcat-ui.txt
 ```
 ⚠️ `logcat -s` n'accepte pas de joker (`JEMMA-*` ne filtre rien) : utilise la liste
@@ -513,7 +542,7 @@ jamais un log à la main.
 
 ## 5. Rapport et publication
 
-Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T15,
+Remplis `qa/device/report-template.md` → `$OUT/report.md` (une ligne par test T1…T16,
 statut ✅ / ❌ / ⚠️ / ⏭, preuve = nom de capture ou fichier, déviations, bugs avec
 étapes de reproduction). Puis :
 

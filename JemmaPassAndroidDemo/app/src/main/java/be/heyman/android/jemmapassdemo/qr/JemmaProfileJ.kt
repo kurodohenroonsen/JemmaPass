@@ -334,6 +334,10 @@ data class JCondition(
     @Json(name = "rs") val rs: String? = null,
     @Json(name = "rc") val rc: String? = null,
     @Json(name = "d_display") val displayLabel: String? = null,
+    /** Onset date (YYYY, YYYY-MM, YYYY-MM-DD) — FHIR-native problem list, sprint 5. */
+    @Json(name = "dt") val date: String? = null,
+    /** Code system URI when not SNOMED CT. */
+    @Json(name = "cs") val codeSystem: String? = null,
 )
 
 /**
