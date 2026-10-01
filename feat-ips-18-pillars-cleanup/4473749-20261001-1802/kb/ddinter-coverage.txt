@@ -1,0 +1,32 @@
+=== SQL QUERY 1: Total interactions vs with drug_atc ===
+SELECT COUNT(*), COUNT(drug_atc) FROM drug_disease_interactions;
+
+COUNT(*)  COUNT(drug_atc)
+--------  ---------------
+8121      7591           
+
+
+=== SQL QUERY 2: Drug disease interactions for the 8 persona drugs ===
+SELECT drug_name, drug_atc, COUNT(*) FROM drug_disease_interactions WHERE lower(drug_name) IN ('ibuprofen','furosemide','bisoprolol','sildenafil','dextromethorphan','fexofenadine','warfarin','isosorbide dinitrate') GROUP BY 1,2;
+
+drug_name             drug_atc  COUNT(*)
+--------------------  --------  --------
+Bisoprolol            C07FX04   18      
+Fexofenadine          R06AX26   1       
+Furosemide            C03EB01   9       
+Ibuprofen             G02CC01   13      
+Isosorbide dinitrate  C01DA08   7       
+Sildenafil            G01AE10   9       
+Warfarin              B01AA03   8       
+
+
+=== SQL QUERY 3: ddinter_drugs primary_atc and atc_codes ===
+SELECT d.name, d.primary_atc, d.atc_codes FROM ddinter_drugs d WHERE lower(d.name) IN ('ibuprofen','furosemide','bisoprolol','sildenafil');
+
+name        primary_atc  atc_codes                                                      
+----------  -----------  ---------------------------------------------------------------
+Sildenafil  G01AE10      G01AE10,G04BE03                                                
+Bisoprolol  C07FX04      C07FX04,C07BB07,C07AB07,C09BX05,C09BX02,C09BX04,C07FB07        
+Furosemide  C03EB01      C03EB01,C03CA01,G01AE10,C03CB01                                
+Ibuprofen   G02CC01      G02CC01,C01EB16,M01AE01,M02AA13,R02AX02,N02AJ08,N02AJ19,M01AE51
+
