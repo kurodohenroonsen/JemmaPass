@@ -10,6 +10,8 @@ import be.heyman.android.jemmapassdemo.ips.IpsCodeSystems
 import be.heyman.android.jemmapassdemo.ips.IpsDevice
 import be.heyman.android.jemmapassdemo.ips.IpsImmunization
 import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
+import be.heyman.android.jemmapassdemo.ips.IpsConditionSeverity
+import be.heyman.android.jemmapassdemo.ips.IpsPastProblem
 import be.heyman.android.jemmapassdemo.ips.IpsProcedure
 import be.heyman.android.jemmapassdemo.ips.IpsResult
 import be.heyman.android.jemmapassdemo.ips.IpsResultCategory
@@ -85,6 +87,18 @@ object JemmaPersonasSeeder {
                     performer = "Laboratoire CHU UCL Namur",
                 ),
             ),
+            pastProblems = listOf(
+                IpsPastProblem(
+                    id = "ph-kurodo-appendicitis-1995", code = "74400008", system = IpsCodeSystems.SNOMED,
+                    display = "Appendicitis", onset = "1995-07-10", abatement = "1995-07-12",
+                    severity = IpsConditionSeverity.MODERATE, note = "Treated by appendectomy",
+                ),
+                IpsPastProblem(
+                    id = "ph-kurodo-pneumonia-2018", code = "233604007", system = IpsCodeSystems.SNOMED,
+                    display = "Pneumonia", onset = "2018-02", abatement = "2018-03",
+                    severity = IpsConditionSeverity.MILD,
+                ),
+            ),
         )
         SID_HARU -> IpsNativePillars(
             immunizations = listOf(
@@ -150,6 +164,18 @@ object JemmaPersonasSeeder {
                     id = "rs-haru-chest-xray-2025", text = "Chest X-ray", date = "2025-12-03",
                     category = IpsResultCategory.IMAGING, valueText = "Mild cardiomegaly, no pleural effusion",
                     performer = "Radiology, Matsuyama Red Cross Hospital",
+                ),
+            ),
+            pastProblems = listOf(
+                IpsPastProblem(
+                    id = "ph-haru-mi-2015", code = "22298006", system = IpsCodeSystems.SNOMED,
+                    display = "Myocardial infarction", onset = "2015-08-27", abatement = "2015-09",
+                    severity = IpsConditionSeverity.SEVERE, note = "Treated by coronary bypass (2015-09)",
+                ),
+                IpsPastProblem(
+                    id = "ph-haru-tb-1962", code = "56717001", system = IpsCodeSystems.SNOMED,
+                    display = "Tuberculosis", onset = "1962", abatement = "1963",
+                    note = "Pulmonary, treated — calcified scar on chest X-ray",
                 ),
             ),
         )

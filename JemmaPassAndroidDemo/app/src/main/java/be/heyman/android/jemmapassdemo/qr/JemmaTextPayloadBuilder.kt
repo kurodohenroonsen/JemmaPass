@@ -198,6 +198,19 @@ object JemmaTextPayloadBuilder {
             formatter = { rs -> formatResult(rs, lang) },
         )
 
+        // ─── Past illnesses (FHIR-native pillar, `_j.ph` projection) ──
+        appendSection(
+            sb = sb,
+            icon = "📜",
+            title = JemmaTranslations.getLabel(lang, "past_problems_title"),
+            items = hydrated.raw.ph.sortedWith(
+                compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
+                    .thenByDescending { it.date ?: "" }
+            ),
+            empty = JemmaTranslations.getLabel(lang, "empty"),
+            formatter = { ph -> formatPastProblem(ph) },
+        )
+
         sb.append(JemmaTranslations.getLabel(lang, "footer")).append("\r\n")
 
         // Cap byte-size en UTF-8.
@@ -246,6 +259,20 @@ object JemmaTextPayloadBuilder {
         val sb = StringBuilder(label)
         dv.date?.takeIf { it.isNotBlank() }?.let { sb.append(" — ").append(it) }
         dv.status?.takeIf { it.isNotBlank() && it != "active" }?.let { sb.append(" (").append(it).append(")") }
+        return sb.toString()
+    }
+
+    /** "Appendicitis — 1995-07-10 → 1995-07-12", status appended when not resolved. */
+    private fun formatPastProblem(ph: be.heyman.android.jemmapassdemo.qr.JEntryGeneric): String {
+        val sb = StringBuilder(ph.displayLabel?.takeIf { it.isNotBlank() } ?: ph.c.orEmpty())
+        val onset = ph.date?.takeIf { it.isNotBlank() }
+        val abatement = ph.abatement?.takeIf { it.isNotBlank() }
+        when {
+            onset != null && abatement != null -> sb.append(" — ").append(onset).append(" → ").append(abatement)
+            onset != null -> sb.append(" — ").append(onset)
+            abatement != null -> sb.append(" — → ").append(abatement)
+        }
+        ph.status?.takeIf { it.isNotBlank() && it != "resolved" }?.let { sb.append(" (").append(it).append(")") }
         return sb.toString()
     }
 

@@ -406,67 +406,51 @@ suspend fun KnowledgeBaseService.searchIpsProblems(
         return@withContext emptyList()
     }
 
-    val effectiveLang = when (lang.lowercase().take(2)) {
-        "en" -> "fr"
-        else -> lang.lowercase().take(2)
+    // English lives in `ips_valuesets.display_en` (the translations table has no "en"
+    // rows) — sprint 4 (past problems): EN users no longer get the French list.
+    val effectiveLang = lang.lowercase().take(2)
+    val source = if (effectiveLang == "en") {
+        "SELECT code, display_en AS display FROM ips_valuesets WHERE vs_id = 'problems-snomed-ct-ips-free-set' AND ? = 'en'"
+    } else {
+        "SELECT code, display FROM ips_valuesets_translations WHERE vs_id = 'problems-snomed-ct-ips-free-set' AND lang = ?"
     }
     val q = query.trim()
 
-    // Pour matcher diacritiques-insensible côté SQLite, on utilise LIKE
-    // sur LOWER(display). SQLite n'a pas de NFD strip natif, mais comme
-    // les displays IPS et la query user passent par les mêmes encodings,
-    // un LIKE basique fonctionne pour la plupart des cas (95%+).
-    // Note : pour la recherche d'allergènes (ips_translations.json), on
-    // utilise un normalizer Kotlin côté client — ici on reste server-side.
+    // Diacritics: LIKE on LOWER(display) — IPS displays and the user query share
+    // encodings, which covers the vast majority of searches.
     val out = mutableListOf<AllergyReactionItem>()
     try {
-        if (q.length < 2) {
+        val (sql, args) = if (q.length < 2) {
             // No query → TOP N alphabetic
-            val sql = """
-                SELECT code, display
-                FROM ips_valuesets_translations
-                WHERE vs_id = 'problems-snomed-ct-ips-free-set'
-                  AND lang = ?
-                ORDER BY display COLLATE NOCASE ASC
-                LIMIT ?
-            """.trimIndent()
-            db.rawQuery(sql, arrayOf(effectiveLang, limit.toString())).use { cursor ->
-                while (cursor.moveToNext()) {
-                    val code = cursor.getString(0) ?: continue
-                    val display = cursor.getString(1) ?: continue
-                    out.add(AllergyReactionItem(code = code, display = display))
-                }
-            }
+            "SELECT code, display FROM ($source) ORDER BY display COLLATE NOCASE ASC LIMIT ?" to
+                arrayOf(effectiveLang, limit.toString())
         } else {
-            // Filtered search
-            val sql = """
-                SELECT code, display
-                FROM ips_valuesets_translations
-                WHERE vs_id = 'problems-snomed-ct-ips-free-set'
-                  AND lang = ?
-                  AND LOWER(display) LIKE ?
-                ORDER BY 
+            val likeContains = "%${q.lowercase()}%"
+            val likeStartsWith = "${q.lowercase()}%"
+            """
+                SELECT code, display FROM ($source)
+                WHERE LOWER(display) LIKE ?
+                ORDER BY
                     CASE WHEN LOWER(display) LIKE ? THEN 0 ELSE 1 END,
                     LENGTH(display) ASC,
                     display COLLATE NOCASE ASC
                 LIMIT ?
-            """.trimIndent()
-            val likeContains = "%${q.lowercase()}%"
-            val likeStartsWith = "${q.lowercase()}%"
-            db.rawQuery(
-                sql,
-                arrayOf(effectiveLang, likeContains, likeStartsWith, limit.toString()),
-            ).use { cursor ->
-                while (cursor.moveToNext()) {
-                    val code = cursor.getString(0) ?: continue
-                    val display = cursor.getString(1) ?: continue
-                    out.add(AllergyReactionItem(code = code, display = display))
-                }
+            """.trimIndent() to arrayOf(effectiveLang, likeContains, likeStartsWith, limit.toString())
+        }
+        db.rawQuery(sql, args).use { cursor ->
+            while (cursor.moveToNext()) {
+                val code = cursor.getString(0) ?: continue
+                val display = cursor.getString(1) ?: continue
+                out.add(AllergyReactionItem(code = code, display = display))
             }
         }
     } catch (e: Exception) {
         Log.e(TAG_ALLERGY_CAT, "[t=${System.currentTimeMillis()}] ❌ searchIpsProblems failed: ${e.message}", e)
         return@withContext emptyList()
+    }
+    // Languages without a translation of the free set fall back to the English terms.
+    if (out.isEmpty() && effectiveLang != "en") {
+        return@withContext searchIpsProblems(kbManager, "en", query, limit)
     }
     val durationMs = System.currentTimeMillis() - tStart
     Log.i(TAG_ALLERGY_CAT, "[t=${System.currentTimeMillis()}] 🩺 searchIpsProblems · " +

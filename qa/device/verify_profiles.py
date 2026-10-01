@@ -15,17 +15,19 @@ Checks, for every profile :
       when their `_j` arrays are non-empty
 
 and, for each FHIR-native pillar  💉 im / Immunization · 🏥 pr / Procedure · 📟 dv / DeviceUseStatement(+Device)
-· 🧪 rs / Observation (results) :
+· 🧪 rs / Observation (results) · 📜 ph / Condition (past illness, section 11348-0) :
   P4  the `_j.<key>` projection has exactly one entry per resource, same codes (set-wise)
       and same dates (occurrenceDateTime / performedDateTime / timingDateTime ⇄ dt)
-  P4b optional expected count (--expect / --expect-pr / --expect-dv / --expect-rs)
+  P4b optional expected count (--expect / --expect-pr / --expect-dv / --expect-rs / --expect-ph)
   P5  the Composition has the pillar section (LOINC 11369-6 / 47519-4 / 46264-8) iff there
       are resources, and its entry references are exactly the resource fullUrls
   P6  every resource declares its *-uv-ips profile, references the Patient fullUrl, has a
       status and a date-or-string ; every DeviceUseStatement resolves to a Device entry that
       itself declares Device-uv-ips and references the Patient ; every results Observation has
       a category and one value[x] (valueQuantity with UCUM / valueCodeableConcept / valueString)
-      matching the `_j.rs` projection (`v`, `u`)
+      matching the `_j.rs` projection (`v`, `u`) ; every past-problem Condition has a
+      clinicalStatus resolved / inactive / remission, no abatement before its onset, and
+      the `_j.ph` projection carries the same abatement dates (`ab`) and severities (`sv`)
 
 Optional expectations :
   --expect demo_kurodo=4        (Immunization resources — kept for backward compatibility)
@@ -33,6 +35,7 @@ Optional expectations :
   --expect-pr demo_kurodo=2     (Procedure resources)
   --expect-dv demo_haru=2       (DeviceUseStatement resources)
   --expect-rs demo_kurodo=3     (results Observation resources)
+  --expect-ph demo_haru=2       (past-problem Condition resources)
 
 Exit code 0 when everything passes, 1 otherwise. --markdown writes a report table.
 """
@@ -61,7 +64,12 @@ PILLARS = [
     dict(key="rs", emoji="🧪", label="Observation", rtype="Observation", loinc="30954-2",
          profile=IPS + "Observation-results", code_path="code", patient_path="subject",
          date=("effectiveDateTime",), string=None, profile_prefix=True),
+    dict(key="ph", emoji="📜", label="Condition", rtype="Condition", loinc="11348-0",
+         profile=IPS + "Condition-uv-ips", code_path="code", patient_path="subject",
+         date=("onsetDateTime",), string=None),
 ]
+PAST_STATUSES = ("resolved", "inactive", "remission")
+PAST_ILLNESS_LOINC = "11348-0"
 PROFILE_DEVICE_UV_IPS = IPS + "Device-uv-ips"
 RESULT_CATEGORIES = ("laboratory", "imaging", "procedure")
 UCUM = "http://unitsofmeasure.org"
@@ -129,6 +137,21 @@ def is_results_observation(r):
     return any(c in RESULT_CATEGORIES for c in cats)
 
 
+def past_section_refs(bundle):
+    comp = (bundle.get("entry") or [{}])[0].get("resource") or {}
+    return {r.get("reference") for s in (comp.get("section") or []) if coding_code(s.get("code")) == PAST_ILLNESS_LOINC
+            for r in (s.get("entry") or [])}
+
+
+def is_past_problem(bundle, entry):
+    """Mirror of IpsFhirCodec.isPastProblemCondition: in the 11348-0 section, or IPS profile + past status."""
+    if entry.get("fullUrl") in past_section_refs(bundle):
+        return True
+    r = entry.get("resource") or {}
+    prof = (r.get("meta") or {}).get("profile") or []
+    return IPS + "Condition-uv-ips" in prof and coding_code(r.get("clinicalStatus")) in PAST_STATUSES
+
+
 def observation_value(r):
     """(kind, value-as-text, unit) of a results Observation, mirroring IpsResult.valueLabel()."""
     if "valueQuantity" in r:
@@ -150,6 +173,8 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
     res_entries = entries_of_type(b, spec["rtype"])
     if spec["rtype"] == "Observation":
         res_entries = [e for e in res_entries if is_results_observation(e["resource"])]
+    if spec["rtype"] == "Condition":
+        res_entries = [e for e in res_entries if is_past_problem(b, e)]
     res = [e["resource"] for e in res_entries]
     jarr = j.get(key, []) or []
 
@@ -210,7 +235,16 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
             bad.append(f"{r.get('id')}:no-ips-profile")
         if pref != patient_url:
             bad.append(f"{r.get('id')}:patient-ref")
-        if not r.get("status"):
+        if spec["rtype"] == "Condition":
+            if coding_code(r.get("clinicalStatus")) not in PAST_STATUSES:
+                bad.append(f"{r.get('id')}:clinicalStatus-not-past")
+            onset, abate = r.get("onsetDateTime") or "", r.get("abatementDateTime") or ""
+            n = min(len(onset), len(abate))
+            if onset and abate and abate[:n] < onset[:n]:
+                bad.append(f"{r.get('id')}:abatement-before-onset")
+            if not (coding_code(r.get("code")) or (r.get("code") or {}).get("text")):
+                bad.append(f"{r.get('id')}:no-code-nor-text")
+        elif not r.get("status"):
             bad.append(f"{r.get('id')}:no-status")
         if spec["string"] is not None and not (res_date(r) or r.get(spec["string"])):
             bad.append(f"{r.get('id')}:no-date-nor-string")
@@ -236,7 +270,8 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
             elif kind == "quantity" and unit and (r["valueQuantity"].get("system") != UCUM):
                 bad.append(f"{r.get('id')}:unit-not-ucum")
     what = "profile · patient ref · status · date/string" + (" · Device resolved + Device-uv-ips" if key == "dv" else "") \
-        + (" · category · value[x]" if key == "rs" else "")
+        + (" · category · value[x]" if key == "rs" else "") \
+        + (" · past clinicalStatus · onset ≤ abatement" if key == "ph" else "")
     name = f"P6 {label}-uv-ips {what}"
     if res and not bad:
         rep.ok(pid, name)
@@ -256,6 +291,17 @@ def verify_pillar(pid, b, j, entries, patient_url, spec, rep, expected):
             rep.ok(pid, "P6c `_j.rs` values ⇄ Observation value[x]", f"{len(res)} values")
         else:
             rep.fail(pid, "P6c `_j.rs` values ⇄ Observation value[x]", f"fhir={fhir_vals} j={j_vals}")
+
+
+    if key == "ph" and res:
+        # P6d: the projection carries the same abatement dates and severities.
+        fhir_ab = sorted(f"{r.get('abatementDateTime') or ''}|{coding_code(r.get('severity')) or ''}" for r in res)
+        j_ab = sorted(f"{e.get('ab') or ''}|{e.get('sv') or ''}" for e in jarr)
+        name = "P6d `_j.ph` ab/sv ⇄ Condition abatement/severity"
+        if fhir_ab == j_ab:
+            rep.ok(pid, name, f"{len(res)} problems")
+        else:
+            rep.fail(pid, name, f"fhir={fhir_ab} j={j_ab}")
 
 
 def verify_profile(pid, folder, rep, expected):
@@ -329,6 +375,7 @@ def main():
     ap.add_argument("--expect-pr", action="append", default=[], help="<profileId>=<n Procedure>, repeatable")
     ap.add_argument("--expect-dv", action="append", default=[], help="<profileId>=<n DeviceUseStatement>, repeatable")
     ap.add_argument("--expect-rs", action="append", default=[], help="<profileId>=<n results Observation>, repeatable")
+    ap.add_argument("--expect-ph", action="append", default=[], help="<profileId>=<n past-problem Condition>, repeatable")
     ap.add_argument("--only", action="append", default=[], help="restrict to these profile ids (repeatable)")
     ap.add_argument("--markdown", help="write the report table to this file")
     ap.add_argument("--title", default="verify_profiles")
@@ -340,6 +387,7 @@ def main():
     parse_expectations(args.expect_pr, "pr", expectations)
     parse_expectations(args.expect_dv, "dv", expectations)
     parse_expectations(args.expect_rs, "rs", expectations)
+    parse_expectations(args.expect_ph, "ph", expectations)
 
     ids = sorted(p.name[:-5] for p in folder.glob("*.json")
                  if not p.name.endswith(".fhir.json") and p.name != "meta.json")

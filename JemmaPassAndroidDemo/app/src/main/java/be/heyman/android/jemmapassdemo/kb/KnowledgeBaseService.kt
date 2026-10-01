@@ -1082,6 +1082,25 @@ class KnowledgeBaseService @Inject constructor(
     }
 
     /**
+     * English display of an IPS value-set code (`ips_valuesets.display_en`), e.g. the
+     * SNOMED term of a problems free-set concept picked from a FR/JA list. This is the
+     * value stored in `Coding.display`; localised labels stay a render-time concern.
+     */
+    suspend fun getIpsDisplayEn(code: String?, system: String?): String? = withContext(Dispatchers.IO) {
+        if (code.isNullOrBlank() || system.isNullOrBlank()) return@withContext null
+        val db = awaitDb() ?: return@withContext null
+        try {
+            db.rawQuery(
+                "SELECT display_en FROM ips_valuesets WHERE code = ? AND code_system = ? LIMIT 1",
+                arrayOf(code, system),
+            ).use { c -> if (c.moveToFirst()) c.getStringOrNull(0) else null }
+        } catch (e: Exception) {
+            Log.d(TAG, "[t=${System.currentTimeMillis()}] 🌐 getIpsDisplayEn($code,$system) failed : ${e.message}")
+            null
+        }
+    }
+
+    /**
      * Batch variant of [getLocalizedDisplay] for one code system : one `IN (…)`
      * query, returns `code → display` for the codes that have a translation in
      * [lang]. Used by the generic KB picker to localise SNOMED hits (procedures,

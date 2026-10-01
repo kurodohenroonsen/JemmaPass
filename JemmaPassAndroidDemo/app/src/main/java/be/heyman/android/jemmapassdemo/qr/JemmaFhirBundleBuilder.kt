@@ -92,6 +92,7 @@ object JemmaFhirBundleBuilder {
         val deviceStatementUrns = native.devices.map { dv -> IpsFhirCodec.deviceUseStatementUrn(sid, dv.id) }
         val deviceUrns = native.devices.map { dv -> IpsFhirCodec.deviceUrn(sid, dv.id) }
         val resultUrns = native.results.map { rs -> IpsFhirCodec.resultUrn(sid, rs.id) }
+        val pastProblemUrns = native.pastProblems.map { pp -> IpsFhirCodec.pastProblemUrn(sid, pp.id) }
 
         val nowIsoBuilder = nowDateTimeBuilder()
 
@@ -368,11 +369,19 @@ object JemmaFhirBundleBuilder {
             })
         }
 
+        native.pastProblems.forEachIndexed { i, pp ->
+            bundleEntries.add(Bundle.Entry.Builder().apply {
+                fullUrl = Uri.Builder().apply { value = pastProblemUrns[i] }
+                resource = IpsFhirCodec.toFhir(pp, patientUrn)
+            })
+        }
+
         // 3. Composition Resource
         val sections = listOfNotNull(
             sectionStub("Allergies", "48765-2", allergyUrns, hydrated.allergies),
             sectionStub("Medications", "10160-0", medStatementUrns, hydrated.medications),
             sectionStub("Problems", "11450-4", conditionUrns, hydrated.conditions),
+            IpsFhirCodec.pastProblemSection(pastProblemUrns),
             IpsFhirCodec.immunizationSection(immunizationUrns),
             IpsFhirCodec.procedureSection(procedureUrns),
             IpsFhirCodec.deviceSection(deviceStatementUrns),

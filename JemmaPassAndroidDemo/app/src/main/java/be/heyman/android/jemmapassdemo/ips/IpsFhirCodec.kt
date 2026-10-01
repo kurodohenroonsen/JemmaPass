@@ -17,6 +17,7 @@ import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.Composition
+import dev.ohs.fhir.model.r4.Condition
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.DeviceUseStatement
@@ -70,6 +71,11 @@ object IpsFhirCodec {
     const val SYSTEM_OBSERVATION_CATEGORY = "http://terminology.hl7.org/CodeSystem/observation-category"
     const val SYSTEM_OBSERVATION_INTERPRETATION = "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
     const val SYSTEM_UCUM = "http://unitsofmeasure.org"
+    const val LOINC_SECTION_PAST_ILLNESS = "11348-0"
+    const val TITLE_SECTION_PAST_ILLNESS = "History of Past Illness"
+    const val PROFILE_CONDITION_UV_IPS =
+        "http://hl7.org/fhir/uv/ips/StructureDefinition/Condition-uv-ips"
+
     const val EXT_DATA_ABSENT_REASON = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     const val PATIENT_REPORTED = "Patient-reported"
 
@@ -137,12 +143,39 @@ object IpsFhirCodec {
         return categories.any { it in IpsResultCategory.ALL }
     }
 
+    /**
+     * Conditions of the 📜 Past Problems pillar : the entries of the 11348-0 section,
+     * plus (Bundles without that section) the Condition-uv-ips resources whose
+     * clinicalStatus is resolved / inactive / remission. The legacy problem-list
+     * Conditions (`_j.cn`, clinicalStatus active, no profile) are left alone.
+     */
+    fun pastProblemsOf(bundle: Bundle): List<IpsPastProblem> {
+        val inSection: Set<kotlin.String> = resourcesOf(bundle).filterIsInstance<Composition>()
+            .flatMap { it.section }
+            .filter { s -> s.code?.coding?.any { it.code?.value == LOINC_SECTION_PAST_ILLNESS } == true }
+            .flatMap { s -> s.entry.mapNotNull { it.reference?.value } }
+            .toSet()
+        return bundle.entry.mapNotNull { e ->
+            val c = e.resource as? Condition ?: return@mapNotNull null
+            val listed = e.fullUrl?.value?.let { it in inSection } == true
+            if (isPastProblemCondition(c, listed)) fromFhir(c) else null
+        }
+    }
+
+    fun isPastProblemCondition(c: Condition, inSection: Boolean): Boolean {
+        if (inSection) return true
+        val ipsProfile = c.meta?.profile?.any { it.value == PROFILE_CONDITION_UV_IPS } == true
+        val status = c.clinicalStatus?.coding?.firstOrNull()?.code?.value
+        return ipsProfile && status in IpsPastProblemStatus.ALL
+    }
+
     /** Every FHIR-native pillar found in a stored Bundle. */
     fun nativeOf(bundle: Bundle): IpsNativePillars = IpsNativePillars(
         immunizations = immunizationsOf(bundle),
         procedures = proceduresOf(bundle),
         devices = devicesOf(bundle),
         results = resultsOf(bundle),
+        pastProblems = pastProblemsOf(bundle),
     )
 
     /** Deterministic `urn:uuid:` for intra-bundle references (stable across rebuilds). */
@@ -163,6 +196,9 @@ object IpsFhirCodec {
 
     fun resultUrn(profileSid: kotlin.String, resultId: kotlin.String): kotlin.String =
         stableUrn("$profileSid|Observation|$resultId")
+
+    fun pastProblemUrn(profileSid: kotlin.String, problemId: kotlin.String): kotlin.String =
+        stableUrn("$profileSid|Condition|past|$problemId")
 
     // ──────────────────────────────────────────────────────────────────────
     // Immunization ⇄ IpsImmunization
@@ -565,6 +601,59 @@ object IpsFhirCodec {
     }
 
     // ──────────────────────────────────────────────────────────────────────
+    // Condition (past illness) ⇄ IpsPastProblem
+    // ──────────────────────────────────────────────────────────────────────
+
+    fun fromFhir(c: Condition): IpsPastProblem {
+        val coding = firstCoding(c.code)
+        val code = coding?.code?.value?.takeIf { it.isNotBlank() }
+        val (display, text) = IpsOfficialDisplays.friendly(
+            coding?.system?.value, coding?.code?.value,
+            coding?.display?.value?.takeIf { it.isNotBlank() }, c.code?.text?.value?.takeIf { it.isNotBlank() },
+        )
+        return IpsPastProblem(
+            id = c.id ?: IpsPastProblem.newId(),
+            code = code,
+            system = coding?.system?.value?.takeIf { it.isNotBlank() } ?: IpsCodeSystems.SNOMED,
+            display = display,
+            text = text?.takeIf { it != display },
+            onset = c.onset?.asDateTime()?.value?.value?.toString(),
+            abatement = c.abatement?.asDateTime()?.value?.value?.toString(),
+            clinicalStatus = IpsPastProblemStatus.normalize(firstCoding(c.clinicalStatus)?.code?.value),
+            severity = IpsConditionSeverity.normalize(firstCoding(c.severity)?.code?.value),
+            note = c.note.firstOrNull()?.text?.value?.takeIf { it.isNotBlank() },
+        )
+    }
+
+    fun toFhir(pp: IpsPastProblem, patientUrn: kotlin.String): Condition.Builder {
+        val status = IpsPastProblemStatus.normalize(pp.clinicalStatus)
+        return Condition.Builder(urnReference(patientUrn)).apply {
+            id = pp.id
+            meta = ipsMeta(PROFILE_CONDITION_UV_IPS)
+            clinicalStatus = CodeableConcept.Builder().apply {
+                coding.add(Coding.Builder().apply {
+                    system = Uri.Builder().apply { value = IpsPastProblemStatus.SYSTEM }
+                    code = Code.Builder().apply { value = status }
+                    display = String.Builder().apply { value = IpsPastProblemStatus.display(status) }
+                })
+            }
+            IpsConditionSeverity.normalize(pp.severity)?.let { sv ->
+                severity = CodeableConcept.Builder().apply {
+                    coding.add(Coding.Builder().apply {
+                        system = Uri.Builder().apply { value = IpsConditionSeverity.SYSTEM }
+                        code = Code.Builder().apply { value = sv }
+                        IpsConditionSeverity.display(sv)?.let { d -> display = String.Builder().apply { value = d } }
+                    })
+                }
+            }
+            code = codeableConcept(pp.code, pp.system, pp.display, pp.text)
+            parseFhirDate(pp.onset)?.let { onset = Condition.Onset.DateTime(dateTimeBuilder(it).build()) }
+            parseFhirDate(pp.abatement)?.let { abatement = Condition.Abatement.DateTime(dateTimeBuilder(it).build()) }
+            pp.note?.takeIf { it.isNotBlank() }?.let { note.add(Annotation.Builder(Markdown.Builder().apply { value = it })) }
+        }
+    }
+
+    // ──────────────────────────────────────────────────────────────────────
     // Composition sections
     // ──────────────────────────────────────────────────────────────────────
 
@@ -595,6 +684,9 @@ object IpsFhirCodec {
 
     fun resultSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
         section(TITLE_SECTION_RESULTS, LOINC_SECTION_RESULTS, "Relevant diagnostic tests/laboratory data note", entryUrns)
+
+    fun pastProblemSection(entryUrns: List<kotlin.String>): Composition.Section.Builder? =
+        section(TITLE_SECTION_PAST_ILLNESS, LOINC_SECTION_PAST_ILLNESS, "History of Past illness note", entryUrns)
 
     /** Serialise one resource alone (debug / tests). */
     fun encode(resource: Resource): kotlin.String = json.encodeToString(resource)

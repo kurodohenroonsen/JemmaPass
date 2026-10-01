@@ -22,6 +22,7 @@ object JemmaTranslations {
             "procedures_title" to "PROCEDURES",
             "devices_title" to "MEDICAL DEVICES",
             "results_title" to "RESULTS",
+            "past_problems_title" to "PAST ILLNESSES",
             "contacts_title" to "CONTACTS",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
             "empty" to "(none)"
@@ -43,6 +44,7 @@ object JemmaTranslations {
             "procedures_title" to "INTERVENTIONS",
             "devices_title" to "DISPOSITIFS MÉDICAUX",
             "results_title" to "RÉSULTATS",
+            "past_problems_title" to "ANTÉCÉDENTS MÉDICAUX",
             "contacts_title" to "CONTACTS",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
             "empty" to "(aucun)"
@@ -64,6 +66,7 @@ object JemmaTranslations {
             "procedures_title" to "処置・手術歴",
             "devices_title" to "医療機器",
             "results_title" to "検査結果",
+            "past_problems_title" to "既往歴",
             "contacts_title" to "緊急連絡先",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
             "empty" to "(なし)"
@@ -85,6 +88,7 @@ object JemmaTranslations {
             "procedures_title" to "PROCEDIMIENTOS",
             "devices_title" to "DISPOSITIVOS MÉDICOS",
             "results_title" to "RESULTADOS",
+            "past_problems_title" to "ANTECEDENTES PATOLÓGICOS",
             "contacts_title" to "CONTACTOS",
             "footer" to "✅ JEMMA en el dispositivo · `_j 1.2`",
             "empty" to "(ninguno)"
@@ -106,6 +110,7 @@ object JemmaTranslations {
             "procedures_title" to "EINGRIFFE",
             "devices_title" to "MEDIZINPRODUKTE",
             "results_title" to "BEFUNDE",
+            "past_problems_title" to "FRÜHERE ERKRANKUNGEN",
             "contacts_title" to "KONTAKTE",
             "footer" to "✅ JEMMA auf dem Gerät · `_j 1.2`",
             "empty" to "(keine)"
@@ -127,6 +132,7 @@ object JemmaTranslations {
             "procedures_title" to "PROCEDURE",
             "devices_title" to "DISPOSITIVI MEDICI",
             "results_title" to "RISULTATI",
+            "past_problems_title" to "ANAMNESI PATOLOGICA REMOTA",
             "contacts_title" to "CONTATTI",
             "footer" to "✅ JEMMA sul dispositivo · `_j 1.2`",
             "empty" to "(nessuno)"
@@ -148,6 +154,7 @@ object JemmaTranslations {
             "procedures_title" to "PROCEDIMENTOS",
             "devices_title" to "DISPOSITIVOS MÉDICOS",
             "results_title" to "RESULTADOS",
+            "past_problems_title" to "DOENÇAS ANTERIORES",
             "contacts_title" to "CONTATOS",
             "footer" to "✅ JEMMA no dispositivo · `_j 1.2`",
             "empty" to "(nenhum)"
@@ -169,6 +176,7 @@ object JemmaTranslations {
             "procedures_title" to "INGREPEN",
             "devices_title" to "MEDISCHE HULPMIDDELEN",
             "results_title" to "RESULTATEN",
+            "past_problems_title" to "DOORGEMAAKTE ZIEKTEN",
             "contacts_title" to "CONTACTEN",
             "footer" to "✅ JEMMA op apparaat · `_j 1.2`",
             "empty" to "(geen)"
@@ -190,6 +198,7 @@ object JemmaTranslations {
             "procedures_title" to "手术与操作",
             "devices_title" to "医疗器械",
             "results_title" to "检查结果",
+            "past_problems_title" to "既往病史",
             "contacts_title" to "紧急联系人",
             "footer" to "✅ JEMMA 本地安全防护 · `_j 1.2`",
             "empty" to "(无)"
@@ -211,6 +220,7 @@ object JemmaTranslations {
             "procedures_title" to "시술·수술",
             "devices_title" to "의료기기",
             "results_title" to "검사 결과",
+            "past_problems_title" to "과거 병력",
             "contacts_title" to "비상 연락처",
             "footer" to "✅ JEMMA 기기 자체 저장 · `_j 1.2`",
             "empty" to "(없음)"
@@ -232,6 +242,7 @@ object JemmaTranslations {
             "procedures_title" to "الإجراءات الطبية",
             "devices_title" to "الأجهزة الطبية",
             "results_title" to "نتائج الفحوص",
+            "past_problems_title" to "الأمراض السابقة",
             "contacts_title" to "جهات الطوارئ",
             "footer" to "✅ جيما على الجهاز · `_j 1.2`",
             "empty" to "(لا يوجد)"
@@ -253,6 +264,7 @@ object JemmaTranslations {
             "procedures_title" to "ПРОЦЕДУРЫ И ОПЕРАЦИИ",
             "devices_title" to "МЕДИЦИНСКИЕ УСТРОЙСТВА",
             "results_title" to "РЕЗУЛЬТАТЫ АНАЛИЗОВ",
+            "past_problems_title" to "ПЕРЕНЕСЁННЫЕ ЗАБОЛЕВАНИЯ",
             "contacts_title" to "КОНТАКТЫ",
             "footer" to "✅ JEMMA на устройстве · `_j 1.2`",
             "empty" to "(нет)"
@@ -274,6 +286,7 @@ object JemmaTranslations {
             "procedures_title" to "प्रक्रियाएँ",
             "devices_title" to "चिकित्सा उपकरण",
             "results_title" to "जाँच परिणाम",
+            "past_problems_title" to "पिछली बीमारियाँ",
             "contacts_title" to "संपर्क",
             "footer" to "✅ जेम्मा डिवाइस पर · `_j 1.2`",
             "empty" to "(कोई नहीं)"
@@ -295,6 +308,7 @@ object JemmaTranslations {
             "procedures_title" to "চিকিৎসা প্রক্রিয়া",
             "devices_title" to "চিকিৎসা যন্ত্র",
             "results_title" to "পরীক্ষার ফলাফল",
+            "past_problems_title" to "পূর্ববর্তী রোগসমূহ",
             "contacts_title" to "জরুরী যোগাযোগ",
             "footer" to "✅ জেম্মা অন-ডিভাইস · `_j 1.2`",
             "empty" to "(নেই)"
@@ -316,6 +330,7 @@ object JemmaTranslations {
             "procedures_title" to "GİRİŞİMLER",
             "devices_title" to "TIBBİ CİHAZLAR",
             "results_title" to "TETKİK SONUÇLARI",
+            "past_problems_title" to "GEÇİRİLMİŞ HASTALIKLAR",
             "contacts_title" to "İLETİŞİM",
             "footer" to "✅ Cihaz üzerinde JEMMA · `_j 1.2`",
             "empty" to "(yok)"
@@ -337,6 +352,7 @@ object JemmaTranslations {
             "procedures_title" to "ZABIEGI",
             "devices_title" to "WYROBY MEDYCZNE",
             "results_title" to "WYNIKI BADAŃ",
+            "past_problems_title" to "PRZEBYTE CHOROBY",
             "contacts_title" to "KONTAKTY",
             "footer" to "✅ JEMMA na urządzeniu · `_j 1.2`",
             "empty" to "(brak)"
@@ -358,6 +374,7 @@ object JemmaTranslations {
             "procedures_title" to "ПРОЦЕДУРИ ТА ОПЕРАЦІЇ",
             "devices_title" to "МЕДИЧНІ ПРИСТРОЇ",
             "results_title" to "РЕЗУЛЬТАТИ АНАЛІЗІВ",
+            "past_problems_title" to "ПЕРЕНЕСЕНІ ЗАХВОРЮВАННЯ",
             "contacts_title" to "КОНТАКТИ",
             "footer" to "✅ JEMMA на пристрої · `_j 1.2`",
             "empty" to "(немає)"
@@ -379,6 +396,7 @@ object JemmaTranslations {
             "procedures_title" to "THỦ THUẬT / PHẪU THUẬT",
             "devices_title" to "THIẾT BỊ Y TẾ",
             "results_title" to "KẾT QUẢ XÉT NGHIỆM",
+            "past_problems_title" to "TIỀN SỬ BỆNH",
             "contacts_title" to "LIÊN HỆ KHẨN CẤP",
             "footer" to "✅ JEMMA trên thiết bị · `_j 1.2`",
             "empty" to "(không)"
@@ -400,6 +418,7 @@ object JemmaTranslations {
             "procedures_title" to "หัตถการ",
             "devices_title" to "อุปกรณ์การแพทย์",
             "results_title" to "ผลการตรวจ",
+            "past_problems_title" to "โรคในอดีต",
             "contacts_title" to "ผู้ติดต่อฉุกเฉิน",
             "footer" to "✅ บันทึก JEMMA บนอุปกรณ์ · `_j 1.2`",
             "empty" to "(ไม่มี)"
@@ -421,6 +440,7 @@ object JemmaTranslations {
             "procedures_title" to "PROSEDUR",
             "devices_title" to "ALAT KESEHATAN",
             "results_title" to "HASIL PEMERIKSAAN",
+            "past_problems_title" to "RIWAYAT PENYAKIT",
             "contacts_title" to "KONTAK DARURAT",
             "footer" to "✅ JEMMA di dalam perangkat · `_j 1.2`",
             "empty" to "(tidak ada)"
@@ -442,6 +462,7 @@ object JemmaTranslations {
             "procedures_title" to "INGREPP",
             "devices_title" to "MEDICINTEKNISKA PRODUKTER",
             "results_title" to "PROVSVAR",
+            "past_problems_title" to "TIDIGARE SJUKDOMAR",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheten · `_j 1.2`",
             "empty" to "(inga)"
@@ -463,6 +484,7 @@ object JemmaTranslations {
             "procedures_title" to "INNGREP",
             "devices_title" to "MEDISINSK UTSTYR",
             "results_title" to "PRØVESVAR",
+            "past_problems_title" to "TIDLIGERE SYKDOMMER",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheten · `_j 1.2`",
             "empty" to "(ingen)"
@@ -484,6 +506,7 @@ object JemmaTranslations {
             "procedures_title" to "INDGREB",
             "devices_title" to "MEDICINSK UDSTYR",
             "results_title" to "PRØVESVAR",
+            "past_problems_title" to "TIDLIGERE SYGDOMME",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheden · `_j 1.2`",
             "empty" to "(ingen)"
@@ -505,6 +528,7 @@ object JemmaTranslations {
             "procedures_title" to "TOIMENPITEET",
             "devices_title" to "LÄÄKINNÄLLISET LAITTEET",
             "results_title" to "TUTKIMUSTULOKSET",
+            "past_problems_title" to "AIEMMAT SAIRAUDET",
             "contacts_title" to "YHTEYSTIEDOT",
             "footer" to "✅ JEMMA laitteessa · `_j 1.2`",
             "empty" to "(ei mitään)"
@@ -526,6 +550,7 @@ object JemmaTranslations {
             "procedures_title" to "PROCEDURI",
             "devices_title" to "DISPOZITIVE MEDICALE",
             "results_title" to "REZULTATE",
+            "past_problems_title" to "BOLI ANTERIOARE",
             "contacts_title" to "CONTACTE DE URGENȚĂ",
             "footer" to "✅ JEMMA pe dispozitiv · `_j 1.2`",
             "empty" to "(niciuna)"

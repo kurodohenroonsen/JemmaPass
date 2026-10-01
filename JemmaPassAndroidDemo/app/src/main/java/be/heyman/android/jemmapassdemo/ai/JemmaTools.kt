@@ -24,6 +24,7 @@
  *     getFocusProfileProcedures    — history of procedures (FHIR-native pillar)
  *     getFocusProfileDevices       — implants / medical devices (FHIR-native pillar)
  *     getFocusProfileResults       — lab / imaging results (FHIR-native pillar)
+ *     getFocusProfilePastProblems  — history of past illness (FHIR-native pillar)
  *
  *   ─── Cross-check (the killer) ───────────────────────────────────────
  *     checkOneDrugAgainstFocusProfile — single drug name → full clinical
@@ -439,6 +440,7 @@ class JemmaTools @Inject constructor(
             "procedures_count" to p.pr.size,
             "devices_count" to p.dv.size,
             "results_count" to p.rs.size,
+            "past_problems_count" to p.ph.size,
             "contacts_count" to (patient?.ct?.size ?: 0),
         )
     }
@@ -566,6 +568,25 @@ class JemmaTools @Inject constructor(
             )
         }
         mapOf("ok" to true, "lang" to lang, "count" to rows.size, "results" to rows)
+    }
+
+    @Tool(description = "List the past illnesses of the focus profile (history of past illness: resolved, inactive or in remission — e.g. myocardial infarction, tuberculosis, appendicitis, cancer in remission): problem label, SNOMED CT code, onset and resolution dates, clinical status and severity. Use it for contraindications linked to a past condition (prior MI, past GI bleeding, TB reactivation risk under immunosuppressants).")
+    fun getFocusProfilePastProblems(): Map<String, Any> = runBlocking(Dispatchers.IO) {
+        val p = focusRef.get() ?: return@runBlocking profileMissingMap()
+        val lang = currentLang()
+        val rows = p.ph.map { ph ->
+            mapOf(
+                "problem" to (ph.displayLabel?.takeIf { it.isNotBlank() } ?: ph.c.orEmpty()),
+                "code" to ph.c.orEmpty(),
+                "system" to (ph.codeSystem ?: "http://snomed.info/sct"),
+                "onset" to (ph.date ?: "unknown"),
+                "resolved" to (ph.abatement ?: "unknown"),
+                "clinical_status" to (ph.status ?: "resolved"),
+                "severity" to (be.heyman.android.jemmapassdemo.ips.IpsConditionSeverity.display(ph.severity) ?: ""),
+                "note" to ph.d.orEmpty(),
+            )
+        }
+        mapOf("ok" to true, "lang" to lang, "count" to rows.size, "past_problems" to rows)
     }
 
     // ─────────────────────────────────────────────────────────────────

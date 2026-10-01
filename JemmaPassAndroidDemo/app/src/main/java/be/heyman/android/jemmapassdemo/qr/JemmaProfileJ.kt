@@ -371,6 +371,11 @@ data class JEntryGeneric(
     @Json(name = "vc") val valueCode: String? = null,
     /** Observation category when not the pillar default (results: "laboratory"). */
     @Json(name = "ct") val category: String? = null,
+    // ── Past problems (Condition) projection — sprint 4.
+    /** Abatement (resolution) date: YYYY, YYYY-MM or YYYY-MM-DD. */
+    @Json(name = "ab") val abatement: String? = null,
+    /** Severity as the IPS LOINC answer code (LA6752-5 mild, LA6751-7 moderate, LA6750-9 severe). */
+    @Json(name = "sv") val severity: String? = null,
 )
 
 // ──────────────────────────────────────────────────────────────────────
