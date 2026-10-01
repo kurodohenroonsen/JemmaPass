@@ -430,6 +430,9 @@ ni 📟, tuiles actives sans badge). Résultat dans `verify-t13.md`.
 adb logcat -d -s JEMMA-PROFILES:* JEMMA-CODEC:* JEMMA-IMMUNIZATIONS-EDIT:* JEMMA-IMMUNIZATIONS-FORM:* JEMMA-IMMUNIZATIONS-ADAPTER:* JEMMA-PROCEDURES-EDIT:* JEMMA-PROCEDURES-FORM:* JEMMA-PROCEDURES-ADAPTER:* JEMMA-DEVICES-EDIT:* JEMMA-DEVICES-FORM:* JEMMA-DEVICES-ADAPTER:* JEMMA-PROFILE-DETAIL:* JEMMA-QR:* AndroidRuntime:E > $OUT/logs/logcat-ui.txt
 python3 qa/device/scrub_logcat.py $OUT/logs/logcat-ui.txt
 ```
+⚠️ `logcat -s` n'accepte pas de joker (`JEMMA-*` ne filtre rien) : utilise la liste
+explicite ci-dessus. Le scrub applique de toute façon une liste blanche
+(`JEMMA-*`, `AndroidRuntime`) — ne jamais publier un `adb logcat -d` sans `-s`.
 Le buffer logcat peut avoir tourné (les tags JEMMA sont bavards) : si le fichier est
 vide, relance la séquence concernée puis re-dumpe immédiatement — ne reconstruis
 jamais un log à la main.
