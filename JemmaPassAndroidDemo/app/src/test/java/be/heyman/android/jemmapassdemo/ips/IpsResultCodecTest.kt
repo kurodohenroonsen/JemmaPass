@@ -176,7 +176,7 @@ class IpsResultCodecTest {
         assertNull(e.valueCode)
 
         val coded = bloodGroup.toJEntry()
-        assertEquals("278149003", coded.valueCode)
+        assertEquals("278147001", coded.valueCode)
         assertEquals("Blood group O Rh(D) positive", coded.value)
         assertNull(coded.unit)
 
