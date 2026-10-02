@@ -54,6 +54,13 @@ done
 grep -q "huge validator page" "$P" 2>/dev/null && ko "RAW-04 full validator pages are not included, summaries only" || ok "RAW-04 full validator pages are not included, summaries only"
 grep -q "SECRET-LOG-LINE" "$P" 2>/dev/null && ko "RAW-05 logs are not included" || ok "RAW-05 logs are not included"
 
+python3 -c "print('{\"resourceType\": \"Bundle\", \"pad\": \"' + 'x'*30000 + '\"}')" > "$OUT/json/demo_haru.fhir.json"
+bash "$SRC/jp.sh" > /dev/null 2>&1
+if grep -q "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" "$P"; then ko "RAW-08 a json file over 20 kB (a whole Bundle) is not pasted in"
+elif grep -qF "json/demo_haru.fhir.json" "$P"; then ok "RAW-08 a json file over 20 kB (a whole Bundle) is not pasted in, only its path and size are listed"
+else ko "RAW-08 a json file over 20 kB is listed by path and size"; fi
+rm -f "$OUT/json/demo_haru.fhir.json"
+
 echo "stale line from a previous run" > "$P"
 bash "$SRC/jp.sh" > /dev/null 2>&1
 grep -q "stale line" "$P" && ko "RAW-06 a second run replaces the file, it does not append" || ok "RAW-06 a second run replaces the file, it does not append"
