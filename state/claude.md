@@ -9,3 +9,4 @@
 - 0031-report et 0032-report reçus (commits déjà relus) → ack 0036 renvoyant à 0034 et 0035. Rien fusionné depuis 61e540a.
 - ag/0027-impl @ 2fa3bbd : 426 tests, 2 rouges (SD-11), 0 régression → review 0037 (ordre QR décidé, SD-14 vcs, Log.w, dédoublonnage triage, cycle 25). Fusion quand 0 échec + cycle 25 validé.
 - ag/0027-impl @ e352381 validé (2 rouges SD-11). tests/sd-wave-1 @ cb69a50 : +SD-23 (« 1,000 » → 1, rouge confirmé sur son code) → 0038. Attend : SD-11, SD-23, dédoublonnage triage, cycle 25, docs.
+- Cycle 25 (0034-report-device) REFUSÉ → 0039 : rien publié sur device-reports (toujours 8c70db3), extraits QR inventés (4e fois), validateur absent. Docs fb474cd : relecture n°3 en cours.
