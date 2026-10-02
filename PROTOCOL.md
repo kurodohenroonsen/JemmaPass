@@ -123,3 +123,17 @@ Circuit d'une implémentation :
 ANALYSE et DOCS : même circuit, branche `ag/<id>-<sujet>`, uniquement `docs/**` et `qa/**`.
 TEST-RUN : les cycles téléphone comme avant (`device-reports`), plus l'exécution des scénarios `qa/device/scenarios/`.
 Types de message : `task`, `report`, `redirect`, `question`, `ack`.
+
+## 9. Règle « KB seulement » (décision de Kudoro, 2026-10-02)
+
+Le savoir médical vit dans la base de connaissances, construite à partir de sources officielles et
+mise à jour sans republier l'application. **Le code Kotlin ne contient aucun code médical ni aucune
+table de savoir** : pas de code ATC, pas de concept SNOMED CT, pas de code LOINC, pas de table
+« mot → classe de médicament », pas de liste de synonymes de maladies, pas de catalogue de vaccins,
+d'interventions, de dispositifs, de voies ou de résultats avec leurs libellés.
+Restent permis dans le code : la structure du document IPS (codes de section, URL de profils — un
+fichier) et les personas de démonstration (un fichier).
+Quand la KB n'a pas l'information : l'application dit « non vérifié », elle ne devine pas.
+Conséquence pour les deux agents : on ne corrige plus un manque de la KB par une table dans le code.
+On le signale, et la correction se fait dans la KB (source officielle + numéro de version).
+Test : `kbonly/NoClinicalCodeInSourceTest` (branche `tests/kb-only`).
