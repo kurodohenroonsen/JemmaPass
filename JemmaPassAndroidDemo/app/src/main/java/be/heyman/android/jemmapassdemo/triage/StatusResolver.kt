@@ -55,6 +55,7 @@ class StatusResolver {
          * 3-hop mesh propagation latency at 1.75s/rotation.
          */
         const val DCD_GRACE_SEC = 30L
+        const val MAX_EVENTS_PER_VICTIM = 64
 
         /**
          * Pure decision function — returns true if `incoming` should
@@ -122,7 +123,24 @@ class StatusResolver {
      */
     fun apply(incoming: StatusEvent): StatusEvent {
         val list = events.getOrPut(incoming.victimSid) { mutableListOf() }
-        list.add(incoming)
+        val isDuplicate = list.any {
+            it.rescuerSid == incoming.rescuerSid &&
+                it.status == incoming.status &&
+                it.timestampSec == incoming.timestampSec &&
+                it.isExplicitOverride == incoming.isExplicitOverride
+        }
+        if (!isDuplicate) {
+            list.add(incoming)
+            if (list.size > MAX_EVENTS_PER_VICTIM) {
+                val dcds = list.filter { it.status == SaltCode.DCD }
+                val nonDcds = list.filter { it.status != SaltCode.DCD }
+                val trimmed = (dcds + nonDcds.takeLast(MAX_EVENTS_PER_VICTIM - dcds.size.coerceAtMost(MAX_EVENTS_PER_VICTIM / 2)))
+                    .distinct()
+                    .sortedBy { it.timestampSec }
+                list.clear()
+                list.addAll(trimmed)
+            }
+        }
         val resolved = resolve(list) ?: incoming
         current[incoming.victimSid] = resolved
         return resolved
