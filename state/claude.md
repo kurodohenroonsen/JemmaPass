@@ -12,3 +12,4 @@
 - Cycle 25 (0034-report-device) REFUSÉ → 0039 : rien publié sur device-reports (toujours 8c70db3), extraits QR inventés (4e fois), validateur absent. Docs fb474cd : relecture n°3 en cours.
 - Docs fb474cd : 3e relecture → 0040 (8 erreurs restantes dont inversion BLE 200/Nearby 131, 13 lignes décalées, sources). Pas fusionné.
 - ag/0027-impl @ 4d07531 : code vague 1 VALIDÉ ; avec tests/sd-wave-1 @ e07f97b → 429 tests, 0 échec (probe/sd23 05f5331). Fusion dans feat dès que cycle 25 validé sur pièces (0039). → ack 0041.
+- ag/0027-impl @ 512c8d2 : CI verte 429/0 (run #53). ag/0039-qa-report @ 619c2f6 : report-raw 6/7 (tests/qa-guard @ 53c7f67) → 0042. Fusion app : attend cycle 25 publié et audité.
