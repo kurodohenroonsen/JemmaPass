@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4.Medication
 import dev.ohs.fhir.model.r4.MedicationStatement
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Patient
+import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.String
@@ -289,6 +290,32 @@ object JemmaFhirBundleBuilder {
                 Reference.Builder().apply { reference = String.Builder().apply { value = patientUrn } }
             ).apply {
                 dateAsserted = nowDateTimeBuilder()
+
+                m.raw.effective?.takeIf { it.isNotBlank() }?.let { eff ->
+                    if (eff.contains("/")) {
+                        val parts = eff.split("/")
+                        val s = parts.getOrNull(0)?.trim()?.takeIf { it.isNotBlank() }
+                        val e = parts.getOrNull(1)?.trim()?.takeIf { it.isNotBlank() }
+                        effective = MedicationStatement.Effective.Period(Period.Builder().apply {
+                            s?.let { startStr ->
+                                try {
+                                    start = DateTime.Builder().apply { value = FhirDateTime.fromString(startStr) }
+                                } catch (_: Throwable) {}
+                            }
+                            e?.let { endStr ->
+                                try {
+                                    end = DateTime.Builder().apply { value = FhirDateTime.fromString(endStr) }
+                                } catch (_: Throwable) {}
+                            }
+                        }.build())
+                    } else {
+                        try {
+                            effective = MedicationStatement.Effective.DateTime(
+                                DateTime.Builder().apply { value = FhirDateTime.fromString(eff.trim()) }.build()
+                            )
+                        } catch (_: Throwable) {}
+                    }
+                }
                 
                 val dosageText = listOfNotNull(
                     m.timing?.takeIf { it.isNotBlank() },
