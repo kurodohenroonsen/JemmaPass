@@ -138,7 +138,7 @@ data class IpsResult(
         unit = if (isNumeric) unit?.takeIf { it.isNotBlank() } else null,
         interpretation = IpsResultInterpretation.normalize(interpretation),
         referenceRange = referenceRangeLabel(),
-        valueCode = if (isCoded) valueCode else null,
+        valueCode = if (isCoded && (valueCodeSystem == null || valueCodeSystem == IpsCodeSystems.SNOMED)) valueCode else null,
         category = category.takeIf { it != IpsResultCategory.LABORATORY },
     )
 
