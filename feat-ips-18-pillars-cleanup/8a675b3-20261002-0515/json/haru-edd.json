@@ -1,0 +1,28 @@
+{
+  "fullUrl": "urn:uuid:992d4114-9f2e-3015-8e0d-fcf5dee137a6",
+  "resource": {
+    "resourceType": "Observation",
+    "id": "2e5e5a7c-1b04-471d-8cfe-438f6c1f837f",
+    "meta": {
+      "profile": [
+        "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-pregnancy-edd-uv-ips"
+      ]
+    },
+    "status": "final",
+    "code": {
+      "coding": [
+        {
+          "system": "http://loinc.org",
+          "code": "11779-6",
+          "display": "Delivery date Estimated from last menstrual period"
+        }
+      ],
+      "text": "Delivery date Estimated from last menstrual period"
+    },
+    "subject": {
+      "reference": "urn:uuid:d4d6f377-2bc2-3fdf-b2ca-c2dd4477cddf"
+    },
+    "effectiveDateTime": "2026-10-02",
+    "valueDateTime": "2026-11-15"
+  }
+}

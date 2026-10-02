@@ -1,0 +1,29 @@
+{
+  "title": "History of Pregnancy",
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "10162-6",
+        "display": "History of pregnancies Narrative"
+      }
+    ]
+  },
+  "entry": [
+    {
+      "reference": "urn:uuid:bc35fb3e-7aa2-3bf5-acb6-8b012e04cd9d"
+    },
+    {
+      "reference": "urn:uuid:992d4114-9f2e-3015-8e0d-fcf5dee137a6"
+    },
+    {
+      "reference": "urn:uuid:68fa45ea-8251-374e-b3a3-592e837b3bb3"
+    },
+    {
+      "reference": "urn:uuid:3444b98a-1c67-3028-8c18-7a343041fc4e"
+    },
+    {
+      "reference": "urn:uuid:ad863416-bfd6-3ce5-90bd-8dc4dec8fca2"
+    }
+  ]
+}

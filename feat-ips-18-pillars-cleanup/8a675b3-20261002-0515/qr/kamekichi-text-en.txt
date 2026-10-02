@@ -1,0 +1,34 @@
+🏥 === JEMMA CLINICAL SUMMARY (EN) ===
+
+👤 [ PATIENT ]
+ 🔹 Kamekichi  (M)
+ 📅 Birth: 2000-05-20
+ 🩸 Blood: B+
+ 🗣 Language: ja-JP
+ 📍 Address: 75 Avenue Louise, Bruxelles, Belgique
+ 🆔 ID: BE-570815-987-65
+
+⚠️ [ ALLERGIES ]
+  ▪️ Latex allergy (LOW)
+  ▪️ Allergy to penicillin (HIGH)
+  ▪️ Allergy to peanut (HIGH)
+
+💊 [ MEDICATIONS ]
+  ▪️ Bisoprolol 1tab Bisoprolol 2.5mg
+  ▪️ Warfarin 5mg Warfarin 5mg
+  ▪️ Ibuprofen 400mg Ibuprofen 400mg
+  ▪️ Sildenafil 50mg Sildenafil 50mg
+  ▪️ Isosorbide dinitrate 20mg Isosorbide Dinitrate 20mg
+
+🩺 [ CONDITIONS ]
+  ▪️ Essential hypertension
+  ▪️ Atrial fibrillation
+  ▪️ Angina
+
+☎️ [ CONTACTS ]
+  ▪️ Kurodo Henro (friend)
+
+🧪 [ RESULTS ]
+  ▪️ ABO and Rh blood group: B+
+
+✅ JEMMA on-device · `_j 1.2`

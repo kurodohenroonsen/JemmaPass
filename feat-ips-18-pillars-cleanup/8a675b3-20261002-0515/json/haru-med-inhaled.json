@@ -1,0 +1,138 @@
+[
+  {
+    "fullUrl": "urn:uuid:359c2770-4bb9-312f-a3df-472535720d70",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "status": "active",
+      "subject": {
+        "reference": "urn:uuid:d4d6f377-2bc2-3fdf-b2ca-c2dd4477cddf"
+      },
+      "dateAsserted": "2026-10-02T04:22:09.82Z",
+      "dosage": [
+        {
+          "text": "Allegra FX (fexofenadine 60mg) • 1tab",
+          "route": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "26643006"
+              }
+            ],
+            "text": "Oral"
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1.0,
+                "unit": "tab"
+              }
+            }
+          ]
+        }
+      ],
+      "medicationReference": {
+        "reference": "urn:uuid:e7084d28-06ba-37a8-aaea-dfa3af3479ff"
+      }
+    }
+  },
+  {
+    "fullUrl": "urn:uuid:f4fb2770-b898-3bbb-ae00-5d5a79988462",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "status": "active",
+      "subject": {
+        "reference": "urn:uuid:d4d6f377-2bc2-3fdf-b2ca-c2dd4477cddf"
+      },
+      "dateAsserted": "2026-10-02T04:22:09.821Z",
+      "dosage": [
+        {
+          "text": "Medicon Pro (dextromethorphan) • 1tab",
+          "route": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "26643006"
+              }
+            ],
+            "text": "Oral"
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1.0,
+                "unit": "tab"
+              }
+            }
+          ]
+        }
+      ],
+      "medicationReference": {
+        "reference": "urn:uuid:b8d0edc4-7917-3bc8-b1cf-aa991249a1c3"
+      }
+    }
+  },
+  {
+    "fullUrl": "urn:uuid:df0e3c0e-0daf-3b11-9d37-d6a1fba38253",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "status": "active",
+      "subject": {
+        "reference": "urn:uuid:d4d6f377-2bc2-3fdf-b2ca-c2dd4477cddf"
+      },
+      "dateAsserted": "2026-10-02T04:22:09.821Z",
+      "dosage": [
+        {
+          "text": "Furosemide 20mg • 1tab",
+          "route": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "26643006"
+              }
+            ],
+            "text": "Oral"
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1.0,
+                "unit": "tab"
+              }
+            }
+          ]
+        }
+      ],
+      "medicationReference": {
+        "reference": "urn:uuid:ba74b4b2-100b-3c04-8cb0-d6c74ec9295d"
+      }
+    }
+  },
+  {
+    "fullUrl": "urn:uuid:459bce31-7a25-3459-a45c-defbb42c8100",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "status": "active",
+      "subject": {
+        "reference": "urn:uuid:d4d6f377-2bc2-3fdf-b2ca-c2dd4477cddf"
+      },
+      "dateAsserted": "2026-10-02T04:22:09.821Z",
+      "dosage": [
+        {
+          "text": "albuterol 5 MG/ML Inhalation Solution",
+          "route": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "447694001"
+              }
+            ],
+            "text": "Inhalation"
+          }
+        }
+      ],
+      "medicationReference": {
+        "reference": "urn:uuid:a7218900-2835-3f4d-bdf2-3914d671f55c"
+      }
+    }
+  }
+]
