@@ -245,20 +245,24 @@ object JemmaFhirBundleBuilder {
 
             val medication = Medication.Builder().apply {
                 code = CodeableConcept.Builder().apply {
-                    coding.add(Coding.Builder().apply {
-                        system = Uri.Builder().apply { value = primarySystem }
-                        code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = rawCode }
-                        display = String.Builder().apply { value = displayStr }
-                    })
-                    // Add secondary ATC code if available and not already the primary code
-                    m.atcCode?.takeIf { it.isNotBlank() && it != rawCode }?.let { atc ->
+                    if (rawCode.isNotBlank()) {
                         coding.add(Coding.Builder().apply {
-                            system = Uri.Builder().apply { value = SYS_ATC }
-                            code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = atc }
+                            system = Uri.Builder().apply { value = primarySystem }
+                            code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = rawCode }
                             display = String.Builder().apply { value = displayStr }
                         })
+                        // Add secondary ATC code if available and not already the primary code
+                        m.atcCode?.takeIf { it.isNotBlank() && it != rawCode }?.let { atc ->
+                            coding.add(Coding.Builder().apply {
+                                system = Uri.Builder().apply { value = SYS_ATC }
+                                code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = atc }
+                                display = String.Builder().apply { value = displayStr }
+                            })
+                        }
                     }
-                    text = String.Builder().apply { value = displayStr }
+                    if (displayStr.isNotBlank()) {
+                        text = String.Builder().apply { value = displayStr }
+                    }
                 }
             }
             
