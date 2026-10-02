@@ -106,3 +106,20 @@ ou sous-agent ne lance **que** la commande de son couloir, au caractère près :
 Il écrit ses actions dans `/tmp/jp/<couloir>/task.txt` avec l'outil d'édition de fichier, lance la
 commande, lit `/tmp/jp/<couloir>/out.txt` avec l'outil de lecture. Liste des actions :
 `qa/device/README.md` §3 ter. Action manquante → la demander dans le rapport, ne pas contourner.
+
+## 8. Rôles (depuis le 2026-10-02, décision de Kudoro)
+
+| Qui | Fait | Ne fait pas |
+|---|---|---|
+| **Claude** | écrit les **tests** (JVM, scénarios téléphone), **valide** chaque travail d'Antigravity sur pièces (CI, diff, fichiers publiés), **fusionne** ce qui est validé, **réoriente** par message `redirect` | n'écrit plus de code d'application ni de documentation |
+| **Antigravity** | quatre couloirs en parallèle, un sous-agent chacun : **ANALYSE**, **DOCS**, **IMPL**, **TEST-RUN** | ne modifie pas les tests de Claude pour les faire passer ; ne pousse jamais directement sur `feat/ips-18-pillars-cleanup` |
+
+Circuit d'une implémentation :
+1. Claude pousse des tests rouges sur `tests/<vague>` et un message `task` qui les décrit.
+2. Antigravity crée `ag/<id>-<sujet>` **à partir de** `tests/<vague>`, implémente jusqu'au vert (CI GitHub de sa branche : résumé sur `ci-logs`), sans toucher aux fichiers de test. Un test jugé faux → le dire dans le rapport, ne pas le modifier.
+3. Antigravity répond par un `report` : branche, sha, résultat CI brut, liste des fichiers modifiés, ce qui n'a pas été fait.
+4. Claude valide (CI de la branche, diff relu, validateur HL7 et preuves téléphone si l'écran change) puis fusionne dans `feat/ips-18-pillars-cleanup`, ou renvoie un `redirect` : ce qui est refusé, pourquoi, quoi faire à la place.
+
+ANALYSE et DOCS : même circuit, branche `ag/<id>-<sujet>`, uniquement `docs/**` et `qa/**`.
+TEST-RUN : les cycles téléphone comme avant (`device-reports`), plus l'exécution des scénarios `qa/device/scenarios/`.
+Types de message : `task`, `report`, `redirect`, `question`, `ack`.
