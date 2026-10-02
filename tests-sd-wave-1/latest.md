@@ -1,0 +1,177 @@
+# CI · tests/sd-wave-1 · 23eeb54 · run #40
+
+- Gradle outcome: **failure**
+- Unit tests: **418** run · 38 failed · 0 errors · 0 skipped
+- Debug APK: ✅ app-debug.apk (228 MB)
+- Kotlin compile errors: 0
+
+## Failing tests
+```
+be.heyman.android.jemmapassdemo.red.Sd03UnexpectedIdentityValuesTest.SD-03 UC-QRF-013 an unknown telecom use still gives a document: java.lang.AssertionError: telecom use 'cell' : building the IPS document threw IllegalArgumentException (Unknown code cell for enum ContactPointUse). The profile is then saved without its document and the FHIR QR screen crashes. An unreadable value must be left out and the document still built.
+be.heyman.android.jemmapassdemo.red.Sd03UnexpectedIdentityValuesTest.SD-03 UC-IMP-013 a birth date that is not ISO still gives a document: java.lang.AssertionError: birth date '05/02/1956' : building the IPS document threw IllegalStateException (Invalid string value: 05/02/1956). The profile is then saved without its document and the FHIR QR screen crashes. An unreadable value must be left out and the document still built.
+be.heyman.android.jemmapassdemo.red.Sd03UnexpectedIdentityValuesTest.SD-03 UC-QRF-013 an unknown telecom system still gives a document: java.lang.AssertionError: telecom system 'whatsapp' : building the IPS document threw IllegalArgumentException (Unknown code whatsapp for enum ContactPointSystem). The profile is then saved without its document and the FHIR QR screen crashes. An unreadable value must be left out and the document sti
+be.heyman.android.jemmapassdemo.red.Sd03UnexpectedIdentityValuesTest.SD-03 UC-IMP-013 an unknown address use still gives a document: java.lang.AssertionError: address use 'vacation' : building the IPS document threw IllegalArgumentException (Unknown code vacation for enum AddressUse). The profile is then saved without its document and the FHIR QR screen crashes. An unreadable value must be left out and the document still built.
+be.heyman.android.jemmapassdemo.red.Sd15FamilyNameOnlyDisplayNameTest.SD-15 UC-HUM-005 a blank given name does not hide the family name: org.junit.ComparisonFailure: A profile that only holds the family name 'Dupont' is announced as an unknown profile : the caregiver imports or refuses a record without knowing whose it is. The family name must be shown. expected:<[Dupont]> but was:<[Profile inconnu]>
+be.heyman.android.jemmapassdemo.red.Sd15FamilyNameOnlyDisplayNameTest.SD-15 UC-HUM-005 a profile with a family name only shows that name: org.junit.ComparisonFailure: A profile that only holds the family name 'Dupont' is announced as an unknown profile : the caregiver imports or refuses a record without knowing whose it is. The family name must be shown. expected:<[Dupont]> but was:<[Profile inconnu]>
+be.heyman.android.jemmapassdemo.red.Sd16MedicationStartDateTest.SD-16 UC-MED-009 the start date of a treatment is in the document: java.lang.AssertionError: Warfarin taken since 2020-03-01 : the date is nowhere in the MedicationStatement of the IPS document (it stays in the compact profile only). The statement must carry it as effectiveDateTime or effectivePeriod.
+be.heyman.android.jemmapassdemo.red.Sd16MedicationStartDateTest.SD-16 UC-FHIR-005 the start and the end of a finished treatment are in the document: java.lang.AssertionError: Warfarin taken from 2020-03-01 to 2021-04-05 (stored as '2020-03-01/2021-04-05') : the MedicationStatement of the IPS document holds neither date. It must carry both, as an effectivePeriod.
+be.heyman.android.jemmapassdemo.red.Sd13ResolvedProblemImportTest.SD-13 UC-PRB-017 a problem imported as resolved is not lost either: java.lang.AssertionError: A myocardial infarction imported with the status 'resolved' must be kept as a past illness or as a non-active problem (today : kept, but as an ACTIVE problem). Dropping it is not a fix.
+be.heyman.android.jemmapassdemo.red.Sd13ResolvedProblemImportTest.SD-13 UC-IMP-017 a problem imported as resolved does not become an active problem: java.lang.AssertionError: A myocardial infarction imported with the status 'resolved' is stored as an ACTIVE problem : it is shown as ongoing and enters the drug × disease check. A problem that is not current must go to the past illnesses, or keep a status that is not active.
+be.heyman.android.jemmapassdemo.red.Sd17SeriesWithoutDoseNumberTest.SD-17 UC-VAC-012 a vaccine series is kept when the dose number is unknown: java.lang.AssertionError: A hepatitis B vaccine recorded as a series of 3 doses, dose number unknown, comes back without its series : the series is only written when a dose number exists. The series must survive a save and a read. expected:<3> but was:<null>
+be.heyman.android.jemmapassdemo.red.Sd19SeededContactsTest.SD-19 UC-QRT-005 every seeded emergency contact can be reached by phone or e-mail: java.lang.AssertionError: demo_kurodo : the emergency contact 'Kamekichi' has neither phone nor e-mail. The text QR prints a name the rescuer cannot call, and no device step can check that a contact's phone reaches the rescuer. Give each seeded contact a (fictional) phone number.
+be.heyman.android.jemmapassdemo.red.Sd19SeededContactsTest.SD-19 UC-PAT-016 every seeded emergency contact has a relation of the catalogue: java.lang.AssertionError: demo_kurodo : the relation 'friend' of the contact 'Kamekichi' is not a code of the relationship catalogue (a friend is 'FRND') : it stays in English in the 25 languages instead of being translated.
+be.heyman.android.jemmapassdemo.red.Sd05NoEmptyPrimitiveTest.SD-05 UC-FHIR-014 a medication without a code has no empty code in the document: java.lang.AssertionError: The medication has no code, yet the document says "code": "". An empty FHIR primitive is invalid. Without a code there must be no coding at all : only the text label.
+be.heyman.android.jemmapassdemo.red.Sd05NoEmptyPrimitiveTest.SD-05 UC-FHIR-011 an allergy without a code has no empty code in the document: java.lang.AssertionError: The allergy has no code, yet the document says "code": "" under the SNOMED system. An empty FHIR primitive is invalid (the HL7 validator rejects it). Without a code there must be no coding at all : only the text label.
+be.heyman.android.jemmapassdemo.red.Sd05NoEmptyPrimitiveTest.SD-05 UC-QRF-008 an emergency contact with a phone only has no empty name in the document: java.lang.AssertionError: The contact has no name, yet the document says "name": { "text": "" }. An empty FHIR primitive is invalid. Without a name the contact must have no name element.
+be.heyman.android.jemmapassdemo.red.Sd09DrugDiseaseMatchingTest.SD-09 UC-DDS-008 a different disease that shares a word is not a match: java.lang.AssertionError: A person with plain 'hypertension' gets the alerts written for 'Intracranial Hypertension', a different disease. (The opposite direction, 'essential hypertension' with the rule 'Hypertension', must keep matching.)
+be.heyman.android.jemmapassdemo.red.Sd09DrugDiseaseMatchingTest.SD-09 UC-DDS-010 a term that is only a piece of another word is not a match: java.lang.AssertionError: The condition 'coma' matches the rule for 'Glaucoma' because the letters c-o-m-a end that word. A term must match whole words only.
+be.heyman.android.jemmapassdemo.red.Sd09DrugDiseaseMatchingTest.SD-09 UC-DDS-016 an irregular plural does not block a match: java.lang.AssertionError: 'psychoses' does not match 'psychosis' : the plural in -oses of a word in -osis must be recognised.
+be.heyman.android.jemmapassdemo.red.Sd09DrugDiseaseMatchingTest.SD-09 UC-DDS-013 usual synonyms of a condition are matched: java.lang.AssertionError: SNOMED 38341003 'Hypertensive disorder - systemic arterial' is how hypertension is coded, yet it does not match the rule 'Hypertension' : the contraindication of an anti-inflammatory drug is missed.
+be.heyman.android.jemmapassdemo.red.Sd08BloodGroupTextResultTest.SD-08 UC-RES-005 a matching blood group result typed as text keeps its date and laboratory in the document: java.lang.AssertionError: The repository kept the laboratory result of 2015-09-01 stating O+ (it agrees with the profile), but the document builder replaced it with the undated mirror of the profile : the two files of the same save disagree, and at the next read the dated proof of the blood group is
+be.heyman.android.jemmapassdemo.red.Sd02NearbyCodeIntegrityTest.SD-02 UC-SOS-012 an allergy code of 18 digits is whole or absent: java.lang.AssertionError: The rescuer received the allergy code '9110002211', which was never sent (sent : [911000221103000001, 91936005]). SNOMED extension codes go up to 18 digits and must not be cut.
+be.heyman.android.jemmapassdemo.red.Sd02NearbyCodeIntegrityTest.SD-02 UC-SOS-012 a code that holds a dot arrives as one code: java.lang.AssertionError: The victim's phone sent the codes [I48.0, E11.9] and the rescuer decoded [I48, 0, E11, 9] : a code holding a dot is split in two codes that mean something else. The rescuer must read exactly the codes that were sent. expected:<[I48.0, E11.9]> but was:<[I48, 0, E11, 9]>
+be.heyman.android.jemmapassdemo.red.Sd02NearbyCodeIntegrityTest.SD-02 UC-SOS-012 a vaccine code longer than 10 characters is never shortened: java.lang.AssertionError: The rescuer received the code '1181000221', which the victim's phone never sent (sent : [1181000221105, 1801000221105, 1119349007]). A code must be broadcast whole or left out, never cut to 10 characters.
+be.heyman.android.jemmapassdemo.red.Sd11HaruFunctionalStatusInTextQrTest.SD-11 UC-I18N-008 the functional status of Haru is in her text QR in French: java.lang.AssertionError: FR : Haru's text QR (1775 bytes) leaves out her functional status. 'Hard of hearing' and 'walks with a cane' are the first lines removed when the text is over the cap, before vaccines and laboratory results. A rescuer who scans the QR must read all 2 functional status lines
+be.heyman.android.jemmapassdemo.red.Sd11HaruFunctionalStatusInTextQrTest.SD-11 UC-HUM-023 the functional status of Haru is in her text QR in Japanese: java.lang.AssertionError: JA : Haru's text QR (1768 bytes) leaves out her functional status. 'Hard of hearing' and 'walks with a cane' are the first lines removed when the text is over the cap, before vaccines and laboratory results. A rescuer who scans the QR must read all 2 functional status lines
+be.heyman.android.jemmapassdemo.red.Sd18ExtremeDecimalTest.SD-18 UC-RES-014 very large values are exact: org.junit.ComparisonFailure: The value '1234567890123456789012345' mmol/L comes back from the FHIR document as '1234567890123456800000000'. A laboratory value must be stored as an exact decimal, without rounding and without scientific notation. expected:<1234567890123456[789012345]> but was:<1234567
+be.heyman.android.jemmapassdemo.red.Sd18ExtremeDecimalTest.SD-18 UC-RES-014 very small values are exact: org.junit.ComparisonFailure: The value '0.123456789012345678' mmol/L comes back from the FHIR document as '0.12345678901234568'. A laboratory value must be stored as an exact decimal, without rounding and without scientific notation. expected:<0.1234567890123456[7]8> but was:<0.1234567890123456[]8>
+be.heyman.android.jemmapassdemo.red.Sd10AlmostNumericResultUnitTest.SD-10 UC-RES-015 the unit of a value that is not a plain number stays in the document: java.lang.AssertionError: CRP '<0.5' mg/L comes back from the IPS document as '<0.5' with unit 'null' : the unit is lost. The unit must stay readable in the document, as a unit or next to the value.
+be.heyman.android.jemmapassdemo.red.Sd10AlmostNumericResultUnitTest.SD-10 UC-RES-015 the unit of a value that is not a plain number stays in the compact projection: java.lang.AssertionError: CRP '<0.5' mg/L is projected as v='<0.5' u='null' : the unit is lost, so the QR and the rescuer's screen show a value without unit. The unit must stay readable, in `u` or next to the value.
+be.heyman.android.jemmapassdemo.red.Sd01TriageOrderTest.SD-01 UC-SOS-021 a third phone that receives a duplicate through a relay agrees with the two others: java.lang.AssertionError: A phone that received stabilized, deceased, then both again through a relay shows STAB while a phone that received deceased then stabilized shows DCD. Receiving an event twice or in another order must not change the status. expected:<DCD> but was:<STAB>
+be.heyman.android.jemmapassdemo.red.Sd01TriageOrderTest.SD-01 UC-SOS-020 deceased and stabilized created in the same second give the same status on every phone: java.lang.AssertionError: Two rescuers acted in the same second : one phone shows DCD, the other STAB. A tie between 'deceased' and a living status must be decided the same way on every phone (the class comment promises a deterministic tie-break). expected:<DCD> but was:<STAB>
+be.heyman.android.jemmapassdemo.red.Sd01TriageOrderTest.SD-01 UC-SOS-021 two phones that receive deceased and stabilized in a different order show the same status: java.lang.AssertionError: Rescuer r2 marked the victim deceased at t=1000 and rescuer r1 marked her stabilized 1s later (not an explicit cancel). The phone that got 'deceased' first shows DCD, the phone that got 'stabilized' first shows STAB : some rescuers see a living victim as deceased and nobody
+be.heyman.android.jemmapassdemo.red.Sd14CodedValueSystemTest.SD-14 UC-RES-024 a LOINC answer code does not come back from the projection as a SNOMED code: java.lang.AssertionError: After a QR import the value 'LA6576-8' (a LOINC answer) is announced with the system 'http://snomed.info/sct' : the code does not exist in SNOMED CT, so the document is invalid for another system. Either the code system travels with the code, or the value comes back as plai
+be.heyman.android.jemmapassdemo.red.Sd04NearbyTruncationNoticeTest.SD-04 UC-SOS-011 a medication list that was cut does not look like a complete list: java.lang.AssertionError: A victim with 50 medications and a victim with 14 medications broadcast exactly the same segment : 36 medications were left out and nothing tells the rescuer. A cut list must carry a visible sign that it is incomplete (the dropped count is only written to the log today).. A
+be.heyman.android.jemmapassdemo.red.Sd04NearbyTruncationNoticeTest.SD-04 UC-SOS-011 a complete list is still received as it was sent: java.lang.AssertionError: After decoding, the cut list of 50 medications is identical to the complete list of 14 : the rescuer's phone has no way to show that medications are missing.. Actual: VictimCodes(sid=ab12, chunkIdx=3, chunkTotal=5, sectionMarker=M, codes=[B01AA01, B01AA02, B01AA03, B01AA04,
+be.heyman.android.jemmapassdemo.red.Sd07ProfileIdLayoutCollisionTest.SD-07 UC-IMP-009 an id ending in fhir is rejected because it would overwrite the document of another profile: java.lang.AssertionError: The id 'demo_haru.fhir' is accepted. Its profile would be written to 'demo_haru.fhir.json', which is the IPS document file of another profile (id + '.fhir.json', also on a case-insensitive storage) : that person's record is damaged by a simple scan, and the imported profile
+be.heyman.android.jemmapassdemo.red.Sd07ProfileIdLayoutCollisionTest.SD-07 UC-MPR-014 the id meta is rejected because the profile list ignores that file: java.lang.AssertionError: The id 'meta' is accepted. Its profile would be written to 'meta.json', a file name the profile list skips : the import answers 'saved' and the person never appears. Such an id must be rejected so that a new id is generated. expected null, but was:<meta>
+```
+## Other errors
+```
+Sd01TriageOrderTest > SD-01 UC-SOS-021 a third phone that receives a duplicate through a relay agrees with the two others FAILED
+Sd01TriageOrderTest > SD-01 UC-SOS-020 deceased and stabilized created in the same second give the same status on every phone FAILED
+Sd01TriageOrderTest > SD-01 UC-SOS-021 two phones that receive deceased and stabilized in a different order show the same status FAILED
+Sd02NearbyCodeIntegrityTest > SD-02 UC-SOS-012 an allergy code of 18 digits is whole or absent FAILED
+Sd02NearbyCodeIntegrityTest > SD-02 UC-SOS-012 a code that holds a dot arrives as one code FAILED
+Sd02NearbyCodeIntegrityTest > SD-02 UC-SOS-012 a vaccine code longer than 10 characters is never shortened FAILED
+Sd03UnexpectedIdentityValuesTest > SD-03 UC-QRF-013 an unknown telecom use still gives a document FAILED
+Sd03UnexpectedIdentityValuesTest > SD-03 UC-IMP-013 a birth date that is not ISO still gives a document FAILED
+Sd03UnexpectedIdentityValuesTest > SD-03 UC-QRF-013 an unknown telecom system still gives a document FAILED
+Sd03UnexpectedIdentityValuesTest > SD-03 UC-IMP-013 an unknown address use still gives a document FAILED
+Sd04NearbyTruncationNoticeTest > SD-04 UC-SOS-011 a medication list that was cut does not look like a complete list FAILED
+Sd04NearbyTruncationNoticeTest > SD-04 UC-SOS-011 a complete list is still received as it was sent FAILED
+Sd05NoEmptyPrimitiveTest > SD-05 UC-FHIR-014 a medication without a code has no empty code in the document FAILED
+Sd05NoEmptyPrimitiveTest > SD-05 UC-FHIR-011 an allergy without a code has no empty code in the document FAILED
+Sd05NoEmptyPrimitiveTest > SD-05 UC-QRF-008 an emergency contact with a phone only has no empty name in the document FAILED
+Sd07ProfileIdLayoutCollisionTest > SD-07 UC-IMP-009 an id ending in fhir is rejected because it would overwrite the document of another profile FAILED
+Sd07ProfileIdLayoutCollisionTest > SD-07 UC-MPR-014 the id meta is rejected because the profile list ignores that file FAILED
+Sd08BloodGroupTextResultTest > SD-08 UC-RES-005 a matching blood group result typed as text keeps its date and laboratory in the document FAILED
+Sd09DrugDiseaseMatchingTest > SD-09 UC-DDS-008 a different disease that shares a word is not a match FAILED
+Sd09DrugDiseaseMatchingTest > SD-09 UC-DDS-010 a term that is only a piece of another word is not a match FAILED
+Sd09DrugDiseaseMatchingTest > SD-09 UC-DDS-016 an irregular plural does not block a match FAILED
+Sd09DrugDiseaseMatchingTest > SD-09 UC-DDS-013 usual synonyms of a condition are matched FAILED
+Sd10AlmostNumericResultUnitTest > SD-10 UC-RES-015 the unit of a value that is not a plain number stays in the document FAILED
+Sd10AlmostNumericResultUnitTest > SD-10 UC-RES-015 the unit of a value that is not a plain number stays in the compact projection FAILED
+Sd11HaruFunctionalStatusInTextQrTest > SD-11 UC-I18N-008 the functional status of Haru is in her text QR in French FAILED
+Sd11HaruFunctionalStatusInTextQrTest > SD-11 UC-HUM-023 the functional status of Haru is in her text QR in Japanese FAILED
+Sd13ResolvedProblemImportTest > SD-13 UC-PRB-017 a problem imported as resolved is not lost either FAILED
+Sd13ResolvedProblemImportTest > SD-13 UC-IMP-017 a problem imported as resolved does not become an active problem FAILED
+Sd14CodedValueSystemTest > SD-14 UC-RES-024 a LOINC answer code does not come back from the projection as a SNOMED code FAILED
+Sd15FamilyNameOnlyDisplayNameTest > SD-15 UC-HUM-005 a blank given name does not hide the family name FAILED
+Sd15FamilyNameOnlyDisplayNameTest > SD-15 UC-HUM-005 a profile with a family name only shows that name FAILED
+Sd16MedicationStartDateTest > SD-16 UC-MED-009 the start date of a treatment is in the document FAILED
+Sd16MedicationStartDateTest > SD-16 UC-FHIR-005 the start and the end of a finished treatment are in the document FAILED
+Sd17SeriesWithoutDoseNumberTest > SD-17 UC-VAC-012 a vaccine series is kept when the dose number is unknown FAILED
+Sd18ExtremeDecimalTest > SD-18 UC-RES-014 very large values are exact FAILED
+Sd18ExtremeDecimalTest > SD-18 UC-RES-014 very small values are exact FAILED
+Sd19SeededContactsTest > SD-19 UC-QRT-005 every seeded emergency contact can be reached by phone or e-mail FAILED
+Sd19SeededContactsTest > SD-19 UC-PAT-016 every seeded emergency contact has a relation of the catalogue FAILED
+> Task :app:testDebugUnitTest FAILED
+* What went wrong:
+Execution failed for task ':app:testDebugUnitTest'.
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:testDebugUnitTest'.
+BUILD FAILED in 8m 43s
+```
+## Log tail
+```
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:64)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:41)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+
+
+BUILD FAILED in 8m 43s
+55 actionable tasks: 55 executed
+```
