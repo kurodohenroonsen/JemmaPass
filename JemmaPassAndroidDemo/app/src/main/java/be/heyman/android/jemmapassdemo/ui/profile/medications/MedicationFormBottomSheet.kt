@@ -313,7 +313,6 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
                     binding.medicationFormSubstanceDisplay.text = display
                 }
             }
-        }
     }
 
     // ─── 🆕 PHASE13 — Cross-check helpers ─────────────────────────────
@@ -663,7 +662,7 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val candidateLabel = display ?: code
+                val candidateLabel = display ?: code ?: "?"
                 val profile = loadProfileSnapshotForXchk()
                 if (profile == null) {
                     // Nothing could be compared : say so instead of saving silently.
@@ -674,7 +673,7 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
                     return@launch
                 }
                 val result = crossCheckHelper.checkNewMedicationAgainstProfile(
-                    medDisplay = pickedAtc ?: display ?: code,  // 🔧 PHASE13 BUGFIX prefer ATC (KB-resolvable), fallback display name (FTS5-resolvable), last raw code
+                    medDisplay = pickedAtc ?: display ?: code ?: "",  // 🔧 PHASE13 BUGFIX prefer ATC (KB-resolvable), fallback display name (FTS5-resolvable), last raw code
                     profile = profile,
                     lang = lang,
                 )
@@ -779,7 +778,7 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
      * alert can defer it). Sets fragment result + dismisses the BottomSheet.
      */
     private fun commitSubmit(
-        code: String,
+        code: String?,
         display: String?,
         route: String,
         doseValue: String,

@@ -148,8 +148,10 @@ object JemmaFhirBundleBuilder {
             (p?.ct ?: emptyList()).forEach { c ->
                 if (!c.n.isNullOrBlank() || !c.p.isNullOrBlank() || !c.e.isNullOrBlank()) {
                     contact.add(Patient.Contact.Builder().apply {
-                        name = HumanName.Builder().apply {
-                            text = String.Builder().apply { value = c.n ?: "" }
+                        if (!c.n.isNullOrBlank()) {
+                            name = HumanName.Builder().apply {
+                                text = String.Builder().apply { value = c.n }
+                            }
                         }
                         
                         c.p?.takeIf { it.isNotBlank() }?.let {
@@ -209,12 +211,16 @@ object JemmaFhirBundleBuilder {
                     else -> AllergyIntolerance.AllergyIntoleranceCriticality.Unable_To_Assess
                 }, null)
                 code = CodeableConcept.Builder().apply {
-                    coding.add(Coding.Builder().apply {
-                        system = Uri.Builder().apply { value = SYS_SNOMED }
-                        code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = codeStr }
-                        display = String.Builder().apply { value = displayStr }
-                    })
-                    text = String.Builder().apply { value = displayStr }
+                    if (codeStr.isNotBlank()) {
+                        coding.add(Coding.Builder().apply {
+                            system = Uri.Builder().apply { value = SYS_SNOMED }
+                            code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = codeStr }
+                            display = String.Builder().apply { value = displayStr }
+                        })
+                    }
+                    if (displayStr.isNotBlank()) {
+                        text = String.Builder().apply { value = displayStr }
+                    }
                 }
             }
             
