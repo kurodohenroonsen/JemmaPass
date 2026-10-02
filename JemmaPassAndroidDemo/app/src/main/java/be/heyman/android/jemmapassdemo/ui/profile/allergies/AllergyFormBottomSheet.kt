@@ -83,10 +83,13 @@ import be.heyman.android.jemmapassdemo.qr.JAllergy
 import be.heyman.android.jemmapassdemo.qr.JReaction
 import be.heyman.android.jemmapassdemo.ui.common.IpsCodePickerDialog
 import be.heyman.android.jemmapassdemo.ui.common.IpsPickerItem
+import be.heyman.android.jemmapassdemo.ui.profile.common.SingleShotGuard
+import be.heyman.android.jemmapassdemo.ui.profile.medications.MedicationFormLogic
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -125,6 +128,8 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
         const val ARG_REACTION_MANIF_DISPLAY = "reaction_manif_display"
         const val ARG_REACTION_MANIF_SYSTEM = "reaction_manif_system"
         const val ARG_REACTION_SEVERITY = "reaction_severity"
+        /** UC-ALG-004 — number of stored reactions the form does not show (kept on save). */
+        const val ARG_REACTION_HIDDEN_COUNT = "reaction_hidden_count"
 
         // 🔧 PHASE13 BUGFIX — Profile being edited (may differ from currentProfileId
         // which is the starred profile). Passed by AllergiesEditFragment.
@@ -139,6 +144,10 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
             existing: JAllergy? = null,
             profileId: String? = null,
         ): AllergyFormBottomSheet = AllergyFormBottomSheet().apply {
+            // UC-ALG-004 — the form edits ONE reaction : the first one with a code.
+            // The others stay in the stored entry (AllergyFormMerge) and are only counted here.
+            val storedReactions = existing?.reactions.orEmpty()
+            val shownReaction = AllergyFormMerge.displayedReaction(storedReactions)
             arguments = bundleOf(
                 ARG_MODE to mode.name,
                 ARG_INDEX to index,
@@ -154,10 +163,11 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
                 ARG_CATEGORY to existing?.category,
                 ARG_ONSET to existing?.onset,
                 ARG_CODE_SYSTEM to existing?.codeSystem,
-                ARG_REACTION_MANIF_CODE to existing?.reactions?.firstOrNull()?.manifestationCode,
-                ARG_REACTION_MANIF_DISPLAY to existing?.reactions?.firstOrNull()?.manifestationDisplay,
-                ARG_REACTION_MANIF_SYSTEM to existing?.reactions?.firstOrNull()?.manifestationSystem,
-                ARG_REACTION_SEVERITY to existing?.reactions?.firstOrNull()?.severity,
+                ARG_REACTION_MANIF_CODE to shownReaction?.manifestationCode,
+                ARG_REACTION_MANIF_DISPLAY to shownReaction?.manifestationDisplay,
+                ARG_REACTION_MANIF_SYSTEM to shownReaction?.manifestationSystem,
+                ARG_REACTION_SEVERITY to shownReaction?.severity,
+                ARG_REACTION_HIDDEN_COUNT to AllergyFormMerge.hiddenReactionCount(storedReactions),
                 // 🔧 PHASE13 BUGFIX
                 ARG_PROFILE_ID to profileId,
             )
@@ -218,6 +228,14 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
     private var pickedReactionSystem: String? = null
     /** Reaction.severity : "mild" | "moderate" | "severe" | null. */
     private var pickedReactionSeverity: String? = null
+
+    /** UC-ALG-004 — stored reactions the form does not show ; they are kept on save. */
+    private val hiddenReactionCount: Int by lazy {
+        arguments?.getInt(ARG_REACTION_HIDDEN_COUNT, 0) ?: 0
+    }
+
+    /** UC-ALG-009 — a second tap on Save while a submit is in progress is ignored. */
+    private val submitGuard = SingleShotGuard()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -502,40 +520,92 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
      */
     private fun runCrossCheckAtSubmit(display: String, proceed: () -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
-            val profile = loadProfileSnapshotForXchk()
-            if (profile == null) {
-                Log.i(TAG, "[t=${System.currentTimeMillis()}] ↪ no profile snapshot — skip xchk, commit")
-                proceed()
-                return@launch
-            }
-            val result = crossCheckHelper.checkNewAllergyAgainstMeds(
-                allergyDisplay = display,
-                allergyCode = pickedCode,
-                allergyCodeSystem = pickedCodeSystem,
-                profile = profile,
-                lang = lang,
-            )
-            if (result == null || result.isEmpty) {
-                Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 xchk clean on submit · committing")
-                proceed()
-                return@launch
-            }
-            Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk hits on submit · hits=${result.hits.size}")
-            val ctx = context ?: return@launch
-            be.heyman.android.jemmapassdemo.ui.profile.common.CrossCheckAlertDialog
-                .showForNewAllergy(
-                    context = ctx,
-                    hits = result.hits,
-                    candidateDisplay = display,
-                    onConfirm = {
-                        Log.i(TAG, "[t=${System.currentTimeMillis()}] ✓ user confirmed save anyway")
-                        proceed()
-                    },
-                    onCancel = {
-                        Log.i(TAG, "[t=${System.currentTimeMillis()}] ✗ user cancelled — stay in form")
-                    },
+            try {
+                val profile = loadProfileSnapshotForXchk()
+                if (profile == null) {
+                    Log.i(TAG, "[t=${System.currentTimeMillis()}] ↪ no profile snapshot — skip xchk, commit")
+                    proceed()
+                    return@launch
+                }
+                val result = crossCheckHelper.checkNewAllergyAgainstMeds(
+                    allergyDisplay = display,
+                    allergyCode = pickedCode,
+                    allergyCodeSystem = pickedCodeSystem,
+                    profile = profile,
+                    lang = lang,
                 )
+                // Medications without a code are skipped by the check : say so before
+                // committing instead of letting "no hit" read as "verified".
+                val uncheckedMeds = MedicationFormLogic.uncodedLabels(profile.md)
+                if (result == null || result.isEmpty) {
+                    Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 xchk clean on submit · " +
+                        "uncheckedMeds=${uncheckedMeds.size}")
+                    confirmUncheckedMedsThen(uncheckedMeds, proceed)
+                    return@launch
+                }
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk hits on submit · hits=${result.hits.size}")
+                val ctx = context
+                if (ctx == null) {
+                    releaseSubmit()
+                    return@launch
+                }
+                be.heyman.android.jemmapassdemo.ui.profile.common.CrossCheckAlertDialog
+                    .showForNewAllergy(
+                        context = ctx,
+                        hits = result.hits,
+                        candidateDisplay = display,
+                        onConfirm = {
+                            Log.i(TAG, "[t=${System.currentTimeMillis()}] ✓ user confirmed save anyway")
+                            confirmUncheckedMedsThen(uncheckedMeds, proceed)
+                        },
+                        onCancel = {
+                            Log.i(TAG, "[t=${System.currentTimeMillis()}] ✗ user cancelled — stay in form")
+                            releaseSubmit()
+                        },
+                    )
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ submit failed: ${e.message}", e)
+                releaseSubmit()
+                context?.let {
+                    Toast.makeText(it, getString(R.string.assistant_save_failed, e.message.orEmpty()),
+                        Toast.LENGTH_LONG).show()
+                }
+            }
         }
+    }
+
+    /**
+     * Shows which medications of the profile could not be checked against this allergy
+     * (no code), then [proceed] on "Save anyway". Calls [proceed] directly when there is none.
+     */
+    private fun confirmUncheckedMedsThen(uncheckedMeds: List<String>, proceed: () -> Unit) {
+        if (uncheckedMeds.isEmpty()) {
+            proceed()
+            return
+        }
+        val ctx = context
+        if (ctx == null) {
+            releaseSubmit()
+            return
+        }
+        Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk gap · ${uncheckedMeds.size} med(s) without code not checked")
+        MaterialAlertDialogBuilder(ctx)
+            .setTitle(R.string.medication_form_xchk_gap_title)
+            .setMessage(
+                getString(R.string.medication_form_xchk_gap_uncoded_meds, uncheckedMeds.joinToString(", ")),
+            )
+            .setPositiveButton(R.string.xchk_save_anyway) { _, _ -> proceed() }
+            .setNegativeButton(R.string.xchk_cancel) { _, _ -> releaseSubmit() }
+            .setOnCancelListener { releaseSubmit() }
+            .show()
+    }
+
+    /** UC-ALG-009 — the form stays open : allow a new Save. */
+    private fun releaseSubmit() {
+        submitGuard.release()
+        _binding?.allergyFormSaveBtn?.isEnabled = true
     }
 
     // ─── Toggle rendering ─────────────────────────────────────────
@@ -603,8 +673,11 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
 
     private fun openOnsetPicker() {
         Log.d(TAG, "[t=${System.currentTimeMillis()}] 📅 onset picker tap")
+        // UC-ALG-011 — setEnd only bounds the months shown : the validator is what
+        // makes the days after today unselectable.
         val constraints = CalendarConstraints.Builder()
             .setEnd(MaterialDatePicker.todayInUtcMilliseconds())
+            .setValidator(DateValidatorPointBackward.now())
             .build()
         val initialSelection = pickedOnsetIso?.let { parseIsoDateUtc(it) }
             ?: MaterialDatePicker.todayInUtcMilliseconds()
@@ -630,14 +703,17 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
 
     private fun renderReactionLabel() {
         val code = pickedReactionCode
+        // UC-ALG-004 — tell the user that other reactions exist and are kept.
+        val hiddenSuffix = if (hiddenReactionCount > 0) "  (+$hiddenReactionCount)" else ""
         if (code.isNullOrBlank()) {
             binding.allergyFormReactionCode.text = ""
-            binding.allergyFormReactionLabel.setText(R.string.allergy_form_reaction_hint)
+            binding.allergyFormReactionLabel.text =
+                getString(R.string.allergy_form_reaction_hint) + hiddenSuffix
             binding.allergyFormReactionClear.visibility = View.GONE
             binding.allergyFormReactionSeverityGroup.visibility = View.GONE
         } else {
             binding.allergyFormReactionCode.text = code
-            binding.allergyFormReactionLabel.text = pickedReactionDisplay ?: code
+            binding.allergyFormReactionLabel.text = (pickedReactionDisplay ?: code) + hiddenSuffix
             binding.allergyFormReactionClear.visibility = View.VISIBLE
             binding.allergyFormReactionSeverityGroup.visibility = View.VISIBLE
         }
@@ -725,6 +801,14 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
     // ─── Submit ───────────────────────────────────────────────────
 
     private fun trySubmit() {
+        // UC-ALG-009 — the cross-check below is asynchronous : without this guard a
+        // second tap sends a second result, i.e. a duplicate allergy.
+        if (!submitGuard.tryAcquire()) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⏳ submit already in progress — tap ignored")
+            return
+        }
+        binding.allergyFormSaveBtn.isEnabled = false
+
         val code = pickedCode?.takeIf { it.isNotBlank() }
         val display = pickedDisplay?.takeIf { it.isNotBlank() }
         val severity = pickedSeverity?.takeIf { it.isNotBlank() } ?: "U"
@@ -737,6 +821,7 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ validation: no substance picked")
             Toast.makeText(requireContext(),
                 R.string.allergy_form_validation_substance, Toast.LENGTH_SHORT).show()
+            releaseSubmit()
             return
         }
 

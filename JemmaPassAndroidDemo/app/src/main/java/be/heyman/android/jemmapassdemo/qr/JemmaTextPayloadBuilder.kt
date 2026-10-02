@@ -17,8 +17,12 @@
  *     dans le QR scanné par n'importe quel device (pas dans l'UI
  *     native Android), donc indépendants de la locale Android.
  *
- * Cap byte size : 2200 bytes (matche le JS — au-delà ça ne tient plus
- * en QR byte mode avec error correction L raisonnable).
+ * Cap byte size : [JemmaTextPayloadBuilder.MAX_BYTES] UTF-8 bytes = the
+ * single-frame capacity of the QR viewer (JemmaQrFrameSplitter.QR_MAX_SINGLE,
+ * EC = M), so the text channel is ALWAYS one QR readable by any generic
+ * scanner. Over budget, whole lines are dropped lowest-priority first and
+ * an explicit "✂️ …" marker line says the record is incomplete (never a
+ * silent cut).
  *
  * Format de sortie (exemple FR pour Haru) :
  *
@@ -38,7 +42,7 @@
  *       ▪️ Ibuprofène 400mg PRN
  *
  *     ☎️ [ CONTACTS ]
- *       ▪️ Misako Kudoro (spouse) +32 478.45.45.45
+ *       ▪️ Misako Kudoro (spouse) +32 478 45 45 45
  *
  *     ✅ JEMMA v2.6 - on-device
  */
@@ -53,8 +57,53 @@ object JemmaTextPayloadBuilder {
 
     private const val TAG = "JEMMA-CODEC"
 
-    /** Cap byte size — au-delà le QR devient illisible. Matche le JS. */
-    private const val MAX_BYTES = 2200
+    /**
+     * Hard cap of the text payload, in UTF-8 BYTES (not chars: a kanji is 3 bytes,
+     * an emoji 4). Equal to the single-frame threshold of the QR viewer so the text
+     * channel never spills into `JF:i/N|` frames, which a generic scanner cannot
+     * reassemble. 1800 bytes + ZXing's ECI/byte-mode header fits a version 35 QR at
+     * EC = M (capacity 1809 bytes).
+     */
+    const val MAX_BYTES = JemmaQrFrameSplitter.QR_MAX_SINGLE
+
+    /**
+     * Language-neutral prefix of the "record is incomplete" lines. Present in the
+     * payload if and only if something was left out to respect the byte cap.
+     */
+    const val TRUNCATION_MARK = "✂️ …"
+
+    private const val EOL = "\r\n"
+    private const val BULLET = "  ▪️ "
+
+    // Keep-ranks: when the payload is over budget, lines are removed from the
+    // section with the HIGHEST rank first (last line first), then the next one…
+    // Header, patient identity (name, birth, blood group, language), the marker
+    // and the footer are never removed.
+    private const val RANK_ALLERGIES = 1
+    private const val RANK_MEDICATIONS = 2
+    private const val RANK_CONDITIONS = 3
+    private const val RANK_CONTACTS = 4
+    private const val RANK_PATIENT_EXTRA = 5   // address, phone, e-mail, national id
+    private const val RANK_DEVICES = 6
+    private const val RANK_PAST_PROBLEMS = 7
+    private const val RANK_PROCEDURES = 8
+    private const val RANK_RESULTS = 9
+    private const val RANK_IMMUNIZATIONS = 10
+    private const val RANK_PREGNANCY = 11
+    private const val RANK_FUNCTIONAL = 12
+
+    /** One droppable group of lines. [title] == null → bare lines (patient extras). */
+    private class Part(
+        val icon: String,
+        val title: String?,
+        val rank: Int,
+        val lines: MutableList<String>,
+    ) {
+        var dropped: Int = 0
+    }
+
+    /** Size of [s] once encoded in UTF-8 — the unit of every QR budget in this app. */
+    fun utf8Size(s: String): Int = s.toByteArray(Charsets.UTF_8).size
 
     /** Langues supportées. Match les flags du HTML legacy. */
     enum class Lang(val isoCode: String, val flag: String) {
@@ -86,167 +135,174 @@ object JemmaTextPayloadBuilder {
     }
 
     /**
-     * Construit le texte de la langue [lang] à partir du profile
-     * hydraté. Cap à [MAX_BYTES] bytes UTF-8 — si dépassé, tronqué
-     * proprement par item (pas mid-line) + ajout d'un `…` indicateur.
+     * Construit le texte de la langue [lang] à partir du profile hydraté.
+     *
+     * The result is at most [maxBytes] UTF-8 bytes. When the full text does not fit,
+     * nothing is cut mid-line: whole lines are removed, least important section
+     * first (functional status, pregnancy history, immunizations, results,
+     * procedures, past illnesses, devices, patient address/phone/e-mail/id,
+     * emergency contacts, conditions, medications, allergies — identity is never
+     * removed). A partially kept section ends with "✂️ … +N" and a final
+     * "✂️ … [ INCOMPLETE RECORD ] <icons>" line (localised label, icons of the
+     * affected sections) is added before the footer.
      *
      * Pas suspending parce que toute la résolution KB est faite en
      * amont par [JemmaProfileHydrator]. Pure CPU string assembly.
      */
-    fun build(hydrated: HydratedProfile, lang: Lang): String {
+    fun build(hydrated: HydratedProfile, lang: Lang, maxBytes: Int = MAX_BYTES): String {
         val t0 = System.currentTimeMillis()
-        val sb = StringBuilder()
-
-        sb.append(JemmaTranslations.getLabel(lang, "header")).append("\r\n\r\n")
+        fun label(key: String): String = JemmaTranslations.getLabel(lang, key)
 
         // ─── Patient ──────────────────────────────────────────────
         val p = hydrated.raw.p
+        val patientCore = ArrayList<String>()
+        val patientExtra = Part("👤", null, RANK_PATIENT_EXTRA, ArrayList())
         if (p != null) {
-            sb.append("👤 [ ").append(JemmaTranslations.getLabel(lang, "patient_title")).append(" ]\r\n")
             val name = listOfNotNull(p.gn, p.fn).joinToString(" ")
             val gender = formatGender(p.gs, lang)
-            sb.append(" 🔹 ").append(name).append(if (gender.isNotEmpty()) " ($gender)" else "").append("\r\n")
-            p.bd?.takeIf { it.isNotBlank() }?.let { sb.append(" 📅 ").append(JemmaTranslations.getLabel(lang, "patient_birth")).append(": ").append(it).append("\r\n") }
-            p.bt?.takeIf { it.isNotBlank() }?.let { sb.append(" 🩸 ").append(JemmaTranslations.getLabel(lang, "patient_blood")).append(": ").append(it).append("\r\n") }
-            p.lang?.takeIf { it.isNotBlank() }?.let { sb.append(" 🗣 ").append(JemmaTranslations.getLabel(lang, "patient_lang")).append(": ").append(it).append("\r\n") }
-            p.adr?.takeIf { it.isNotBlank() }?.let { sb.append(" 📍 ").append(JemmaTranslations.getLabel(lang, "patient_addr")).append(": ").append(it).append("\r\n") }
-            p.tel?.takeIf { it.isNotBlank() }?.let { sb.append(" 📞 ").append(JemmaTranslations.getLabel(lang, "patient_phone")).append(": ").append(safePhone(it)).append("\r\n") }
-            p.eml?.takeIf { it.isNotBlank() }?.let { sb.append(" 📧 ").append(JemmaTranslations.getLabel(lang, "patient_email")).append(": ").append(it).append("\r\n") }
-            p.idn?.takeIf { it.isNotBlank() }?.let { sb.append(" 🆔 ").append(JemmaTranslations.getLabel(lang, "patient_id")).append(": ").append(it).append("\r\n") }
-            sb.append("\r\n")
+            patientCore += " 🔹 " + name + (if (gender.isNotEmpty()) " ($gender)" else "")
+            p.bd?.takeIf { it.isNotBlank() }?.let { patientCore += " 📅 " + label("patient_birth") + ": " + it }
+            p.bt?.takeIf { it.isNotBlank() }?.let { patientCore += " 🩸 " + label("patient_blood") + ": " + it }
+            p.lang?.takeIf { it.isNotBlank() }?.let { patientCore += " 🗣 " + label("patient_lang") + ": " + it }
+            p.adr?.takeIf { it.isNotBlank() }?.let { patientExtra.lines += " 📍 " + label("patient_addr") + ": " + it }
+            p.tel?.takeIf { it.isNotBlank() }?.let { patientExtra.lines += " 📞 " + label("patient_phone") + ": " + safePhone(it) }
+            p.eml?.takeIf { it.isNotBlank() }?.let { patientExtra.lines += " 📧 " + label("patient_email") + ": " + it }
+            p.idn?.takeIf { it.isNotBlank() }?.let { patientExtra.lines += " 🆔 " + label("patient_id") + ": " + it }
         }
 
-        // ─── Allergies ────────────────────────────────────────────
-        appendSection(
-            sb = sb,
-            icon = "⚠️",
-            title = JemmaTranslations.getLabel(lang, "allergies_title"),
-            items = hydrated.allergies,
-            empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { a -> formatAllergy(a) },
-        )
+        fun <T> part(icon: String, titleKey: String, rank: Int, items: List<T>, formatter: (T) -> String): Part =
+            Part(icon, label(titleKey), rank, items.mapTo(ArrayList<String>()) { BULLET + formatter(it) })
 
-        // ─── Medications ──────────────────────────────────────────
-        appendSection(
-            sb = sb,
-            icon = "💊",
-            title = JemmaTranslations.getLabel(lang, "medications_title"),
-            items = hydrated.medications,
-            empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { m -> formatMedication(m) },
-        )
+        val byDateDesc = compareByDescending<JEntryGeneric> { it.date != null }.thenByDescending { it.date ?: "" }
 
-        // ─── Conditions ───────────────────────────────────────────
-        appendSection(
-            sb = sb,
-            icon = "🩺",
-            title = JemmaTranslations.getLabel(lang, "conditions_title"),
-            items = hydrated.conditions,
-            empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { c -> c.displayLocalized.ifBlank { c.raw.c.orEmpty() } },
-        )
-
-        // ─── Immunizations (FHIR-native pillar, `_j.im` projection) ──
-        appendSection(
-            sb = sb,
-            icon = "💉",
-            title = JemmaTranslations.getLabel(lang, "immunizations_title"),
-            items = hydrated.raw.im.sortedWith(
-                compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
-                    .thenByDescending { it.date ?: "" }
-            ),
-            empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { im -> formatImmunization(im, lang) },
-        )
-
-        // ─── Procedures (FHIR-native pillar, `_j.pr` projection) ──
-        appendSection(
-            sb = sb,
-            icon = "🏥",
-            title = JemmaTranslations.getLabel(lang, "procedures_title"),
-            items = hydrated.raw.pr.sortedWith(
-                compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
-                    .thenByDescending { it.date ?: "" }
-            ),
-            empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { pr -> formatProcedure(pr, lang) },
-        )
-
-        // ─── Medical devices (FHIR-native pillar, `_j.dv` projection) ──
-        appendSection(
-            sb = sb,
-            icon = "📟",
-            title = JemmaTranslations.getLabel(lang, "devices_title"),
-            items = hydrated.raw.dv.sortedWith(
-                compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.status.isNullOrBlank() || it.status == "active" }
-                    .thenByDescending { it.date ?: "" }
-            ),
-            empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { dv -> formatDevice(dv, lang) },
-        )
-
-        // ─── Results (FHIR-native pillar, `_j.rs` projection) ──
-        appendSection(
-            sb = sb,
-            icon = "🧪",
-            title = JemmaTranslations.getLabel(lang, "results_title"),
-            items = hydrated.raw.rs.sortedWith(
-                compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
-                    .thenByDescending { it.date ?: "" }
-            ),
-            empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { rs -> formatResult(rs, lang) },
-        )
-
-        // ─── Past illnesses (FHIR-native pillar, `_j.ph` projection) ──
-        appendSection(
-            sb = sb,
-            icon = "📜",
-            title = JemmaTranslations.getLabel(lang, "past_problems_title"),
-            items = hydrated.raw.ph.sortedWith(
-                compareByDescending<be.heyman.android.jemmapassdemo.qr.JEntryGeneric> { it.date != null }
-                    .thenByDescending { it.date ?: "" }
-            ),
-            empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { ph -> formatPastProblem(ph, hydrated.pastProblemLabels) },
-        )
-
-        // ─── Pregnancy history (FHIR-native pillar, `_j.pg` projection) ──
-        appendSection(
-            sb = sb,
-            icon = "🤰",
-            title = JemmaTranslations.getLabel(lang, "pregnancy_title"),
-            items = hydrated.raw.pg.mapIndexedNotNull { i, e -> be.heyman.android.jemmapassdemo.ips.IpsPregnancyObs.fromJEntry(e, i) },
-            empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { pg -> be.heyman.android.jemmapassdemo.pillars.IpsPregnancyCatalog.format(pg, lang.isoCode) },
-        )
-
-        // ─── Functional status (FHIR-native pillar, `_j.fs` projection) ──
-        appendSection(
-            sb = sb,
-            icon = "♿",
-            title = JemmaTranslations.getLabel(lang, "functional_title"),
-            items = hydrated.raw.fs,
-            empty = JemmaTranslations.getLabel(lang, "empty"),
-            formatter = { fs ->
-                val label = fs.c?.let { hydrated.pastProblemLabels[it] } ?: fs.displayLabel?.takeIf { it.isNotBlank() } ?: fs.c.orEmpty()
-                label + (fs.date?.takeIf { it.isNotBlank() }?.let { " — $it" } ?: "") +
+        // Display order (unchanged, contacts inserted right after the clinical core).
+        val sections: List<Part> = listOf(
+            part("⚠️", "allergies_title", RANK_ALLERGIES, hydrated.allergies) { a -> formatAllergy(a) },
+            part("💊", "medications_title", RANK_MEDICATIONS, hydrated.medications) { m -> formatMedication(m) },
+            part("🩺", "conditions_title", RANK_CONDITIONS, hydrated.conditions) { c ->
+                c.displayLocalized.ifBlank { c.raw.c.orEmpty() }
+            },
+            // ─── Emergency contacts (`p.ct`) ──
+            part("☎️", "contacts_title", RANK_CONTACTS, p?.ct.orEmpty().mapNotNull { formatContact(it, lang) }) { it },
+            // ─── FHIR-native pillars (`_j.im` / `pr` / `dv` / `rs` / `ph` / `pg` / `fs` projections) ──
+            part("💉", "immunizations_title", RANK_IMMUNIZATIONS, hydrated.raw.im.sortedWith(byDateDesc)) { im ->
+                formatImmunization(im, lang)
+            },
+            part("🏥", "procedures_title", RANK_PROCEDURES, hydrated.raw.pr.sortedWith(byDateDesc)) { pr ->
+                formatProcedure(pr, lang)
+            },
+            part(
+                "📟", "devices_title", RANK_DEVICES,
+                hydrated.raw.dv.sortedWith(
+                    compareByDescending<JEntryGeneric> { it.status.isNullOrBlank() || it.status == "active" }
+                        .thenByDescending { it.date ?: "" }
+                ),
+            ) { dv -> formatDevice(dv, lang) },
+            part("🧪", "results_title", RANK_RESULTS, hydrated.raw.rs.sortedWith(byDateDesc)) { rs ->
+                formatResult(rs, lang)
+            },
+            part("📜", "past_problems_title", RANK_PAST_PROBLEMS, hydrated.raw.ph.sortedWith(byDateDesc)) { ph ->
+                formatPastProblem(ph, hydrated.pastProblemLabels)
+            },
+            part(
+                "🤰", "pregnancy_title", RANK_PREGNANCY,
+                hydrated.raw.pg.mapIndexedNotNull { i, e -> be.heyman.android.jemmapassdemo.ips.IpsPregnancyObs.fromJEntry(e, i) },
+            ) { pg -> be.heyman.android.jemmapassdemo.pillars.IpsPregnancyCatalog.format(pg, lang.isoCode) },
+            part("♿", "functional_title", RANK_FUNCTIONAL, hydrated.raw.fs) { fs ->
+                val fsLabel = fs.c?.let { hydrated.pastProblemLabels[it] } ?: fs.displayLabel?.takeIf { it.isNotBlank() } ?: fs.c.orEmpty()
+                fsLabel + (fs.date?.takeIf { it.isNotBlank() }?.let { " — $it" } ?: "") +
                     (fs.status?.takeIf { it.isNotBlank() && it != "active" }?.let { " ($it)" } ?: "")
             },
         )
+        val droppable: List<Part> = sections + patientExtra
 
-        sb.append(JemmaTranslations.getLabel(lang, "footer")).append("\r\n")
+        fun render(): String {
+            val sb = StringBuilder()
+            sb.append(label("header")).append(EOL).append(EOL)
+            if (p != null) {
+                sb.append("👤 [ ").append(label("patient_title")).append(" ]").append(EOL)
+                for (l in patientCore) sb.append(l).append(EOL)
+                for (l in patientExtra.lines) sb.append(l).append(EOL)
+                sb.append(EOL)
+            }
+            for (s in sections) {
+                if (s.lines.isEmpty()) continue  // Match le JS : skip section vide.
+                sb.append(s.icon).append(" [ ").append(s.title).append(" ]").append(EOL)
+                for (l in s.lines) sb.append(l).append(EOL)
+                if (s.dropped > 0) sb.append("  ").append(TRUNCATION_MARK).append(" +").append(s.dropped).append(EOL)
+                sb.append(EOL)
+            }
+            val cut = droppable.filter { it.dropped > 0 }
+            if (cut.isNotEmpty()) {
+                sb.append(TRUNCATION_MARK).append(" [ ").append(label("truncated")).append(" ] ")
+                    .append(cut.sortedBy { it.rank }.joinToString(" ") { it.icon })
+                    .append(EOL).append(EOL)
+            }
+            sb.append(label("footer")).append(EOL)
+            return sb.toString()
+        }
 
-        // Cap byte-size en UTF-8.
-        val full = sb.toString()
-        val capped = capBytes(full, MAX_BYTES)
+        val full = render()
+        var capped = full
+        while (utf8Size(capped) > maxBytes) {
+            val victim = droppable.filter { it.lines.isNotEmpty() }.maxByOrNull { it.rank } ?: break
+            victim.lines.removeAt(victim.lines.size - 1)
+            victim.dropped++
+            capped = render()
+        }
+        if (utf8Size(capped) > maxBytes) {
+            // Pathological: header + identity + footer alone exceed the cap (giant
+            // name, absurd maxBytes). Hard cut on a code-point boundary, still marked.
+            val tail = EOL + TRUNCATION_MARK + " [ " + label("truncated") + " ]" + EOL
+            capped = if (utf8Size(tail) <= maxBytes) {
+                cutUtf8(capped, maxBytes - utf8Size(tail)) + tail
+            } else {
+                cutUtf8(capped, maxBytes)
+            }
+        }
+
         val dt = System.currentTimeMillis() - t0
         Log.i(
             TAG,
-            "[t=${System.currentTimeMillis()}] 📝 text build $lang in ${dt}ms : ${full.length} chars" +
-                " → ${capped.length} chars (${capped.toByteArray(Charsets.UTF_8).size} bytes)",
+            "[t=${System.currentTimeMillis()}] 📝 text build $lang in ${dt}ms : ${utf8Size(full)} bytes" +
+                " → ${utf8Size(capped)} bytes (cap $maxBytes, " +
+                "${droppable.sumOf { it.dropped }} lines dropped)",
         )
         return capped
+    }
+
+    /** "Misako Kudoro (Spouse) +32 478 45 45 45" — null when the contact is entirely blank. */
+    private fun formatContact(c: JContact, lang: Lang): String? {
+        val name = c.n?.trim().orEmpty()
+        val relation = be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog
+            .getDisplay(c.r, lang.isoCode).trim()
+        // Phone printed as typed (NOT through safePhone): the responder must be able to dial it.
+        val reach = c.p?.trim()?.takeIf { it.isNotEmpty() } ?: c.e?.trim().orEmpty()
+        val line = listOfNotNull(
+            name.takeIf { it.isNotEmpty() },
+            relation.takeIf { it.isNotEmpty() }?.let { "($it)" },
+            reach.takeIf { it.isNotEmpty() },
+        ).joinToString(" ")
+        return line.takeIf { it.isNotEmpty() }
+    }
+
+    /** Longest prefix of [text] that fits in [maxBytes] UTF-8 bytes, never splitting a code point. */
+    internal fun cutUtf8(text: String, maxBytes: Int): String {
+        var bytes = 0
+        var i = 0
+        while (i < text.length) {
+            val cp = text.codePointAt(i)
+            val n = when {
+                cp < 0x80 -> 1
+                cp < 0x800 -> 2
+                cp < 0x10000 -> 3
+                else -> 4
+            }
+            if (bytes + n > maxBytes) break
+            bytes += n
+            i += Character.charCount(cp)
+        }
+        return text.substring(0, i)
     }
 
     /** "Tdap — 2022-05-17 · dose 2" from the `_j.im` projection (catalog label when known). */
@@ -314,23 +370,6 @@ object JemmaTextPayloadBuilder {
         return sb.toString()
     }
 
-    /** Append une section avec icon + items mappés via [formatter]. Skipé si liste vide. */
-    private fun <T> appendSection(
-        sb: StringBuilder,
-        icon: String,
-        title: String,
-        items: List<T>,
-        empty: String,
-        formatter: (T) -> String,
-    ) {
-        if (items.isEmpty()) return  // Match le JS : skip section vide.
-        sb.append(icon).append(" [ ").append(title).append(" ]\r\n")
-        for (it in items) {
-            sb.append("  ▪️ ").append(formatter(it)).append("\r\n")
-        }
-        sb.append("\r\n")
-    }
-
     private fun formatAllergy(a: HydratedAllergy): String {
         val name = a.displayLocalized.ifBlank { a.raw.c.orEmpty() }
         val crit = a.criticality.name  // HIGH / LOW / UNABLE-TO-ASSESS
@@ -368,39 +407,4 @@ object JemmaTextPayloadBuilder {
     private fun safePhone(phone: String): String =
         phone.replace(Regex("(\\d{2})"), "$1.")
             .trimEnd('.')
-
-    /**
-     * Cap byte UTF-8 à [max]. Tronque sur les `\r\n` les plus proches
-     * pour rester lisible. Si pas de retour à la ligne dans la marge,
-     * fallback char-truncate + `…`.
-     */
-    private fun capBytes(text: String, max: Int): String {
-        val bytes = text.toByteArray(Charsets.UTF_8)
-        if (bytes.size <= max) return text
-
-        // Truncate en cherchant le dernier `\r\n` avant la limite.
-        var truncIndex = text.length
-        var probeBytes: Int
-        do {
-            truncIndex = text.lastIndexOf("\r\n", truncIndex - 1)
-            if (truncIndex <= 0) break
-            probeBytes = text.substring(0, truncIndex).toByteArray(Charsets.UTF_8).size
-        } while (probeBytes > max)
-
-        return if (truncIndex > 0) {
-            text.substring(0, truncIndex) + "\r\n…\r\n"
-        } else {
-            // Pas de \r\n exploitable — char-truncate.
-            val sb = StringBuilder()
-            var bytesSoFar = 0
-            for (c in text) {
-                val charBytes = c.toString().toByteArray(Charsets.UTF_8).size
-                if (bytesSoFar + charBytes > max - 4) break
-                sb.append(c)
-                bytesSoFar += charBytes
-            }
-            sb.append("…")
-            sb.toString()
-        }
-    }
 }

@@ -23,9 +23,9 @@
  *   Frame 3 : "JF:3/3|<part3>"
  *
  * Le receiver concatène les `<part…>` dans l'ordre puis appelle
- * `JemmaPayloadCodec.decode(joined)`. Pour cette livraison Lot 14.1
- * on génère uniquement les frames — la reconstruction côté scan
- * viendra avec le Lot 14.x suivant.
+ * `JemmaPayloadCodec.decode(joined)` : voir [JemmaQrFrameAssembler]
+ * (ordre libre, doublons tolérés, frames manquantes détectées), câblé dans
+ * QrImportScanFragment et RescueQrScanFragment.
  *
  * Note : pour les payloads single-frame (< QR_MAX_SINGLE), on n'utilise
  * PAS de prefix `JF:1/1|` — comme le JS, on émet le payload brut pour
@@ -41,8 +41,10 @@ object JemmaQrFrameSplitter {
     private const val TAG = "JEMMA-CODEC"
 
     /**
-     * Limite "safe" par DÉFAUT pour 1 QR en byte mode, EC=M, version ≤ 22.
-     * Convient aux channels Pruned + Text.
+     * Limite "safe" par DÉFAUT pour 1 QR en byte mode, EC=M, en OCTETS UTF-8
+     * (1800 octets + en-tête ECI/byte = QR version 35 en EC=M, capacité 1809).
+     * Convient aux channels Pruned + Text. JemmaTextPayloadBuilder.MAX_BYTES
+     * est aligné dessus : le QR texte tient toujours en 1 frame.
      *
      * 🆕 Lot 14.2c — réduit de 2400 → 1800 parce que les caméras Android
      * peinent à lire un QR version 25+ en pratique (alors que WebView du

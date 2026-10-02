@@ -29,6 +29,7 @@ import be.heyman.android.jemmapassdemo.kb.HydratedAllergy
 import be.heyman.android.jemmapassdemo.kb.HydratedMedication
 import be.heyman.android.jemmapassdemo.kb.HydratedGenericEntry
 import be.heyman.android.jemmapassdemo.kb.JemmaProfileHydrator
+import be.heyman.android.jemmapassdemo.pdf.PdfPillarLayout
 import be.heyman.android.jemmapassdemo.R
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import kotlinx.coroutines.Dispatchers
@@ -524,6 +525,18 @@ object JemmaPdfExporter {
             isAntiAlias = true
         }
 
+        // Dedicated paints: never recolour normalPaint, later lines reuse it.
+        val grayPaint = Paint(normalPaint).apply { color = Color.GRAY }
+        // "+N" overflow rows (UC-PDF-002/003/004): bold so the reader sees the list is incomplete.
+        val overflowPaint = Paint(normalPaint).apply {
+            color = Color.parseColor("#B71C1C")
+            isFakeBoldText = true
+        }
+
+        // Rows shared by allergies and conditions; ordering, overflow and criticality
+        // labels are decided by PdfPillarLayout (pure, unit-tested).
+        val column1Rows = PdfPillarLayout.column1Rows(hydrated.allergies.size, hydrated.conditions.size)
+
         // --- COLUMN 1: Patient, Allergies, Conditions ---
         var y1 = 48f
 
@@ -543,16 +556,26 @@ object JemmaPdfExporter {
         canvas.drawText(allergiesLabel, xCol1, y1, boldPaint)
         y1 += 9f
         if (hydrated.allergies.isNotEmpty()) {
-            for (a in hydrated.allergies.take(3)) {
+            // Highest criticality first; what does not fit is counted, never dropped silently.
+            val allergyPlan = PdfPillarLayout.planAllergies(hydrated.allergies, column1Rows.allergyRows) {
+                it.criticality.name
+            }
+            for (a in allergyPlan.shown) {
                 val nameShort = a.displayLocalized.ifBlank { a.raw.c.orEmpty() }
                 val cleanName = if (nameShort.length > 18) nameShort.substring(0, 16) + ".." else nameShort
-                val crit = if (a.criticality.name.contains("HIGH", ignoreCase = true)) "H" else "L"
+                // Unknown criticality prints "?", never "L" (UC-PDF-005).
+                val crit = PdfPillarLayout.criticalityLabel(a.criticality.name)
                 canvas.drawText("• $cleanName ($crit)", xCol1, y1, normalPaint)
+                y1 += 8f
+            }
+            if (allergyPlan.hasOverflow) {
+                val noun = JemmaTranslations.getLabel(lang, "allergies_title").lowercase()
+                canvas.drawText("• ${PdfPillarLayout.overflowText(allergyPlan.overflowCount, noun)}", xCol1, y1, overflowPaint)
                 y1 += 8f
             }
         } else {
             val emptyStr = JemmaTranslations.getLabel(lang, "empty")
-            canvas.drawText(emptyStr, xCol1, y1, normalPaint.apply { color = Color.GRAY })
+            canvas.drawText(emptyStr, xCol1, y1, grayPaint)
             y1 += 8f
         }
         y1 += 5f
@@ -562,15 +585,21 @@ object JemmaPdfExporter {
         canvas.drawText(conditionsLabel, xCol1, y1, boldPaint)
         y1 += 9f
         if (hydrated.conditions.isNotEmpty()) {
-            for (c in hydrated.conditions.take(3)) {
+            val conditionPlan = PdfPillarLayout.plan(hydrated.conditions, column1Rows.conditionRows)
+            for (c in conditionPlan.shown) {
                 val condName = c.displayLocalized.ifBlank { c.raw.c.orEmpty() }
                 val cleanName = if (condName.length > 22) condName.substring(0, 20) + ".." else condName
                 canvas.drawText("• $cleanName", xCol1, y1, normalPaint)
                 y1 += 8f
             }
+            if (conditionPlan.hasOverflow) {
+                val noun = JemmaTranslations.getLabel(lang, "conditions_title").lowercase()
+                canvas.drawText("• ${PdfPillarLayout.overflowText(conditionPlan.overflowCount, noun)}", xCol1, y1, overflowPaint)
+                y1 += 8f
+            }
         } else {
             val emptyStr = JemmaTranslations.getLabel(lang, "empty")
-            canvas.drawText(emptyStr, xCol1, y1, normalPaint.apply { color = Color.GRAY })
+            canvas.drawText(emptyStr, xCol1, y1, grayPaint)
             y1 += 8f
         }
 
@@ -582,7 +611,8 @@ object JemmaPdfExporter {
         y2 += 9f
 
         if (hydrated.medications.isNotEmpty()) {
-            for (m in hydrated.medications.take(13)) { // Displays up to 13 medications safely!
+            val medicationPlan = PdfPillarLayout.plan(hydrated.medications, PdfPillarLayout.MEDICATION_ROWS)
+            for (m in medicationPlan.shown) {
                 val medName = m.displayLocalized.ifBlank { m.raw.c.orEmpty() }
                 val cleanName = if (medName.length > 18) medName.substring(0, 16) + ".." else medName
                 val dose = listOfNotNull(
@@ -593,17 +623,17 @@ object JemmaPdfExporter {
                 canvas.drawText(medLine, xCol2, y2, normalPaint)
                 y2 += 8f
             }
-            if (hydrated.medications.size > 13) {
-                val moreMedsStr = when (lang) {
-                    JemmaTextPayloadBuilder.Lang.FR -> "• + ${hydrated.medications.size - 13} médicaments"
-                    JemmaTextPayloadBuilder.Lang.JA -> "• + ${hydrated.medications.size - 13} 種類の薬剤"
-                    else -> "• + ${hydrated.medications.size - 13} ${JemmaTranslations.getLabel(lang, "medications_title").lowercase()}"
+            if (medicationPlan.hasOverflow) {
+                val noun = when (lang) {
+                    JemmaTextPayloadBuilder.Lang.FR -> "médicaments"
+                    JemmaTextPayloadBuilder.Lang.JA -> "種類の薬剤"
+                    else -> JemmaTranslations.getLabel(lang, "medications_title").lowercase()
                 }
-                canvas.drawText(moreMedsStr, xCol2, y2, normalPaint.apply { color = Color.GRAY })
+                canvas.drawText("• ${PdfPillarLayout.overflowText(medicationPlan.overflowCount, noun)}", xCol2, y2, overflowPaint)
             }
         } else {
             val emptyStr = JemmaTranslations.getLabel(lang, "empty")
-            canvas.drawText(emptyStr, xCol2, y2, normalPaint.apply { color = Color.GRAY })
+            canvas.drawText(emptyStr, xCol2, y2, grayPaint)
         }
 
 

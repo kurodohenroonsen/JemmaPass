@@ -27,7 +27,8 @@ object JemmaTranslations {
             "functional_title" to "FUNCTIONAL STATUS",
             "contacts_title" to "CONTACTS",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
-            "empty" to "(none)"
+            "empty" to "(none)",
+            "truncated" to "INCOMPLETE RECORD"
         ),
         Lang.FR to mapOf(
             "header" to "🏥 === JEMMA CLINICAL SUMMARY (FR) ===",
@@ -51,7 +52,8 @@ object JemmaTranslations {
             "functional_title" to "AUTONOMIE",
             "contacts_title" to "CONTACTS",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
-            "empty" to "(aucun)"
+            "empty" to "(aucun)",
+            "truncated" to "FICHE INCOMPLÈTE"
         ),
         Lang.JA to mapOf(
             "header" to "🏥 === JEMMA 臨床サマリー (JA) ===",
@@ -75,7 +77,8 @@ object JemmaTranslations {
             "functional_title" to "生活機能",
             "contacts_title" to "緊急連絡先",
             "footer" to "✅ JEMMA on-device · `_j 1.2`",
-            "empty" to "(なし)"
+            "empty" to "(なし)",
+            "truncated" to "記録は不完全です"
         ),
         Lang.ES to mapOf(
             "header" to "🏥 === JEMMA RESUMEN CLÍNICO (ES) ===",
@@ -99,7 +102,8 @@ object JemmaTranslations {
             "functional_title" to "ESTADO FUNCIONAL",
             "contacts_title" to "CONTACTOS",
             "footer" to "✅ JEMMA en el dispositivo · `_j 1.2`",
-            "empty" to "(ninguno)"
+            "empty" to "(ninguno)",
+            "truncated" to "REGISTRO INCOMPLETO"
         ),
         Lang.DE to mapOf(
             "header" to "🏥 === JEMMA KLINISCHER AUSZUG (DE) ===",
@@ -123,7 +127,8 @@ object JemmaTranslations {
             "functional_title" to "FUNKTIONSSTATUS",
             "contacts_title" to "KONTAKTE",
             "footer" to "✅ JEMMA auf dem Gerät · `_j 1.2`",
-            "empty" to "(keine)"
+            "empty" to "(keine)",
+            "truncated" to "UNVOLLSTÄNDIGER DATENSATZ"
         ),
         Lang.IT to mapOf(
             "header" to "🏥 === JEMMA QUADRO CLINICO (IT) ===",
@@ -147,7 +152,8 @@ object JemmaTranslations {
             "functional_title" to "STATO FUNZIONALE",
             "contacts_title" to "CONTATTI",
             "footer" to "✅ JEMMA sul dispositivo · `_j 1.2`",
-            "empty" to "(nessuno)"
+            "empty" to "(nessuno)",
+            "truncated" to "SCHEDA INCOMPLETA"
         ),
         Lang.PT to mapOf(
             "header" to "🏥 === RESUMO CLÍNICO JEMMA (PT) ===",
@@ -171,7 +177,8 @@ object JemmaTranslations {
             "functional_title" to "ESTADO FUNCIONAL",
             "contacts_title" to "CONTATOS",
             "footer" to "✅ JEMMA no dispositivo · `_j 1.2`",
-            "empty" to "(nenhum)"
+            "empty" to "(nenhum)",
+            "truncated" to "REGISTO INCOMPLETO"
         ),
         Lang.NL to mapOf(
             "header" to "🏥 === JEMMA MEDISCH DOSSIER (NL) ===",
@@ -195,7 +202,8 @@ object JemmaTranslations {
             "functional_title" to "FUNCTIONELE STATUS",
             "contacts_title" to "CONTACTEN",
             "footer" to "✅ JEMMA op apparaat · `_j 1.2`",
-            "empty" to "(geen)"
+            "empty" to "(geen)",
+            "truncated" to "ONVOLLEDIG DOSSIER"
         ),
         Lang.ZH to mapOf(
             "header" to "🏥 === JEMMA 临床摘要 (ZH) ===",
@@ -219,7 +227,8 @@ object JemmaTranslations {
             "functional_title" to "功能状态",
             "contacts_title" to "紧急联系人",
             "footer" to "✅ JEMMA 本地安全防护 · `_j 1.2`",
-            "empty" to "(无)"
+            "empty" to "(无)",
+            "truncated" to "记录不完整"
         ),
         Lang.KO to mapOf(
             "header" to "🏥 === JEMMA 임상 요약 (KO) ===",
@@ -243,7 +252,8 @@ object JemmaTranslations {
             "functional_title" to "기능 상태",
             "contacts_title" to "비상 연락처",
             "footer" to "✅ JEMMA 기기 자체 저장 · `_j 1.2`",
-            "empty" to "(없음)"
+            "empty" to "(없음)",
+            "truncated" to "기록이 불완전합니다"
         ),
         Lang.AR to mapOf(
             "header" to "🏥 === ملخص جيما الطبي (AR) ===",
@@ -267,7 +277,8 @@ object JemmaTranslations {
             "functional_title" to "الحالة الوظيفية",
             "contacts_title" to "جهات الطوارئ",
             "footer" to "✅ جيما على الجهاز · `_j 1.2`",
-            "empty" to "(لا يوجد)"
+            "empty" to "(لا يوجد)",
+            "truncated" to "السجل غير مكتمل"
         ),
         Lang.RU to mapOf(
             "header" to "🏥 === КЛИНИЧЕСКАЯ СВОДКА JEMMA (RU) ===",
@@ -291,7 +302,8 @@ object JemmaTranslations {
             "functional_title" to "ФУНКЦИОНАЛЬНЫЙ СТАТУС",
             "contacts_title" to "КОНТАКТЫ",
             "footer" to "✅ JEMMA на устройстве · `_j 1.2`",
-            "empty" to "(нет)"
+            "empty" to "(нет)",
+            "truncated" to "НЕПОЛНАЯ ЗАПИСЬ"
         ),
         Lang.HI to mapOf(
             "header" to "🏥 === जेम्मा नैदानिक सारांश (HI) ===",
@@ -315,7 +327,8 @@ object JemmaTranslations {
             "functional_title" to "कार्यात्मक स्थिति",
             "contacts_title" to "संपर्क",
             "footer" to "✅ जेम्मा डिवाइस पर · `_j 1.2`",
-            "empty" to "(कोई नहीं)"
+            "empty" to "(कोई नहीं)",
+            "truncated" to "अधूरा रिकॉर्ड"
         ),
         Lang.BN to mapOf(
             "header" to "🏥 === জেম্মা ক্লিনিকাল সারাংশ (BN) ===",
@@ -339,7 +352,8 @@ object JemmaTranslations {
             "functional_title" to "কার্যক্ষম অবস্থা",
             "contacts_title" to "জরুরী যোগাযোগ",
             "footer" to "✅ জেম্মা অন-ডিভাইস · `_j 1.2`",
-            "empty" to "(নেই)"
+            "empty" to "(নেই)",
+            "truncated" to "অসম্পূর্ণ রেকর্ড"
         ),
         Lang.TR to mapOf(
             "header" to "🏥 === JEMMA TIBBİ ÖZET (TR) ===",
@@ -363,7 +377,8 @@ object JemmaTranslations {
             "functional_title" to "FONKSİYONEL DURUM",
             "contacts_title" to "İLETİŞİM",
             "footer" to "✅ Cihaz üzerinde JEMMA · `_j 1.2`",
-            "empty" to "(yok)"
+            "empty" to "(yok)",
+            "truncated" to "EKSİK KAYIT"
         ),
         Lang.PL to mapOf(
             "header" to "🏥 === KARTA CLINICZNA JEMMA (PL) ===",
@@ -387,7 +402,8 @@ object JemmaTranslations {
             "functional_title" to "STAN FUNKCJONALNY",
             "contacts_title" to "KONTAKTY",
             "footer" to "✅ JEMMA na urządzeniu · `_j 1.2`",
-            "empty" to "(brak)"
+            "empty" to "(brak)",
+            "truncated" to "NIEPEŁNY ZAPIS"
         ),
         Lang.UK to mapOf(
             "header" to "🏥 === КЛІНІЧНА СВОДКА JEMMA (UK) ===",
@@ -411,7 +427,8 @@ object JemmaTranslations {
             "functional_title" to "ФУНКЦІОНАЛЬНИЙ СТАТУС",
             "contacts_title" to "КОНТАКТИ",
             "footer" to "✅ JEMMA на пристрої · `_j 1.2`",
-            "empty" to "(немає)"
+            "empty" to "(немає)",
+            "truncated" to "НЕПОВНИЙ ЗАПИС"
         ),
         Lang.VI to mapOf(
             "header" to "🏥 === TÓM TẮT Y KHOA JEMMA (VI) ===",
@@ -435,7 +452,8 @@ object JemmaTranslations {
             "functional_title" to "TÌNH TRẠNG CHỨC NĂNG",
             "contacts_title" to "LIÊN HỆ KHẨN CẤP",
             "footer" to "✅ JEMMA trên thiết bị · `_j 1.2`",
-            "empty" to "(không)"
+            "empty" to "(không)",
+            "truncated" to "HỒ SƠ KHÔNG ĐẦY ĐỦ"
         ),
         Lang.TH to mapOf(
             "header" to "🏥 === JEMMA บันทึกทางการแพทย์ (TH) ===",
@@ -459,7 +477,8 @@ object JemmaTranslations {
             "functional_title" to "สถานะการทำงาน",
             "contacts_title" to "ผู้ติดต่อฉุกเฉิน",
             "footer" to "✅ บันทึก JEMMA บนอุปกรณ์ · `_j 1.2`",
-            "empty" to "(ไม่มี)"
+            "empty" to "(ไม่มี)",
+            "truncated" to "ข้อมูลไม่ครบถ้วน"
         ),
         Lang.ID to mapOf(
             "header" to "🏥 === RINGKASAN KLINIS JEMMA (ID) ===",
@@ -483,7 +502,8 @@ object JemmaTranslations {
             "functional_title" to "STATUS FUNGSIONAL",
             "contacts_title" to "KONTAK DARURAT",
             "footer" to "✅ JEMMA di dalam perangkat · `_j 1.2`",
-            "empty" to "(tidak ada)"
+            "empty" to "(tidak ada)",
+            "truncated" to "DATA TIDAK LENGKAP"
         ),
         Lang.SV to mapOf(
             "header" to "🏥 === JEMMA MEDICINSK SAMMANFATTNING (SV) ===",
@@ -507,7 +527,8 @@ object JemmaTranslations {
             "functional_title" to "FUNKTIONSSTATUS",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheten · `_j 1.2`",
-            "empty" to "(inga)"
+            "empty" to "(inga)",
+            "truncated" to "OFULLSTÄNDIG JOURNAL"
         ),
         Lang.NO to mapOf(
             "header" to "🏥 === JEMMA MEDISINSK SAMMENDRAG (NO) ===",
@@ -531,7 +552,8 @@ object JemmaTranslations {
             "functional_title" to "FUNKSJONSSTATUS",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheten · `_j 1.2`",
-            "empty" to "(ingen)"
+            "empty" to "(ingen)",
+            "truncated" to "UFULLSTENDIG JOURNAL"
         ),
         Lang.DA to mapOf(
             "header" to "🏥 === JEMMA MEDICINSK RESUME (DA) ===",
@@ -555,7 +577,8 @@ object JemmaTranslations {
             "functional_title" to "FUNKTIONSSTATUS",
             "contacts_title" to "KONTAKTER",
             "footer" to "✅ JEMMA på enheden · `_j 1.2`",
-            "empty" to "(ingen)"
+            "empty" to "(ingen)",
+            "truncated" to "UFULDSTÆNDIG JOURNAL"
         ),
         Lang.FI to mapOf(
             "header" to "🏥 === JEMMA LÄÄKETIETEELLINEN YHTEENVETO (FI) ===",
@@ -579,7 +602,8 @@ object JemmaTranslations {
             "functional_title" to "TOIMINTAKYKY",
             "contacts_title" to "YHTEYSTIEDOT",
             "footer" to "✅ JEMMA laitteessa · `_j 1.2`",
-            "empty" to "(ei mitään)"
+            "empty" to "(ei mitään)",
+            "truncated" to "PUUTTEELLISET TIEDOT"
         ),
         Lang.RO to mapOf(
             "header" to "🏥 === FIȘĂ CLINICĂ JEMMA (RO) ===",
@@ -603,7 +627,8 @@ object JemmaTranslations {
             "functional_title" to "STARE FUNCȚIONALĂ",
             "contacts_title" to "CONTACTE DE URGENȚĂ",
             "footer" to "✅ JEMMA pe dispozitiv · `_j 1.2`",
-            "empty" to "(niciuna)"
+            "empty" to "(niciuna)",
+            "truncated" to "FIȘĂ INCOMPLETĂ"
         )
     )
 

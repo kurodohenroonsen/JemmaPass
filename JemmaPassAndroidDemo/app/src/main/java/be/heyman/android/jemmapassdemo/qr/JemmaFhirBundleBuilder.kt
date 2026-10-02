@@ -13,8 +13,11 @@
  */
 package be.heyman.android.jemmapassdemo.qr
 
+import be.heyman.android.jemmapassdemo.ips.IpsBloodGroup
+import be.heyman.android.jemmapassdemo.ips.IpsDecimal
 import be.heyman.android.jemmapassdemo.ips.IpsFhirCodec
 import be.heyman.android.jemmapassdemo.ips.IpsNativePillars
+import be.heyman.android.jemmapassdemo.ips.IpsResult
 import be.heyman.android.jemmapassdemo.kb.HydratedProfile
 import dev.ohs.fhir.model.r4.AllergyIntolerance
 import dev.ohs.fhir.model.r4.Bundle
@@ -43,7 +46,7 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.AdministrativeGender
-import com.ionspin.kotlin.bignum.decimal.toBigDecimal
+import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import java.util.Date
 import java.util.TimeZone
 import java.text.SimpleDateFormat
@@ -80,12 +83,16 @@ object JemmaFhirBundleBuilder {
         // Callers without the stored native pillars (FHIR QR channel) rebuild them from the
         // `_j` projections so the Bundle still carries every pillar.
         val raw = hydrated.raw
-        val native = if (nativeIn.isEmpty) {
+        val nativeRaw = if (nativeIn.isEmpty) {
             IpsNativePillars.fromJEntries(raw.im, raw.pr, raw.dv, raw.rs, raw.ph, raw.cn, raw.pg, raw.fs)
         } else nativeIn
 
         // URNs pour cross-référencement intra-bundle — déterministes (sid + identité).
         val sid = hydrated.raw.sid?.takeIf { it.isNotBlank() } ?: "no-sid"
+
+        // UC-FHIR-027 — the Bundle carries exactly one ABO/Rh Observation (LOINC 882-1) and it
+        // agrees with the patient pillar (`p.bt`), whatever the incoming results look like.
+        val native = nativeRaw.copy(results = reconcileBloodGroup(nativeRaw.results, sid, raw.p?.bt))
         val patientUrn = IpsFhirCodec.stableUrn("$sid|Patient")
         val compositionUrn = IpsFhirCodec.stableUrn("$sid|Composition")
         
@@ -261,7 +268,7 @@ object JemmaFhirBundleBuilder {
             })
             
             val statement = MedicationStatement.Builder(
-                Enumeration.of(MedicationStatement.MedicationStatusCodes.Active, null),
+                Enumeration.of(medicationStatus(m.raw.status), null),
                 MedicationStatement.Medication.Reference(Reference.Builder().apply {
                     reference = String.Builder().apply { value = medRefUrns[i] }
                 }.build()),
@@ -276,16 +283,14 @@ object JemmaFhirBundleBuilder {
                 
                 dosage.add(Dosage.Builder().apply {
                     text = String.Builder().apply { value = dosageText }
-                    m.route.name.takeIf { it.isNotBlank() }?.let {
-                        route = CodeableConcept.Builder().apply { text = String.Builder().apply { value = it } }
-                    }
-                    m.doseValue?.toDoubleOrNull()?.let { dv ->
+                    routeConcept(m.raw.r)?.let { route = it }
+                    parseDose(m.doseValue, m.doseUnit)?.let { (dv, du) ->
                         doseAndRate.add(Dosage.DoseAndRate.Builder().apply {
                             dose = Dosage.DoseAndRate.Dose.Quantity(Quantity.Builder().apply {
                                 value = Decimal.Builder().apply {
-                                    value = dv.toBigDecimal()
+                                    value = BigDecimal.parseString(dv)
                                 }
-                                val u = m.doseUnit?.trim().orEmpty()
+                                val u = du
                                 if (u.isNotBlank()) unit = String.Builder().apply { value = u }
                                 // Count units ("tab", "caps", "puff"…) are not UCUM codes (HL7 validator, cycle 7).
                                 if (u.isNotBlank() && u.lowercase() !in NON_UCUM_DOSE_UNITS) {
@@ -423,6 +428,93 @@ object JemmaFhirBundleBuilder {
         val dt = java.lang.System.currentTimeMillis() - t0
         android.util.Log.i(TAG, "🏥 FHIR Bundle built using SDK in ${dt}ms : ${bundle.entry.size} entries")
         return json
+    }
+
+    /**
+     * UC-FHIR-008 — `md[].ms` → MedicationStatement.status (R4 medication-statement-status).
+     * Blank = `active` (the form's default); a value outside the value set = `unknown`,
+     * never `active`: a stopped treatment must not be exported as a current one.
+     */
+    internal fun medicationStatus(raw: kotlin.String?): MedicationStatement.MedicationStatusCodes {
+        val code = raw?.trim()?.lowercase(Locale.ROOT)?.replace('_', '-')?.replace(' ', '-').orEmpty()
+        return when (code) {
+            "", "active" -> MedicationStatement.MedicationStatusCodes.Active
+            "completed" -> MedicationStatement.MedicationStatusCodes.Completed
+            "entered-in-error" -> MedicationStatement.MedicationStatusCodes.Entered_In_Error
+            "intended" -> MedicationStatement.MedicationStatusCodes.Intended
+            "stopped" -> MedicationStatement.MedicationStatusCodes.Stopped
+            "on-hold" -> MedicationStatement.MedicationStatusCodes.On_Hold
+            "not-taken" -> MedicationStatement.MedicationStatusCodes.Not_Taken
+            else -> MedicationStatement.MedicationStatusCodes.Unknown
+        }
+    }
+
+    private val DOSE_PATTERN = Regex("^([0-9]+(?:[.,][0-9]+)?)\\s*([A-Za-zµμ%][A-Za-zµμ%/.]*)?$")
+    private val AMBIGUOUS_THOUSANDS = Regex("^[1-9][0-9]{0,2},[0-9]{3}$")
+
+    /**
+     * UC-FHIR-024 — dose as typed → (decimal with a dot, unit). The comma is a decimal
+     * separator ("0,5" → "0.5"); a unit typed in the value field ("0,5 mg") is used when
+     * the unit field is empty. Null (dose kept as text only) when the value is not a plain
+     * number, or when "1,000" could mean one or one thousand.
+     */
+    internal fun parseDose(rawValue: kotlin.String?, rawUnit: kotlin.String?): Pair<kotlin.String, kotlin.String>? {
+        val match = DOSE_PATTERN.matchEntire(rawValue?.trim().orEmpty()) ?: return null
+        val number = match.groupValues[1]
+        if (AMBIGUOUS_THOUSANDS.matches(number)) return null
+        val decimal = IpsDecimal.normalize(number) ?: return null
+        val unit = rawUnit?.trim().orEmpty().ifBlank { match.groupValues[2] }
+        return decimal to unit
+    }
+
+    /**
+     * UC-FHIR-026 — `md[].r` → Dosage.route. Only an unambiguous route gets a SNOMED CT code;
+     * "I" (any injection: IV, IM…, and the value the form stores today for inhalers) and
+     * unrecognised values are text-only, so the Bundle never asserts a route it does not know.
+     * A blank route is omitted.
+     */
+    internal fun routeConcept(rawRoute: kotlin.String?): CodeableConcept.Builder? {
+        val r = rawRoute?.trim().orEmpty()
+        if (r.isEmpty()) return null
+        val key = r.uppercase(Locale.ROOT)
+        val snomed: kotlin.String?
+        val label: kotlin.String
+        when {
+            key == "O" || key == "ORAL" -> { snomed = "26643006"; label = "Oral" }
+            key == "T" || key == "TOPICAL" -> { snomed = "6064005"; label = "Topical" }
+            key == "S" || key == "SUBCUTANEOUS" -> { snomed = "34206005"; label = "Subcutaneous" }
+            key == "H" || key.startsWith("INH") -> { snomed = "447694001"; label = "Inhalation" }
+            key == "I" || key == "INJECTION" -> { snomed = null; label = "Injection" }
+            else -> { snomed = null; label = r }
+        }
+        return CodeableConcept.Builder().apply {
+            snomed?.let { c ->
+                coding.add(Coding.Builder().apply {
+                    system = Uri.Builder().apply { value = SYS_SNOMED }
+                    code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = c }
+                })
+            }
+            text = String.Builder().apply { value = label }
+        }
+    }
+
+    /**
+     * UC-FHIR-027 — `p.bt` is the patient-pillar source for the blood group. When it is a
+     * recognised ABO/Rh label, the results keep ONE 882-1 entry whose value matches it (an
+     * existing matching entry is kept as is, else the derived one is inserted first) and every
+     * other 882-1 entry — stale copy from an import, duplicate, contradiction — is dropped.
+     * When `p.bt` is absent or unreadable, no derived entry is emitted; results entered by
+     * hand are left alone.
+     */
+    internal fun reconcileBloodGroup(results: List<IpsResult>, sid: kotlin.String, bloodType: kotlin.String?): List<IpsResult> {
+        val expected = IpsBloodGroup.snomedCode(bloodType)
+            ?: return results.filterNot { IpsBloodGroup.isDerived(it) }
+        val isBloodGroup = { r: IpsResult -> r.code == IpsBloodGroup.LOINC_ABO_RH || IpsBloodGroup.isDerived(r) }
+        val keep = results.firstOrNull { isBloodGroup(it) && it.valueCode == expected }
+        if (keep != null) return results.filter { !isBloodGroup(it) || it === keep }
+        val others = results.filterNot { isBloodGroup(it) }
+        val derived = IpsBloodGroup.derivedResult(sid, bloodType) ?: return others
+        return listOf(derived) + others
     }
 
     private fun <T> sectionStub(title: kotlin.String, loinc: kotlin.String, refs: List<kotlin.String>, items: List<T>): Composition.Section.Builder? {

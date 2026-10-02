@@ -32,11 +32,15 @@
 package be.heyman.android.jemmapassdemo.ui.profile.perso
 
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.InputType
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -55,8 +59,11 @@ import be.heyman.android.jemmapassdemo.qr.JTelecom
 import be.heyman.android.jemmapassdemo.qr.JemmaProfileJ
 import be.heyman.android.jemmapassdemo.ui.assistant.AddItemWithAssistantBottomSheet
 import be.heyman.android.jemmapassdemo.ui.assistant.AssistantPhotoCaptureHelper
+import be.heyman.android.jemmapassdemo.ui.profile.common.IsoDateRules
+import be.heyman.android.jemmapassdemo.ui.profile.common.SingleShotGuard
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -121,8 +128,14 @@ class PatientEditFragment : Fragment() {
     /** The loaded profile (or fresh skeleton if creating new). */
     private var current: JemmaProfileJ? = null
 
-    /** ISO YYYY-MM-DD birthDate currently chosen — single source of truth. */
+    /**
+     * Birth date currently chosen — single source of truth. ISO YYYY-MM-DD, or a
+     * partial date (YYYY, YYYY-MM) when only the year is known (UC-PAT-005, UC-HUM-002).
+     */
     private var pickedBirthDateIso: String? = null
+
+    /** UC-PAT-007 — a second tap on Save while a save is in progress is ignored. */
+    private val saveGuard = SingleShotGuard()
 
     // 🆕 v2.6.0i — IPS-FULL pickers state
     /** Selected identifier system short-code (BE-NRN | JP-MyNumber | ...). */
@@ -514,35 +527,94 @@ class PatientEditFragment : Fragment() {
     }
 
     /**
-     * Material DatePicker → ISO YYYY-MM-DD stored in pickedBirthDateIso.
-     * FHIR Patient.birthDate is [1..1] required for IPS, so we don't allow
-     * clearing once set. To "reset" the user must pick a new date.
+     * Birth date : exact day (Material DatePicker → ISO YYYY-MM-DD) or year only
+     * (→ "YYYY", a FHIR partial date) for people who do not know the full date
+     * (UC-PAT-005, UC-HUM-002). FHIR Patient.birthDate is [1..1] required for IPS,
+     * so we don't allow clearing once set. To "reset" the user must pick a new date.
      */
     private fun wireBirthDatePicker() {
         binding.persoBirthDateRow.setOnClickListener {
-            Log.d(TAG, "[t=${System.currentTimeMillis()}] 📅 birth date picker tap")
+            Log.d(TAG, "[t=${System.currentTimeMillis()}] 📅 birth date tap")
+            val items = arrayOf(
+                getString(R.string.past_problem_form_date_mode_exact),
+                getString(R.string.past_problem_form_date_mode_year),
+            )
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.perso_birth_date_pick_title)
+                .setItems(items) { _, which ->
+                    if (which == 0) openBirthDatePicker() else openBirthYearDialog()
+                }
+                .show()
+        }
+    }
 
-            val constraints = CalendarConstraints.Builder()
-                .setEnd(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
+    private fun openBirthDatePicker() {
+        // UC-PAT-006 — setEnd only bounds the months shown : the validator is what
+        // makes the days after today unselectable.
+        val constraints = CalendarConstraints.Builder()
+            .setEnd(MaterialDatePicker.todayInUtcMilliseconds())
+            .setValidator(DateValidatorPointBackward.now())
+            .build()
 
-            val initialSelection = pickedBirthDateIso?.let { parseIsoDateUtc(it) }
-                ?: MaterialDatePicker.todayInUtcMilliseconds()
+        // A partial date ("1946") has no day to select : open on today.
+        val initialSelection = pickedBirthDateIso
+            ?.takeIf { ISO_DATE_REGEX.matches(it) }
+            ?.let { parseIsoDateUtc(it) }
+            ?: MaterialDatePicker.todayInUtcMilliseconds()
 
-            val picker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText(R.string.perso_birth_date_pick_title)
-                .setSelection(initialSelection)
-                .setCalendarConstraints(constraints)
-                .build()
+        val picker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText(R.string.perso_birth_date_pick_title)
+            .setSelection(initialSelection)
+            .setCalendarConstraints(constraints)
+            .build()
 
-            picker.addOnPositiveButtonClickListener { utcMillis ->
-                val iso = formatUtcMillisAsIso(utcMillis)
+        picker.addOnPositiveButtonClickListener { utcMillis ->
+            val iso = formatUtcMillisAsIso(utcMillis)
+            if (IsoDateRules.isFuture(iso, IsoDateRules.todayLocalIso())) {
+                Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ birth date in the future refused · $iso")
+                Toast.makeText(requireContext(),
+                    R.string.date_validation_future, Toast.LENGTH_SHORT).show()
+            } else {
                 pickedBirthDateIso = iso
-                binding.persoBirthDate.setText(iso)
+                _binding?.persoBirthDate?.setText(iso)
                 Log.i(TAG, "[t=${System.currentTimeMillis()}] 📅 birth date picked: $iso")
             }
-            picker.show(childFragmentManager, "perso_birth_date_picker")
         }
+        picker.show(childFragmentManager, "perso_birth_date_picker")
+    }
+
+    /** Year-only birth date : stored as "YYYY". */
+    private fun openBirthYearDialog() {
+        val thisYear = Calendar.getInstance().get(Calendar.YEAR)
+        val input = EditText(requireContext()).apply {
+            inputType = InputType.TYPE_CLASS_NUMBER
+            filters = arrayOf<InputFilter>(InputFilter.LengthFilter(4))
+            hint = getString(R.string.past_problem_form_year_hint)
+            setText(pickedBirthDateIso?.take(4).orEmpty())
+        }
+        val container = FrameLayout(requireContext()).apply {
+            val pad = (20 * resources.displayMetrics.density).toInt()
+            setPadding(pad, pad / 2, pad, 0)
+            addView(input)
+        }
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.perso_birth_date_pick_title)
+            .setView(container)
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                val year = input.text?.toString()?.trim()?.toIntOrNull()
+                if (year == null || year < 1900 || year > thisYear) {
+                    Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ invalid birth year '${input.text}'")
+                    Toast.makeText(requireContext(),
+                        R.string.past_problem_form_year_invalid, Toast.LENGTH_SHORT).show()
+                } else {
+                    val iso = year.toString()
+                    pickedBirthDateIso = iso
+                    _binding?.persoBirthDate?.setText(iso)
+                    Log.i(TAG, "[t=${System.currentTimeMillis()}] 📅 birth year picked: $iso")
+                }
+            }
+            .show()
     }
 
     private fun wireSaveButton() {
@@ -551,7 +623,21 @@ class PatientEditFragment : Fragment() {
         }
     }
 
+    /** UC-PAT-007 — the form stays open : allow a new Save. */
+    private fun releaseSave() {
+        saveGuard.release()
+        _binding?.persoSaveBtn?.isEnabled = true
+    }
+
     private fun saveProfile() {
+        // UC-PAT-007 / UC-A11Y-005 — the write is asynchronous : without this guard a
+        // second tap on a new profile (no sid yet) creates a second profile.
+        if (!saveGuard.tryAcquire()) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⏳ save already in progress — tap ignored")
+            return
+        }
+        binding.persoSaveBtn.isEnabled = false
+
         val given = binding.persoGivenName.text?.toString()?.trim().orEmpty()
         val family = binding.persoFamilyName.text?.toString()?.trim().orEmpty()
         val bloodType = binding.persoBloodType.text?.toString()?.trim()?.takeIf { it != "—" }
@@ -585,19 +671,31 @@ class PatientEditFragment : Fragment() {
             Toast.makeText(requireContext(),
                 R.string.perso_validation_name_required, Toast.LENGTH_SHORT).show()
             binding.persoGivenName.requestFocus()
+            releaseSave()
             return
         }
-        val birthIso = pickedBirthDateIso
-        if (birthIso == null || !ISO_DATE_REGEX.matches(birthIso)) {
+        // UC-PAT-005 / UC-HUM-002 — a partial date (YYYY, YYYY-MM) is a valid FHIR
+        // birthDate : a profile imported with "1946" must stay editable.
+        val birthIso = pickedBirthDateIso?.trim()
+        if (birthIso == null || !IsoDateRules.isIsoDateOrPartial(birthIso)) {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ validation: birthDate missing/invalid · $birthIso")
             Toast.makeText(requireContext(),
                 R.string.perso_validation_birth_required, Toast.LENGTH_SHORT).show()
+            releaseSave()
+            return
+        }
+        if (IsoDateRules.isFuture(birthIso, IsoDateRules.todayLocalIso())) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ validation: birthDate in the future · $birthIso")
+            Toast.makeText(requireContext(),
+                R.string.date_validation_future, Toast.LENGTH_SHORT).show()
+            releaseSave()
             return
         }
         if (nationality != null && !nationality.matches(Regex("^[A-Z]{2}$"))) {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ validation: nationality not ISO-3166 alpha-2 · $nationality")
             Toast.makeText(requireContext(),
                 R.string.perso_validation_nationality_format, Toast.LENGTH_SHORT).show()
+            releaseSave()
             return
         }
         // Address country : same ISO-3166 alpha-2 check if provided
@@ -605,63 +703,39 @@ class PatientEditFragment : Fragment() {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ validation: address country not ISO-3166 alpha-2 · $addrCountry")
             Toast.makeText(requireContext(),
                 R.string.perso_validation_nationality_format, Toast.LENGTH_SHORT).show()
+            releaseSave()
             return
         }
 
-        // ─── 🆕 v2.6.0i — Build IPS-FULL structured lists ─────
-
-        // Address : structured if at least one field is filled
-        val newAdrs = if (addrLine != null || addrCity != null || addrPostal != null || addrCountry != null) {
-            listOf(
-                JAddress(
-                    use = pickedAddressUse,
-                    line = addrLine,
-                    city = addrCity,
-                    postalCode = addrPostal,
-                    country = addrCountry,
-                ),
-            )
-        } else emptyList()
-
-        // Telecom : list of phone + email + ... (skip nulls)
-        val newTels = buildList {
-            phone?.let { add(JTelecom(system = "phone", value = it, use = "mobile")) }
-            email?.let { add(JTelecom(system = "email", value = it, use = "home")) }
-        }
-
-        // Identifier : single entry for v1
-        val newIds = if (idValue != null) {
-            listOf(JIdentifier(system = idSystem, value = idValue))
-        } else emptyList()
-
-        // Legacy mirror for backward compat (lecteurs anciens) : compose a flat
-        // address line from structured fields if structured filled.
-        val addressLegacy = if (newAdrs.isNotEmpty()) {
-            listOfNotNull(addrLine, addrCity, addrPostal, addrCountry).joinToString(", ")
-        } else null
-
         // ─── Build JPatient + persist ─────────────────────────────────
-        val newPatient = JPatient(
-            gn = given.takeIf { it.isNotBlank() },
-            fn = family.takeIf { it.isNotBlank() },
-            gs = gender,
-            bd = birthIso,
-            nat = nationality,
-            bt = bloodType,
-            // LEGACY simple fields — kept in sync with structured for compat
-            adr = addressLegacy,
-            tel = phone,
-            eml = email,
-            idn = idValue,
-            // 🆕 IPS-FULL structured lists
-            ids = newIds,
-            adrs = newAdrs,
-            tels = newTels,
-            gp = gp,
-            lang = languageTag,
-            // Contacts preserved from existing profile if any — edited by 1b.
-            ct = current?.p?.ct ?: emptyList(),
+        // UC-PAT-011 — the form shows one address, one phone, one email and one
+        // identifier : PatientFormMerge keeps the other entries of the stored lists
+        // (and the emergency contacts, edited by another screen).
+        val newPatient = PatientFormMerge.buildPatient(
+            existing = current?.p,
+            f = PatientFormInput(
+                givenName = given.takeIf { it.isNotBlank() },
+                familyName = family.takeIf { it.isNotBlank() },
+                gender = gender,
+                birthDate = birthIso,
+                nationality = nationality,
+                bloodType = bloodType,
+                addressUse = pickedAddressUse,
+                addressLine = addrLine,
+                addressCity = addrCity,
+                addressPostalCode = addrPostal,
+                addressCountry = addrCountry,
+                phone = phone,
+                email = email,
+                identifierSystem = idSystem,
+                identifierValue = idValue,
+                generalPractitioner = gp,
+                language = languageTag,
+            ),
         )
+        val newAdrs = newPatient.adrs
+        val newTels = newPatient.tels
+        val newIds = newPatient.ids
 
         val base = current ?: JemmaProfileJ(j = "1.2")
         val updated = base.copy(p = newPatient)
@@ -673,14 +747,27 @@ class PatientEditFragment : Fragment() {
             "isNew=${argProfileId == null} · sid=${updated.sid ?: "<new>"}")
 
         viewLifecycleOwner.lifecycleScope.launch {
-            val result = profilesRepo.saveProfile(updated, sourceFormat = "MANUAL_EDIT")
-            Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ saved · id=${result.id} · " +
-                "wasExisting=${result.alreadyExisted}")
-            Toast.makeText(requireContext(),
-                if (result.alreadyExisted) R.string.perso_saved_updated
-                else R.string.perso_saved_created,
-                Toast.LENGTH_SHORT).show()
-            findNavController().navigateUp()
+            try {
+                val result = profilesRepo.saveProfile(updated, sourceFormat = "MANUAL_EDIT")
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ saved · id=${result.id} · " +
+                    "wasExisting=${result.alreadyExisted}")
+                Toast.makeText(requireContext(),
+                    if (result.alreadyExisted) R.string.perso_saved_updated
+                    else R.string.perso_saved_created,
+                    Toast.LENGTH_SHORT).show()
+                // The guard is kept : we are leaving the screen.
+                findNavController().navigateUp()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                // saveProfile rethrows write errors : tell the user and let them retry.
+                Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ save failed: ${e.message}", e)
+                releaseSave()
+                context?.let {
+                    Toast.makeText(it, getString(R.string.assistant_save_failed, e.message.orEmpty()),
+                        Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 

@@ -113,6 +113,13 @@ class KnowledgeBaseService @Inject constructor(
         return kbManager.database()
     }
 
+    /**
+     * UC-SAFE-KB — true iff the KB can be queried right now (waits like every
+     * other query for a KB that is still validating). Safety cross-checks call
+     * this to tell "checked, nothing found" apart from "KB absent, nothing checked".
+     */
+    suspend fun isKbAvailable(): Boolean = withContext(Dispatchers.IO) { awaitDb() != null }
+
     // ══════════════════════════════════════════════════════════════════════
     // resolveDrug — by name or code
     // ══════════════════════════════════════════════════════════════════════
@@ -451,8 +458,9 @@ class KnowledgeBaseService @Inject constructor(
      * (or codes) rather than ATC codes. Resolves both inputs via
      * [resolveDrug] then delegates to [queryDDIByAtc].
      *
-     * If either input fails to resolve to an ATC code, returns
-     * [DDIResult.None] with the original input strings as resolved labels.
+     * If either input fails to resolve to an ATC code (unknown drug, or KB
+     * unavailable), returns [DDIResult.Error] : the pair was NOT checked, so it
+     * must not be reported as "no interaction" (UC-SAFE-KB).
      *
      * Example :
      * ```
@@ -495,11 +503,12 @@ class KnowledgeBaseService @Inject constructor(
                     TAG,
                     "[t=${System.currentTimeMillis()}] 🩹 queryDDI('$drugA','$drugB') → no ATC resolved (a=$atcA · b=$atcB)"
                 )
-                return@withContext DDIResult.None(
-                    drugAResolved = drugA,
-                    drugBResolved = drugB,
-                    queryDurationMs = System.currentTimeMillis() - tStart,
-                )
+                val reason = if (awaitDb() == null) {
+                    "KB not ready"
+                } else {
+                    KbSafety.REASON_DRUG_NOT_RESOLVED + ": " + (if (atcA == null) drugA else drugB)
+                }
+                return@withContext DDIResult.Error(reason, System.currentTimeMillis() - tStart)
             }
 
             // Delegate to ATC-based lookup.

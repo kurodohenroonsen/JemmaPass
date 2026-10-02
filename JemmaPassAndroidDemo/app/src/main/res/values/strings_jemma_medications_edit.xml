@@ -50,6 +50,12 @@
     <string name="medication_form_validation_substance">Pick a medication first</string>
     <string name="medication_form_validation_dose">Invalid dose (must be a positive number)</string>
 
+    <!-- Safety cross-check could not verify everything (also shown by the allergy form) -->
+    <string name="medication_form_xchk_gap_title">⚠ Safety check incomplete</string>
+    <string name="medication_form_xchk_gap_not_run">The safety check (allergies, interactions, conditions) could not run. Nothing was verified for this medication.</string>
+    <string name="medication_form_xchk_gap_unresolved">“%1$s” was not recognised by the knowledge base: no safety check (allergies, interactions, conditions) was done for it.</string>
+    <string name="medication_form_xchk_gap_uncoded_meds">These medications have no code and were NOT included in the safety check: %1$s</string>
+
     <!-- ─── KB drug picker dialog ──────────────────── -->
     <string name="drug_picker_search_hint">🔎 Search for a medication (EN, FR, ATC…)</string>
     <string name="drug_picker_status_hint">Type at least 2 characters to search</string>

@@ -48,6 +48,12 @@
     <string name="medication_form_validation_substance">请先选择一种药物</string>
     <string name="medication_form_validation_dose">剂量无效（须为正数）</string>
 
+    <!-- Safety cross-check could not verify everything (also shown by the allergy form) -->
+    <string name="medication_form_xchk_gap_title">⚠ 安全检查不完整</string>
+    <string name="medication_form_xchk_gap_not_run">安全检查（过敏、相互作用、疾病）未能运行。此药物未经任何核查。</string>
+    <string name="medication_form_xchk_gap_unresolved">知识库无法识别“%1$s”：未对其进行安全检查（过敏、相互作用、疾病）。</string>
+    <string name="medication_form_xchk_gap_uncoded_meds">以下药物没有编码，未纳入安全检查：%1$s</string>
+
     <!-- ─── KB drug picker dialog ─── -->
     <string name="drug_picker_search_hint">🔎 搜索药物（中文、英文、ATC…）</string>
     <string name="drug_picker_status_hint">至少输入 2 个字符进行搜索</string>

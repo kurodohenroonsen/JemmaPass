@@ -50,6 +50,12 @@
     <string name="medication_form_validation_substance">Kies eerst een medicijn</string>
     <string name="medication_form_validation_dose">Ongeldige dosis (moet een positief getal zijn)</string>
 
+    <!-- Safety cross-check could not verify everything (also shown by the allergy form) -->
+    <string name="medication_form_xchk_gap_title">⚠ Veiligheidscontrole onvolledig</string>
+    <string name="medication_form_xchk_gap_not_run">De veiligheidscontrole (allergieën, interacties, aandoeningen) kon niet worden uitgevoerd. Voor dit geneesmiddel is niets gecontroleerd.</string>
+    <string name="medication_form_xchk_gap_unresolved">“%1$s” wordt niet herkend door de kennisbank: er is geen veiligheidscontrole (allergieën, interacties, aandoeningen) voor uitgevoerd.</string>
+    <string name="medication_form_xchk_gap_uncoded_meds">Deze geneesmiddelen hebben geen code en zijn NIET meegenomen in de veiligheidscontrole: %1$s</string>
+
     <!-- ─── KB drug picker dialog ─── -->
     <string name="drug_picker_search_hint">🔎 Zoek een medicijn (NL, EN, ATC…)</string>
     <string name="drug_picker_status_hint">Typ minstens 2 tekens om te zoeken</string>

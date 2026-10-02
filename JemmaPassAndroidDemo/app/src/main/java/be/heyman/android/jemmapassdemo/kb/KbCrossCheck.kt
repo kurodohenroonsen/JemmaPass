@@ -100,7 +100,9 @@ data class DrugDiseaseHit(
 /**
  * Result bundle for "candidate drug vs whole profile" — what the killer
  * demo step-by-step UI consumes. Empty lists mean "no collision found
- * for this pillar" (the UI should display a green check for each).
+ * for this pillar" ONLY when the matching [checks] status is CHECKED : the UI
+ * must read [verdict] / [isClean] (never `totalHits == 0` alone) before
+ * displaying a green check (UC-SAFE-KB).
  */
 data class CrossCheckResult(
     val candidateAtc: String,
@@ -109,7 +111,28 @@ data class CrossCheckResult(
     val ddiHits: List<DdiHit>,
     val drugDiseaseHits: List<DrugDiseaseHit>,
     val totalDurationMs: Long,
+    /** Per-pillar "did it really run" status. KB absent / query failed ≠ clean. */
+    val checks: KbCheckReport = KbCheckReport(),
 ) {
+    /** False when the candidate name could not be mapped to a KB drug : nothing was checked. */
+    val candidateResolved: Boolean
+        get() = candidateAtc.isNotEmpty()
+
+    /** False when the KB could not be queried (absent, not downloaded, failed to open). */
+    val kbAvailable: Boolean
+        get() = checks.kbAvailable
+
+    /** True only when the candidate was resolved and all three pillars were verified. */
+    val checked: Boolean
+        get() = candidateResolved && checks.fullyChecked
+
+    val verdict: KbSafetyVerdict
+        get() = when {
+            totalHits > 0 -> KbSafetyVerdict.ALERT
+            !candidateResolved -> KbSafetyVerdict.NOT_CHECKED
+            else -> KbSafety.verdict(checks.overall, totalHits)
+        }
+
     val hasMajor: Boolean
         get() = allergyHits.any { it.criticality == AllergyCriticality.HIGH } ||
             ddiHits.any { it.severity == CrossSeverity.MAJOR } ||
@@ -118,8 +141,9 @@ data class CrossCheckResult(
     val totalHits: Int
         get() = allergyHits.size + ddiHits.size + drugDiseaseHits.size
 
+    /** "Checked and nothing found". Never true when the check did not (fully) run. */
     val isClean: Boolean
-        get() = totalHits == 0
+        get() = totalHits == 0 && checked
 }
 
 /**
@@ -163,9 +187,32 @@ class KbCrossCheck @Inject constructor(
         candidateAllAtcs: List<String>,
         candidateDisplay: String,
         lang: String = "en",
-    ): List<AllergyHit> {
-        if (allergies.isEmpty() || candidateAtc.isBlank()) return emptyList()
+    ): List<AllergyHit> =
+        checkAllergiesWithStatus(allergies, candidateAtc, candidateAllAtcs, candidateDisplay, lang).hits
+
+    /**
+     * Same as [checkOneAtcAgainstAllergies] but also says whether the KB could be
+     * consulted. Without the KB only the keyword / name heuristics run : hits are
+     * still reported, but an empty list is then NOT a clean result.
+     *
+     * @param kbAvailable pass the result of [KnowledgeBaseService.isKbAvailable]
+     *                    when already known, to avoid probing again
+     */
+    suspend fun checkAllergiesWithStatus(
+        allergies: List<JAllergy>,
+        candidateAtc: String,
+        candidateAllAtcs: List<String>,
+        candidateDisplay: String,
+        lang: String = "en",
+        kbAvailable: Boolean? = null,
+    ): PillarCheck<AllergyHit> {
+        if (allergies.isEmpty()) return PillarCheck(emptyList(), KbCheckStatus.CHECKED)
+        if (candidateAtc.isBlank()) return PillarCheck(emptyList(), KbCheckStatus.INCOMPLETE)
         val tStart = System.currentTimeMillis()
+        val kbUp = kbAvailable ?: kb.isKbAvailable()
+        if (!kbUp) {
+            Log.w(TAG, "[t=$tStart] ⚠️ allergy check WITHOUT KB · candidate=$candidateAtc — heuristics only")
+        }
 
         // Build the candidate's ATC set (primary + all variants).
         val candidateAtcSet = buildSet {
@@ -184,7 +231,9 @@ class KbCrossCheck @Inject constructor(
             // Resolve allergy code → KbConcept so we know its ATC (if any).
             // Prefer the code path ; if missing, fall back to the
             // denormalized display label or mechanism free text.
-            val allergyConcept: KbConcept? = if (allergyCode.isNotEmpty()) {
+            val allergyConcept: KbConcept? = if (!kbUp) {
+                null
+            } else if (allergyCode.isNotEmpty()) {
                 resolveCodeBestEffort(allergyCode)
                     ?: kb.resolveAllergy(allergy.displayLabel ?: allergy.m ?: "").concept
             } else {
@@ -297,7 +346,7 @@ class KbCrossCheck @Inject constructor(
             // Si l'allergyAtc est null (KB n'a pas pu résoudre le SNOMED en
             // ATC), on skip cette étape — l'étape 2 (ATC ancestors walk) sera
             // de toute façon skippée aussi pour les mêmes raisons.
-            if (allergenAtcL3 != null) {
+            if (allergenAtcL3 != null && kbUp) {
                 val crossClasses = kb.getAllergyAvoidClasses(kbManager, allergenAtcL3)
                 if (crossClasses.isNotEmpty()) {
                     var matchedXReact: String? = null
@@ -331,7 +380,8 @@ class KbCrossCheck @Inject constructor(
 
             // 2. ATC class match — walk allergy's ATC ancestors.
             if (allergyAtc != null) {
-                val ancestors = kb.getAtcAncestors(allergyAtc).map { it.atcCode.uppercase() }.toSet()
+                val ancestors = (if (kbUp) kb.getAtcAncestors(allergyAtc) else emptyList())
+                    .map { it.atcCode.uppercase() }.toSet()
                 var matchedClass: String? = null
                 for (ancestor in ancestors) {
                     if (candidateAtcSet.contains(ancestor)) {
@@ -363,9 +413,9 @@ class KbCrossCheck @Inject constructor(
         }
 
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🩹 checkOneAtcAgainstAllergies " +
-            "candidate=$candidateAtc · allergies=${allergies.size} · hits=${out.size} · " +
+            "candidate=$candidateAtc · allergies=${allergies.size} · hits=${out.size} · kb=$kbUp · " +
             "took=${System.currentTimeMillis() - tStart}ms")
-        return out
+        return PillarCheck(out, KbSafety.pillarStatus(kbUp, allergies.size))
     }
 
     /**
@@ -393,9 +443,32 @@ class KbCrossCheck @Inject constructor(
         candidateDisplay: String,
         includeMinor: Boolean = false,
         lang: String = "en",
-    ): List<DdiHit> {
-        if (meds.isEmpty() || candidateAtc.isBlank()) return emptyList()
+    ): List<DdiHit> =
+        checkMedicationsWithStatus(meds, candidateAtc, candidateAllAtcs, candidateDisplay, includeMinor, lang).hits
+
+    /**
+     * Same as [checkOneAtcAgainstMedications] but also says whether every profile
+     * medication was really looked up : KB unavailable → KB_UNAVAILABLE, a
+     * medication unknown to the KB or a failed query → INCOMPLETE.
+     */
+    suspend fun checkMedicationsWithStatus(
+        meds: List<JMedication>,
+        candidateAtc: String,
+        candidateAllAtcs: List<String>,
+        candidateDisplay: String,
+        includeMinor: Boolean = false,
+        lang: String = "en",
+        kbAvailable: Boolean? = null,
+    ): PillarCheck<DdiHit> {
+        if (meds.isEmpty()) return PillarCheck(emptyList(), KbCheckStatus.CHECKED)
+        if (candidateAtc.isBlank()) return PillarCheck(emptyList(), KbCheckStatus.INCOMPLETE)
         val tStart = System.currentTimeMillis()
+        val kbUp = kbAvailable ?: kb.isKbAvailable()
+        if (!kbUp) {
+            Log.w(TAG, "[t=$tStart] ⚠️ DDI check NOT RUN · KB unavailable · candidate=$candidateAtc")
+            return PillarCheck(emptyList(), KbCheckStatus.KB_UNAVAILABLE)
+        }
+        var unverified = 0
 
         val candidateAtcSet = buildSet {
             add(candidateAtc.uppercase())
@@ -406,23 +479,30 @@ class KbCrossCheck @Inject constructor(
 
         for (med in meds) {
             val medCode = med.c?.trim().orEmpty()
-            if (medCode.isEmpty()) continue
 
-            // Resolve med → concept to get its display + all ATC codes.
-            val medConcept = resolveCodeBestEffort(medCode)
+            // Resolve med → concept to get its display + all ATC codes. A med
+            // the KB does not know cannot be checked : count it, never skip silently.
+            val medConcept = (if (medCode.isNotEmpty()) resolveCodeBestEffort(medCode) else null)
                 ?: kb.resolveDrug(med.displayLabel ?: "").concept
-                ?: continue
+            if (medConcept == null) {
+                unverified++
+                continue
+            }
 
             val medDisplay = kb.pickLocalizedDisplay(medConcept, lang)
             val medAtcSet = buildSet {
                 medConcept.atcCode?.uppercase()?.let { add(it) }
                 addAll(medConcept.allAtcCodes.map { it.uppercase() })
             }
-            if (medAtcSet.isEmpty()) continue
+            if (medAtcSet.isEmpty()) {
+                unverified++
+                continue
+            }
 
             // Cross all candidate ATCs × all med ATCs ; report the most
             // severe hit (MAJOR > MODERATE > MINOR > UNKNOWN > NONE).
             var bestHit: DdiHit? = null
+            var queryFailed = false
             for (medAtc in medAtcSet) {
                 for (candAtc in candidateAtcSet) {
                     val result = if (includeMinor) {
@@ -430,6 +510,7 @@ class KbCrossCheck @Inject constructor(
                     } else {
                         kb.queryDDIByAtc(medAtc, candAtc)
                     }
+                    if (result is DDIResult.Error) queryFailed = true
                     if (result is DDIResult.Found) {
                         val sev = mapSeverity(result.severity)
                         val candidateBest = DdiHit(
@@ -451,12 +532,13 @@ class KbCrossCheck @Inject constructor(
                 }
             }
             bestHit?.let { out.add(it) }
+            if (bestHit == null && queryFailed) unverified++
         }
 
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 💊 checkOneAtcAgainstMedications " +
-            "candidate=$candidateAtc · meds=${meds.size} · hits=${out.size} · " +
+            "candidate=$candidateAtc · meds=${meds.size} · hits=${out.size} · unverified=$unverified · " +
             "took=${System.currentTimeMillis() - tStart}ms")
-        return out
+        return PillarCheck(out, KbSafety.pillarStatus(true, meds.size, unverified))
     }
 
     /**
@@ -476,9 +558,29 @@ class KbCrossCheck @Inject constructor(
         candidateAtc: String,
         candidateDisplay: String,
         lang: String = "en",
-    ): List<DrugDiseaseHit> {
-        if (conditions.isEmpty() || candidateAtc.isBlank()) return emptyList()
+    ): List<DrugDiseaseHit> =
+        checkConditionsWithStatus(conditions, candidateAtc, candidateDisplay, lang).hits
+
+    /**
+     * Same as [checkOneAtcAgainstConditions] but also says whether every profile
+     * condition was really looked up (KB unavailable / failed query ≠ clean).
+     */
+    suspend fun checkConditionsWithStatus(
+        conditions: List<JCondition>,
+        candidateAtc: String,
+        candidateDisplay: String,
+        lang: String = "en",
+        kbAvailable: Boolean? = null,
+    ): PillarCheck<DrugDiseaseHit> {
+        if (conditions.isEmpty()) return PillarCheck(emptyList(), KbCheckStatus.CHECKED)
+        if (candidateAtc.isBlank()) return PillarCheck(emptyList(), KbCheckStatus.INCOMPLETE)
         val tStart = System.currentTimeMillis()
+        val kbUp = kbAvailable ?: kb.isKbAvailable()
+        if (!kbUp) {
+            Log.w(TAG, "[t=$tStart] ⚠️ drug×disease check NOT RUN · KB unavailable · candidate=$candidateAtc")
+            return PillarCheck(emptyList(), KbCheckStatus.KB_UNAVAILABLE)
+        }
+        var unverified = 0
 
         val out = mutableListOf<DrugDiseaseHit>()
 
@@ -498,6 +600,7 @@ class KbCrossCheck @Inject constructor(
             val concept = condCode?.takeIf { it.isNotEmpty() }?.let { resolveCodeBestEffort(it) }
             val terms = DrugDiseaseTerms.candidates(condition.displayLabel, concept?.primaryDisplay, condDisplay)
             val result = kb.queryDrugDiseaseTerms(candidateAtc, terms)
+            if (result is DrugDiseaseResult.Error) unverified++
             if (result is DrugDiseaseResult.Found) {
                 out.add(
                     DrugDiseaseHit(
@@ -515,9 +618,9 @@ class KbCrossCheck @Inject constructor(
         }
 
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🦠 checkOneAtcAgainstConditions " +
-            "candidate=$candidateAtc · conditions=${conditions.size} · hits=${out.size} · " +
+            "candidate=$candidateAtc · conditions=${conditions.size} · hits=${out.size} · unverified=$unverified · " +
             "took=${System.currentTimeMillis() - tStart}ms")
-        return out
+        return PillarCheck(out, KbSafety.pillarStatus(true, conditions.size, unverified))
     }
 
     /**
@@ -529,6 +632,10 @@ class KbCrossCheck @Inject constructor(
      * If the candidate name can't be resolved to an ATC, returns an
      * empty result with [CrossCheckResult.candidateAtc] = "" — the UI
      * should show "drug not in KB" instead of "no collision".
+     *
+     * If the KB is unavailable, returns an empty result whose
+     * [CrossCheckResult.checks] are all KB_UNAVAILABLE ([CrossCheckResult.kbAvailable]
+     * = false) — the UI must show "not verified", never "no collision".
      *
      * @param candidateName free-text drug name (INN, brand, ATC, RxNorm…)
      * @param allergies profile allergies
@@ -547,6 +654,21 @@ class KbCrossCheck @Inject constructor(
         Log.i(TAG, "[t=$tStart] 🔎 checkOneDrugAgainstProfile · candidate='$candidateName' · " +
             "al=${allergies.size} md=${meds.size} cn=${conditions.size}")
 
+        // UC-SAFE-KB — no KB, no check : say so instead of returning a clean bundle.
+        val kbUp = kb.isKbAvailable()
+        if (!kbUp) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ KB unavailable — '$candidateName' NOT checked")
+            return CrossCheckResult(
+                candidateAtc = "",
+                candidateDisplay = candidateName,
+                allergyHits = emptyList(),
+                ddiHits = emptyList(),
+                drugDiseaseHits = emptyList(),
+                totalDurationMs = System.currentTimeMillis() - tStart,
+                checks = KbCheckReport.all(KbCheckStatus.KB_UNAVAILABLE),
+            )
+        }
+
         // Resolve candidate name → concept (ATC + display).
         val resolved = kb.resolveDrug(candidateName).concept
         val candidateAtc = resolved?.atcCode
@@ -559,20 +681,31 @@ class KbCrossCheck @Inject constructor(
                 ddiHits = emptyList(),
                 drugDiseaseHits = emptyList(),
                 totalDurationMs = System.currentTimeMillis() - tStart,
+                checks = KbCheckReport.all(KbCheckStatus.INCOMPLETE),
             )
         }
 
         val candidateAllAtcs = resolved.allAtcCodes
         val candidateDisplay = kb.pickLocalizedDisplay(resolved, lang)
 
-        val allergyHits = checkOneAtcAgainstAllergies(allergies, candidateAtc, candidateAllAtcs, candidateDisplay, lang)
-        val ddiHits = checkOneAtcAgainstMedications(meds, candidateAtc, candidateAllAtcs, candidateDisplay, lang = lang)
-        val drugDiseaseHits = checkOneAtcAgainstConditions(conditions, candidateAtc, candidateDisplay, lang)
+        val allergyCheck = checkAllergiesWithStatus(
+            allergies, candidateAtc, candidateAllAtcs, candidateDisplay, lang, kbAvailable = kbUp,
+        )
+        val ddiCheck = checkMedicationsWithStatus(
+            meds, candidateAtc, candidateAllAtcs, candidateDisplay, lang = lang, kbAvailable = kbUp,
+        )
+        val diseaseCheck = checkConditionsWithStatus(
+            conditions, candidateAtc, candidateDisplay, lang, kbAvailable = kbUp,
+        )
+        val allergyHits = allergyCheck.hits
+        val ddiHits = ddiCheck.hits
+        val drugDiseaseHits = diseaseCheck.hits
+        val checks = KbCheckReport(allergyCheck.status, ddiCheck.status, diseaseCheck.status)
 
         val total = System.currentTimeMillis() - tStart
         Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ checkOneDrugAgainstProfile DONE · " +
             "candidate=$candidateAtc ($candidateDisplay) · " +
-            "🩹${allergyHits.size} 💊${ddiHits.size} 🦠${drugDiseaseHits.size} · took=${total}ms")
+            "🩹${allergyHits.size} 💊${ddiHits.size} 🦠${drugDiseaseHits.size} · checks=$checks · took=${total}ms")
 
         return CrossCheckResult(
             candidateAtc = candidateAtc,
@@ -581,6 +714,7 @@ class KbCrossCheck @Inject constructor(
             ddiHits = ddiHits,
             drugDiseaseHits = drugDiseaseHits,
             totalDurationMs = total,
+            checks = checks,
         )
     }
 

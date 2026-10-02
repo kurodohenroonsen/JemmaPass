@@ -237,7 +237,7 @@ Preuve : décoder le QR de chaque capture (`python3 -c "import cv2;print(cv2.QRC
 Attendu : une section `💉 [ IMMUNIZATIONS ]` (EN) / `💉 [ VACCINATIONS ]` (FR) /
 `💉 [ 予防接種 ]` (JA), 4 lignes **triées par date décroissante**
 (`… — 2023-01-20 · #2` en premier), libellés localisés. Note si la section est tronquée
-par le plafond 2200 octets.
+par le plafond 1800 octets.
 
 ### T6 — Onglet FHIR + validateur (bonus, si réseau)
 
@@ -423,7 +423,7 @@ OpenCV comme en T5. Attendu : après `💉 [ IMMUNIZATIONS ]`, une section
 `🏥 [ PROCEDURES ]` / `🏥 [ INTERVENTIONS ]` / `🏥 [ 処置・手術歴 ]` (2 lignes, 2015 avant
 1975) puis `📟 [ MEDICAL DEVICES ]` / `📟 [ DISPOSITIFS MÉDICAUX ]` / `📟 [ 医療機器 ]`
 (2 lignes, libellés du catalogue localisés : « Stimulateur cardiaque (pacemaker) », « 心臓ペースメーカー »).
-Note si la section est tronquée par le plafond 2200 octets (Haru a maintenant 3 + 2 + 2 entrées natives).
+Note si la section est tronquée par le plafond 1800 octets (Haru a maintenant 3 + 2 + 2 entrées natives).
 
 Non-régression courte : T1 (section 💉 Kurodo à 4), T4 (édition allergie → `verify` complet
 PASS avec `--expect demo_kurodo=4 --expect-pr demo_kurodo=2`), T7 (Kamekichi : ni 💉 ni 🏥

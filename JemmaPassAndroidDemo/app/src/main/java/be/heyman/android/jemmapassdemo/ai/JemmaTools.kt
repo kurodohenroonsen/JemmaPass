@@ -96,7 +96,10 @@ import be.heyman.android.jemmapassdemo.kb.CrossSeverity
 import be.heyman.android.jemmapassdemo.kb.DDIResult
 import be.heyman.android.jemmapassdemo.kb.DdiHit
 import be.heyman.android.jemmapassdemo.kb.DrugDiseaseHit
+import be.heyman.android.jemmapassdemo.kb.KbCheckReport
+import be.heyman.android.jemmapassdemo.kb.KbCheckStatus
 import be.heyman.android.jemmapassdemo.kb.KbCrossCheck
+import be.heyman.android.jemmapassdemo.kb.KbSafety
 import be.heyman.android.jemmapassdemo.kb.KbSearchResult
 import be.heyman.android.jemmapassdemo.kb.KnowledgeBaseService
 import be.heyman.android.jemmapassdemo.kb.ResolvedConcept
@@ -632,17 +635,25 @@ class JemmaTools @Inject constructor(
         val allAtcs = resolved?.allAtcCodes ?: listOf(atc)
         val resolvedDisplay = resolved?.let { kb.pickLocalizedDisplay(it, lang) } ?: display
 
-        val allergyHits = xcheck.checkOneAtcAgainstAllergies(p.al, atc, allAtcs, resolvedDisplay, lang)
-        val ddiHits = xcheck.checkOneAtcAgainstMedications(p.md, atc, allAtcs, resolvedDisplay, lang = lang)
-        val drugDiseaseHits = xcheck.checkOneAtcAgainstConditions(p.cn, atc, resolvedDisplay, lang)
+        // UC-SAFE-KB : each pillar reports whether it really ran (KB absent ≠ clean).
+        val kbUp = kb.isKbAvailable()
+        val allergyCheck = xcheck.checkAllergiesWithStatus(p.al, atc, allAtcs, resolvedDisplay, lang, kbAvailable = kbUp)
+        val ddiCheck = xcheck.checkMedicationsWithStatus(p.md, atc, allAtcs, resolvedDisplay, lang = lang, kbAvailable = kbUp)
+        val diseaseCheck = xcheck.checkConditionsWithStatus(p.cn, atc, resolvedDisplay, lang, kbAvailable = kbUp)
 
         val bundle = CrossCheckResult(
             candidateAtc = atc,
             candidateDisplay = resolvedDisplay,
-            allergyHits = allergyHits,
-            ddiHits = ddiHits,
-            drugDiseaseHits = drugDiseaseHits,
+            allergyHits = allergyCheck.hits,
+            ddiHits = ddiCheck.hits,
+            drugDiseaseHits = diseaseCheck.hits,
             totalDurationMs = System.currentTimeMillis() - tStart,
+            // No KB at all : nothing was verified, whatever the profile holds.
+            checks = if (kbUp) {
+                KbCheckReport(allergyCheck.status, ddiCheck.status, diseaseCheck.status)
+            } else {
+                KbCheckReport.all(KbCheckStatus.KB_UNAVAILABLE)
+            },
         )
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🚨 checkOneAtcAgainstFocusProfile($atc) → " +
             "🩹${bundle.allergyHits.size} 💊${bundle.ddiHits.size} 🦠${bundle.drugDiseaseHits.size} · ${bundle.totalDurationMs}ms")
@@ -757,6 +768,7 @@ class JemmaTools @Inject constructor(
         is DDIResult.Found -> mapOf(
             "ok" to true,
             "found" to true,
+            "checked" to true,
             "severity" to result.severity.label,
             "mechanism" to (result.mechanism ?: ""),
             "description" to (result.description ?: ""),
@@ -771,12 +783,17 @@ class JemmaTools @Inject constructor(
         is DDIResult.None -> mapOf(
             "ok" to true,
             "found" to false,
+            "checked" to true,
             "drug_a_resolved" to result.drugAResolved,
             "drug_b_resolved" to result.drugBResolved,
             "query_ms" to result.queryDurationMs,
         )
+        // UC-SAFE-KB : KB unavailable / drug not recognised → the pair was NOT checked.
         is DDIResult.Error -> mapOf(
             "ok" to false,
+            "found" to false,
+            "checked" to false,
+            "warning" to KbSafety.WARNING_DDI_NOT_CHECKED,
             "reason" to result.reason,
             "query_a" to qA,
             "query_b" to qB,
@@ -785,26 +802,21 @@ class JemmaTools @Inject constructor(
     }
 
     private fun crossCheckResultToMap(r: CrossCheckResult, query: String, lang: String): Map<String, Any> =
-        mapOf(
-            "ok" to (r.candidateAtc.isNotEmpty()),
-            "reason" to (if (r.candidateAtc.isEmpty()) "candidate_not_resolved" else ""),
+        mapOf<String, Any>(
             "query" to query,
             "candidate_atc" to r.candidateAtc,
             "candidate_display" to r.candidateDisplay,
             "lang" to lang,
             "duration_ms" to r.totalDurationMs,
-            // UC-AI (qa/usecases/02): an unresolved drug was NOT checked — never report it as clean.
-            "is_clean" to (r.candidateAtc.isNotEmpty() && r.isClean),
-            "checked" to r.candidateAtc.isNotEmpty(),
-            "warning" to (if (r.candidateAtc.isEmpty())
-                "NOT CHECKED: this drug was not found in the knowledge base, so no allergy / interaction / disease check was done. Do not tell the user it is safe."
-            else ""),
             "has_major" to r.hasMajor,
             "total_hits" to r.totalHits,
             "allergy_hits" to r.allergyHits.map { allergyHitToMap(it) },
             "ddi_hits" to r.ddiHits.map { ddiHitToMap(it) },
             "drug_disease_hits" to r.drugDiseaseHits.map { drugDiseaseHitToMap(it) },
-        )
+            // UC-AI (qa/usecases/02) + UC-SAFE-KB : ok / reason / is_clean / checked / kb_available /
+            // verdict / per-pillar status / warning. An unresolved drug or an unavailable KB was
+            // NOT checked — never reported as clean.
+        ) + KbSafety.crossCheckSafetyFields(r)
 
     private fun allergyHitToMap(h: AllergyHit): Map<String, Any> = mapOf(
         "allergy_display" to h.allergyDisplay,

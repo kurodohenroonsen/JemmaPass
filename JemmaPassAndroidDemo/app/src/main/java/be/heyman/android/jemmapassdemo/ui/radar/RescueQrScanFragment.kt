@@ -52,6 +52,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import be.heyman.android.jemmapassdemo.R
 import be.heyman.android.jemmapassdemo.qr.JemmaPayloadCodec
+import be.heyman.android.jemmapassdemo.qr.JemmaQrFrameAssembler
 import be.heyman.android.jemmapassdemo.qr.displayName
 import be.heyman.android.jemmapassdemo.qr.summaryLine
 import be.heyman.android.jemmapassdemo.radar.RadarController
@@ -91,6 +92,19 @@ class RescueQrScanFragment : Fragment() {
     private val isProcessing = AtomicBoolean(false)
     private var lastProcessedRawValue: String? = null
 
+    /**
+     * Multi-frame QR (`JF:i/N|…`, see JemmaQrFrameSplitter) : frames are collected
+     * in any order until the set is complete, then the joined text is decoded like
+     * a single QR. Main-thread only (ML Kit listeners).
+     */
+    private val frameAssembler = JemmaQrFrameAssembler()
+
+    /** Last multi-frame payload already shown in a dialog — a looping slideshow must not re-prompt. */
+    private var lastJoinedPayload: String? = null
+
+    /** Hint shown before any frame progress, restored when scanning resumes. */
+    private var initialHint: CharSequence = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -108,6 +122,7 @@ class RescueQrScanFragment : Fragment() {
 
         // 🆕 v2.5.10 — Adapter le hint pour le contexte rescue
         hintTextView.text = getString(R.string.rescue_qr_hint)
+        initialHint = hintTextView.text
 
         if (!hasCameraPermission()) {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ camera permission missing — going back")
@@ -196,6 +211,13 @@ class RescueQrScanFragment : Fragment() {
                 val raw = barcodes.firstOrNull()?.rawValue ?: return@addOnSuccessListener
                 if (raw == lastProcessedRawValue) return@addOnSuccessListener
 
+                // Part of a multi-frame payload : collect it, decode once complete.
+                if (JemmaQrFrameAssembler.isFrame(raw)) {
+                    lastProcessedRawValue = raw
+                    onFrameScanned(raw)
+                    return@addOnSuccessListener
+                }
+
                 val kind = JemmaPayloadCodec.detectKind(raw)
                 if (kind == JemmaPayloadCodec.Format.UNKNOWN) {
                     return@addOnSuccessListener
@@ -226,6 +248,38 @@ class RescueQrScanFragment : Fragment() {
     // ──────────────────────────────────────────────────────────────────────
     // Decode + confirmation dialog → 🆕 v2.5.10 inject into mesh broadcast
     // ──────────────────────────────────────────────────────────────────────
+
+    /**
+     * One `JF:i/N|…` frame was scanned. Shows "🧩 received / total · … missing"
+     * in the hint (language-neutral) and hands the joined payload to
+     * [handleDecodedPayload] when the last missing frame arrives. A partial set is
+     * never decoded.
+     */
+    private fun onFrameScanned(raw: String) {
+        if (!isAdded || view == null || isProcessing.get()) return
+        when (val r = frameAssembler.offer(raw)) {
+            is JemmaQrFrameAssembler.Result.NotAFrame -> Unit
+            is JemmaQrFrameAssembler.Result.Progress -> {
+                if (!r.duplicate) {
+                    Log.i(
+                        TAG,
+                        "[t=${System.currentTimeMillis()}] 🧩 frame ${r.received}/${r.total} · missing=${r.missing}" +
+                            if (r.restarted) " · new set" else "",
+                    )
+                }
+                val more = if (r.missing.size > 8) " …" else ""
+                hintTextView.text = "🧩 ${r.received} / ${r.total}  ·  … ${r.missing.take(8).joinToString(" ")}$more"
+            }
+            is JemmaQrFrameAssembler.Result.Complete -> {
+                hintTextView.text = "🧩 ${r.total} / ${r.total} ✓"
+                if (r.payload == lastJoinedPayload) return
+                if (!isProcessing.compareAndSet(false, true)) return
+                lastJoinedPayload = r.payload
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] 🧩 ${r.total} frames joined · len=${r.payload.length}")
+                handleDecodedPayload(r.payload)
+            }
+        }
+    }
 
     private fun handleDecodedPayload(rawText: String) {
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🔍 decoding payload (len=${rawText.length})")
@@ -319,6 +373,8 @@ class RescueQrScanFragment : Fragment() {
     /** Reset flags to resume scanning after dialog dismissed. */
     private fun resumeScanning() {
         isProcessing.set(false)
+        frameAssembler.reset()
+        if (this::hintTextView.isInitialized) hintTextView.text = initialHint
         Log.d(TAG, "[t=${System.currentTimeMillis()}] ▶️ scanning resumed")
     }
 

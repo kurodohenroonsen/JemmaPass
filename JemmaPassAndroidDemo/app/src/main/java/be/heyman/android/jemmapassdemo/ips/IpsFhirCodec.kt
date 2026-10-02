@@ -153,11 +153,29 @@ object IpsFhirCodec {
         resourcesOf(bundle).filterIsInstance<Observation>().filter { isResultsObservation(it) }.map { fromFhir(it) }
 
     fun isResultsObservation(o: Observation): Boolean {
-        val profiles = o.meta?.profile?.mapNotNull { it.value }.orEmpty()
-        if (profiles.any { it.contains("Observation-results") }) return true
+        if (hasResultsProfile(o)) return true
+        // UC-FHIR-025 — a pregnancy-coded Observation without a results profile belongs to
+        // the pregnancy pillar only, whatever category an external system gave it.
+        if (hasPregnancyCode(o)) return false
         val categories = o.category.flatMap { it.coding }.mapNotNull { it.code?.value }
         return categories.any { it in IpsResultCategory.ALL }
     }
+
+    private fun hasResultsProfile(o: Observation): Boolean =
+        o.meta?.profile?.any { it.value?.contains("Observation-results") == true } == true
+
+    private fun hasPregnancyCode(o: Observation): Boolean =
+        IpsPregnancyCodes.isPregnancyCode(o.code.coding.firstOrNull { it.system?.value == IpsCodeSystems.LOINC }?.code?.value)
+
+    /**
+     * Observations of the 🤰 pregnancy pillar. Disjoint from [resultsOf] (UC-FHIR-025): an
+     * Observation that declares a results profile stays a result even with a pregnancy code,
+     * so no resource is read into two pillars (and written back twice with the same id).
+     */
+    fun isPregnancyObservation(o: Observation): Boolean = hasPregnancyCode(o) && !hasResultsProfile(o)
+
+    fun pregnancyOf(bundle: Bundle): List<IpsPregnancyObs> =
+        resourcesOf(bundle).filterIsInstance<Observation>().filter { isPregnancyObservation(it) }.mapNotNull { pregnancyFromFhir(it) }
 
     /**
      * Conditions of the 📜 Past Problems pillar : the entries of the 11348-0 section,
@@ -238,7 +256,7 @@ object IpsFhirCodec {
         pastProblems = pastProblemsOf(bundle),
         problems = problemsOf(bundle),
         functional = functionalOf(bundle),
-        pregnancy = resourcesOf(bundle).filterIsInstance<Observation>().mapNotNull { pregnancyFromFhir(it) },
+        pregnancy = pregnancyOf(bundle),
     )
 
     /** Deterministic `urn:uuid:` for intra-bundle references (stable across rebuilds). */

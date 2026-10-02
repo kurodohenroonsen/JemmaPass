@@ -294,10 +294,13 @@ class AllergiesEditFragment : Fragment() {
             }
             AllergyFormMode.EDIT -> {
                 if (idx in allergies.indices) {
-                    allergies[idx] = newAllergy
+                    // UC-ALG-004 — the form only carries one reaction : merge it into
+                    // the stored entry so the reactions it does not show are kept.
+                    val merged = AllergyFormMerge.apply(allergies[idx], newAllergy)
+                    allergies[idx] = merged
                     Log.i(TAG, "[t=${System.currentTimeMillis()}] ✏ updated allergy · " +
-                        "idx=$idx · code=${newAllergy.c} · type=${newAllergy.type} · " +
-                        "cat=${newAllergy.category} · rxns=${newAllergy.reactions.size}")
+                        "idx=$idx · code=${merged.c} · type=${merged.type} · " +
+                        "cat=${merged.category} · rxns=${merged.reactions.size}")
                 } else {
                     Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ EDIT with invalid idx=$idx · skipped")
                 }
@@ -341,10 +344,21 @@ class AllergiesEditFragment : Fragment() {
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 💾 persist · " +
             "profileId=${baseProfile.sid} · al.size=${allergies.size}")
         viewLifecycleOwner.lifecycleScope.launch {
-            val result = profilesRepo.saveProfile(updatedProfile, sourceFormat = "MANUAL_EDIT")
-            current = updatedProfile
-            Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ saved · id=${result.id}")
-            Toast.makeText(requireContext(), R.string.allergies_saved, Toast.LENGTH_SHORT).show()
+            try {
+                val result = profilesRepo.saveProfile(updatedProfile, sourceFormat = "MANUAL_EDIT")
+                current = updatedProfile
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ saved · id=${result.id}")
+                Toast.makeText(requireContext(), R.string.allergies_saved, Toast.LENGTH_SHORT).show()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                // saveProfile rethrows write errors : tell the user instead of crashing.
+                Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ save failed: ${e.message}", e)
+                context?.let {
+                    Toast.makeText(it, getString(R.string.assistant_save_failed, e.message.orEmpty()),
+                        Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 

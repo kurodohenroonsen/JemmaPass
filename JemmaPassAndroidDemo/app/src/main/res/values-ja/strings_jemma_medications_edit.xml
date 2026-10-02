@@ -45,6 +45,12 @@
     <string name="medication_form_validation_substance">まず薬を選択してください</string>
     <string name="medication_form_validation_dose">用量が無効です (正の数値を入力)</string>
 
+    <!-- Safety cross-check could not verify everything (also shown by the allergy form) -->
+    <string name="medication_form_xchk_gap_title">⚠ 安全性チェックが不完全です</string>
+    <string name="medication_form_xchk_gap_not_run">安全性チェック（アレルギー・相互作用・疾患）を実行できませんでした。この薬については何も確認されていません。</string>
+    <string name="medication_form_xchk_gap_unresolved">「%1$s」は知識ベースで認識されませんでした。この薬の安全性チェック（アレルギー・相互作用・疾患）は行われていません。</string>
+    <string name="medication_form_xchk_gap_uncoded_meds">次の薬にはコードがないため、安全性チェックの対象に含まれていません: %1$s</string>
+
     <string name="drug_picker_search_hint">🔎 薬剤を検索 (JP, EN, ATC…)</string>
     <string name="drug_picker_status_hint">2 文字以上入力してください</string>
     <string name="drug_picker_status_searching">🔎 検索中…</string>

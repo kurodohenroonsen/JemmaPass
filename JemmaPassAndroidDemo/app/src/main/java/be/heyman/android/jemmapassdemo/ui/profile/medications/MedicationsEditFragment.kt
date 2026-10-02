@@ -287,7 +287,8 @@ class MedicationsEditFragment : Fragment() {
             }
             MedicationFormMode.EDIT -> {
                 if (idx in medications.indices) {
-                    medications[idx] = newMed
+                    // Keep what the form does not edit (effective absence reason).
+                    medications[idx] = MedicationFormLogic.apply(medications[idx], newMed)
                     Log.i(TAG, "[t=${System.currentTimeMillis()}] ✏ updated med · " +
                         "idx=$idx · code=${newMed.c} · r=${newMed.r} · " +
                         "status=${newMed.status} · rc=${newMed.rc}")
@@ -330,10 +331,21 @@ class MedicationsEditFragment : Fragment() {
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 💾 persist · " +
             "profileId=${baseProfile.sid} · md.size=${medications.size}")
         viewLifecycleOwner.lifecycleScope.launch {
-            val result = profilesRepo.saveProfile(updatedProfile, sourceFormat = "MANUAL_EDIT")
-            current = updatedProfile
-            Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ saved · id=${result.id}")
-            Toast.makeText(requireContext(), R.string.medications_saved, Toast.LENGTH_SHORT).show()
+            try {
+                val result = profilesRepo.saveProfile(updatedProfile, sourceFormat = "MANUAL_EDIT")
+                current = updatedProfile
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ saved · id=${result.id}")
+                Toast.makeText(requireContext(), R.string.medications_saved, Toast.LENGTH_SHORT).show()
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                // saveProfile rethrows write errors : tell the user instead of crashing.
+                Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ save failed: ${e.message}", e)
+                context?.let {
+                    Toast.makeText(it, getString(R.string.assistant_save_failed, e.message.orEmpty()),
+                        Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 

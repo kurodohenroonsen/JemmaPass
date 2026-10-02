@@ -93,9 +93,26 @@ class JemmaProfileHydrator @Inject constructor(
                     crossCheckDrugDisease(medications, conditions)
                 }
 
-                val ddiAlerts = ddiAlertsAsync.await()
+                val ddiCheck = ddiAlertsAsync.await()
                 val allergyAlerts = allergyAlertsAsync.await()
-                val drugDiseaseAlerts = drugDiseaseAlertsAsync.await()
+                val drugDiseaseCheck = drugDiseaseAlertsAsync.await()
+                val ddiAlerts = ddiCheck.hits
+                val drugDiseaseAlerts = drugDiseaseCheck.hits
+
+                // UC-SAFE-KB — "no alert" is only a clean result if the KB was really
+                // queried. Without the KB the allergy matcher still runs its keyword
+                // heuristics (hits are kept) but an empty list proves nothing.
+                val kbUp = kbManager.database() != null
+                val checks = KbCheckReport(
+                    allergy = KbSafety.pillarStatus(
+                        kbUp, if (allergies.isEmpty() || medications.isEmpty()) 0 else allergies.size,
+                    ),
+                    ddi = ddiCheck.status,
+                    drugDisease = drugDiseaseCheck.status,
+                )
+                if (!checks.fullyChecked) {
+                    Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ safety cross-checks NOT fully run · $checks")
+                }
 
                 val durMs = System.currentTimeMillis() - tStart
                 Log.i(
@@ -131,6 +148,7 @@ class JemmaProfileHydrator @Inject constructor(
                     drugDiseaseAlerts = drugDiseaseAlerts,
                     hydrationMs = durMs,
                     pastProblemLabels = pastProblemLabels,
+                    checks = checks,
                 )
             }
         }
@@ -270,9 +288,12 @@ class JemmaProfileHydrator @Inject constructor(
      */
     private suspend fun batchCrossCheckDdi(
         meds: List<HydratedMedication>,
-    ): List<DdiAlert> = withContext(Dispatchers.IO) {
-        if (meds.size < 2) return@withContext emptyList()
-        val db = kbManager.database() ?: return@withContext emptyList()
+    ): PillarCheck<DdiAlert> = withContext(Dispatchers.IO) {
+        if (meds.size < 2) return@withContext PillarCheck<DdiAlert>(emptyList(), KbCheckStatus.CHECKED)
+        val db = kbManager.database()
+            ?: return@withContext PillarCheck<DdiAlert>(emptyList(), KbCheckStatus.KB_UNAVAILABLE)
+        // A medication without any ATC cannot be looked up : the check is then incomplete.
+        var unverified = 0
 
         // Build a map ATC → list of medications carrying that ATC. A single
         // med can map to several ATCs (e.g. Ibuprofen has 8). We need to
@@ -284,11 +305,14 @@ class JemmaProfileHydrator @Inject constructor(
                 med.atcCode?.let { add(it.uppercase()) }
                 med.allAtcCodes.forEach { add(it.uppercase()) }
             }
+            if (atcs.isEmpty()) unverified++
             for (atc in atcs) {
                 atcToMeds.getOrPut(atc) { mutableListOf() }.add(med)
             }
         }
-        if (atcToMeds.isEmpty()) return@withContext emptyList()
+        if (atcToMeds.isEmpty()) {
+            return@withContext PillarCheck<DdiAlert>(emptyList(), KbCheckStatus.INCOMPLETE)
+        }
 
         val placeholders = atcToMeds.keys.joinToString(",") { "?" }
         val args = atcToMeds.keys.toTypedArray()
@@ -306,16 +330,15 @@ class JemmaProfileHydrator @Inject constructor(
         """.trimIndent()
 
         val alerts = mutableListOf<DdiAlert>()
-        // Track unique pairs (sorted ATCs to dedupe symmetric matches).
-        val seenPairs = mutableSetOf<Pair<String, String>>()
+        // Every row is kept here : one ATC pair can carry several facts with
+        // different severities, and the rows come back in no particular order.
+        // The most severe one per medication pair is picked below.
 
         try {
             db.rawQuery(sql, args + args).use { c ->
                 while (c.moveToNext()) {
                     val atcA = c.getString(0)?.uppercase() ?: continue
                     val atcB = c.getString(1)?.uppercase() ?: continue
-                    val pairKey = if (atcA < atcB) atcA to atcB else atcB to atcA
-                    if (!seenPairs.add(pairKey)) continue   // already handled
 
                     val medsA = atcToMeds[atcA] ?: continue
                     val medsB = atcToMeds[atcB] ?: continue
@@ -355,6 +378,9 @@ class JemmaProfileHydrator @Inject constructor(
                 TAG,
                 "[t=${System.currentTimeMillis()}] ⚠️ batchCrossCheckDdi failed : ${e.message}"
             )
+            // The query did not complete : whatever was read is kept, but the
+            // pillar is not verified.
+            unverified = meds.size
         }
 
         // Dedupe alerts by (medA, medB) pair (independent of order) — a
@@ -367,11 +393,11 @@ class JemmaProfileHydrator @Inject constructor(
                 if (a < b) a to b else b to a
             }
             .map { (_, bucket) ->
-                bucket.minByOrNull { it.severity.ordinal } ?: bucket.first()
+                KbSafety.mostSevere(bucket) { it.severity } ?: bucket.first()
             }
-            .sortedBy { it.severity.ordinal }
+            .sortedBy { KbSafety.ddiSeverityRank(it.severity) }
 
-        deduped
+        PillarCheck(deduped, KbSafety.pillarStatus(true, meds.size, unverified))
     }
 
     /**
@@ -525,23 +551,35 @@ class JemmaProfileHydrator @Inject constructor(
     private suspend fun crossCheckDrugDisease(
         meds: List<HydratedMedication>,
         conditions: List<HydratedGenericEntry>,
-    ): List<DrugDiseaseAlert> = withContext(Dispatchers.IO) {
-        if (meds.isEmpty() || conditions.isEmpty()) return@withContext emptyList()
-        kbManager.database() ?: return@withContext emptyList()
+    ): PillarCheck<DrugDiseaseAlert> = withContext(Dispatchers.IO) {
+        if (meds.isEmpty() || conditions.isEmpty()) {
+            return@withContext PillarCheck<DrugDiseaseAlert>(emptyList(), KbCheckStatus.CHECKED)
+        }
+        kbManager.database()
+            ?: return@withContext PillarCheck<DrugDiseaseAlert>(emptyList(), KbCheckStatus.KB_UNAVAILABLE)
 
+        var unverified = 0
         val out = mutableListOf<DrugDiseaseAlert>()
         // For each med × condition pair, ask the KB.
         // Only a small product (typically ≤ 30 pairs), so even individual
         // queries stay under 50ms total. If profiles grow we'll batch.
         for (med in meds) {
-            val atc = med.atcCode ?: continue
+            val atc = med.atcCode
+            if (atc == null) {
+                unverified++
+                continue
+            }
             for (cond in conditions) {
                 // English first (stored SNOMED display, KB primary display), UI label last.
                 val terms = DrugDiseaseTerms.candidates(
                     cond.raw.displayLabel, cond.resolvedConcept?.primaryDisplay, cond.displayLocalized,
                 )
-                if (terms.isEmpty()) continue
+                if (terms.isEmpty()) {
+                    unverified++
+                    continue
+                }
                 val r = kb.queryDrugDiseaseTerms(atc, terms)
+                if (r is DrugDiseaseResult.Error) unverified++
                 if (r is DrugDiseaseResult.Found) {
                     out.add(
                         DrugDiseaseAlert(
@@ -556,7 +594,10 @@ class JemmaProfileHydrator @Inject constructor(
                 }
             }
         }
-        out.sortedBy { it.severity.ordinal }
+        PillarCheck(
+            out.sortedBy { KbSafety.ddiSeverityRank(it.severity) },
+            KbSafety.pillarStatus(true, meds.size * conditions.size, unverified),
+        )
     }
 
     // ──────────────────────────────────────────────────────────────────────
@@ -806,9 +847,29 @@ data class HydratedProfile(
     val hydrationMs: Long,
     /** 📜 SNOMED code → past-illness label in [uiLang] (KB free-set translation; absent = English term). */
     val pastProblemLabels: Map<String, String> = emptyMap(),
+    /**
+     * UC-SAFE-KB — whether each cross-check really ran. An empty alert list only
+     * means "nothing found" when the matching status is CHECKED ; the UI must read
+     * [safetyVerdict] before showing a profile as alert-free.
+     */
+    val checks: KbCheckReport = KbCheckReport(),
 ) {
     val hasAlerts: Boolean
         get() = ddiAlerts.isNotEmpty() || allergyAlerts.isNotEmpty() || drugDiseaseAlerts.isNotEmpty()
+
+    /** False when the KB could not be queried (absent, not downloaded, failed to open). */
+    val kbAvailable: Boolean
+        get() = checks.kbAvailable
+
+    /** ALERT / CLEAN / INCOMPLETE / NOT_CHECKED — CLEAN only when every check ran. */
+    val safetyVerdict: KbSafetyVerdict
+        get() = KbSafety.verdict(
+            checks.overall, ddiAlerts.size + allergyAlerts.size + drugDiseaseAlerts.size,
+        )
+
+    /** "Checked and nothing found". Never true when the checks did not (fully) run. */
+    val isClean: Boolean
+        get() = safetyVerdict == KbSafetyVerdict.CLEAN
 
     val majorDdiCount: Int
         get() = ddiAlerts.count { it.severity == DDIResult.Severity.MAJOR }

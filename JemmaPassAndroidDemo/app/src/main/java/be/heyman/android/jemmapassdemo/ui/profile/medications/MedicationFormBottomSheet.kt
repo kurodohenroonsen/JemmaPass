@@ -82,8 +82,10 @@ import be.heyman.android.jemmapassdemo.ui.common.KbConditionPicker
 import be.heyman.android.jemmapassdemo.ui.common.KbDrugPickerDialog
 import be.heyman.android.jemmapassdemo.ui.profile.common.CrossCheckAlertDialog
 import be.heyman.android.jemmapassdemo.ui.profile.common.FormCrossCheckHelper
+import be.heyman.android.jemmapassdemo.ui.profile.common.SingleShotGuard
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -206,6 +208,9 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
     private var pickedReasonCode: String? = null
     private var pickedReasonDisplay: String? = null
     private var pickedReasonSystem: String? = null
+
+    /** UC-MED-007 — a second tap on Save while a submit is in progress is ignored. */
+    private val submitGuard = SingleShotGuard()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -502,8 +507,11 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
 
     private fun openEffectivePicker() {
         Log.d(TAG, "[t=${System.currentTimeMillis()}] 📅 effective picker tap")
+        // UC-MED-010 — setEnd only bounds the months shown : the validator is what
+        // makes the days after today unselectable.
         val constraints = CalendarConstraints.Builder()
             .setEnd(MaterialDatePicker.todayInUtcMilliseconds())
+            .setValidator(DateValidatorPointBackward.now())
             .build()
         val initial = pickedEffectiveIso?.let { parseIsoDateUtc(it) }
             ?: MaterialDatePicker.todayInUtcMilliseconds()
@@ -595,6 +603,14 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
     // ─── Submit ───────────────────────────────────────────────────
 
     private fun trySubmit() {
+        // UC-MED-007 — the cross-check below is asynchronous : without this guard a
+        // second tap sends a second result, i.e. a duplicate medication.
+        if (!submitGuard.tryAcquire()) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⏳ submit already in progress — tap ignored")
+            return
+        }
+        binding.medicationFormSaveBtn.isEnabled = false
+
         val code = pickedCode?.takeIf { it.isNotBlank() }
         val display = pickedDisplay?.takeIf { it.isNotBlank() }
         val route = pickedRoute?.takeIf { it.isNotBlank() } ?: "O"
@@ -607,6 +623,7 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ validation: no substance picked")
             Toast.makeText(requireContext(),
                 R.string.medication_form_validation_substance, Toast.LENGTH_SHORT).show()
+            releaseSubmit()
             return
         }
 
@@ -618,6 +635,7 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
                 Toast.makeText(requireContext(),
                     R.string.medication_form_validation_dose, Toast.LENGTH_SHORT).show()
                 binding.medicationFormDoseValue.requestFocus()
+                releaseSubmit()
                 return
             }
         }
@@ -636,41 +654,111 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
             "reasonCode=$pickedReasonCode · codeSystem=$pickedCodeSystem")
 
         // 🆕 PHASE13 — Cross-check on submit (timing 2/2). If hits, show alert with
-        // Cancel (stay in form) / Save anyway (commit). If no profile or no hits,
-        // commit directly.
+        // Cancel (stay in form) / Save anyway (commit). What the check could NOT
+        // verify (medication not recognised, stored medications without a code, check
+        // not run) is then shown too, instead of committing as if all was verified.
+        val commit: () -> Unit = {
+            commitSubmit(code, display, route, doseValue, doseUnit, timing, reason, effective)
+        }
         viewLifecycleOwner.lifecycleScope.launch {
-            val profile = loadProfileSnapshotForXchk()
-            if (profile == null) {
-                Log.i(TAG, "[t=${System.currentTimeMillis()}] ↪ no profile snapshot — skip xchk, commit")
-                commitSubmit(code, display, route, doseValue, doseUnit, timing, reason, effective)
-                return@launch
+            try {
+                val profile = loadProfileSnapshotForXchk()
+                if (profile == null) {
+                    Log.i(TAG, "[t=${System.currentTimeMillis()}] ↪ no profile snapshot — skip xchk, commit")
+                    commit()
+                    return@launch
+                }
+                val result = crossCheckHelper.checkNewMedicationAgainstProfile(
+                    medDisplay = pickedAtc ?: display ?: code,  // 🔧 PHASE13 BUGFIX prefer ATC (KB-resolvable), fallback display name (FTS5-resolvable), last raw code
+                    profile = profile,
+                    lang = lang,
+                )
+                val gaps = MedicationFormLogic.safetyCheckGaps(
+                    profileHasData = profile.al.isNotEmpty() || profile.md.isNotEmpty() || profile.cn.isNotEmpty(),
+                    resultAvailable = result != null,
+                    candidateAtc = result?.candidateAtc,
+                    otherMeds = profile.md,
+                )
+                val candidateLabel = display ?: code
+                if (result == null || result.totalHits == 0) {
+                    Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 no xchk hit on submit · gaps=$gaps")
+                    confirmSafetyGapsThen(gaps, candidateLabel, commit)
+                    return@launch
+                }
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk hits on submit · " +
+                    "al=${result.allergyHits.size} ddi=${result.ddiHits.size} dd=${result.drugDiseaseHits.size}")
+                val ctx = context
+                if (ctx == null) {
+                    releaseSubmit()
+                    return@launch
+                }
+                CrossCheckAlertDialog.showForNewMedication(
+                    context = ctx,
+                    result = result,
+                    candidateDisplay = candidateLabel,
+                    onConfirm = {
+                        Log.i(TAG, "[t=${System.currentTimeMillis()}] ✓ user confirmed save anyway")
+                        confirmSafetyGapsThen(gaps, candidateLabel, commit)
+                    },
+                    onCancel = {
+                        Log.i(TAG, "[t=${System.currentTimeMillis()}] ✗ user cancelled — stay in form")
+                        releaseSubmit()
+                    },
+                )
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ submit failed: ${e.message}", e)
+                releaseSubmit()
+                context?.let {
+                    Toast.makeText(it, getString(R.string.assistant_save_failed, e.message.orEmpty()),
+                        Toast.LENGTH_LONG).show()
+                }
             }
-            val result = crossCheckHelper.checkNewMedicationAgainstProfile(
-                medDisplay = pickedAtc ?: display ?: code,  // 🔧 PHASE13 BUGFIX prefer ATC (KB-resolvable), fallback display name (FTS5-resolvable), last raw code
-                profile = profile,
-                lang = lang,
-            )
-            if (result == null || result.totalHits == 0) {
-                Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 xchk clean on submit · committing")
-                commitSubmit(code, display, route, doseValue, doseUnit, timing, reason, effective)
-                return@launch
-            }
-            Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk hits on submit · " +
-                "al=${result.allergyHits.size} ddi=${result.ddiHits.size} dd=${result.drugDiseaseHits.size}")
-            val ctx = context ?: return@launch
-            CrossCheckAlertDialog.showForNewMedication(
-                context = ctx,
-                result = result,
-                candidateDisplay = display ?: code,
-                onConfirm = {
-                    Log.i(TAG, "[t=${System.currentTimeMillis()}] ✓ user confirmed save anyway")
-                    commitSubmit(code, display, route, doseValue, doseUnit, timing, reason, effective)
-                },
-                onCancel = {
-                    Log.i(TAG, "[t=${System.currentTimeMillis()}] ✗ user cancelled — stay in form")
-                },
+        }
+    }
+
+    /**
+     * Tells the user what the safety cross-check could not verify, then [proceed] on
+     * "Save anyway". Calls [proceed] directly when the check was complete.
+     */
+    private fun confirmSafetyGapsThen(
+        gaps: MedicationFormLogic.SafetyCheckGaps,
+        candidateLabel: String,
+        proceed: () -> Unit,
+    ) {
+        if (!gaps.any) {
+            proceed()
+            return
+        }
+        val ctx = context
+        if (ctx == null) {
+            releaseSubmit()
+            return
+        }
+        val message = when {
+            gaps.checkNotRun -> getString(R.string.medication_form_xchk_gap_not_run)
+            gaps.candidateUnresolved ->
+                getString(R.string.medication_form_xchk_gap_unresolved, candidateLabel)
+            else -> getString(
+                R.string.medication_form_xchk_gap_uncoded_meds,
+                gaps.uncodedExistingMeds.joinToString(", "),
             )
         }
+        Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk gap shown · $gaps")
+        MaterialAlertDialogBuilder(ctx)
+            .setTitle(R.string.medication_form_xchk_gap_title)
+            .setMessage(message)
+            .setPositiveButton(R.string.xchk_save_anyway) { _, _ -> proceed() }
+            .setNegativeButton(R.string.xchk_cancel) { _, _ -> releaseSubmit() }
+            .setOnCancelListener { releaseSubmit() }
+            .show()
+    }
+
+    /** UC-MED-007 — the form stays open : allow a new Save. */
+    private fun releaseSubmit() {
+        submitGuard.release()
+        _binding?.medicationFormSaveBtn?.isEnabled = true
     }
 
     /**
