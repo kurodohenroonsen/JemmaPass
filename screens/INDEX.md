@@ -23,6 +23,7 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [230-e1-alert-kamekichi.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/230-e1-alert-kamekichi.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [231-e6-incomplete-dialog.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/231-e6-incomplete-dialog.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [236-e8-blood-group-conflict-dialog.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/236-e8-blood-group-conflict-dialog.png) | `8a675b3` | 8a675b3-20261002-0515 |
+| [260-freetext-dialog.png](../feat-ips-18-pillars-cleanup/4006cc6-20261002-1759/screenshots/260-freetext-dialog.png) | `4006cc6` | 4006cc6-20261002-1759 |
 | [31-delete-dialog.png](../feat-ips-18-pillars-cleanup/1c1b7e5-20260930-1849/screenshots/31-delete-dialog.png) | `1c1b7e5` | 1c1b7e5-20260930-1849 |
 | [32-delete-dialog.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/32-delete-dialog.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [33-longpress-dialog.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/33-longpress-dialog.png) | `f7c500e` | f7c500e-20260930-2015 |
@@ -99,6 +100,7 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [187-kurodo-detail-9-active.png](../feat-ips-18-pillars-cleanup/e53075e-20261001-1550/screenshots/187-kurodo-detail-9-active.png) | `e53075e` | e53075e-20261001-1550 |
 | [222-detail-haru-functional.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/222-detail-haru-functional.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [225-functional-inactive.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/225-functional-inactive.png) | `8a675b3` | 8a675b3-20261002-0515 |
+| [261-freetext-profile-badge.png](../feat-ips-18-pillars-cleanup/4006cc6-20261002-1759/screenshots/261-freetext-profile-badge.png) | `4006cc6` | 4006cc6-20261002-1759 |
 | [72-kamekichi-pillars.png](../feat-ips-18-pillars-cleanup/1c1b7e5-20260930-1849/screenshots/72-kamekichi-pillars.png) | `1c1b7e5` | 1c1b7e5-20260930-1849 |
 | [82-radar-active.png](../feat-ips-18-pillars-cleanup/1c1b7e5-20260930-1849/screenshots/82-radar-active.png) | `1c1b7e5` | 1c1b7e5-20260930-1849 |
 | [c6-haru-profile.png](../feat-ips-18-pillars-cleanup/6694536-20260930-2331/screenshots/c6-haru-profile.png) | `6694536` | 6694536-20260930-2331 |
@@ -166,9 +168,10 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [203-qr-text-fr.png](../feat-ips-18-pillars-cleanup/d25d69a-20261002-0012/screenshots/203-qr-text-fr.png) | `d25d69a` | d25d69a-20261002-0012 |
 | [204-qr-text-ja.png](../feat-ips-18-pillars-cleanup/d25d69a-20261002-0012/screenshots/204-qr-text-ja.png) | `d25d69a` | d25d69a-20261002-0012 |
 | [240-qr-haru-text-en.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/240-qr-haru-text-en.png) | `8a675b3` | 8a675b3-20261002-0515 |
-| [241-qr-haru-text-fr.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/241-qr-haru-text-fr.png) | `8a675b3` | 8a675b3-20261002-0515 |
-| [242-qr-haru-text-ja.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/242-qr-haru-text-ja.png) | `8a675b3` | 8a675b3-20261002-0515 |
-| [243-qr-kamekichi-text-en.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/243-qr-kamekichi-text-en.png) | `8a675b3` | 8a675b3-20261002-0515 |
+| [241-qr-haru-text-fr.png](../feat-ips-18-pillars-cleanup/4006cc6-20261002-1759/screenshots/241-qr-haru-text-fr.png) | `4006cc6` | 4006cc6-20261002-1759 |
+| [242-qr-haru-text-ja.png](../feat-ips-18-pillars-cleanup/4006cc6-20261002-1759/screenshots/242-qr-haru-text-ja.png) | `4006cc6` | 4006cc6-20261002-1759 |
+| [243-qr-kamekichi-text-en.png](../feat-ips-18-pillars-cleanup/4006cc6-20261002-1759/screenshots/243-qr-kamekichi-text-en.png) | `4006cc6` | 4006cc6-20261002-1759 |
+| [262-freetext-qr-fr.png](../feat-ips-18-pillars-cleanup/4006cc6-20261002-1759/screenshots/262-freetext-qr-fr.png) | `4006cc6` | 4006cc6-20261002-1759 |
 | [50-qr-text-en.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/50-qr-text-en.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [51-qr-text-fr.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/51-qr-text-fr.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [52-qr-text-ja.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/52-qr-text-ja.png) | `f7c500e` | f7c500e-20260930-2015 |
@@ -208,6 +211,7 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [22-form-vaccine-picked.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/22-form-vaccine-picked.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [23-date-picker.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/23-date-picker.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [24-list-after-create.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/24-list-after-create.png) | `f7c500e` | f7c500e-20260930-2015 |
+| [263-drug-picker-ibu.png](../feat-ips-18-pillars-cleanup/4006cc6-20261002-1759/screenshots/263-drug-picker-ibu.png) | `4006cc6` | 4006cc6-20261002-1759 |
 | [30-after-edit.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/30-after-edit.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [31-form-delete-btn.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/31-form-delete-btn.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [81-not-done.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/81-not-done.png) | `f7c500e` | f7c500e-20260930-2015 |

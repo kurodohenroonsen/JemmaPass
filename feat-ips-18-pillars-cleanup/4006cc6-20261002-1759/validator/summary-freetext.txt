@@ -1,0 +1,9 @@
+errors:
+/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/qa/device/out/4006cc6-20261002-1759/validator/demo_haru-freetext.txt:0
+/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/qa/device/out/4006cc6-20261002-1759/validator/demo_kamekichi-freetext.txt:0
+/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/qa/device/out/4006cc6-20261002-1759/validator/demo_kurodo-freetext.txt:0
+warnings:
+/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/qa/device/out/4006cc6-20261002-1759/validator/demo_haru-freetext.txt:52
+/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/qa/device/out/4006cc6-20261002-1759/validator/demo_kamekichi-freetext.txt:31
+/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/qa/device/out/4006cc6-20261002-1759/validator/demo_kurodo-freetext.txt:28
+/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/qa/device/out/4006cc6-20261002-1759/validator/summary-freetext.txt:0

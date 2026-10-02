@@ -1,0 +1,57 @@
+🏥 === JEMMA CLINICAL SUMMARY (FR) ===
+
+👤 [ PATIENT ]
+ 🔹 Haru Tanaka (F)
+ 📅 Naissance: 1946-02-08
+ 🩸 Groupe: O+
+ 🗣 Langue: ja-JP
+ 📍 Adresse: Aomori, Japan
+ 🆔 ID: JP-12345678
+
+⚠️ [ ALLERGIES ]
+  ▪️ Allergie aux protéines de soja (LOW)
+
+💊 [ MÉDICAMENTS ]
+  ▪️ Fexofénadine 1tab Allegra FX (fexofenadine 60mg)
+  ▪️ Dextrométhorphane 1tab Medicon Pro (dextromethorphan)
+  ▪️ Furosémide 1tab Furosemide 20mg
+  ▪️ Tisane maison
+
+🩺 [ CONDITIONS ]
+  ▪️ Défaillance cardiaque
+  ▪️ Maladie rénale chronique stade 3
+
+💉 [ VACCINATIONS ]
+  ▪️ Vaccin grippe saisonnière — 2025-10-14
+  ▪️ Vaccin COVID-19 (ARNm) — 2024-11-02 · #7
+  ▪️ Vaccin pneumocoque conjugué (PCV) — 2021-04-06 · #1
+
+🏥 [ INTERVENTIONS ]
+  ▪️ Pontage coronarien — 2015-09-02
+  ▪️ Césarienne — 1975
+
+📟 [ DISPOSITIFS MÉDICAUX ]
+  ▪️ Stimulateur cardiaque (pacemaker) — 2021-03-15
+  ▪️ Appareil auditif — 2019-06
+
+🧪 [ RÉSULTATS ]
+  ▪️ Potassium (kaliémie): 4.1 mmol/L — 2026-02-10
+  ▪️ Hémoglobine: 11.8 g/dL (L) — 2026-02-10
+  ▪️ DFG estimé (MDRD): 48 mL/min/{1.73_m2} (L) — 2026-02-10
+  ▪️ Chest X-ray: Mild cardiomegaly, no pleural effusion — 2025-12-03
+  ▪️ Groupe sanguin ABO / Rhésus: O+
+
+📜 [ ANTÉCÉDENTS MÉDICAUX ]
+  ▪️ Infarctus du myocarde — 2015-08-27 → 2015-09
+  ▪️ Tuberculose — 1962 → 1963
+
+🤰 [ GROSSESSES ]
+  ▪️ Naissances (total): 2 — 2026-02-10
+  ▪️ Naissances vivantes: 2 — 2026-02-10
+  ▪️ Naissances à terme: 2 — 2026-02-10
+
+♿ [ AUTONOMIE ]
+  ▪️ Perte d'audition — 2019
+  ▪️ Walks with a cane outdoors — 2021
+
+✅ JEMMA on-device · `_j 1.2`
