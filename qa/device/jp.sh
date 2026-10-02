@@ -90,7 +90,7 @@ act() {
     branch-commit)  git -C "$ROOT" add -A && git -C "$ROOT" commit -m "$*" ;;
     branch-push)
       case "$1" in
-        ag/*) git -C "$ROOT" push origin "$1" ;;
+        ag/*) git -C "$ROOT" push --force-with-lease origin "$1" ;;
         *)    echo "branch-push: refused (only ag/* branches allowed: $1)" >&2; return 1 ;;
       esac
       ;;
