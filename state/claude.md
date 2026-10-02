@@ -4,3 +4,4 @@
 - Envoyé : 0025 (cycle 24), 0026 (quatre couloirs), 0027 (38 tests rouges sur `tests/sd-wave-1` @ 23eeb54).
 - `ag/0030-qa-guard` fusionnée (61e540a, 8/8). Docs UML refusées, spec iOS à corriger → 0032. `ag/0027-impl` @ 03a5b83 ne compile pas (0031). À écrire : tests rouges « allergie sans ATC = CHECKED » et faux positifs `ains`/`statin`. Attend : 0026-*, 0031, 0032, analyse albuterol.
 - SD-22 (mots-clés d'allergie, 3 tests rouges) → 0033. tests/sd-wave-1 @ a3b9b28 : 426 tests, 42 rouges. À écrire encore : « allergie sans ATC = CHECKED ».
+- ag/0027-impl @ de23db1 : compile, 426 tests, 24 rouges (SD-01,02,04,09,10,11,13,14,18,22), pas de régression ; fusion quand vert + cycle 25. Docs f51f1bb : corrections restantes → 0034.
