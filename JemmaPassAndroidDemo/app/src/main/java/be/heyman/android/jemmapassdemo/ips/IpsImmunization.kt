@@ -130,15 +130,22 @@ data class IpsNativePillars(
             cn: List<be.heyman.android.jemmapassdemo.qr.JCondition> = emptyList(),
             pg: List<JEntryGeneric> = emptyList(),
             fs: List<JEntryGeneric> = emptyList(),
-        ): IpsNativePillars = IpsNativePillars(
-            immunizations = im.mapIndexed { i, e -> IpsImmunization.fromJEntry(e, i) },
-            procedures = pr.mapIndexed { i, e -> IpsProcedure.fromJEntry(e, i) },
-            devices = dv.mapIndexed { i, e -> IpsDevice.fromJEntry(e, i) },
-            results = rs.mapIndexed { i, e -> IpsResult.fromJEntry(e, i) },
-            pastProblems = ph.mapIndexed { i, e -> IpsPastProblem.fromJEntry(e, i) },
-            problems = cn.mapIndexed { i, c -> IpsProblem.fromJCondition(c, i) },
-            pregnancy = pg.mapIndexedNotNull { i, e -> IpsPregnancyObs.fromJEntry(e, i) },
-            functional = fs.mapIndexed { i, e -> IpsFunctional.fromJEntry(e, i) },
-        )
+        ): IpsNativePillars {
+            val (pastCn, activeCn) = cn.partition {
+                it.st?.trim()?.lowercase() in IpsPastProblemStatus.ALL
+            }
+            val mappedPast = ph.mapIndexed { i, e -> IpsPastProblem.fromJEntry(e, i) } +
+                pastCn.mapIndexed { i, c -> IpsPastProblem.fromJCondition(c, ph.size + i) }
+            return IpsNativePillars(
+                immunizations = im.mapIndexed { i, e -> IpsImmunization.fromJEntry(e, i) },
+                procedures = pr.mapIndexed { i, e -> IpsProcedure.fromJEntry(e, i) },
+                devices = dv.mapIndexed { i, e -> IpsDevice.fromJEntry(e, i) },
+                results = rs.mapIndexed { i, e -> IpsResult.fromJEntry(e, i) },
+                pastProblems = mappedPast,
+                problems = activeCn.mapIndexed { i, c -> IpsProblem.fromJCondition(c, i) },
+                pregnancy = pg.mapIndexedNotNull { i, e -> IpsPregnancyObs.fromJEntry(e, i) },
+                functional = fs.mapIndexed { i, e -> IpsFunctional.fromJEntry(e, i) },
+            )
+        }
     }
 }

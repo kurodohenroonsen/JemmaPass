@@ -338,13 +338,23 @@ class KbDrugPickerDialog : DialogFragment() {
                         Log.i(TAG, "[t=${System.currentTimeMillis()}] 🧭 generic picker · curated=${curatedHits.size} · " +
                             "kb=${filtered.size} · deduped=$deduped · localized=${localized.size}")
                     }
+                    val trimmedQuery = query.trim()
+                    if (trimmedQuery.isNotBlank() && category == CATEGORY_MEDICATION) {
+                        val hasExactMatch = currentResults.any { it.display.equals(trimmedQuery, ignoreCase = true) }
+                        if (!hasExactMatch) {
+                            currentResults.add(
+                                PickedDrug(
+                                    code = "",
+                                    display = trimmedQuery,
+                                    system = "",
+                                )
+                            )
+                        }
+                    }
                     val labels = currentResults.map { picked ->
-                        // 🆕 PHASE12 — Cache le code IPS pour gagner de la place.
-                        // Format display-first :
-                        //   "Metformine"
-                        //   "💊 2 g · oral · adulte"  (si dose dispo)
-                        // ou simplement "Display name" si pas de dose.
-                        if (picked.doseDdd != null && picked.doseUnit != null) {
+                        if (picked.code.isBlank()) {
+                            getString(R.string.drug_picker_add_as_is, picked.display)
+                        } else if (picked.doseDdd != null && picked.doseUnit != null) {
                             val dose = DoseStandard(
                                 atcCode = picked.atcCode ?: "",
                                 doseDdd = picked.doseDdd,
@@ -363,10 +373,11 @@ class KbDrugPickerDialog : DialogFragment() {
                     adapter.clear()
                     adapter.addAll(labels)
                     adapter.notifyDataSetChanged()
-                    val text = if (currentResults.isEmpty()) {
+                    val codedCount = currentResults.count { it.code.isNotBlank() }
+                    val text = if (codedCount == 0) {
                         getString(R.string.drug_picker_status_empty)
                     } else {
-                        getString(R.string.drug_picker_status_count, currentResults.size)
+                        getString(R.string.drug_picker_status_count, codedCount)
                     }
                     statusText.text = text
                     Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ search done · " +

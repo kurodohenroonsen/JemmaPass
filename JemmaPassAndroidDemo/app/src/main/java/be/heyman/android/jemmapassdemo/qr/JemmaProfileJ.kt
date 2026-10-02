@@ -373,6 +373,8 @@ data class JEntryGeneric(
     @Json(name = "rr") val referenceRange: String? = null,
     /** Code of a coded value (e.g. SNOMED blood group) when the result is not numeric. */
     @Json(name = "vc") val valueCode: String? = null,
+    /** Code system URI of the coded value when it is not SNOMED CT (e.g. LOINC answer list). */
+    @Json(name = "vcs") val valueCodeSystem: String? = null,
     /** Observation category when not the pillar default (results: "laboratory"). */
     @Json(name = "ct") val category: String? = null,
     // ── Past problems (Condition) projection — sprint 4.
@@ -396,6 +398,7 @@ fun JemmaProfileJ.displayName(): String {
     return when {
         gn != null && fn != null -> "$gn $fn"
         gn != null -> gn
+        fn != null -> fn
         else -> "Profile inconnu"
     }
 }

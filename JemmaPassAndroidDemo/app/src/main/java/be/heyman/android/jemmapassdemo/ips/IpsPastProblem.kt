@@ -114,5 +114,21 @@ data class IpsPastProblem(
                 note = entry.d?.takeIf { it.isNotBlank() },
             )
         }
+
+        fun fromJCondition(c: be.heyman.android.jemmapassdemo.qr.JCondition, index: Int = 0): IpsPastProblem {
+            val code = c.c?.takeIf { it.isNotBlank() }
+            val seed = "ph-cn|${index}|${code.orEmpty()}|${c.date.orEmpty()}|${c.displayLabel.orEmpty()}"
+            return IpsPastProblem(
+                id = UUID.nameUUIDFromBytes(seed.toByteArray(Charsets.UTF_8)).toString(),
+                code = code,
+                system = c.codeSystem?.takeIf { it.isNotBlank() } ?: IpsCodeSystems.SNOMED,
+                display = if (code != null) c.displayLabel?.takeIf { it.isNotBlank() } else null,
+                text = if (code == null) c.displayLabel?.takeIf { it.isNotBlank() } else null,
+                onset = c.date?.takeIf { it.isNotBlank() },
+                clinicalStatus = IpsPastProblemStatus.normalize(c.st),
+                severity = IpsProblem.severityFromWord(c.s),
+                note = c.d?.takeIf { it.isNotBlank() },
+            )
+        }
     }
 }

@@ -65,5 +65,5 @@
     <string name="drug_picker_status_empty">No results. Try another term.</string>
     <string name="drug_picker_status_error">Knowledge base error</string>
     <string name="drug_picker_cancel">Cancel</string>
-
+    <string name="drug_picker_add_as_is">➕ Add “%1$s” as is</string>
 </resources>

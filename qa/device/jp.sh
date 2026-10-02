@@ -94,6 +94,34 @@ act() {
         *)    echo "branch-push: refused (only ag/* branches allowed: $1)" >&2; return 1 ;;
       esac
       ;;
+    report-raw)
+      local target="$1"
+      if [[ "$target" != /* ]]; then
+        if [ -n "${OUT:-}" ] && [ -d "$OUT" ]; then target="$OUT/$target"; else target="$PWD/$target"; fi
+      fi
+      mkdir -p "$(dirname "$target")"
+      : > "$target"
+      local rel
+      for dir in "$OUT/qr" "$OUT/json" "$OUT/validator"; do
+        [ -d "$dir" ] || continue
+        for f in "$dir"/*; do
+          [ -f "$f" ] || continue
+          case "$dir" in
+            */validator)
+              case "$(basename "$f")" in summary*.txt) ;; *) continue ;; esac
+              ;;
+          esac
+          rel="${f#$OUT/}"
+          echo "### \`$rel\`" >> "$target"
+          echo '```' >> "$target"
+          cat "$f" >> "$target"
+          [ -z "$(tail -c 1 "$f")" ] || echo "" >> "$target"
+          echo '```' >> "$target"
+          echo "" >> "$target"
+        done
+      done
+      echo "report-raw: wrote $(wc -l < "$target" | tr -d ' ') lines to $target"
+      ;;
     *)              echo "unknown action: $a"; return 64 ;;
   esac
 }

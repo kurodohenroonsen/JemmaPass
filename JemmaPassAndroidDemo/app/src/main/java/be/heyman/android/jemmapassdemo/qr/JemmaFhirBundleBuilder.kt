@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4.Medication
 import dev.ohs.fhir.model.r4.MedicationStatement
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Patient
+import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.String
@@ -128,7 +129,11 @@ object JemmaFhirBundleBuilder {
             
             p?.gs?.let { gender = Enumeration.of(mapGender(it), null) }
             p?.bd?.takeIf { it.isNotBlank() }?.let {
-                birthDate = dev.ohs.fhir.model.r4.Date.Builder().apply { value = FhirDate.fromString(it) }
+                try {
+                    birthDate = dev.ohs.fhir.model.r4.Date.Builder().apply { value = FhirDate.fromString(it) }
+                } catch (e: Exception) {
+                    android.util.Log.w(TAG, "build: birthDate not ISO, omitted", e)
+                }
             }
             
             address.addAll(buildPatientAddresses(hydrated))
@@ -148,8 +153,10 @@ object JemmaFhirBundleBuilder {
             (p?.ct ?: emptyList()).forEach { c ->
                 if (!c.n.isNullOrBlank() || !c.p.isNullOrBlank() || !c.e.isNullOrBlank()) {
                     contact.add(Patient.Contact.Builder().apply {
-                        name = HumanName.Builder().apply {
-                            text = String.Builder().apply { value = c.n ?: "" }
+                        if (!c.n.isNullOrBlank()) {
+                            name = HumanName.Builder().apply {
+                                text = String.Builder().apply { value = c.n }
+                            }
                         }
                         
                         c.p?.takeIf { it.isNotBlank() }?.let {
@@ -209,12 +216,16 @@ object JemmaFhirBundleBuilder {
                     else -> AllergyIntolerance.AllergyIntoleranceCriticality.Unable_To_Assess
                 }, null)
                 code = CodeableConcept.Builder().apply {
-                    coding.add(Coding.Builder().apply {
-                        system = Uri.Builder().apply { value = SYS_SNOMED }
-                        code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = codeStr }
-                        display = String.Builder().apply { value = displayStr }
-                    })
-                    text = String.Builder().apply { value = displayStr }
+                    if (codeStr.isNotBlank()) {
+                        coding.add(Coding.Builder().apply {
+                            system = Uri.Builder().apply { value = SYS_SNOMED }
+                            code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = codeStr }
+                            display = String.Builder().apply { value = displayStr }
+                        })
+                    }
+                    if (displayStr.isNotBlank()) {
+                        text = String.Builder().apply { value = displayStr }
+                    }
                 }
             }
             
@@ -245,20 +256,24 @@ object JemmaFhirBundleBuilder {
 
             val medication = Medication.Builder().apply {
                 code = CodeableConcept.Builder().apply {
-                    coding.add(Coding.Builder().apply {
-                        system = Uri.Builder().apply { value = primarySystem }
-                        code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = rawCode }
-                        display = String.Builder().apply { value = displayStr }
-                    })
-                    // Add secondary ATC code if available and not already the primary code
-                    m.atcCode?.takeIf { it.isNotBlank() && it != rawCode }?.let { atc ->
+                    if (rawCode.isNotBlank()) {
                         coding.add(Coding.Builder().apply {
-                            system = Uri.Builder().apply { value = SYS_ATC }
-                            code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = atc }
+                            system = Uri.Builder().apply { value = primarySystem }
+                            code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = rawCode }
                             display = String.Builder().apply { value = displayStr }
                         })
+                        // Add secondary ATC code if available and not already the primary code
+                        m.atcCode?.takeIf { it.isNotBlank() && it != rawCode }?.let { atc ->
+                            coding.add(Coding.Builder().apply {
+                                system = Uri.Builder().apply { value = SYS_ATC }
+                                code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = atc }
+                                display = String.Builder().apply { value = displayStr }
+                            })
+                        }
                     }
-                    text = String.Builder().apply { value = displayStr }
+                    if (displayStr.isNotBlank()) {
+                        text = String.Builder().apply { value = displayStr }
+                    }
                 }
             }
             
@@ -275,6 +290,38 @@ object JemmaFhirBundleBuilder {
                 Reference.Builder().apply { reference = String.Builder().apply { value = patientUrn } }
             ).apply {
                 dateAsserted = nowDateTimeBuilder()
+
+                m.raw.effective?.takeIf { it.isNotBlank() }?.let { eff ->
+                    if (eff.contains("/")) {
+                        val parts = eff.split("/")
+                        val s = parts.getOrNull(0)?.trim()?.takeIf { it.isNotBlank() }
+                        val e = parts.getOrNull(1)?.trim()?.takeIf { it.isNotBlank() }
+                        effective = MedicationStatement.Effective.Period(Period.Builder().apply {
+                            s?.let { startStr ->
+                                try {
+                                    start = DateTime.Builder().apply { value = FhirDateTime.fromString(startStr) }
+                                } catch (e: Exception) {
+                                    android.util.Log.w(TAG, "build: medication effective start unparseable, omitted", e)
+                                }
+                            }
+                            e?.let { endStr ->
+                                try {
+                                    end = DateTime.Builder().apply { value = FhirDateTime.fromString(endStr) }
+                                } catch (e: Exception) {
+                                    android.util.Log.w(TAG, "build: medication effective end unparseable, omitted", e)
+                                }
+                            }
+                        }.build())
+                    } else {
+                        try {
+                            effective = MedicationStatement.Effective.DateTime(
+                                DateTime.Builder().apply { value = FhirDateTime.fromString(eff.trim()) }.build()
+                            )
+                        } catch (e: Exception) {
+                            android.util.Log.w(TAG, "build: medication effective date unparseable, omitted", e)
+                        }
+                    }
+                }
                 
                 val dosageText = listOfNotNull(
                     m.timing?.takeIf { it.isNotBlank() },
@@ -510,8 +557,9 @@ object JemmaFhirBundleBuilder {
     internal fun reconcileBloodGroup(results: List<IpsResult>, sid: kotlin.String, bloodType: kotlin.String?): List<IpsResult> {
         val expected = IpsBloodGroup.snomedCode(bloodType)
             ?: return results.filterNot { IpsBloodGroup.isDerived(it) }
+        val canonical = IpsBloodGroup.normalize(bloodType)
         val isBloodGroup = { r: IpsResult -> r.code == IpsBloodGroup.LOINC_ABO_RH || IpsBloodGroup.isDerived(r) }
-        val keep = results.firstOrNull { isBloodGroup(it) && it.valueCode == expected }
+        val keep = results.firstOrNull { isBloodGroup(it) && (it.valueCode == expected || IpsBloodGroup.labelOf(it) == canonical) }
         if (keep != null) return results.filter { !isBloodGroup(it) || it === keep }
         val others = results.filterNot { isBloodGroup(it) }
         val derived = IpsBloodGroup.derivedResult(sid, bloodType) ?: return others
@@ -543,7 +591,13 @@ object JemmaFhirBundleBuilder {
         }
         p.adrs.forEach { a ->
             out.add(dev.ohs.fhir.model.r4.Address.Builder().apply {
-                a.use?.takeIf { it.isNotBlank() }?.let { use = Enumeration.of(dev.ohs.fhir.model.r4.Address.AddressUse.fromCode(it), null) }
+                a.use?.takeIf { it.isNotBlank() }?.let {
+                    try {
+                        use = Enumeration.of(dev.ohs.fhir.model.r4.Address.AddressUse.fromCode(it), null)
+                    } catch (e: Exception) {
+                        android.util.Log.w(TAG, "build: address.use unrecognised, omitted", e)
+                    }
+                }
                 a.line?.takeIf { it.isNotBlank() }?.let { line.add(String.Builder().apply { value = it }) }
                 a.city?.takeIf { it.isNotBlank() }?.let { city = String.Builder().apply { value = it } }
                 a.postalCode?.takeIf { it.isNotBlank() }?.let { postalCode = String.Builder().apply { value = it } }
@@ -570,9 +624,21 @@ object JemmaFhirBundleBuilder {
         }
         p.tels.forEach { t ->
             out.add(ContactPoint.Builder().apply {
-                t.system?.takeIf { it.isNotBlank() }?.let { system = Enumeration.of(ContactPoint.ContactPointSystem.fromCode(t.system), null) }
+                t.system?.takeIf { it.isNotBlank() }?.let {
+                    try {
+                        system = Enumeration.of(ContactPoint.ContactPointSystem.fromCode(t.system), null)
+                    } catch (e: Exception) {
+                        android.util.Log.w(TAG, "build: telecom.system unrecognised, omitted", e)
+                    }
+                }
                 t.value?.takeIf { it.isNotBlank() }?.let { value = String.Builder().apply { value = it } }
-                t.use?.takeIf { it.isNotBlank() }?.let { use = Enumeration.of(ContactPoint.ContactPointUse.fromCode(t.use), null) }
+                t.use?.takeIf { it.isNotBlank() }?.let {
+                    try {
+                        use = Enumeration.of(ContactPoint.ContactPointUse.fromCode(t.use), null)
+                    } catch (e: Exception) {
+                        android.util.Log.w(TAG, "build: telecom.use unrecognised, omitted", e)
+                    }
+                }
             })
         }
         return out
