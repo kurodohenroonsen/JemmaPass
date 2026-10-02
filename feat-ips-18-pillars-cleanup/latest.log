@@ -8,26 +8,27 @@ Daemon will be stopped at the end of the build
 > Task :app:debugOssLicensesTask
 > Task :app:generateDebugResValues
 > Task :app:generateDebugResources
+> Task :app:mergeDebugResources
 > Task :app:packageDebugResources
 > Task :app:processDebugNavigationResources
 > Task :app:generateDebugBuildConfig
-> Task :app:mergeDebugResources
-> Task :app:parseDebugLocalResources
 > Task :app:checkDebugAarMetadata
-> Task :app:dataBindingGenBaseClassesDebug
 > Task :app:compileDebugNavigationResources
 > Task :app:mapDebugSourceSetPaths
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
 
 > Task :app:processDebugMainManifest
 /home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/AndroidManifest.xml:165:9-168:35 Warning:
 	provider#com.google.firebase.provider.FirebaseInitProvider was tagged at AndroidManifest.xml:165 to remove other declarations but no other declaration present
 
+> Task :app:dataBindingGenBaseClassesDebug
 > Task :app:processDebugManifest
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:javaPreCompileDebugUnitTest
 > Task :app:javaPreCompileDebug
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:processDebugManifestForPackage
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
@@ -35,19 +36,18 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets
 > Task :app:desugarDebugFileDependencies
-> Task :app:processDebugManifestForPackage
-> Task :app:checkDebugDuplicateClasses
-> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugJniLibFolders
+> Task :app:checkDebugDuplicateClasses
 > Task :app:mergeDebugNativeLibs
-> Task :app:processDebugResources
-> Task :app:validateSigningDebug
-> Task :app:writeDebugAppMetadata
-> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeLibDexDebug
 
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libLiteRt.so, libLiteRtClGlAccelerator.so, libandroidx.graphics.path.so, libbarhopper_v3.so, libimage_processing_util_jni.so, liblitertlm_jni.so, libsqlite3x.so, libsurface_util_jni.so, libtensorflowlite_jni_gms_client.so. Run with --info option to learn more.
 
+> Task :app:processDebugResources
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
 > Task :app:mergeExtDexDebug
 > Task :app:kspDebugKotlin
 > Task :app:compileDebugKotlin
@@ -86,7 +86,7 @@ w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/mai
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ai/livescan/TtsStaticVerdict.kt:48:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ai/livescan/TtsStaticVerdict.kt:52:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
 - To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
 - To keep applying to the value parameter only, use the '@param:' annotation target.
 
@@ -708,7 +708,7 @@ w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/mai
 
 See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/profile/common/FormA11yHelpers.kt:129:20 'static fun setAccessibilityLiveRegion(p0: View, p1: Int): Unit' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/profiles/detail/ProfileDetailFragment.kt:1665:47 Redundant call of conversion method.
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/profiles/detail/ProfileDetailFragment.kt:1698:47 Redundant call of conversion method.
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/radar/RadarOverlayView.kt:298:91 Redundant call of conversion method.
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/radar/RadarOverlayView.kt:453:68 'field scaledDensity: Float' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/settings/SettingsViewModel.kt:46:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
@@ -764,9 +764,9 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 > Task :app:processDebugUnitTestJavaRes
 > Task :app:transformDebugUnitTestClassesWithAsm
 > Task :app:testDebugUnitTest
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790900843332.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790902586220.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
 
-BUILD SUCCESSFUL in 2m 40s
+BUILD SUCCESSFUL in 2m 31s
 55 actionable tasks: 55 executed
