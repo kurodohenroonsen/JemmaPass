@@ -38,13 +38,13 @@
    - 4.2. Matrice d'Équivalence Technologique Complète (Android ➔ iOS)
    - 4.3. Base de Données Clinique (`knowledge_full.db`) & Moteur FTS5 sous iOS
    - 4.4. Intelligence Artificielle Embarquée : Inférence LLM & Vision OCR sur Apple Silicon
-   - 4.5. Le Défi du Réseau Maillé P2P (BLE CoreBluetooth vs Nearby Connections)
+   - 4.5. Le Défi du Réseau P2P : Google Nearby Connections (Android) ➔ MultipeerConnectivity & CoreBluetooth (iOS)
    - 4.6. Expérience Utilisateur & Intégration Écosystème Apple
 5. [Orchestration & Feuille de Route d'Exécution](#5-orchestration--feuille-de-route-dexécution)
    - 5.1. Rôles et responsabilités
    - 5.2. Plan par jalons (Milestones M1 à M5)
    - 5.3. Matrice d'assurance qualité & cas d'usage critiques
-6. [Table des Sources et Affirmations Vérifiées](#6-table-des-sources-et-affirmations-vérifiées)
+6. [Sources citées — à vérifier par un humain avant usage](#6-sources-citées--à-vérifier-par-un-humain-avant-usage)
 
 ---
 
@@ -54,7 +54,7 @@
 
 - `[EXISTE SUR ANDROID (downloads/JemmaModelCatalog.kt:3,80-90)]` : **Modèle de distribution hybride** : Le runtime fonctionne à 100% hors-ligne lors des interventions d'urgence. En revanche, l'installation ou la mise à jour initiale de la base clinique (`knowledge_full.db`, ~2,0 Go dans l'en-tête `:7`, taille déclarée `3_360_727_040L` soit ~3,13 Go à `:89`) et des modèles de langage (`gemma-4-E2B-it.litertlm`, ~2,4 Go ou `gemma-4-E4B-it.litertlm`, ~3,4 Go à `:5-6`) s'effectue via téléchargement HTTP depuis `https://jemmapass.net/models/`.
 - `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:23-28, ips/IpsImmunization.kt:107-115)]` : **Standard International HL7 FHIR R4 IPS** : Le document maître persisté pour les 8 piliers cliniques FHIR-natifs (`im` vaccins, `pr` actes, `dv` dispositifs, `rs` biologie, `ph` antécédents, `cn` problèmes actifs, `pg` grossesse, `fs` statut fonctionnel — `ips/IpsImmunization.kt:107-115`) est le Bundle FHIR R4 IPS (`<sid>.fhir.json`), projeté en format court `_j 1.2` (`<sid>.json`, `ProfilesRepository.kt:464-472`). En revanche, les allergies (`al`) et les médicaments (`md`) **ne sont pas FHIR-natifs** : ils sont saisis et gérés dans `_j 1.2` (`JemmaProfileJ`) puis hydratés dans le Bundle FHIR (`qr/JemmaFhirBundleBuilder.kt:55,81`).
-- `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:130-135)]` : **Contrôle Pharmacologique Embarqué Déterministe** : Détection des interactions médicamenteuses majeures et modérées (DDInter 2.0 via `v_ddi_emergency`) et des allergies croisées sans appel réseau.
+- `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:130-135)]` : **Contrôle Pharmacologique Embarqué Déterministe** : Détection des interactions médicamenteuses majeures et modérées (DDInter 2.0 via `v_ddi_emergency`) et des allergies croisées sans appel réseau avec calcul du `verdict`.
 - `[HYPOTHÈSE À VÉRIFIER]` : **Conformité réglementaire APPI / RGPD / HIPAA** : Bien que le stockage soit strictement local (on-device sans serveur central), la conformité formelle aux lois de protection des données de santé (APPI au Japon, RGPD en Europe, HIPAA aux USA) nécessite un audit juridique certifié, notamment en raison de la sensibilité des données médicales d'urgence.
 
 ### 1.2. Le quatuor narratif : Kurodo, Haru, Kamekichi, Gemma
@@ -77,7 +77,7 @@ Le système a été conçu autour de 4 personas :
   - `[EXISTE SUR ANDROID (sos/JemmaSosBleScanner.kt:49)]` : Découverte et partage maillé de balises SOS hors-ligne.
   - `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:152)]` : QR Code lisible sans application par tout smartphone en mode texte traduit.
 - **Pèlerinage de Shikoku (Henro - 88 Temples) & Tourisme International** :
-  - `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:109-125)]` : Canal 2 traduisant instantanément le pass en 25 langues (dont japonais, anglais, français, chinois, coréen).
+  - `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:109-135)]` : Canal 2 traduisant instantanément via `Lang` en 25 langues (dont japonais, anglais, français, chinois, coréen).
 
 ---
 
@@ -117,7 +117,7 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 - `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:23-35, ips/IpsImmunization.kt:107-115)]` :
   - **Source de Vérité pour les 8 Piliers FHIR-Natifs** : `<sid>.fhir.json` (HL7 FHIR R4 Bundle).
   - **Projection Compacte & Piliers Historiques** : `<sid>.json` (`JemmaProfileJ`, schéma `_j 1.2`), hébergeant notamment la saisie originale du patient `p`, des allergies `al` et des médicaments `md`.
-- `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:146,371)]` :
+- `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:146,371)]` (`writeMutex` / `withLock`) :
   - **Contrôle de Concurrence** : Le cycle Lecture-Modification-Écriture est protégé par `private val writeMutex = kotlinx.coroutines.sync.Mutex()`.
   - **Nuance technique critique** : Le `Mutex` de coroutines Kotlin est **strictement non-réentrant**. Tout appel imbriqué à `withLock` dans la même coroutine provoque un interblocage (deadlock) immédiat.
 
@@ -130,7 +130,7 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
   - `INCOMPLETE` : Contrôle partiel (entrée non résolue ou pilier non exhaustif).
   - `NOT_CHECKED` : Base KB indisponible ou médicament non résolu (`kb/KbCrossCheck.kt:132`).
 - `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:418)]` : **Comportement des allergies sans ATC** : Une allergie sans code ATC est évaluée par mot-clé textuel via `inferAtcFromAllergyName` (`kb/KbCrossCheck.kt:818`) et compte avec le statut `CHECKED` dans le rapport global (`KbSafety.pillarStatus(kbUp, allergies.size)`).
-- `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:858,878)]` : **Défauts connus de filtrage lexical (UC-ALM-009 / UC-ALM-010)** : L'implémentation actuelle utilise `contains("ains")` et `contains("statin")`, générant de réels faux positifs (ex: l'allergie alimentaire aux "grains" déclenche l'alerte AINS, et "nystatine" déclenche l'alerte statines). Le filtrage par frontières de mots relève d'une correction requise.
+- `[EXISTE SUR ANDROID (kb/AllergyKeywords.kt:65,86)]` : **Résolution des défauts de filtrage lexical (UC-ALM-009 / UC-ALM-010)** : L'implémentation utilise désormais `hasExactWord("ains")` et `hasExactWord("statin")` (`AllergyKeywords.kt:65,86`) après extraction par SD-22, excluant les faux positifs ("grains", "nystatine").
 
 ### 2.4. Le Moteur de Vulgarisation Thérapeutique (Gemma 4 + `VulgariseRepository`)
 
@@ -169,9 +169,9 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 ### 2.6. Canaux de Transfert Multi-Supports Hors-Ligne
 
 - `[EXISTE SUR ANDROID (qr/JemmaPayloadCodec.kt:57,189)]` : **Canal 1 (QR Compact `_j2`)** : Format `_j2:<base64(deflate-raw(json))>` (RFC 1951), encodage via `EncodeResult` et décodage via `DecodeResult` (`:122`).
-- `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:67,152)]` : **Canal 2 (QR Texte Universel)** : Texte clair 25 langues, plafonné à **1800 octets UTF-8** (`QR_MAX_SINGLE = 1800`), avec éviction par rangs (du rang 12 fonctionnel au rang 1 allergies) et marqueur `✂️ …`.
+- `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:67,152)]` (`MAX_BYTES`, `build`) : **Canal 2 (QR Texte Universel)** : Texte clair 25 langues, plafonné à **1800 octets UTF-8** (`MAX_BYTES = 1800`), avec éviction par rangs (du rang 12 vaccinations au rang 1 allergies) et marqueur `✂️ …`.
 - `[EXISTE SUR ANDROID (qr/JemmaQrFrameSplitter.kt:94, qr/JemmaQrFrameAssembler.kt:26,65)]` : **Canal 3 (FHIR Slideshow)** : Trames `JF:i/N|<data>` avec index **1-based** (`1..N`), découpées via `split(payload, maxSingle, frameChunk)` et reconstituées via `offer(raw: String?): Result`.
-- `[EXISTE SUR ANDROID (sos/JemmaSosChunkCodec.kt:171-175, mesh/codec/EventChunk.kt:8, sos/JemmaNearbyEndpointCodec.kt:51)]` : **Canaux 4a & 4b (Transferts Sans-Fil SOS & Triage)** :
+- `[EXISTE SUR ANDROID (sos/JemmaSosChunkCodec.kt:171-175, mesh/codec/EventChunk.kt:8, sos/JemmaNearbyEndpointCodec.kt:51)]` (`MAX_CHUNK_BYTES`, `victim_sid`, `triageEndpointId`) : **Canaux 4a & 4b (Transferts Sans-Fil SOS & Triage)** :
   - **Canal 4a (Balise SOS BLE)** : Profil d'urgence `_j 1.2` découpé en trames binaires de **200 octets max** via BLE 5.0 Extended Advertising (`MAX_CHUNK_BYTES = 200`, `sos/JemmaSosChunkCodec.kt:171-175`, diffusé par `sos/JemmaSosBleAdvertiser.kt:60`).
   - **Canal 4b (Réseau Maillé de Triage Nearby)** : Statut et événements SALT relayés sous forme d'événements texte `E|<source>|<victim>|<status>|<rescuer>|<ts>|<ttl>|<seq>` par **Google Nearby Connections** (`mesh/codec/EventChunk.kt:8`, `mesh/relay/RelayManager.kt:12`), soumis à la limite stricte de **131 octets UTF-8** (`MAX_ENDPOINT_NAME_LEN = 131`, `sos/JemmaNearbyEndpointCodec.kt:51`).
 - `[EXISTE SUR ANDROID (sos/JemmaEmergencyWidget.kt:24, sos/JemmaWidgetEmergencyService.kt)]` : **Canal 5 (Widget Accueil & Service)** : Sur Android, le déclenchement SOS s'appuie sur un `AppWidgetProvider` et un `ForegroundService` (`JemmaWidgetEmergencyService.kt`), et **non sur un overlay de fenêtre système**.
@@ -199,8 +199,8 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
   7. `クラビット` / `レボフロキサシン` ➔ `"Levofloxacin"`
   8. `アドレナリン` / `エピネフリン` ➔ `"Epinephrine"`
   9. `ボルタレン` ➔ `"Diclofenac"`
-- `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:158, kb/KbCrossCheck.kt:858-868)]` vs `[HYPOTHÈSE À VÉRIFIER]` :
-  - Dans le code Android, `KnowledgeBaseService.kt:158` normalise `ロキソニン` / `ロキソプロフェン` en `"Loxoprofen"`. Dans `kb/KbCrossCheck.kt:858-868`, le bloc de reconnaissance des AINS associe les mots-clés (`ains`, `ibuprofène`, `naproxène`, `diclofénac`, `kétoprofène`) au code ATC `M01AE01` (Ibuprofène).
+- `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:158, kb/AllergyKeywords.kt:63-68)]` (`Loxoprofen`, `NSAID`) vs `[HYPOTHÈSE À VÉRIFIER]` :
+  - Dans le code Android, `KnowledgeBaseService.kt:158` normalise `ロキソニン` / `ロキソプロフェン` en `"Loxoprofen"`. Dans `kb/AllergyKeywords.kt:63-68`, le bloc de reconnaissance des AINS associe les mots-clés (`ains`, `ibuprofène`, `naproxène`, `diclofénac`, `kétoprofène`) au code ATC `M01AE01` (Ibuprofène).
   - **Correction nomenclature OMS & Statut Loxoprofène** :
     - Dans l'index officiel de l'OMS ([WHOCC ATC M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04)), le code `M01AE04` correspond à **Fenoprofen**, et **non à Loxoprofen**.
     - L'OMS répertorie le Loxoprofène sous le code ATC topique **`M02AA31`** pour les formes locales (gel, patch, cataplasmes : [WHOCC ATC M02AA31](https://www.whocc.no/atc_ddd_index/?code=M02AA31)).
@@ -223,7 +223,7 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 
 ### 3.5. Tri de Catastrophe : Protocole SALT adapté et Grille Réelle
 
-`[EXISTE SUR ANDROID (triage/SaltCode.kt:36-51, triage/StatusResolver.kt:56,68,108)]` : Les 6 codes et couleurs réels du moteur SALT sont :
+`[EXISTE SUR ANDROID (triage/SaltCode.kt:36-51, triage/StatusResolver.kt:57,70,124)]` (`WAIT`, `DCD_GRACE_SEC`, `shouldOverwrite`, `apply`) : Les 6 codes et couleurs réels du moteur SALT sont :
 
 | Code SALT | Définition dans JemmaPass | Emoji | Couleur Réelle Hex | Rôle clinique & Règle de résolution |
 | :--- | :--- | :---: | :--- | :--- |
@@ -303,10 +303,11 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 
 ### 4.5. Le Défi du Réseau P2P : Google Nearby Connections (Android) ➔ MultipeerConnectivity & CoreBluetooth (iOS)
 
-- `[EXISTE SUR ANDROID (mesh/codec/EventChunk.kt:8, mesh/relay/RelayManager.kt:12, sos/JemmaNearbyEndpointCodec.kt:51)]` :
+- `[EXISTE SUR ANDROID (mesh/codec/EventChunk.kt:8, mesh/relay/RelayManager.kt:12, sos/JemmaNearbyEndpointCodec.kt:51)]` (`victim_sid`, `JemmaNearbySosService`, `triageEndpointId`) :
   - Sur Android, la propagation maillée des statuts et événements de triage SALT (`E|<source>|<victim>|<status>|<rescuer>|<ts>|<ttl>|<seq>`, <= 131 octets) repose sur l'API **Google Nearby Connections**, tandis que la balise SOS d'urgence (`_j 1.2`) diffuse des trames binaires de 200 octets max via BLE 5.0 Extended Advertising (`sos/JemmaSosBleAdvertiser.kt:60`, `MAX_CHUNK_BYTES = 200`).
-- `[PROPOSITION IOS]` : **MultipeerConnectivity pour le relais de triage SALT** :
-  - Apple ne disposant pas de l'API Google Nearby Connections, le portage iOS utilise le framework natif **`MultipeerConnectivity`** (`MCSession`, `MCNearbyServiceAdvertiser`, `MCNearbyServiceBrowser`) comme équivalent direct hors-ligne pour la découverte et l'échange ad-hoc P2P (Wi-Fi direct et Bluetooth) des trames SALT sans infrastructure réseau.
+- `[PROPOSITION IOS]` : **MultipeerConnectivity pour le relais de triage SALT & Limite d'interopérabilité trans-OS** :
+  - Apple ne disposant pas de l'API Google Nearby Connections, le portage iOS utilise le framework natif **`MultipeerConnectivity`** (`MCSession`, `MCNearbyServiceAdvertiser`, `MCNearbyServiceBrowser`) comme équivalent direct hors-ligne pour la découverte et l'échange ad-hoc P2P (Wi-Fi direct et Bluetooth) des trames SALT sans infrastructure réseau entre terminaux iOS.
+  - **Limite technique critique d'interopérabilité trans-OS** : Le framework `MultipeerConnectivity` d'Apple n'est **absolument pas interopérable** avec Google Nearby Connections sur Android (les piles réseau et protocoles de découverte diffèrent totalement : un iPhone et un terminal Android ne se voient pas directement et ne peuvent pas échanger de trames SALT en P2P sans passerelle ou pont applicatif dédié).
 - `[PROPOSITION IOS]` vs `[HYPOTHÈSE À VÉRIFIER]` : **CoreBluetooth GATT pour l'interopérabilité SOS trans-OS** :
   - Pour garantir la réception des balises SOS émises par Android (`sos/JemmaSosBleAdvertiser.kt:60`) et l'émission depuis iOS vers les scanners Android (`sos/JemmaSosBleScanner.kt:49`), iOS implémente un service GATT périphérique `CoreBluetooth`.
   - `[HYPOTHÈSE À VÉRIFIER]` : Sous iOS, l'API `CBPeripheralManager` impose des restrictions strictes sur l'émission publicitaire en arrière-plan : les identifiants de service sont masqués dans une zone réservée propriétaire et les données publicitaires personnalisées (`CBAdvertisementData`) ne peuvent pas transporter de gros volumes arbitraires lorsque l'application est suspendue. L'émission continue en arrière-plan nécessite une validation empirique de conformité avec les politiques d'Apple.
@@ -328,7 +329,7 @@ L'exécution du portage iOS est confiée à des sous-agents spécialisés :
 1. **Agent Clinique & Données Japon** : Intégration des nomenclatures de pharmacopée japonaise (HOT, YJ, MHLW), règles d'interaction Katakana, conformité SaMD PMDA et restrictions My Number.
 2. **Agent Moteur Partagé & Codecs** : Module KMP partagé (`JemmaCore`), codec `_j2`, assembleur de trames QR `JF:i/N` (1..N) et budget 1800 octets.
 3. **Agent IA Embarquée & Vision** : Pipeline LiteRT iOS / Core ML, reconnaissance de texte japonais avec Apple Vision, prompt engineering vulgarisation.
-4. **Agent Réseau Maillé & SOS** : Protocole CoreBluetooth GATT compatible avec les chunks BLE Android de 200 octets pour le profil SOS (`sos/JemmaSosChunkCodec.kt:171-175`), passerelle pour les événements de triage SALT `E|...` de 131 octets (`mesh/codec/EventChunk.kt:8`, `sos/JemmaNearbyEndpointCodec.kt:51`), machine à états SALT LWW (`StatusResolver.kt:68,108`).
+4. **Agent Réseau Maillé & SOS** : Protocole CoreBluetooth GATT compatible avec les chunks BLE Android de 200 octets (`MAX_CHUNK_BYTES = 200`, `sos/JemmaSosChunkCodec.kt:171-175`), passerelle pour les événements de triage SALT `E|<source_sid>` de 131 octets (`mesh/codec/EventChunk.kt:8`, `triageEndpointId`, `sos/JemmaNearbyEndpointCodec.kt:51`), machine à états SALT LWW (`StatusResolver.kt:70,124`, `shouldOverwrite` / `apply`).
 5. **Agent SwiftUI & Intégration Système** : Interface SwiftUI, Live Activities, Lock Screen Widgets.
 
 ### 5.2. Plan par jalons (Milestones M1 à M5)
@@ -354,7 +355,7 @@ Le portage iOS devra valider l'ensemble des scénarios critiques documentés dan
 
 ---
 
-## 6. Table des Sources et Affirmations Vérifiées
+## 6. Sources citées — à vérifier par un humain avant usage
 
 | Affirmation / Sujet Technique | Statut & Éléments Vérifiés | URL Source Profonde Officielle | Date Consultation |
 | :--- | :--- | :--- | :---: |

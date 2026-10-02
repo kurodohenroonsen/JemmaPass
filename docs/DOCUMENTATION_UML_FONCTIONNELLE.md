@@ -69,18 +69,18 @@ Le système JemmaPass repose sur 5 invariants fonctionnels vérifiés dans le co
 │    de saisie directe _j 1.2 (<sid>.json) sont le patient (p),          │
 │    les allergies (al) et les médicaments (md). Le pilier cn fait       │
 │    partie d'IpsNativePillars.problems (ips/IpsImmunization.kt:113)     │
-│    et est projeté depuis le Bundle (ProfilesRepository.kt:469).        │
+│    et est projeté (`cn` / `problems`) (ProfilesRepository.kt:469).     │
 │                                                                        │
 │ 3. STRICT SAFETY DECISION MATRIX                                       │
 │    Tout conflit détecté donne ALERT (kb/KbCrossCheck.kt:131).          │
 │    Le verdict CLEAN ("Rien à signaler") n'est possible que si la KB    │
 │    est active, le candidat résolu et qu'aucune collision n'existe.     │
 │    Nuance du code : une allergie sans code ATC est évaluée par mots-   │
-│    clés et compte comme CHECKED (kb/KbCrossCheck.kt:418).              │
+│    clés et compte via pillarStatus (kb/KbCrossCheck.kt:418).           │
 │                                                                        │
 │ 4. DETERMINISTIC OFFLINE TRANSFER                                      │
 │    Le QR texte universel respecte un plafond strict de 1800 octets     │
-│    UTF-8 (qr/JemmaTextPayloadBuilder.kt:67). En cas de dépassement,    │
+│    UTF-8 `MAX_BYTES` (qr/JemmaTextPayloadBuilder.kt:67). En cas d'excès, │
 │    les sections sont évincées par rangs et marquées ✂️ (jamais de coupure│
 │    silencieuse). Les trames QR multi-frames sont indexées 1..N         │
 │    (qr/JemmaQrFrameAssembler.kt:26).                                   │
@@ -159,14 +159,14 @@ flowchart TD
 
 ### 2.3. Package 2 : Prise en Charge d'Urgence & Scan (Secouriste / DMAT)
 
-Implémenté dans `ai/medscan/MedScanController.kt:1-40` et `kb/KbCrossCheck.kt:130-135`.
+Implémenté dans `ai/medscan/MedScanController.kt:1-40` et `kb/KbCrossCheck.kt:130-135` (`verdict`, `checks`).
 
 ```mermaid
 flowchart TD
     subgraph Prise_En_Charge ["Prise en Charge d'Urgence"]
         SCAN["Scanner Médicament (Caméra OCR ML Kit)"]
         IMPORT["Scanner Pass Victime (QR / Mesh)"]
-        EVAL["Exécuter Contrôle Croisé Sécurité (KbCrossCheck.kt:652)"]
+        EVAL["Exécuter Contrôle Croisé Sécurité checkOneDrugAgainstProfile (KbCrossCheck.kt:646)"]
         VERDICT{"Évaluation Verdict (KbCrossCheck.kt:130)"}
         RED["🔴 ALERT: Au moins une collision (totalHits > 0)"]
         GREEN["🟢 CLEAN: Aucun hit ET vérification complète"]
@@ -341,7 +341,7 @@ Modèle strictement aligné sur `kb/KbCrossCheck.kt` et `kb/KbSafety.kt` :
 ```mermaid
 classDiagram
     class KnowledgeBaseService {
-        +resolveDrug(name: String?) ResolvedConcept [kb/KnowledgeBaseService.kt:144]
+        +resolveDrug(name: String?) ResolvedConcept [kb/KnowledgeBaseService.kt:143]
         +resolveAllergy(name: String?) ResolvedConcept [kb/KnowledgeBaseService.kt:315]
         +queryDDIByAtc(atcA: String?, atcB: String?) DDIResult [kb/KnowledgeBaseService.kt:440]
         +queryDDI(drugA: String?, drugB: String?) DDIResult [kb/KnowledgeBaseService.kt:478]
@@ -520,21 +520,21 @@ stateDiagram-v2
 
     Idle --> Modifying : Édition d'un Pilier (IHM)
     Modifying --> AcquiringLock : Clic Enregistrer
-    AcquiringLock --> Validating : writeMutex.withLock (ProfilesRepository.kt:371)
+    AcquiringLock --> Reconciling : writeMutex.withLock (ProfilesRepository.kt:371)
     
-    state Validating {
+    state Reconciling {
         [*] --> BloodGroupSync : Réconciliation LOINC 882-1 (ProfilesRepository.kt:451)
-        BloodGroupSync --> ValidatePillars : Remplacement si contradictoire + émission BloodGroupConflict
-        ValidatePillars --> [*]
+        BloodGroupSync --> EmitConflict : Remplacement si contradictoire + émission _bloodGroupConflictFlow (ProfilesRepository.kt:452-459)
+        EmitConflict --> ProjectToJ : Construction projected avec piliers natifs (ProfilesRepository.kt:462-472)
+        ProjectToJ --> [*]
     }
 
-    Validating --> WritingTemp : Validation OK (Réconciliation effectuée)
-    Validating --> ReleaseError : Erreur Interne Validation
+    Reconciling --> WritingTemp : Aucune validation avant toJson (ProfilesRepository.kt:447-476)
 
     state WritingTemp {
-        [*] --> ProjectToJ : moshi.toJson(profile) vers fichier .json.tmp
-        ProjectToJ --> BuildFhirBundle : JemmaFhirBundleBuilder.build() vers .fhir.json.tmp
-        BuildFhirBundle --> AtomicRename : Renommage Atomique (.tmp vers .json)
+        [*] --> SerializeJson : profileAdapter.toJson(projected) vers .json.tmp (ProfilesRepository.kt:475)
+        SerializeJson --> BuildFhirBundle : JemmaFhirBundleBuilder.build() vers .fhir.json.tmp (ProfilesRepository.kt:477)
+        BuildFhirBundle --> AtomicRename : Renommage Atomique (.tmp vers .json et .fhir.json)
         AtomicRename --> [*]
     }
 
@@ -551,7 +551,7 @@ stateDiagram-v2
 > 1. **En saisie formulaire manuelle (`ResultFormBottomSheet.kt:539,566-582`)** : Avant toute écriture, `ResultBloodGroupGuard.check()` détecte si le résultat 882-1 contredit `p.bt`. L'enregistrement est **bloqué sans rien persister** et une boîte de dialogue modale (`MaterialAlertDialogBuilder`) propose à l'utilisateur :
 >    - *« Annuler »* : retour au formulaire de résultat, aucune donnée sauvegardée.
 >    - *« Modifier dans l'identité »* : bascule vers l'écran d'identité du profil pour modifier `p.bt`.
-> 2. **À l'import / écriture du repository (`ProfilesRepository.kt:451-461`)** : Lors de la persistance sous `writeMutex`, `IpsBloodGroup.reconcile(nativeIn.results, id, profile.p?.bt)` remplace le résultat contradictoire par le groupe officiel du profil (`p.bt` fait autorité). L'événement de conflit est émis via `_bloodGroupConflictFlow.value = conflict` (`:459`), permettant à l'UI (`ResultsEditFragment.kt:108-144`) d'afficher une notification explicite du remplacement opéré sans corrompre le profil.
+> 2. **À l'import / écriture du repository (`profiles/ProfilesRepository.kt:447-476`)** : Lors de la persistance sous `writeMutex`, il n'y a **aucune étape de validation bloquante** susceptible de rejeter le profil. `IpsBloodGroup.reconcile(nativeIn.results, id, profile.p?.bt)` (`:451`) remplace le résultat contradictoire par le groupe officiel du profil (`p.bt` fait autorité). L'événement de conflit est émis via `_bloodGroupConflictFlow.value = conflict` (`:459`), permettant à l'UI (`ResultsEditFragment.kt:108-144`) d'afficher une notification explicite du remplacement opéré sans corrompre le profil. Le profil projeté `projected` est construit sans filtre bloquant (`:462-472`) et sérialisé directement via `profileAdapter.toJson(projected)` (`:475`). Même en cas d'exception lors de la construction du bundle FHIR (`:478-480`), l'écriture du profil JSON n'échoue pas.
 
 ### 4.2. Matrice Inviolable du Verdict de Sécurité Clinique (`KbSafetyVerdict`)
 
@@ -692,14 +692,17 @@ sequenceDiagram
     UI->>Secouriste: 🔴 BANDEAU ROUGE VIF ("Allergie Pénicillines détectée")
 ```
 
-> **Structure du Verdict (`ai/medscan/MedScanPipelineState.kt:52-107`)** :
+> **Structure du Verdict (`ai/medscan/MedScanPipelineState.kt:52-107`) et Couleur du Bandeau IHM (`ui/radar/PatientDetailFragment.kt:1074-1086`)** :
 > La classe scellée `Verdict` définit 8 sous-classes formelles : `None`, `Major`, `Moderate`, `Minor`, `Clean`, `NotIdentified`, `Failed`, et `AgentText`.
 > Dans le pipeline agentique Gemma (`ai/medscan/MedScanController.kt:343-345`), le contrôleur émet `Verdict.AgentText(victimDisplayName = profile.displayName, text = cleanText)`. La synthèse textuelle en langage naturel est ainsi transmise directement au bandeau d'alerte IHM et au moteur TTS vocal, tandis que `MedScanStepSafety.decide()` (`:308`) pilote l'état du cycle de vie clinique. L'outil `checkInteractions` est défini dans `ai/gemma/MedScanTools.kt:303` (enregistré dans `perScanTools` à `MedScanController.kt:263`).
+> **Comportement exact du bandeau UI (`ui/radar/PatientDetailFragment.kt:1074-1086`)** : La couleur du bandeau d'alerte après `Verdict.AgentText` dépend exclusivement de mots-clés présents dans le texte généré par Gemma :
+> - Si le texte contient l'un des mots-clés d'interdiction (`"DO NOT ADMINISTER"`, `"NE PAS DONNER"`, `"NO ADMINISTRAR"`, `"投与しないで"`, `"투여하지"`), `isDanger` passe à `true` et le bandeau prend la couleur rouge `0xFFB91C1C` (identique au verdict Major).
+> - Pour tout autre texte (absence de ces mots-clés), le bandeau prend par défaut la couleur verte `0xFF15803D` (identique au verdict Clean).
 
 
 ### 5.2. Contrôle Sans Interaction : Scénario Paracétamol chez un Profil Sain (Verdict CLEAN)
 
-Illustration d'un contrôle de sécurité complet aboutissant au verdict **CLEAN** (`kb/KbCrossCheck.kt:145`) :
+Illustration d'un contrôle de sécurité complet aboutissant au verdict **CLEAN** (`isClean`, `kb/KbCrossCheck.kt:145`) :
 
 ```mermaid
 sequenceDiagram
@@ -712,7 +715,7 @@ sequenceDiagram
 
     Secouriste->>UI: Soumet "Paracétamol 500mg" (Profil sain)
     UI->>Gemma: Contrôle candidat
-    Gemma->>Tools: resolveDrug("Paracétamol") [ai/JemmaTools.kt:172]
+    Gemma->>Tools: resolveDrug("Paracétamol") [ai/JemmaTools.kt:186]
     Tools-->>Gemma: {atc: "N02BE01", display: "Paracetamol"}
     Gemma->>Tools: checkOneAtcAgainstFocusProfile("N02BE01", "Paracetamol") [ai/JemmaTools.kt:625]
     Tools->>Cross: checkAllergiesWithStatus + checkMedicationsWithStatus + checkConditionsWithStatus
@@ -727,7 +730,7 @@ sequenceDiagram
 
 ### 5.3. Génération du QR Texte 25 Langues avec Budget d'Éviction Strict (1800 octets UTF-8)
 
-Implémenté dans `qr/JemmaTextPayloadBuilder.kt:152-290` :
+Implémenté dans `qr/JemmaTextPayloadBuilder.kt:152-290` (`build` / `cutUtf8`) :
 
 ```mermaid
 sequenceDiagram
@@ -773,9 +776,9 @@ sequenceDiagram
     PhoneA->>PhoneA: Encode EventChunk "E|source|victim|HELP|rescuer|ts|ttl|seq" (<= 131B, EventChunk.kt:8)
     PhoneA->>Nearby: Re-diffusion Nearby Connections (RelayManager.kt:12)
     Nearby->>PhoneB: Trame reçue par Terminal B (onEndpointFound / advertising)
-    PhoneB->>ResolverB: shouldOverwrite(existing, incoming) [triage/StatusResolver.kt:68]
+    PhoneB->>ResolverB: shouldOverwrite(existing, incoming) [triage/StatusResolver.kt:70]
     ResolverB-->>PhoneB: true (Timestamp plus récent)
-    PhoneB->>ResolverB: apply(incoming) [triage/StatusResolver.kt:108]
+    PhoneB->>ResolverB: apply(incoming) [triage/StatusResolver.kt:124]
     PhoneB->>PhoneB: Met à jour le Radar (Point rouge clignotant)
     PhoneB->>PhoneB: Notifie le secouriste B
 ```
@@ -820,11 +823,11 @@ sequenceDiagram
 
 ### 6.1. Algorithme de Résolution Sémantique d'un Médicament
 
-Implémentation exacte observée dans `kb/KnowledgeBaseService.kt:143-250,833-855` :
+Implémentation exacte observée dans `kb/KnowledgeBaseService.kt:143-250,833-855` (`resolveDrug` / `searchCodes`) :
 
 ```mermaid
 flowchart TD
-    Start(["Chaîne Médicament Candidate"]) --> NormalizeHardcoded{"Correspondance Table des 10 branches (9 noms distincts) ? (KnowledgeBaseService.kt:153-164)"}
+    Start(["Chaîne Médicament Candidate"]) --> NormalizeHardcoded{"Correspondance Table normalizedQuery des 10 branches (9 noms distincts) ? (KnowledgeBaseService.kt:153-164)"}
     
     NormalizeHardcoded -- "Oui (Augmentin, Amoxicilline, Aspirine, Loxonine, Calonal, Warfarine, Cravit, Adrénaline, Voltaren...)" --> MapEnglish["Substitution par DCI Anglaise Standard"]
     NormalizeHardcoded -- Non --> ExactLookup["Recherche Exacte ddinter_drugs (COLLATE NOCASE, :174)"]
@@ -855,7 +858,7 @@ flowchart TD
 
 ### 6.2. Algorithme de Détection d'Allergie Croisée par Arborescence de Classes
 
-Implémentation exacte observée dans `kb/KbCrossCheck.kt:218-418,818-885` :
+Implémentation exacte observée dans `kb/KbCrossCheck.kt:218-418` et `kb/AllergyKeywords.kt:19-93` (`checkOneAtcAgainstAllergies` / `AllergyKeywords`) :
 
 ```mermaid
 flowchart TD
@@ -867,14 +870,14 @@ flowchart TD
     ResolveAllergy --> InferAllergy{"allergyAtcFromKb != null ? (KbCrossCheck.kt:256)"}
     InferAllergy -- Oui --> SetAllergyAtc["allergyAtc = allergyAtcFromKb"]
     InferAllergy -- Non --> RunInfer["allergyAtc = inferAtcFromAllergyName(allergyName) (KbCrossCheck.kt:257)"]
-    RunInfer -- "contient 'ains' -> M01AE01 (:858)" --> BugAins["Attention: Match aussi 'grains' (Défaut UC-ALM-009)"]
-    RunInfer -- "contient 'statin' -> C10AA01 (:878)" --> BugStatin["Attention: Match aussi 'nystatine' (Défaut UC-ALM-010)"]
-    BugAins --> SetAllergyAtc
-    BugStatin --> SetAllergyAtc
+    RunInfer -- "hasExactWord 'ains' -> M01AE01 (AllergyKeywords.kt:65)" --> OkAins["Exclut 'grains' (Corrigé UC-ALM-009)"]
+    RunInfer -- "hasExactWord 'statin' -> C10AA01 (AllergyKeywords.kt:86)" --> OkStatin["Exclut 'nystatine' (Corrigé UC-ALM-010)"]
+    OkAins --> SetAllergyAtc
+    OkStatin --> SetAllergyAtc
     RunInfer -- "Autre mot-clé / null" --> SetAllergyAtc
 
     SetAllergyAtc --> ExactCode{"Étape 1: Code Exact dans candidateAtcSet ? (KbCrossCheck.kt:265)"}
-    ExactCode -- Oui --> DirectHit["AllergyHit: Type 'code' (KbCrossCheck.kt:307)"]
+    ExactCode -- Oui --> DirectHit["AllergyHit: buildHit Type 'code' (KbCrossCheck.kt:307)"]
     
     ExactCode -- Non --> AutoReactivity{"Étape 1.4: Même Famille ATC L3 ? (ex: J01C, :327)"}
     AutoReactivity -- Oui --> AutoHit["AllergyHit: Type 'auto:L3' (KbCrossCheck.kt:333)"]
@@ -903,7 +906,7 @@ flowchart TD
 
 ### 6.3. Algorithme d'Éviction Prioritaire du QR Texte Universel
 
-Implémenté dans `qr/JemmaTextPayloadBuilder.kt:82-93,237-290` :
+Implémenté dans `qr/JemmaTextPayloadBuilder.kt:82-93` et `qr/JemmaTextPayloadBuilder.kt:237-290` (`RANK_ALLERGIES` / `droppable`) :
 
 ```mermaid
 flowchart TD
@@ -914,15 +917,15 @@ flowchart TD
     CheckBytes -- Non --> FindHighest["Identifier la section active au RANK le plus élevé (:82-93)"]
     
     subgraph Echelle_Rangs_Eviction ["Échelle d'Éviction (Du premier supprimé au dernier conservé)"]
-        R12["12. RANK_FUNCTIONAL (Statut Fonctionnel, :93)"]
-        R11["11. RANK_PREGNANCY (Grossesse, :92)"]
-        R10["10. RANK_IMMUNIZATIONS (Vaccinations, :91)"]
-        R9["9. RANK_RESULTS (Biologie, :90)"]
-        R8["8. RANK_PROCEDURES (Actes chirurgicaux, :89)"]
-        R7["7. RANK_PAST_PROBLEMS (Antécédents passés, :88)"]
-        R6["6. RANK_DEVICES (Dispositifs médicaux, :87)"]
-        R5["5. RANK_PATIENT_EXTRA (Adresses, télécoms, ID national, :86)"]
-        R4["4. RANK_CONTACTS (Contacts d'urgence, :85)"]
+        R12["12. RANK_IMMUNIZATIONS (Vaccinations, :93)"]
+        R11["11. RANK_RESULTS (Biologie, :92)"]
+        R10["10. RANK_PROCEDURES (Actes chirurgicaux, :91)"]
+        R9["9. RANK_PAST_PROBLEMS (Antécédents passés, :90)"]
+        R8["8. RANK_PATIENT_EXTRA (Adresses, télécoms, ID national, :89)"]
+        R7["7. RANK_DEVICES (Dispositifs médicaux, :88)"]
+        R6["6. RANK_CONTACTS (Contacts d'urgence, :87)"]
+        R5["5. RANK_FUNCTIONAL (Statut Fonctionnel, :86)"]
+        R4["4. RANK_PREGNANCY (Grossesse, :85)"]
         R3["3. RANK_CONDITIONS (Maladies actives, :84)"]
         R2["2. RANK_MEDICATIONS (Médicaments en cours, :83)"]
         R1["1. RANK_ALLERGIES (Allergies - Inviolable, :82)"]
@@ -982,7 +985,7 @@ class KnowledgeBaseService @Inject constructor(
     private val kbManager: KnowledgeBaseManager,
 ) {
     // Résolution sémantique d'un médicament (nom de marque, DCI, katakana ou code ATC)
-    // Ligne 144
+    // Ligne 143
     suspend fun resolveDrug(name: String?): ResolvedConcept
 
     // Résolution sémantique d'une allergie (nom de substance ou aliment)
@@ -1128,8 +1131,8 @@ Cette section rassemble expressément les concepts, classes et propositions d'ar
    - *Proposition* : Créer des interfaces pures pour faciliter l'injection de dépendances multiplateforme (KMP / Swift).
 
 2. **Résolution Lexicale Robuste par Frontières de Mots (Correction UC-ALM-009 / UC-ALM-010)** :
-   - *Statut actuel* : Le code utilise `n.contains("ains")` et `n.contains("statin")` (`kb/KbCrossCheck.kt:858,878`), ce qui produit des faux positifs sur "grains" et "nystatine".
-   - *Proposition* : Remplacer par une expression régulière avec frontières de mots `\bains\b` ou une tokenisation lexicale stricte pour exclure les sous-chaînes accidentelles.
+   - *Statut actuel* : Le code utilise désormais `hasExactWord("ains")` et `hasExactWord("statin")` (`kb/AllergyKeywords.kt:65,86`) après extraction de `KbCrossCheck.kt` par SD-22 pour exclure "grains" et "nystatine".
+   - *Proposition* : Maintenir les tests de non-régression et étendre la tokenisation lexicale stricte pour exclure toute sous-chaîne accidentelle additionnelle.
 
 3. **Normalisation Universelle Zenkaku / Hankaku & Table Katakana Dédiée** :
    - *Statut actuel* : Normalisation gérée par un bloc `when` codé en dur (10 branches, 9 noms distincts de molécules en anglais, `KnowledgeBaseService.kt:153-164`).
