@@ -8,3 +8,4 @@
 - ag/0027-impl @ 1874d28 : 19 échecs dont 1 régression (PillarBoundaryRoundTripTest, SD-10 colle l'unité dans le texte) → redirect 0035 ; SD-22 accepté ; SD-14 à refaire avec champ vcs (test à écrire quand le champ existe).
 - 0031-report et 0032-report reçus (commits déjà relus) → ack 0036 renvoyant à 0034 et 0035. Rien fusionné depuis 61e540a.
 - ag/0027-impl @ 2fa3bbd : 426 tests, 2 rouges (SD-11), 0 régression → review 0037 (ordre QR décidé, SD-14 vcs, Log.w, dédoublonnage triage, cycle 25). Fusion quand 0 échec + cycle 25 validé.
+- ag/0027-impl @ e352381 validé (2 rouges SD-11). tests/sd-wave-1 @ cb69a50 : +SD-23 (« 1,000 » → 1, rouge confirmé sur son code) → 0038. Attend : SD-11, SD-23, dédoublonnage triage, cycle 25, docs.
