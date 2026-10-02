@@ -25,8 +25,8 @@ Daemon will be stopped at the end of the build
 > Task :app:processDebugNavigationResources
 > Task :app:mergeDebugResources
 > Task :app:generateDebugBuildConfig
-> Task :app:checkDebugAarMetadata
 > Task :app:parseDebugLocalResources
+> Task :app:checkDebugAarMetadata
 > Task :app:compileDebugNavigationResources
 > Task :app:dataBindingGenBaseClassesDebug
 > Task :app:mapDebugSourceSetPaths
@@ -779,6 +779,9 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 
 > Task :app:testDebugUnitTest
 
+RandomProfileInvariantsTest > UC-QRT-008 random profiles - the text QR fits one frame and never loses an entry in silence FAILED
+    java.lang.AssertionError at RandomProfileInvariantsTest.kt:399
+
 Sd01TriageOrderTest > SD-01 UC-SOS-021 a third phone that receives a duplicate through a relay agrees with the two others FAILED
     java.lang.AssertionError at Sd01TriageOrderTest.kt:69
 
@@ -918,10 +921,10 @@ Sd23ResultValueFidelityTest > SD-23 UC-RES-016 a value with one comma and three 
 Sd23ResultValueFidelityTest > SD-23 UC-RES-024 the code system of a coded answer survives the compact projection FAILED
     org.junit.ComparisonFailure at Sd23ResultValueFidelityTest.kt:80
 
-429 tests completed, 45 failed
+429 tests completed, 46 failed
 
 > Task :app:testDebugUnitTest FAILED
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790952940158.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790955799023.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
 
@@ -1095,5 +1098,5 @@ Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 
 
-BUILD FAILED in 8m 51s
+BUILD FAILED in 8m 54s
 55 actionable tasks: 55 executed
