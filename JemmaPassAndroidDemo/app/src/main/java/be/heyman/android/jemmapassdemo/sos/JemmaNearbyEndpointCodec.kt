@@ -132,8 +132,8 @@ object JemmaNearbyEndpointCodec {
         var first = true
         var truncated = 0
         for (code in codes) {
-            val sep = if (first) "" else "."
-            val candidate = sep + sanitize(code).take(10)
+            val sep = if (first) "" else ","
+            val candidate = sep + sanitize(code)
             val candidateBytes = MeshByteSafety.utf8ByteSize(candidate)
             // sb is ASCII at this point so length == bytes, but be safe.
             val currentBytes = MeshByteSafety.utf8ByteSize(sb.toString())
@@ -294,7 +294,9 @@ object JemmaNearbyEndpointCodec {
                 val sectionMarker = payload[0]
                 val codesStr = payload.substring(colonIdx + 1)
                 val codes = if (codesStr.isBlank()) emptyList()
-                            else codesStr.split('.').filter { it.isNotBlank() }
+                            else if (codesStr.contains(',')) codesStr.split(',').filter { it.isNotBlank() }
+                            else if (codesStr.contains('.') && !codesStr.matches(Regex("^[A-Z]\\d{2}\\.\\d+$"))) codesStr.split('.').filter { it.isNotBlank() }
+                            else listOf(codesStr)
                 Decoded.VictimCodes(
                     sid = sid,
                     chunkIdx = chunkIdx,
