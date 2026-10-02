@@ -21,6 +21,32 @@ ADB=(adb)
 latest_out() { ls -dt "$ROOT"/qa/device/out/*/ 2>/dev/null | head -1 | sed 's:/$::'; }
 OUT="${OUT:-$(latest_out)}"
 
+guard_run() {
+  local run_dir="$1"
+  local report_file="${2:-}"
+  if find "$run_dir" -type f -name '*.pdf' 2>/dev/null | grep -q .; then
+    echo "guard_run: rejected: PDF found in $run_dir" >&2
+    return 1
+  fi
+  if find "$run_dir" -type f -size +2097152c 2>/dev/null | grep -q .; then
+    echo "guard_run: rejected: file > 2MB in $run_dir" >&2
+    return 1
+  fi
+  if [ -n "${ADB_SERIAL:-}" ]; then
+    if grep -r -F "$ADB_SERIAL" "$run_dir" >/dev/null 2>&1; then
+      echo "guard_run: rejected: ADB_SERIAL found in $run_dir" >&2
+      return 1
+    fi
+    if [ -n "$report_file" ] && [ -f "$report_file" ]; then
+      if grep -F "$ADB_SERIAL" "$report_file" >/dev/null 2>&1; then
+        echo "guard_run: rejected: ADB_SERIAL found in $report_file" >&2
+        return 1
+      fi
+    fi
+  fi
+  return 0
+}
+
 act() {
   local a="$1"; shift
   case "$a" in
@@ -51,13 +77,65 @@ act() {
     gallery)        python3 "$ROOT/qa/device/build_gallery.py" "$DR" ;;
     leakcheck)      git -C "$DR" grep -n -i -E "46071|FDAS" || echo "leakcheck: clean" ;;
     publish)        local run; run="$(basename "$OUT")"; mkdir -p "$DR/$SLUG/$run" "$DR/reports" \
-                      && rsync -a --exclude pull/ --exclude 'pull-*/' --exclude backup/ --exclude 'files-*/' "$OUT"/ "$DR/$SLUG/$run"/ \
+                      && rsync -a --exclude '*.pdf' --exclude pull/ --exclude 'pull-*/' --exclude backup/ --exclude 'files-*/' "$OUT"/ "$DR/$SLUG/$run"/ \
                       && cp "$OUT/report.md" "$DR/reports/cycle-$1.md" \
+                      && guard_run "$DR/$SLUG/$run" "$DR/reports/cycle-$1.md" \
                       && python3 "$ROOT/qa/device/build_gallery.py" "$DR" \
                       && git -C "$DR" add -A && git -C "$DR" commit -m "${*:2}" && git -C "$DR" push origin device-reports \
                       && git -C "$DR" rev-parse --short HEAD ;;
     reports-commit) git -C "$DR" add -A && git -C "$DR" commit -m "$*" && git -C "$DR" push origin device-reports && git -C "$DR" rev-parse --short HEAD ;;
     status)         git -C "$ROOT" status -s | head -5; git -C "$ROOT" rev-parse --short HEAD; "${ADB[@]}" get-state ;;
+    guard-test)     bash "$ROOT/qa/device/tests/test_publish_guard.sh" ;;
+    gradle-test)    (cd "$ROOT/JemmaPassAndroidDemo" && ./gradlew :app:testDebugUnitTest "$@") ;;
+    branch-commit)  git -C "$ROOT" add -A && git -C "$ROOT" commit -m "$*" ;;
+    branch-push)
+      case "$1" in
+        ag/*) git -C "$ROOT" push --force-with-lease origin "$1" ;;
+        *)    echo "branch-push: refused (only ag/* branches allowed: $1)" >&2; return 1 ;;
+      esac
+      ;;
+    report-raw)
+      local target="$1"
+      if [[ "$target" != /* ]]; then
+        if [ -n "${OUT:-}" ] && [ -d "$OUT" ]; then target="$OUT/$target"; else target="$PWD/$target"; fi
+      fi
+      local rel count=0
+      local tmp_target="${target}.tmp.$$"
+      mkdir -p "$(dirname "$target")"
+      : > "$tmp_target"
+      for dir in "$OUT/qr" "$OUT/json" "$OUT/validator"; do
+        [ -d "$dir" ] || continue
+        for f in "$dir"/*; do
+          [ -f "$f" ] || continue
+          case "$dir" in
+            */validator)
+              case "$(basename "$f")" in summary*.txt) ;; *) continue ;; esac
+              ;;
+          esac
+          rel="${f#$OUT/}"
+          count=$((count+1))
+          if [ "$dir" = "$OUT/json" ] && [ "$(wc -c < "$f")" -gt 20480 ]; then
+            echo "### \`$rel\` ($(wc -c < "$f" | tr -d ' ') bytes > 20 kB, omitted)" >> "$tmp_target"
+            echo "" >> "$tmp_target"
+            continue
+          fi
+          echo "### \`$rel\`" >> "$tmp_target"
+          echo '```' >> "$tmp_target"
+          cat "$f" >> "$tmp_target"
+          [ -z "$(tail -c 1 "$f")" ] || echo "" >> "$tmp_target"
+          echo '```' >> "$tmp_target"
+          echo "" >> "$tmp_target"
+        done
+      done
+      if [ "$count" -eq 0 ]; then
+        rm -f "$tmp_target"
+        echo "report-raw: error: no report pieces found in $OUT" >&2
+        return 1
+      fi
+      mv "$tmp_target" "$target"
+      echo "report-raw: wrote $(wc -l < "$target" | tr -d ' ') lines to $target"
+      ;;
+    report-test)    bash "$ROOT/qa/device/tests/test_report_raw.sh" ;;
     *)              echo "unknown action: $a"; return 64 ;;
   esac
 }

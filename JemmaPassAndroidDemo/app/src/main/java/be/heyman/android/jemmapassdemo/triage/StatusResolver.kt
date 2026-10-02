@@ -47,6 +47,7 @@ class StatusResolver {
 
     /** Per-victim current best-known status. */
     private val current = mutableMapOf<String, StatusEvent>()
+    private val events = mutableMapOf<String, MutableList<StatusEvent>>()
 
     companion object {
         /**
@@ -54,6 +55,7 @@ class StatusResolver {
          * 3-hop mesh propagation latency at 1.75s/rotation.
          */
         const val DCD_GRACE_SEC = 30L
+        const val MAX_EVENTS_PER_VICTIM = 64
 
         /**
          * Pure decision function — returns true if `incoming` should
@@ -98,6 +100,20 @@ class StatusResolver {
         }
     }
 
+    private fun resolve(list: List<StatusEvent>): StatusEvent? {
+        val dcds = list.filter { it.status == SaltCode.DCD }
+        val unsuppressed = list.filterNot { e ->
+            e.status != SaltCode.DCD && !e.isExplicitOverride && dcds.any { d ->
+                e.timestampSec >= d.timestampSec && e.timestampSec <= d.timestampSec + DCD_GRACE_SEC
+            }
+        }
+        return unsuppressed.maxWithOrNull(
+            compareBy<StatusEvent> { it.timestampSec }
+                .thenBy { it.rescuerSid }
+                .thenBy { it.status.ordinal }
+        )
+    }
+
     /**
      * Apply an incoming event. If it should overwrite the current state,
      * update internal map and return the new event. Otherwise return the
@@ -106,17 +122,28 @@ class StatusResolver {
      * @return the resolved current event for this victim
      */
     fun apply(incoming: StatusEvent): StatusEvent {
-        val existing = current[incoming.victimSid]
-        if (existing == null) {
-            current[incoming.victimSid] = incoming
-            return incoming
+        val list = events.getOrPut(incoming.victimSid) { mutableListOf() }
+        val isDuplicate = list.any {
+            it.rescuerSid == incoming.rescuerSid &&
+                it.status == incoming.status &&
+                it.timestampSec == incoming.timestampSec &&
+                it.isExplicitOverride == incoming.isExplicitOverride
         }
-        return if (shouldOverwrite(existing, incoming)) {
-            current[incoming.victimSid] = incoming
-            incoming
-        } else {
-            existing
+        if (!isDuplicate) {
+            list.add(incoming)
+            if (list.size > MAX_EVENTS_PER_VICTIM) {
+                val dcds = list.filter { it.status == SaltCode.DCD }
+                val nonDcds = list.filter { it.status != SaltCode.DCD }
+                val trimmed = (dcds + nonDcds.takeLast(MAX_EVENTS_PER_VICTIM - dcds.size.coerceAtMost(MAX_EVENTS_PER_VICTIM / 2)))
+                    .distinct()
+                    .sortedBy { it.timestampSec }
+                list.clear()
+                list.addAll(trimmed)
+            }
         }
+        val resolved = resolve(list) ?: incoming
+        current[incoming.victimSid] = resolved
+        return resolved
     }
 
     /** Return the current event for a victim, or null if none. */
@@ -126,5 +153,8 @@ class StatusResolver {
     fun all(): Map<String, StatusEvent> = current.toMap()
 
     /** Clear all state. For tests and "wipe" operations. */
-    fun clear() = current.clear()
+    fun clear() {
+        current.clear()
+        events.clear()
+    }
 }

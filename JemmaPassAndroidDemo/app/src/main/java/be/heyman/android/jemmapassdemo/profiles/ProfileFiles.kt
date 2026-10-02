@@ -21,6 +21,7 @@ object ProfileFiles {
     fun safeIdOrNull(raw: String?): String? {
         val id = raw?.trim() ?: return null
         if (!SAFE_ID.matches(id) || id.contains("..")) return null
+        if (id.equals("meta", ignoreCase = true) || id.endsWith(".fhir", ignoreCase = true)) return null
         return id
     }
 

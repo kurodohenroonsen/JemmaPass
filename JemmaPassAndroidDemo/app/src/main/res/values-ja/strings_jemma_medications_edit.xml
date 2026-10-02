@@ -59,4 +59,5 @@
     <string name="drug_picker_status_empty">結果なし。別の用語を試してください。</string>
     <string name="drug_picker_status_error">ナレッジベースのエラー</string>
     <string name="drug_picker_cancel">キャンセル</string>
+    <string name="drug_picker_add_as_is">➕ 「%1$s」をそのまま追加</string>
 </resources>

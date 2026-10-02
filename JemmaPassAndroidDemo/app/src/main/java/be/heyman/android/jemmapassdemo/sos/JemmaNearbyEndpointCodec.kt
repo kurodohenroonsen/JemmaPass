@@ -120,22 +120,21 @@ object JemmaNearbyEndpointCodec {
         sectionMarker: Char,  // 'A' / 'M' / 'C' / 'I'
         codes: List<String>
     ): String {
+        val sanitized = codes.map { sanitize(it) }
         val header = "V|$sid|$chunkIdx|$chunkTotal|$sectionMarker:"
-        // 🆕 L44.16.74 — Use byte length, not char length. ATC/SNOMED
-        // codes are ASCII so identical here, but defensive for future
-        // free-text fields. Council Round 2 verdict.
-        val headerBytes = MeshByteSafety.utf8ByteSize(header)
+        val fullPayload = sanitized.joinToString(",")
+        if (MeshByteSafety.utf8ByteSize(header + fullPayload) <= MAX_ENDPOINT_NAME_LEN) {
+            return (header + fullPayload).also { logIfTooLong(it, "victim codes $sectionMarker") }
+        }
 
-        // Add codes one by one; stop if next code would overflow the
-        // byte budget (NOT the char budget).
-        val sb = StringBuilder(header)
+        val truncHeader = "V|$sid|$chunkIdx|$chunkTotal|$sectionMarker+:"
+        val sb = StringBuilder(truncHeader)
         var first = true
         var truncated = 0
-        for (code in codes) {
-            val sep = if (first) "" else "."
-            val candidate = sep + sanitize(code).take(10)
+        for (code in sanitized) {
+            val sep = if (first) "" else ","
+            val candidate = sep + code
             val candidateBytes = MeshByteSafety.utf8ByteSize(candidate)
-            // sb is ASCII at this point so length == bytes, but be safe.
             val currentBytes = MeshByteSafety.utf8ByteSize(sb.toString())
             if (currentBytes + candidateBytes > MAX_ENDPOINT_NAME_LEN) {
                 truncated++
@@ -148,9 +147,6 @@ object JemmaNearbyEndpointCodec {
             Log.w(TAG, "encodeVictimCodes: truncated $truncated codes from section $sectionMarker " +
                 "(${codes.size} requested, ${codes.size - truncated} encoded)")
         }
-        // If no codes fit at all, still emit the section marker so the
-        // peer knows the section exists but is empty (avoids confusion
-        // with "this section never appeared").
         return sb.toString().also { logIfTooLong(it, "victim codes $sectionMarker") }
     }
 
@@ -216,7 +212,8 @@ object JemmaNearbyEndpointCodec {
             val chunkIdx: Int,
             val chunkTotal: Int,
             val sectionMarker: Char,    // 'A'/'M'/'C'/'I'
-            val codes: List<String>
+            val codes: List<String>,
+            val isTruncated: Boolean = false,
         ) : Decoded()
 
         data class Rescuer(
@@ -291,16 +288,21 @@ object JemmaNearbyEndpointCodec {
                 val payload = parts[4]
                 val colonIdx = payload.indexOf(':')
                 if (colonIdx <= 0) return null
-                val sectionMarker = payload[0]
+                val markerPart = payload.substring(0, colonIdx)
+                val sectionMarker = markerPart[0]
+                val isTruncated = markerPart.contains('+')
                 val codesStr = payload.substring(colonIdx + 1)
                 val codes = if (codesStr.isBlank()) emptyList()
-                            else codesStr.split('.').filter { it.isNotBlank() }
+                            else if (codesStr.contains(',')) codesStr.split(',').filter { it.isNotBlank() }
+                            else if (codesStr.contains('.') && !codesStr.matches(Regex("^[A-Z]\\d{2}\\.\\d+$"))) codesStr.split('.').filter { it.isNotBlank() }
+                            else listOf(codesStr)
                 Decoded.VictimCodes(
                     sid = sid,
                     chunkIdx = chunkIdx,
                     chunkTotal = chunkTotal,
                     sectionMarker = sectionMarker,
-                    codes = codes
+                    codes = codes,
+                    isTruncated = isTruncated,
                 )
             }
             else -> {

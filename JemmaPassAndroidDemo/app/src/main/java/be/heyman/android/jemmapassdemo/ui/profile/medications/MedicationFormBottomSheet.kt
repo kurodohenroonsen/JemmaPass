@@ -289,15 +289,16 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
         binding.medicationFormSubstanceCode.visibility = View.GONE
         binding.medicationFormSubstanceCode.text = code.orEmpty()
 
+        val cached = pickedDisplay
+        if (!cached.isNullOrBlank()) {
+            binding.medicationFormSubstanceDisplay.text = cached
+            return
+        }
+
         if (code.isNullOrBlank()) {
             binding.medicationFormSubstanceDisplay.setText(R.string.medication_form_substance_hint)
             return
         }
-
-        val cached = pickedDisplay
-        if (!cached.isNullOrBlank()) {
-            binding.medicationFormSubstanceDisplay.text = cached
-        } else {
             binding.medicationFormSubstanceDisplay.text = code
             viewLifecycleOwner.lifecycleScope.launch {
                 val resolved = kb.resolveDrug(code)
@@ -312,7 +313,6 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
                     binding.medicationFormSubstanceDisplay.text = display
                 }
             }
-        }
     }
 
     // ─── 🆕 PHASE13 — Cross-check helpers ─────────────────────────────
@@ -619,7 +619,7 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
         val timing = binding.medicationFormTiming.text?.toString()?.trim().orEmpty()
         val reason = binding.medicationFormReason.text?.toString()?.trim().orEmpty()
 
-        if (code.isNullOrBlank()) {
+        if (code.isNullOrBlank() && display.isNullOrBlank()) {
             Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ validation: no substance picked")
             Toast.makeText(requireContext(),
                 R.string.medication_form_validation_substance, Toast.LENGTH_SHORT).show()
@@ -662,7 +662,7 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val candidateLabel = display ?: code
+                val candidateLabel = display ?: code ?: "?"
                 val profile = loadProfileSnapshotForXchk()
                 if (profile == null) {
                     // Nothing could be compared : say so instead of saving silently.
@@ -673,17 +673,19 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
                     return@launch
                 }
                 val result = crossCheckHelper.checkNewMedicationAgainstProfile(
-                    medDisplay = pickedAtc ?: display ?: code,  // 🔧 PHASE13 BUGFIX prefer ATC (KB-resolvable), fallback display name (FTS5-resolvable), last raw code
+                    medDisplay = pickedAtc ?: display ?: code ?: "",  // 🔧 PHASE13 BUGFIX prefer ATC (KB-resolvable), fallback display name (FTS5-resolvable), last raw code
                     profile = profile,
                     lang = lang,
                 )
                 // The verdict of the cross-check decides (KbSafety) : only CLEAN saves
                 // without a dialog ; NOT_CHECKED / INCOMPLETE show "Safety check incomplete".
-                val gaps = MedicationFormLogic.safetyCheckGaps(
+                val rawGaps = MedicationFormLogic.safetyCheckGaps(
                     profileHasData = profile.al.isNotEmpty() || profile.md.isNotEmpty() || profile.cn.isNotEmpty(),
                     result = result,
                     otherMeds = profile.md,
                 )
+                // Free-text remedies without a code are not in the KB: must always warn (UC-MED-016 / Kudoro decision 2026-10-02)
+                val gaps = if (code.isNullOrBlank()) rawGaps.copy(candidateUnresolved = true) else rawGaps
                 if (result == null || result.totalHits == 0) {
                     Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 no xchk hit on submit · " +
                         "verdict=${result?.verdict} · checked=${result?.checked} · gaps=$gaps")
@@ -776,7 +778,7 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
      * alert can defer it). Sets fragment result + dismisses the BottomSheet.
      */
     private fun commitSubmit(
-        code: String,
+        code: String?,
         display: String?,
         route: String,
         doseValue: String,
