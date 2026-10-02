@@ -6,3 +6,4 @@
 - SD-22 (mots-clés d'allergie, 3 tests rouges) → 0033. tests/sd-wave-1 @ a3b9b28 : 426 tests, 42 rouges. À écrire encore : « allergie sans ATC = CHECKED ».
 - ag/0027-impl @ de23db1 : compile, 426 tests, 24 rouges (SD-01,02,04,09,10,11,13,14,18,22), pas de régression ; fusion quand vert + cycle 25. Docs f51f1bb : corrections restantes → 0034.
 - ag/0027-impl @ 1874d28 : 19 échecs dont 1 régression (PillarBoundaryRoundTripTest, SD-10 colle l'unité dans le texte) → redirect 0035 ; SD-22 accepté ; SD-14 à refaire avec champ vcs (test à écrire quand le champ existe).
+- 0031-report et 0032-report reçus (commits déjà relus) → ack 0036 renvoyant à 0034 et 0035. Rien fusionné depuis 61e540a.
