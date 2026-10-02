@@ -22,7 +22,7 @@
    - 1.4. Scénarios critiques au Japon : Catastrophe naturelle et Pèlerinage
 2. [Cartographie Fonctionnelle Complète de l'Existant](#2-cartographie-fonctionnelle-complète-de-lexistant)
    - 2.1. Les 18 Piliers de l'International Patient Summary (HL7 FHIR R4)
-   - 2.2. Dualité des formats : FHIR R4 (Source de Vérité Piliers FHIR) vs `_j 1.2` (Projection Compacte)
+   - 2.2. Dualité des formats : FHIR R4 (Source de Vérité Piliers FHIR-Natifs) vs `_j 1.2` (Projection Compacte)
    - 2.3. Moteur Clinique & Sécurité Décisionnelle (`KbCrossCheck` + `KbSafety`)
    - 2.4. Le Moteur de Vulgarisation Thérapeutique (Gemma 4 + `VulgariseRepository`)
    - 2.5. Les 21 Outils Typés `@Tool` de Jemma
@@ -44,6 +44,7 @@
    - 5.1. Rôles et responsabilités
    - 5.2. Plan par jalons (Milestones M1 à M5)
    - 5.3. Matrice d'assurance qualité & cas d'usage critiques
+6. [Table des Sources et Affirmations Vérifiées](#6-table-des-sources-et-affirmations-vérifiées)
 
 ---
 
@@ -52,7 +53,7 @@
 ### 1.1. La promesse JemmaPass : *Zero-Cloud at Runtime, On-Device, Cross-Border*
 
 - `[EXISTE SUR ANDROID (downloads/JemmaModelCatalog.kt:3,80-90)]` : **Modèle de distribution hybride** : Le runtime fonctionne à 100% hors-ligne lors des interventions d'urgence. En revanche, l'installation ou la mise à jour initiale de la base clinique (`knowledge_full.db`, ~2,0 Go dans l'en-tête `:7`, taille déclarée `3_360_727_040L` soit ~3,13 Go à `:89`) et des modèles de langage (`gemma-4-E2B-it.litertlm`, ~2,4 Go ou `gemma-4-E4B-it.litertlm`, ~3,4 Go à `:5-6`) s'effectue via téléchargement HTTP depuis `https://jemmapass.net/models/`.
-- `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:23-28)]` : **Standard International HL7 FHIR R4 IPS** : Le document maître persisté pour les piliers cliniques FHIR-natifs (Allergies, Médications, Diagnostics, Vaccins, Actes, Dispositifs, Biologie) est le Bundle FHIR R4 IPS (`<sid>.fhir.json`), projeté en format court `_j 1.2` (`<sid>.json`). Les métadonnées applicatives ou extensions non modélisables en FHIR natif restent dans le format JSON court `_j 1.2`.
+- `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:23-28, ips/IpsImmunization.kt:107-115)]` : **Standard International HL7 FHIR R4 IPS** : Le document maître persisté pour les 8 piliers cliniques FHIR-natifs (`im` vaccins, `pr` actes, `dv` dispositifs, `rs` biologie, `ph` antécédents, `cn` problèmes actifs, `pg` grossesse, `fs` statut fonctionnel — `ips/IpsImmunization.kt:107-115`) est le Bundle FHIR R4 IPS (`<sid>.fhir.json`), projeté en format court `_j 1.2` (`<sid>.json`, `ProfilesRepository.kt:464-472`). En revanche, les allergies (`al`) et les médicaments (`md`) **ne sont pas FHIR-natifs** : ils sont saisis et gérés dans `_j 1.2` (`JemmaProfileJ`) puis hydratés dans le Bundle FHIR (`qr/JemmaFhirBundleBuilder.kt:55,81`).
 - `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:130-135)]` : **Contrôle Pharmacologique Embarqué Déterministe** : Détection des interactions médicamenteuses majeures et modérées (DDInter 2.0 via `v_ddi_emergency`) et des allergies croisées sans appel réseau.
 - `[HYPOTHÈSE À VÉRIFIER]` : **Conformité réglementaire APPI / RGPD / HIPAA** : Bien que le stockage soit strictement local (on-device sans serveur central), la conformité formelle aux lois de protection des données de santé (APPI au Japon, RGPD en Europe, HIPAA aux USA) nécessite un audit juridique certifié, notamment en raison de la sensibilité des données médicales d'urgence.
 
@@ -60,14 +61,14 @@
 
 Le système a été conçu autour de 4 personas :
 - 🚶‍♂️ **Kurodo** : Pèlerin étranger (Belge). Allergie létale à la pénicilline (`SNOMED 91936005`). Risque vital immédiat si administration d'Augmentin (`ATC J01CR02`).
-- 👵 **Haru** : Citoyenne japonaise (80 ans). Sous anticoagulant oral direct Edoxaban (`ATC B01AF03` / Lixiana).
+- 👵 **Haru** : Citoyenne japonaise (80 ans). Sous anticoagulant oral direct Edoxaban (`ATC B01AF03` [WHOCC](https://www.whocc.no/atc_ddd_index/?code=B01AF03) / Lixiana).
   > `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:131)]` : Si l'association d'Edoxaban (`B01AF03`) avec un antiagrégant (ex: Aspirine `B01AC06`) ou un AINS est présente dans la vue locale `v_ddi_emergency` / `ddi_facts` (à vérifier par `kb-sql` sur `knowledge_full.db`), elle produit impérativement le verdict `ALERT` (totalHits > 0). En cas de présence dans la base, l'anticoagulant oral direct combiné à l'aspirine ne peut jamais afficher un écran vert `CLEAN`.
 - 🎒 **Kamekichi** : Secouriste bénévole / DMAT. Scanne les médicaments et pass via la caméra hors-ligne et coordonne le tri de catastrophe.
 - ✨ **Gemma / Jemma** : Agent IA local exploitant LiteRT-LM, pilotant 21 outils `@Tool` et vulgarisant les alertes dans la langue de l'intervenant.
 
 ### 1.3. Pourquoi le portage iOS est vital au Japon
 
-- `[HYPOTHÈSE À VÉRIFIER]` : **Part de marché iOS au Japon (~65–70%)** : Selon les agrégateurs statistiques du marché mobile ([StatCounter Global Stats Mobile Japan 2024-2025](https://gs.statcounter.com/os-market-share/mobile/japan)), le Japon présente une pénétration d'iOS exceptionnellement élevée (estimée entre 65% et 68%), y compris chez les seniors équipés par leurs enfants et les soignants.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Part de marché iOS au Japon (~65–70%)** : Selon les agrégateurs statistiques du marché mobile ([StatCounter Global Stats Mobile Japan](https://gs.statcounter.com/os-market-share/mobile/japan)), le Japon présente une pénétration d'iOS exceptionnellement élevée (estimée entre 65% et 68%), y compris chez les seniors équipés par leurs enfants et les soignants.
 - `[PROPOSITION IOS]` : Le portage iOS permet d'éliminer la rupture opérationnelle actuelle où seuls les terminaux Android peuvent participer au réseau de triage ou décoder les pass `_j2`.
 
 ### 1.4. Scénarios critiques au Japon
@@ -109,13 +110,13 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 - `[EXISTE SUR ANDROID (qr/JemmaProfileJ.kt:43-96)]` : Les 18 piliers sont modélisés dans `JemmaProfileJ` sous leurs clés courtes JSON (`al, md, cn, ph, im, pr, dv, fs, pg, rs, ad, cs, gl, en, oc, pv`).
 - `[PROPOSITION IOS / HYPOTHÈSE À VÉRIFIER]` : Les codes LOINC 11453-8 (Advance Directives) et 11383-7 (Care Goals) mentionnés dans les ébauches antérieures sont **totalement absents du code source Android** et constituent des cibles d'implémentation future.
 - `[EXISTE SUR ANDROID (qr/JemmaProfileJ.kt:109-160)]` : Les contacts d'urgence sont stockés dans `p.ct` (liste `JContact`) au sein de l'objet patient `p`, et non à la racine du profil.
-- `[EXISTE SUR ANDROID (ips/IpsBloodGroup.kt:1-90)]` : Le groupe sanguin déclaré (`p.bt`) est synchronisé avec l'Observation LOINC 882-1 correspondante (`rs`).
+- `[EXISTE SUR ANDROID (ips/IpsBloodGroup.kt:21-188)]` : Le groupe sanguin déclaré (`p.bt`) est synchronisé avec l'Observation LOINC 882-1 correspondante (`rs`).
 
 ### 2.2. Dualité des formats : FHIR R4 vs `_j 1.2`
 
-- `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:23-35)]` :
-  - **Source de Vérité pour les Piliers FHIR-Natifs** : `<sid>.fhir.json` (HL7 FHIR R4 Bundle).
-  - **Projection Compacte** : `<sid>.json` (`JemmaProfileJ`, schéma `_j 1.2`).
+- `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:23-35, ips/IpsImmunization.kt:107-115)]` :
+  - **Source de Vérité pour les 8 Piliers FHIR-Natifs** : `<sid>.fhir.json` (HL7 FHIR R4 Bundle).
+  - **Projection Compacte & Piliers Historiques** : `<sid>.json` (`JemmaProfileJ`, schéma `_j 1.2`), hébergeant notamment la saisie originale du patient `p`, des allergies `al` et des médicaments `md`.
 - `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:146,371)]` :
   - **Contrôle de Concurrence** : Le cycle Lecture-Modification-Écriture est protégé par `private val writeMutex = kotlinx.coroutines.sync.Mutex()`.
   - **Nuance technique critique** : Le `Mutex` de coroutines Kotlin est **strictement non-réentrant**. Tout appel imbriqué à `withLock` dans la même coroutine provoque un interblocage (deadlock) immédiat.
@@ -128,7 +129,7 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
   - `CLEAN` : Vérification complète achevée sans aucune collision (`isClean = true`, `kb/KbCrossCheck.kt:145`).
   - `INCOMPLETE` : Contrôle partiel (entrée non résolue ou pilier non exhaustif).
   - `NOT_CHECKED` : Base KB indisponible ou médicament non résolu (`kb/KbCrossCheck.kt:132`).
-- `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:418)]` : **Comportement des allergies sans ATC** : Une allergie sans code ATC est évaluée par mot-clé textuel et compte avec le statut `CHECKED` dans le rapport global (`KbSafety.pillarStatus(kbUp, allergies.size)`).
+- `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:418)]` : **Comportement des allergies sans ATC** : Une allergie sans code ATC est évaluée par mot-clé textuel via `inferAtcFromAllergyName` (`kb/KbCrossCheck.kt:818`) et compte avec le statut `CHECKED` dans le rapport global (`KbSafety.pillarStatus(kbUp, allergies.size)`).
 - `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:858,878)]` : **Défauts connus de filtrage lexical (UC-ALM-009 / UC-ALM-010)** : L'implémentation actuelle utilise `contains("ains")` et `contains("statin")`, générant de réels faux positifs (ex: l'allergie alimentaire aux "grains" déclenche l'alerte AINS, et "nystatine" déclenche l'alerte statines). Le filtrage par frontières de mots relève d'une correction requise.
 
 ### 2.4. Le Moteur de Vulgarisation Thérapeutique (Gemma 4 + `VulgariseRepository`)
@@ -170,9 +171,9 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 - `[EXISTE SUR ANDROID (qr/JemmaPayloadCodec.kt:57,189)]` : **Canal 1 (QR Compact `_j2`)** : Format `_j2:<base64(deflate-raw(json))>` (RFC 1951), encodage via `EncodeResult` et décodage via `DecodeResult` (`:122`).
 - `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:67,152)]` : **Canal 2 (QR Texte Universel)** : Texte clair 25 langues, plafonné à **1800 octets UTF-8** (`QR_MAX_SINGLE = 1800`), avec éviction par rangs (du rang 12 fonctionnel au rang 1 allergies) et marqueur `✂️ …`.
 - `[EXISTE SUR ANDROID (qr/JemmaQrFrameSplitter.kt:94, qr/JemmaQrFrameAssembler.kt:26,65)]` : **Canal 3 (FHIR Slideshow)** : Trames `JF:i/N|<data>` avec index **1-based** (`1..N`), découpées via `split(payload, maxSingle, frameChunk)` et reconstituées via `offer(raw: String?): Result`.
-- `[EXISTE SUR ANDROID (sos/JemmaSosChunkCodec.kt:175, sos/JemmaNearbyEndpointCodec.kt:51)]` : **Canal 4 (Mesh P2P BLE SALT & Nearby)** :
-  - **Trame BLE** : limitée à 200 octets (`MAX_CHUNK_BYTES = 200`, `sos/JemmaSosChunkCodec.kt:175`).
-  - **Nom de point d'accès Nearby Connections** : limité à 131 octets UTF-8 (`MAX_ENDPOINT_NAME_LEN = 131`, `sos/JemmaNearbyEndpointCodec.kt:51`).
+- `[EXISTE SUR ANDROID (sos/JemmaSosChunkCodec.kt:171-175, mesh/codec/EventChunk.kt:8, sos/JemmaNearbyEndpointCodec.kt:51)]` : **Canaux 4a & 4b (Transferts Sans-Fil SOS & Triage)** :
+  - **Canal 4a (Balise SOS BLE)** : Profil d'urgence `_j 1.2` découpé en trames binaires de **200 octets max** via BLE 5.0 Extended Advertising (`MAX_CHUNK_BYTES = 200`, `sos/JemmaSosChunkCodec.kt:171-175`, diffusé par `sos/JemmaSosBleAdvertiser.kt:31`).
+  - **Canal 4b (Réseau Maillé de Triage Nearby)** : Statut et événements SALT relayés sous forme d'événements texte `E|<source>|<victim>|<status>|<rescuer>|<ts>|<ttl>|<seq>` par **Google Nearby Connections** (`mesh/codec/EventChunk.kt:8`, `mesh/relay/RelayManager.kt:12`), soumis à la limite stricte de **131 octets UTF-8** (`MAX_ENDPOINT_NAME_LEN = 131`, `sos/JemmaNearbyEndpointCodec.kt:51`).
 - `[EXISTE SUR ANDROID (sos/JemmaEmergencyWidget.kt:31, sos/JemmaWidgetEmergencyService.kt)]` : **Canal 5 (Widget Accueil & Service)** : Sur Android, le déclenchement SOS s'appuie sur un `AppWidgetProvider` et un `ForegroundService` (`JemmaWidgetEmergencyService.kt`), et **non sur un overlay de fenêtre système**.
 
 ---
@@ -181,39 +182,41 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 
 ### 3.1. Écosystème de santé : MHLW, PMDA et statut Dispositif Médical (SaMD)
 
-- `[HYPOTHÈSE À VÉRIFIER]` : **Adoption de FHIR par le MHLW (厚生労働省)** : Le MHLW promeut le profil **JP Core** (développé par NeXEHRS / HL7 Japan : [HL7 Japan JP Core](http://www.hl7.jp/)) dans le cadre du programme national *Medical DX*. L'obligation légale universelle de ce standard pour les applications d'urgence non hospitalières reste une hypothèse réglementaire en cours d'évaluation.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Adoption de FHIR par le MHLW (厚生労働省)** : Le MHLW promeut le profil **JP Core** (développé par NeXEHRS / HL7 Japan : [NeXEHRS / JP Core v1.1.2](https://j-core.org/)) dans le cadre du programme national *Medical DX*. L'obligation légale universelle de ce standard pour les applications d'urgence non hospitalières reste une hypothèse réglementaire en cours d'évaluation.
 - `[HYPOTHÈSE À VÉRIFIER]` : **Réglementation PMDA & Statut SaMD (Software as a Medical Device)** :
-  Au Japon, selon la loi sur les dispositifs médicaux et les produits pharmaceutiques (PMD Act / 医薬品医療機器等法 - 薬機法 : [PMDA](https://www.pmda.go.jp/)), tout logiciel fournissant une aide à la décision clinique (Clinical Decision Support) ou calculant des contre-indications médicamenteuses peut être classé comme **dispositif médical logiciel (SaMD)** soumis à l'homologation de la PMDA (*Pharmaceuticals and Medical Devices Agency* - 医薬品医療機器総合機構).
+  Au Japon, selon la loi sur les dispositifs médicaux et les produits pharmaceutiques (PMD Act / 医薬品医療機器等法 - 薬機法 : [PMDA SaMD Regulatory Info](https://www.pmda.go.jp/english/review-services/regulatory-info/0002.html)), tout logiciel fournissant une aide à la décision clinique (Clinical Decision Support) ou calculant des contre-indications médicamenteuses peut être classé comme **dispositif médical logiciel (SaMD)** soumis à l'homologation de la PMDA (*Pharmaceuticals and Medical Devices Agency* - 医薬品医療機器総合機構).
   - *Conséquence pour le portage iOS* : L'application doit intégrer un avertissement médical formel de non-responsabilité (simple aide d'appoint non contraignante) ou se conformer au processus d'enregistrement SaMD de Classe I/II au Japon.
 
 ### 3.2. Nomenclatures et Pharmacopée : Noms en Katakana, Codes HOT/YJ et Classes ATC
 
-- `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:153-166)]` : La normalisation actuelle des noms commerciaux japonais repose sur un bloc `when` codé en dur pour 10 molécules critiques :
-  - `オーグメンチン` ➔ Augmentin (`J01CR02`)
-  - `アモキシシリン` ➔ Amoxicillin (`J01CA04`)
-  - `アスピリン` / `バイアスピリン` / `バファリン` ➔ Aspirin (`B01AC06` / `N02BA01`)
-  - `ロキソニン` / `ロキソプロフェン` ➔ Loxoprofen (`:158`)
-  - `カロナール` / `アセトアミノフェン` ➔ Acetaminophen (`N02BE01`)
-  - `ワーファリン` ➔ Warfarin (`B01AA03`)
-  - `クラビット` / `レボフロキサシン` ➔ Levofloxacin (`J01MA12`)
-  - `アドレナリン` / `エピネフリン` ➔ Epinephrine (`C01CA24`)
-  - `ボルタレン` ➔ Diclofenac (`M01AB05`)
+- `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:153-166)]` : La normalisation actuelle des noms commerciaux japonais repose sur un bloc `when` codé en dur normalisant textuellement vers **9 noms de molécules en anglais** (les codes ATC ne sont pas renvoyés par ce bloc mais résolus en aval par requête SQLite dans la table `ddinter_drugs` / `terminology`) :
+  1. `オーグメンチン` / `オーメンチン` / `オグメンチン` ➔ `"Augmentin"`
+  2. `アモキシシリン` ➔ `"Amoxicillin"`
+  3. `アスピリン` / `バイアスピリン` / `バファリン` ➔ `"Aspirin"`
+  4. `ロキソニン` / `ロキソプロフェン` ➔ `"Loxoprofen"` (`:158`)
+  5. `カロナール` / `アセトアミノフェン` ➔ `"Acetaminophen"`
+  6. `ワーファリン` ➔ `"Warfarin"`
+  7. `クラビット` / `レボフロキサシン` ➔ `"Levofloxacin"`
+  8. `アドレナリン` / `エピネフリン` ➔ `"Epinephrine"`
+  9. `ボルタレン` ➔ `"Diclofenac"`
 - `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:158, kb/KbCrossCheck.kt:858-868)]` vs `[HYPOTHÈSE À VÉRIFIER]` :
   - Dans le code Android, `KnowledgeBaseService.kt:158` normalise `ロキソニン` / `ロキソプロフェン` en `"Loxoprofen"`. Dans `kb/KbCrossCheck.kt:858-868`, le bloc de reconnaissance des AINS associe les mots-clés (`ains`, `ibuprofène`, `naproxène`, `diclofénac`, `kétoprofène`) au code ATC `M01AE01` (Ibuprofène).
-  - **Correction nomenclature OMS** : Dans l'index officiel de l'OMS ([WHOCC ATC M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04)), le code `M01AE04` correspond à **Fenoprofen**, et **non à Loxoprofen**. Le Loxoprofène ne possède pas de code ATC de niveau 5 officiel auprès de l'OMS (molécule essentiellement distribuée au Japon et en Asie de l'Est, enregistrée sous KEGG D01709 / JAPIC). Sur iOS, le Loxoprofène doit être rattaché à la classe ATC parent `M01AE` (dérivés de l'acide propionique) ou aux nomenclatures nationales japonaises (codes YJ / HOT).
-- `[PROPOSITION IOS]` : Pour le portage iOS, intégrer les tables officielles des codes **HOT** (9/13 chiffres, gérés par MEDIS-DC : [MEDIS-DC](https://www.medis.or.jp/)) et **YJ** (tarification nationale MHLW) pour une couverture exhaustive des prescriptions japonaises.
+  - **Correction nomenclature OMS & Statut Loxoprofène** : Dans l'index officiel de l'OMS ([WHOCC ATC M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04)), le code `M01AE04` correspond à **Fenoprofen**, et **non à Loxoprofen**. Le Loxoprofène ne possède pas de code ATC de niveau 5 officiel auprès de l'OMS (molécule essentiellement distribuée au Japon et en Asie de l'Est, enregistrée sous [KEGG Drug Entry D01709](https://www.kegg.jp/entry/D01709) / JAPIC).
+  - `[HYPOTHÈSE À VÉRIFIER]` : Pour le portage iOS ciblant le Japon, le Loxoprofène doit être rattaché soit à la classe ATC parent `M01AE` (dérivés de l'acide propionique), soit directement aux tables nationales japonaises de codes **HOT** ([MEDIS-DC Master Standard](https://www.medis.or.jp/2_kaihatu/kizyun/kizyun.html)) et **YJ** ([MHLW Drug Tariff List](https://www.mhlw.go.jp/topics/2024/04/tp20240401-01.html)).
+- `[PROPOSITION IOS]` : Pour le portage iOS, intégrer les tables officielles des codes **HOT** (9/13 chiffres, MEDIS-DC) et **YJ** (tarification nationale MHLW) pour une couverture exhaustive des prescriptions japonaises.
 
 ### 3.3. Carnet de santé (*Okusuri Techou*) et Restrictions Légales du My Number
 
-- `[PROPOSITION IOS]` : Ingestion des codes-barres JAHIS figurant sur les carnets de santé médicamenteux japonais (*Okusuri Techou* - お薬手帳).
-- `[HYPOTHÈSE À VÉRIFIER]` : **Restrictions légales strictes sur la carte et le numéro My Number (マイナンバー)** :
-  En vertu de la *Loi sur l'utilisation des numéros pour identifier une personne spécifique dans les procédures administratives* (番号法 - [*Act on the Use of Numbers to Identify a Specific Individual in the Administrative Procedure*, Act No. 27 of 2013](https://elaws.e-gov.go.jp/document?lawid=425AC0000000027)), la collecte, le stockage, l'utilisation ou la transmission du **numéro individuel à 12 chiffres (My Number)** sont expressément interdits en dehors des institutions publiques et des employeurs pour la fiscalité/sécurité sociale, sous peine de **sanctions pénales sévères**.
-  - *Règle impérative JemmaPass* : L'application a l'interdiction absolue de collecter le numéro My Number à 12 chiffres brut. Seuls les identifiants d'assurance maladie décorrélés du numéro régalien ou les identifiants hospitaliers privés peuvent être gérés dans `ids` (`JIdentifier`).
+- `[HYPOTHÈSE À VÉRIFIER]` : Ingestion des codes-barres JAHIS figurant sur les carnets de santé médicamenteux japonais (*Okusuri Techou* - お薬手帳, [JAHIS Standards & Specifications](https://www.jahis.jp/standard/)).
+- `[EXISTE LÉGALEMENT AU JAPON / RÈGLE IMPÉRATIVE JEMMAPASS]` vs `[HYPOTHÈSE À VÉRIFIER]` :
+  - **Cadre légal régalien** : En vertu de la *Loi sur l'utilisation des numéros pour identifier une personne spécifique dans les procédures administratives* (番号法 - [*Act on the Use of Numbers to Identify a Specific Individual in the Administrative Procedure*, Loi n° 27 du 31 mai 2013, e-Gov](https://elaws.e-gov.go.jp/document?lawid=425AC0000000027)), la collecte, le stockage, l'utilisation ou la transmission du **numéro individuel à 12 chiffres (My Number)** sont expressément interdits en dehors des institutions publiques et des employeurs pour la fiscalité/sécurité sociale, sous peine de **sanctions pénales sévères**.
+  - **Règle impérative JemmaPass** : L'application a l'interdiction absolue de collecter le numéro My Number à 12 chiffres brut. Seuls les identifiants d'assurance maladie décorrélés du numéro régalien ou les identifiants hospitaliers privés peuvent être gérés dans `ids` (`JIdentifier`).
+  - `[HYPOTHÈSE À VÉRIFIER]` : Mécanisme technique de validation regex sous iOS (détection et rejet automatique à la saisie de tout identifiant à 12 chiffres respectant l'algorithme modulus 11 spécifique au My Number).
 
 ### 3.4. Recherche FTS5 CJK (Trigramme) vs Analyseurs Morphologiques
 
 - `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:821-825,849-850)]` : L'application utilise la table virtuelle SQLite `terminology_cjk` configurée avec le tokeniseur `trigram` (`tokenize='trigram case_sensitive 0'`) dès lors qu'un caractère CJK est détecté dans la requête.
-- `[PROPOSITION IOS]` : Sous iOS, SQLite supporte également le tokeniseur `trigram` via le framework SQLite 3.34+ sous GRDB.swift ([SQLite FTS5 Trigram](https://www.sqlite.org/fts5.html#the_trigram_tokenizer)). En complément, l'API native `NLTokenizer` (Natural Language framework d'Apple) peut être évaluée pour le découpage morphologique du japonais sans espaces.
+- `[PROPOSITION IOS]` : Sous iOS, SQLite supporte également le tokeniseur `trigram` via le framework SQLite 3.34+ sous GRDB.swift ([SQLite FTS5 Trigram Tokenizer](https://www.sqlite.org/fts5.html#the_trigram_tokenizer)). En complément, l'API native `NLTokenizer` (Natural Language framework d'Apple) peut être évaluée pour le découpage morphologique du japonais sans espaces.
 
 ### 3.5. Tri de Catastrophe : Protocole SALT adapté et Grille Réelle
 
@@ -265,8 +268,8 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 | :--- | :--- | :--- | :--- |
 | **Langage & UI** | Kotlin 2.x + ViewBinding / Compose | Swift 6 + SwiftUI | `[PROPOSITION IOS]` |
 | **Injection** | Hilt (Dagger) + KSP | Factory / Swift Dependencies | `[PROPOSITION IOS]` |
-| **Base KB & FTS5** | requery/sqlite-android (libsqliteX.so) | **GRDB.swift** ([SQLite FTS5 Trigram](https://www.sqlite.org/fts5.html#the_trigram_tokenizer)) | `[PROPOSITION IOS]` |
-| **Inférence LLM** | LiteRT-LM (`.litertlm`, C++ runtime) | [Google LiteRT for iOS](https://ai.google.dev/edge/litert) OU llama.cpp Metal | `[PROPOSITION IOS]` |
+| **Base KB & FTS5** | requery/sqlite-android (libsqliteX.so) | **GRDB.swift** ([SQLite FTS5 Trigram Tokenizer](https://www.sqlite.org/fts5.html#the_trigram_tokenizer)) | `[PROPOSITION IOS]` |
+| **Inférence LLM** | LiteRT-LM (`.litertlm`, C++ runtime) | [Google LiteRT](https://ai.google.dev/edge/litert) OU llama.cpp Metal | `[PROPOSITION IOS]` |
 | **Format Modèle** | `.litertlm` (`downloads/JemmaModelCatalog.kt:5`) | Fichiers `.litertlm` ou quantifiés GGUF/CoreML | `[PROPOSITION IOS]` |
 | **OCR Caméra** | ML Kit Text Japanese seul (`:16.0.1`) | Apple **Vision Framework** (`VNRecognizeTextRequest`) | `[PROPOSITION IOS]` |
 | **Synthèse Vocale** | Android TextToSpeech (25 langues) | **AVSpeechSynthesizer** (Voix japonaises natives) | `[PROPOSITION IOS]` |
@@ -299,7 +302,7 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 
 - `[HYPOTHÈSE À VÉRIFIER]` : **Faisabilité du BLE Extended Advertising en tâche de fond sous iOS** :
   - Sous iOS, l'API `CBPeripheralManager` impose des restrictions strictes sur l'émission publicitaire en arrière-plan : les identifiants de service sont masqués dans une zone réservée propriétaire et les données publicitaires personnalisées (`CBAdvertisementData`) ne peuvent pas transporter de gros volumes arbitraires lorsque l'application est suspendue.
-  - *Solution d'ingénierie proposée* : Mettre en œuvre un service GATT standardisé JemmaPass où le terminal agit comme serveur périphérique BLE en premier plan ou diffuse des trames BLE de 200 octets max (`MAX_CHUNK_BYTES = 200`, `sos/JemmaSosChunkCodec.kt:175`) via des caractéristiques accessibles en lecture/écriture par les pairs Android et iOS.
+  - *Solution d'ingénierie proposée* : Mettre en œuvre un service GATT standardisé JemmaPass où le terminal agit comme serveur périphérique BLE en premier plan ou diffuse des trames BLE de 200 octets max (`MAX_CHUNK_BYTES = 200`, `sos/JemmaSosChunkCodec.kt:171-175`) via des caractéristiques accessibles en lecture/écriture par les pairs Android et iOS.
 
 ### 4.6. Expérience Utilisateur & Intégration Écosystème Apple
 
@@ -318,7 +321,7 @@ L'exécution du portage iOS est confiée à des sous-agents spécialisés :
 1. **Agent Clinique & Données Japon** : Intégration des nomenclatures de pharmacopée japonaise (HOT, YJ, MHLW), règles d'interaction Katakana, conformité SaMD PMDA et restrictions My Number.
 2. **Agent Moteur Partagé & Codecs** : Module KMP partagé (`JemmaCore`), codec `_j2`, assembleur de trames QR `JF:i/N` (1..N) et budget 1800 octets.
 3. **Agent IA Embarquée & Vision** : Pipeline LiteRT iOS / Core ML, reconnaissance de texte japonais avec Apple Vision, prompt engineering vulgarisation.
-4. **Agent Réseau Maillé & SOS** : Protocole CoreBluetooth GATT compatible avec les chunks BLE Android de 200 octets (`sos/JemmaSosChunkCodec.kt:175`), machine à états SALT LWW (`StatusResolver.kt:68,108`).
+4. **Agent Réseau Maillé & SOS** : Protocole CoreBluetooth GATT compatible avec les chunks BLE Android de 200 octets pour le profil SOS (`sos/JemmaSosChunkCodec.kt:171-175`), passerelle pour les événements de triage SALT `E|...` de 131 octets (`mesh/codec/EventChunk.kt:8`, `sos/JemmaNearbyEndpointCodec.kt:51`), machine à états SALT LWW (`StatusResolver.kt:68,108`).
 5. **Agent SwiftUI & Intégration Système** : Interface SwiftUI, Live Activities, Lock Screen Widgets.
 
 ### 5.2. Plan par jalons (Milestones M1 à M5)
@@ -327,7 +330,7 @@ L'exécution du portage iOS est confiée à des sous-agents spécialisés :
 | :--- | :--- | :--- | :--- |
 | **M1** | **Module KMP Core & Codecs** | `JemmaCore.xcframework` (Modèles `JemmaProfileJ`, compression `_j2`, parseur trames `JF:i/N`, tests croisés JVM/iOS). | S+2 |
 | **M2** | **Base Clinique & Moteur Décisionnel** | GRDB.swift avec FTS5, import de `knowledge_full.db`, portage du moteur `KbCrossCheck` et des règles quadrivalentes. | S+5 |
-| **M3** | **OCR Vision & Inférence IA** | Intégration de Vision Framework (Katakana/Kanji), exécution de Gemma 4 ([LiteRT for iOS](https://ai.google.dev/edge/litert) / Metal), portage des 21 `@Tool`. | S+8 |
+| **M3** | **OCR Vision & Inférence IA** | Intégration de Vision Framework (Katakana/Kanji), exécution de Gemma 4 ([Google LiteRT](https://ai.google.dev/edge/litert) / Metal), portage des 21 `@Tool`. | S+8 |
 | **M4** | **Canaux de Transfert & Mesh BLE** | Scanner QR AVFoundation, export QR texte 1800B, service CoreBluetooth GATT interopérable avec Android. | S+10 |
 | **M5** | **UI SwiftUI & Intégration Système** | Application SwiftUI complète, Live Activities, Lock Screen Widgets, validation des contraintes Jetsam sur iPhone. | S+13 |
 
@@ -339,5 +342,26 @@ Le portage iOS devra valider l'ensemble des scénarios critiques documentés dan
 - **UC-ALM** : Détection des allergies croisées par classe ATC (Kurodo : Pénicilline J01C × Augmentin J01CR02).
 - **UC-ALM-FIX** : Implémentation d'un filtrage lexical rigoureux par frontières de mots sur iOS pour éliminer les faux positifs historiques (grains/AINS, nystatine/statines).
 - **UC-QR-TEXT** : Plafond strict de 1800 octets UTF-8 pour le QR texte universel (`QR_MAX_SINGLE = 1800`), avec éviction prioritaire propre et marqueur `✂️ …`.
-- **UC-BLOOD** : Synchronisation inviolable entre le groupe sanguin (`p.bt`) et l'Observation LOINC 882-1 (`rs`).
-- **UC-LEGAL-JP** : Contrôle bloquant interdisant la saisie ou la mémorisation d'un numéro My Number à 12 chiffres conformément à la loi japonaise (番号法, [Act No. 27 of 2013](https://elaws.e-gov.go.jp/document?lawid=425AC0000000027)).
+- **UC-BLOOD** : Synchronisation inviolable entre le groupe sanguin (`p.bt`) et l'Observation LOINC 882-1 (`rs`, `ips/IpsBloodGroup.kt:21-188`).
+- **UC-LEGAL-JP** : Contrôle bloquant interdisant la saisie ou la mémorisation d'un numéro My Number à 12 chiffres conformément à la loi japonaise (番号法, [Loi n° 27 du 31 mai 2013, e-Gov](https://elaws.e-gov.go.jp/document?lawid=425AC0000000027)).
+
+---
+
+## 6. Table des Sources et Affirmations Vérifiées
+
+| Affirmation / Sujet Technique | Statut & Éléments Vérifiés | URL Source Profonde Officielle | Date Consultation |
+| :--- | :--- | :--- | :---: |
+| **Norme IPS (HL7 FHIR R4 IPS)** | Standard international pour le résumé patient d'urgence | [ISO 27269:2021](https://www.iso.org/standard/79491.html) | 2026-10-02 |
+| **Profil National Japon JP Core** | Profil HL7 FHIR national promu pour le programme Medical DX | [NeXEHRS / JP Core v1.1.2](https://j-core.org/) | 2026-10-02 |
+| **Loi Japonaise My Number (番号法)** | Interdiction pénale stricte de collecte/stockage du numéro à 12 chiffres | [Loi n° 27 du 31 mai 2013 (e-Gov)](https://elaws.e-gov.go.jp/document?lawid=425AC0000000027) | 2026-10-02 |
+| **Réglementation SaMD PMDA** | Statut dispositif médical logiciel (PMD Act / 薬機法) | [PMDA SaMD Regulatory Info](https://www.pmda.go.jp/english/review-services/regulatory-info/0002.html) | 2026-10-02 |
+| **Codes HOT Médicaments Japon** | Nomenclature standard à 9 et 13 chiffres gérée par le MEDIS-DC | [MEDIS-DC Master Standard](https://www.medis.or.jp/2_kaihatu/kizyun/kizyun.html) | 2026-10-02 |
+| **Codes YJ Tarification MHLW** | Codes nationaux de tarification des médicaments remboursés | [MHLW Drug Tariff List](https://www.mhlw.go.jp/topics/2024/04/tp20240401-01.html) | 2026-10-02 |
+| **Standard Carnet Okusuri Techou** | Spécifications des QR codes d'ordonnance JAHIS | [JAHIS Standards & Specifications](https://www.jahis.jp/standard/) | 2026-10-02 |
+| **Code ATC M01AE04 (Fenoprofen)** | Preuve formelle que M01AE04 n'est pas Loxoprofen mais Fenoprofen | [WHOCC ATC Index - M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04) | 2026-10-02 |
+| **Statut Loxoprofène (Japon)** | Molécule sans code ATC L5 OMS, répertoriée sous KEGG / JAPIC | [KEGG Drug Entry D01709](https://www.kegg.jp/entry/D01709) | 2026-10-02 |
+| **Code ATC Edoxaban (B01AF03)** | Anticoagulant oral direct (inhibiteur direct facteur Xa) | [WHOCC ATC Index - B01AF03](https://www.whocc.no/atc_ddd_index/?code=B01AF03) | 2026-10-02 |
+| **Indexation CJK Trigram FTS5** | Tokeniseur SQLite FTS5 adapté aux langues sans espaces | [SQLite FTS5 Trigram Tokenizer](https://www.sqlite.org/fts5.html#the_trigram_tokenizer) | 2026-10-02 |
+| **Génération PDF Native iOS** | API UIKit de génération de documents PDF vectoriels | [Apple UIGraphicsPDFRenderer](https://developer.apple.com/documentation/uikit/uigraphicspdfrenderer) | 2026-10-02 |
+| **Moteur d'Inférence LiteRT** | Runtime d'inférence on-device de Google pour LLM / Edge | [Google LiteRT](https://ai.google.dev/edge/litert) | 2026-10-02 |
+| **Part de Marché iOS Japon** | Estimation ~65-70% sur le marché mobile japonais | [StatCounter Mobile OS Japan](https://gs.statcounter.com/os-market-share/mobile/japan) | 2026-10-02 |

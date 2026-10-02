@@ -64,9 +64,12 @@ Le système JemmaPass repose sur 5 invariants fonctionnels vérifiés dans le co
 │ 2. FHIR R4 AS SOURCE OF TRUTH FOR FHIR-NATIVE PILLARS                  │
 │    Le document médical d'autorité est le Bundle HL7 FHIR R4 IPS        │
 │    (<sid>.fhir.json) pour les seuls piliers FHIR-natifs (vaccins,      │
-│    actes, dispositifs, résultats... - profiles/ProfilesRepository.kt:  │
-│    23-27). Les 4 piliers historiques (patient, allergies, médocs,     │
-│    conditions) restent issus de la saisie _j 1.2 (<sid>.json).         │
+│    actes, dispositifs, résultats, problèmes cn... -                    │
+│    profiles/ProfilesRepository.kt:23-27). Les 3 piliers historiques    │
+│    de saisie directe _j 1.2 (<sid>.json) sont le patient (p),          │
+│    les allergies (al) et les médicaments (md). Le pilier cn fait       │
+│    partie d'IpsNativePillars.problems (ips/IpsImmunization.kt:113)     │
+│    et est projeté depuis le Bundle (ProfilesRepository.kt:469).        │
 │                                                                        │
 │ 3. STRICT SAFETY DECISION MATRIX                                       │
 │    Tout conflit détecté donne ALERT (kb/KbCrossCheck.kt:131).          │
@@ -185,7 +188,11 @@ flowchart TD
 
 ### 2.4. Package 3 : Triage en Zone de Catastrophe (SALT Mesh)
 
-Implémenté dans `triage/SaltCode.kt:34-51` et `triage/StatusResolver.kt:46-99`. Les couleurs réelles du code sont :
+Implémenté dans `triage/SaltCode.kt:34-51`, `triage/StatusResolver.kt:46-108`, `mesh/codec/EventChunk.kt:8` et `mesh/relay/RelayManager.kt:12`.
+- **Statut & Événements de Triage SALT** : Relayés sous forme de trames texte `E|<source_sid>|<victim_sid>|<status>|<rescuer_sid>|<ts_unix>|<ttl>|<seq>` par **Google Nearby Connections** (`mesh/codec/EventChunk.kt:8`), soumis à la limite stricte de **131 octets UTF-8** (`MAX_ENDPOINT_NAME_LEN = 131`, `sos/JemmaNearbyEndpointCodec.kt:51`).
+- **Profil SOS d'Urgence (`_j 1.2`)** : Diffusé de manière complémentaire par paquets binaires de **200 octets max** via BLE 5.0 Extended Advertising (`MAX_CHUNK_BYTES = 200`, `sos/JemmaSosChunkCodec.kt:171-175`).
+
+Les couleurs réelles du code sont :
 - **WAIT** : Gris (`#9E9E9E`, "⏳", `SaltCode.kt:36`)
 - **EVAL** : Jaune (`#FFC107`, "🔍", `SaltCode.kt:39`)
 - **STAB** : Vert (`#4CAF50`, "✅", `SaltCode.kt:42`)
@@ -196,11 +203,11 @@ Implémenté dans `triage/SaltCode.kt:34-51` et `triage/StatusResolver.kt:46-99`
 ```mermaid
 flowchart TD
     subgraph Triage_SALT ["Tri Médical en Zone de Sinistre"]
-        DISC["Découvrir Victimes via BLE (JemmaSosBleScanner.kt)"]
+        DISC["Découvrir Victimes via Nearby & BLE (JemmaSosBleScanner.kt)"]
         RADAR["Afficher le Radar des Victimes (RadarController.kt)"]
         ASSIGN["Affecter Statut SALT (WAIT gris / STAB vert / HELP rouge / EVAC bleu / DCD noir)"]
         RESOLVE["Résoudre Conflits: shouldOverwrite() & apply() (StatusResolver.kt:68, 108)"]
-        BROADCAST["Diffuser Paquet BLE (MAX_CHUNK_BYTES = 200, JemmaSosChunkCodec.kt:175)"]
+        BROADCAST["Diffuser Événement SALT E|... via Nearby Relay (<= 131B, EventChunk.kt:8)"]
     end
 
     DISC --> RADAR
@@ -216,7 +223,7 @@ flowchart TD
 ### 3.1. Structure des 18 Piliers IPS & Dualité FHIR R4 vs Projection `_j 1.2`
 
 Sur Android, la persistance locale maintient deux fichiers par profil (`profiles/ProfilesRepository.kt:23-28`) :
-- `<sid>.fhir.json` : Le Bundle FHIR R4 (source de vérité pour les piliers FHIR-natifs, généré via `qr/JemmaFhirBundleBuilder.kt:30` et `ips/IpsFhirCodec.kt:18`).
+- `<sid>.fhir.json` : Le Bundle FHIR R4 (source de vérité pour les piliers FHIR-natifs, généré via `qr/JemmaFhirBundleBuilder.kt:55,81`, méthode `JemmaFhirBundleBuilder.build`, et décodé via `ips/IpsFhirCodec.kt:43`, `IpsFhirCodec`).
 - `<sid>.json` : La projection compacte `JemmaProfileJ` (`qr/JemmaProfileJ.kt:43-103`).
 
 ```mermaid
@@ -462,14 +469,14 @@ L'agent Jemma (Gemma 4 via LiteRT-LM) dispose de **21 outils typés** exposés d
 ```mermaid
 classDiagram
     class JemmaTools {
-        +resolveDrug(name) Map [ai/JemmaTools.kt:172]
-        +resolveAllergy(name) Map [ai/JemmaTools.kt:238]
-        +resolveByCode(code, system) Map [ai/JemmaTools.kt:277]
-        +searchCodes(query, category) Map [ai/JemmaTools.kt:302]
-        +checkDdi(drug1, drug2) Map [ai/JemmaTools.kt:348]
-        +checkDdiByAtc(atc1, atc2) Map [ai/JemmaTools.kt:376]
-        +getAtcAncestors(atcCode) Map [ai/JemmaTools.kt:405]
-        +getFocusProfileSummary() Map [ai/JemmaTools.kt:431]
+        +resolveDrug(name: String) Map [ai/JemmaTools.kt:186]
+        +resolveAllergy(name: String) Map [ai/JemmaTools.kt:229]
+        +resolveByCode(code: String, system: String) Map [ai/JemmaTools.kt:266]
+        +searchCodes(query: String, category: String) Map [ai/JemmaTools.kt:307]
+        +checkDdi(drugA: String, drugB: String) Map [ai/JemmaTools.kt:356]
+        +checkDdiByAtc(atcA: String, atcB: String) Map [ai/JemmaTools.kt:373]
+        +getAtcAncestors(atc: String) Map [ai/JemmaTools.kt:392]
+        +getFocusProfileSummary() Map [ai/JemmaTools.kt:427]
         +getFocusProfileAllergies() Map [ai/JemmaTools.kt:452]
         +getFocusProfileMedications() Map [ai/JemmaTools.kt:461]
         +getFocusProfileConditions() Map [ai/JemmaTools.kt:470]
@@ -478,10 +485,10 @@ classDiagram
         +getFocusProfileDevices() Map [ai/JemmaTools.kt:526]
         +getFocusProfileResults() Map [ai/JemmaTools.kt:549]
         +getFocusProfilePastProblems() Map [ai/JemmaTools.kt:577]
-        +checkOneDrugAgainstFocusProfile(drugName) Map [ai/JemmaTools.kt:607]
-        +checkOneAtcAgainstFocusProfile(atc, display) Map [ai/JemmaTools.kt:625]
-        +triggerRedAlert(title, body) Map [ai/JemmaTools.kt:668]
-        +triggerToast(message, severity) Map [ai/JemmaTools.kt:679]
+        +checkOneDrugAgainstFocusProfile(drugName: String) Map [ai/JemmaTools.kt:607]
+        +checkOneAtcAgainstFocusProfile(atc: String, display: String) Map [ai/JemmaTools.kt:625]
+        +triggerRedAlert(title: String, body: String) Map [ai/JemmaTools.kt:668]
+        +triggerToast(message: String, severity: String) Map [ai/JemmaTools.kt:679]
         +getCurrentDateTime() Map [ai/JemmaTools.kt:699]
     }
 
@@ -537,6 +544,13 @@ stateDiagram-v2
     ReleaseError --> Idle : Release writeMutex + Notification Erreur
     UpdatingStateFlow --> Idle : Profil Actif Notifié
 ```
+
+> **Règle d'intégrité et gestion des conflits de groupe sanguin (LOINC 882-1 vs `p.bt`)** :
+> Deux comportements distincts sont rigoureusement isolés dans le code :
+> 1. **En saisie formulaire manuelle (`ResultFormBottomSheet.kt:539,566-582`)** : Avant toute écriture, `ResultBloodGroupGuard.check()` détecte si le résultat 882-1 contredit `p.bt`. L'enregistrement est **bloqué sans rien persister** et une boîte de dialogue modale (`MaterialAlertDialogBuilder`) propose à l'utilisateur :
+>    - *« Annuler »* : retour au formulaire de résultat, aucune donnée sauvegardée.
+>    - *« Modifier dans l'identité »* : bascule vers l'écran d'identité du profil pour modifier `p.bt`.
+> 2. **À l'import / écriture du repository (`ProfilesRepository.kt:451-461`)** : Lors de la persistance sous `writeMutex`, `IpsBloodGroup.reconcile(nativeIn.results, id, profile.p?.bt)` remplace le résultat contradictoire par le groupe officiel du profil (`p.bt` fait autorité). L'événement de conflit est émis via `_bloodGroupConflictFlow.value = conflict` (`:459`), permettant à l'UI (`ResultsEditFragment.kt:108-144`) d'afficher une notification explicite du remplacement opéré sans corrompre le profil.
 
 ### 4.2. Matrice Inviolable du Verdict de Sécurité Clinique (`KbSafetyVerdict`)
 
@@ -646,7 +660,7 @@ stateDiagram-v2
 
 ### 5.1. Détection de Collision Létale : Scénario Kurodo (Pénicilline × Augmentin)
 
-Flux démontrant l'intervention de l'agent Gemma 4 via les outils `@Tool` de `ai/medscan/MedScanController.kt:10-12` et `ai/JemmaTools.kt:668` :
+Flux démontrant l'intervention de l'agent Gemma 4 via les 2 seuls outils de scan instanciés par scan (`ai/medscan/MedScanController.kt:261-264` : `SearchDrugCandidatesTool` et `CheckInteractionsTool`). Le contrôleur ne passe pas par `triggerRedAlert` mais tranche le verdict via `MedScanStepSafety.decide()` et `settleVerdict()` :
 
 ```mermaid
 sequenceDiagram
@@ -656,23 +670,25 @@ sequenceDiagram
     participant OCR as 👁️ ML Kit Japanese (app/build.gradle.kts:141)
     participant Ctrl as ⚙️ MedScanController (ai/medscan/MedScanController.kt)
     participant Gemma as ✨ Gemma 4 (LiteRT-LM)
+    participant CheckTool as 🛡️ CheckInteractionsTool (MedScanController.kt:252)
     participant Cross as 🛡️ KbCrossCheck (kb/KbCrossCheck.kt)
-    participant Tools as 🛠️ JemmaTools (ai/JemmaTools.kt)
 
     Secouriste->>UI: Filme boîte "Augmentin 1g"
     UI->>OCR: Analyse de l'image caméra
     OCR-->>Ctrl: Texte extrait : "Augmentin 1g amoxicilline clavulanate"
-    Ctrl->>Gemma: Démarre agent de scan (system prompt + image)
-    Gemma->>Ctrl: searchDrugCandidates(["Augmentin", "amoxicilline"]) [MedScanController.kt:10]
+    Ctrl->>Gemma: ask(prompt, image, tools=[SearchDrugCandidatesTool, CheckInteractionsTool]) [MedScanController.kt:270]
+    Gemma->>Ctrl: searchDrugCandidates(["Augmentin", "amoxicilline"])
     Ctrl-->>Gemma: ["Augmentin -> J01CR02", "Amoxicillin -> J01CA04"]
-    Gemma->>Ctrl: checkInteractions("J01CR02") [MedScanController.kt:12]
-    Ctrl->>Cross: checkOneAtcAgainstAllergies(p.al, "J01CR02", ...)
+    Gemma->>CheckTool: checkInteractions("J01CR02") [MedScanController.kt:263]
+    CheckTool->>Cross: checkOneAtcAgainstAllergies(p.al, "J01CR02", ...)
     Cross->>Cross: Auto-réactivité ATC L3 "J01C" (KbCrossCheck.kt:327)
-    Cross-->>Ctrl: [AllergyHit: "auto:J01C", severity=HIGH]
-    Ctrl-->>Gemma: Collision mortelle trouvée (Allergie Pénicillines)
-    Gemma->>Tools: triggerRedAlert("Allergie Mortelle", "Kurodo est allergique aux pénicillines.") [ai/JemmaTools.kt:668]
-    Tools-->>UI: Émission JemmaToolEvent.RedAlert
-    UI->>Secouriste: 🔴 ÉCRAN ROUGE + Signal Sonore d'Urgence
+    Cross-->>CheckTool: [AllergyHit: "auto:J01C", severity=HIGH]
+    CheckTool-->>Gemma: Rapport de collision (Allergie Pénicillines)
+    Gemma-->>Ctrl: Explication textuelle de l'alerte
+    Ctrl->>Ctrl: MedScanStepSafety.decide() -> validation stricte (MedScanController.kt:308)
+    Ctrl->>Ctrl: settleVerdict(Verdict.Alert(...)) [MedScanController.kt:345]
+    Ctrl-->>UI: Émission StateFlow Verdict.Alert
+    UI->>Secouriste: 🔴 BANDEAU ROUGE VIF ("Allergie Pénicillines détectée")
 ```
 
 ### 5.2. Contrôle Sans Interaction : Scénario Paracétamol chez un Profil Sain (Verdict CLEAN)
@@ -736,27 +752,31 @@ sequenceDiagram
 
 ### 5.4. Découverte, Alerte et Propagation Maillée P2P SALT (Zone Sinistrée)
 
-Implémenté dans `sos/JemmaSosBleScanner.kt`, `sos/JemmaSosChunkCodec.kt:175` (`MAX_CHUNK_BYTES = 200`), `sos/JemmaNearbyEndpointCodec.kt:51` (`MAX_ENDPOINT_NAME_LEN = 131`) et `triage/StatusResolver.kt:68, 108` :
+Implémenté dans `mesh/codec/EventChunk.kt:8` (`E|<source>|<victim>|<status>|<rescuer>|<ts>|<ttl>|<seq>`), `mesh/relay/RelayManager.kt:12`, `sos/JemmaNearbyEndpointCodec.kt:51` (`MAX_ENDPOINT_NAME_LEN = 131`) et `triage/StatusResolver.kt:68, 108` :
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor SecouristeA as 🎒 Secouriste A (DMAT)
     participant PhoneA as 📱 Terminal A
-    participant BLE as 📡 BLE Broadcast P2P (MAX_CHUNK_BYTES = 200)
+    participant Nearby as 📡 Google Nearby Connections (EventChunk <= 131B)
     participant PhoneB as 📱 Terminal B (Poste Médical)
     participant ResolverB as ⚖️ StatusResolver (triage/StatusResolver.kt)
 
     SecouristeA->>PhoneA: Assigne statut SALT "HELP" (Rouge "#F44336") pour Victime Haru
-    PhoneA->>PhoneA: Encode trame chunk type 'E' (<= 200 octets UTF-8)
-    PhoneA->>BLE: Diffusion BLE Advertising
-    BLE->>PhoneB: Trame reçue par Terminal B
+    PhoneA->>PhoneA: Encode EventChunk "E|source|victim|HELP|rescuer|ts|ttl|seq" (<= 131B, EventChunk.kt:8)
+    PhoneA->>Nearby: Re-diffusion Nearby Connections (RelayManager.kt:12)
+    Nearby->>PhoneB: Trame reçue par Terminal B (onEndpointFound / advertising)
     PhoneB->>ResolverB: shouldOverwrite(existing, incoming) [triage/StatusResolver.kt:68]
     ResolverB-->>PhoneB: true (Timestamp plus récent)
     PhoneB->>ResolverB: apply(incoming) [triage/StatusResolver.kt:108]
     PhoneB->>PhoneB: Met à jour le Radar (Point rouge clignotant)
     PhoneB->>PhoneB: Notifie le secouriste B
 ```
+
+> **Note sur la dualité des protocoles sans-fil** :
+> - **Événements de Triage SALT (`E|...`)** : Transitent exclusivement via **Google Nearby Connections** sous une limite stricte de **131 octets UTF-8** (`sos/JemmaNearbyEndpointCodec.kt:51`, `mesh/codec/EventChunk.kt:8`).
+> - **Balise SOS Profil Patient (`_j 1.2`)** : Transite via le codec **BLE 5.0 Extended Advertising** par trames de **200 octets max** (`sos/JemmaSosChunkCodec.kt:171-175`, `MAX_CHUNK_BYTES = 200`, diffusé par `sos/JemmaSosBleAdvertiser.kt`).
 
 ### 5.5. Pipeline de Vulgarisation Pédagogique Multilingue et Cache Local
 
@@ -829,31 +849,38 @@ flowchart TD
 
 ### 6.2. Algorithme de Détection d'Allergie Croisée par Arborescence de Classes
 
-Implémentation exacte observée dans `kb/KbCrossCheck.kt:304-418,818-885` :
+Implémentation exacte observée dans `kb/KbCrossCheck.kt:218-418,818-885` :
 
 ```mermaid
 flowchart TD
-    Start(["Médicament Candidat (ATC Set) + Liste Allergies"]) --> LoopAllergies["Pour chaque allergie du profil"]
+    Start(["Médicament Candidat (ATC Set) + Liste Allergies"]) --> IngestCandidate["1. Construction candidateAtcSet (KbCrossCheck.kt:218)"]
+    IngestCandidate --> InferCand["inferAtcFromAllergyName(candidateDisplay) (KbCrossCheck.kt:222)"]
+    InferCand --> LoopAllergies["2. Pour chaque allergie du profil (KbCrossCheck.kt:227)"]
     
-    LoopAllergies --> ExactCode{"Code Substance Exact Identique ? (KbCrossCheck.kt:306)"}
+    LoopAllergies --> ResolveAllergy["Résolution allergyConcept via KB (KbCrossCheck.kt:237)"]
+    ResolveAllergy --> InferAllergy{"allergyAtcFromKb != null ? (KbCrossCheck.kt:256)"}
+    InferAllergy -- Oui --> SetAllergyAtc["allergyAtc = allergyAtcFromKb"]
+    InferAllergy -- Non --> RunInfer["allergyAtc = inferAtcFromAllergyName(allergyName) (KbCrossCheck.kt:257)"]
+    RunInfer -- "contient 'ains' -> M01AE01 (:858)" --> BugAins["Attention: Match aussi 'grains' (Défaut UC-ALM-009)"]
+    RunInfer -- "contient 'statin' -> C10AA01 (:878)" --> BugStatin["Attention: Match aussi 'nystatine' (Défaut UC-ALM-010)"]
+    BugAins --> SetAllergyAtc
+    BugStatin --> SetAllergyAtc
+    RunInfer -- "Autre mot-clé / null" --> SetAllergyAtc
+
+    SetAllergyAtc --> ExactCode{"Étape 1: Code Exact dans candidateAtcSet ? (KbCrossCheck.kt:265)"}
     ExactCode -- Oui --> DirectHit["AllergyHit: Type 'code' (KbCrossCheck.kt:307)"]
     
-    ExactCode -- Non --> AutoReactivity{"Même Famille ATC L3 ? (ex: J01C, KbCrossCheck.kt:327)"}
+    ExactCode -- Non --> AutoReactivity{"Étape 1.4: Même Famille ATC L3 ? (ex: J01C, :327)"}
     AutoReactivity -- Oui --> AutoHit["AllergyHit: Type 'auto:L3' (KbCrossCheck.kt:333)"]
     
-    AutoReactivity -- Non --> CrossTable{"Paire dans allergy_cross_reactivity ? (KbCrossCheck.kt:348)"}
+    AutoReactivity -- Non --> CrossTable{"Étape 1.5: Paire dans allergy_cross_reactivity ? (:349)"}
     CrossTable -- Oui --> CrossHit["AllergyHit: Type 'xreact:...' (KbCrossCheck.kt:364)"]
     
-    CrossTable -- Non --> InferAtc{"inferAtcFromAllergyName(name) ? (KbCrossCheck.kt:818)"}
-    InferAtc -- "contient 'ains' -> M01AE01 (:858)" --> BugAins["Attention: Match aussi 'grains' (Défaut UC-ALM-009)"]
-    InferAtc -- "contient 'statin' -> C10AA01 (:878)" --> BugStatin["Attention: Match aussi 'nystatine' (Défaut UC-ALM-010)"]
-    InferAtc -- "Autre mot-clé reconnu" --> ClassHit["AllergyHit: Type 'class:$matchedClass' (:402)"]
+    CrossTable -- Non --> AncestorWalk{"Étape 2: Parcours Ancêtres ATC getAtcAncestors ? (:382)"}
+    AncestorWalk -- "Ancêtre présent dans candidateAtcSet (:387, 393)" --> ClassHit["AllergyHit: Type 'class:$matchedClass' (KbCrossCheck.kt:402)"]
     
-    BugAins --> ClassHit
-    BugStatin --> ClassHit
-    
-    InferAtc -- Non --> SubstringCheck{"Allergie >= 4 chars contenue dans Display ? (:410)"}
-    SubstringCheck -- Oui --> SubstringHit["AllergyHit: Type 'name' (:411)"]
+    AncestorWalk -- Non --> SubstringCheck{"Étape 3: Nom Allergie >= 4 chars dans Display ? (:408)"}
+    SubstringCheck -- Oui --> SubstringHit["AllergyHit: Type 'name' (KbCrossCheck.kt:411)"]
     SubstringCheck -- Non --> NoHit["Aucun hit pour cette allergie"]
     
     DirectHit --> Collect["Ajout à la liste des hits"]
@@ -863,10 +890,9 @@ flowchart TD
     SubstringHit --> Collect
     NoHit --> NextAllergy["Allergie suivante"]
     Collect --> NextAllergy
-    
     NextAllergy --> Remaining{"Reste des allergies ?"}
     Remaining -- Oui --> LoopAllergies
-    Remaining -- Non --> Finish(["PillarCheck(hits, KbSafety.pillarStatus(kbUp, allergies.size)) (:418)"])
+    Remaining -- Non --> Finish(["PillarCheck(hits, KbSafety.pillarStatus(kbUp, allergies.size)) (KbCrossCheck.kt:418)"])
 ```
 
 ### 6.3. Algorithme d'Éviction Prioritaire du QR Texte Universel
@@ -903,11 +929,11 @@ flowchart TD
 
 ### 6.4. Algorithme de Réconciliation et d'Inviolabilité du Groupe Sanguin
 
-Implémenté dans `ips/IpsBloodGroup.kt:1-90` et `profiles/ProfilesRepository.kt:82-114` :
+Implémenté dans `ips/IpsBloodGroup.kt:21-188`, `ui/profile/results/ResultFormBottomSheet.kt:539,566-582` et `profiles/ProfilesRepository.kt:451-461` :
 
 ```mermaid
 flowchart TD
-    Start(["Profil Patient avec p.bt et liste des résultats rs"]) --> NormBT["Normaliser p.bt (IpsBloodGroup.normalize, A+, O-, B+, AB...)"]
+    Start(["Profil Patient avec p.bt et résultats rs"]) --> NormBT["Normaliser p.bt (IpsBloodGroup.normalize: A+, O-, B+, AB...)"]
     NormBT --> ScanObs["Rechercher Observation LOINC 882-1 dans rs"]
     
     ScanObs --> ObsPresent{"Observation 882-1 présente ?"}
@@ -915,15 +941,21 @@ flowchart TD
     
     ObsPresent -- Oui --> Compare{"Valeur Observation == p.bt ?"}
     Compare -- Oui --> Consistent["Conserver Observation Valide"]
-    Compare -- Non --> ConflictDetected["Conflit Détecté : p.bt fait foi (ProfilesRepository.kt:80)"]
+    Compare -- Non --> ConflictBranch{"Contexte d'Exécution ?"}
     
-    ConflictDetected --> IsManualEdit{"Action en cours ?"}
-    IsManualEdit -- "Saisie Formulaire Manuelle" --> RejectEdit["Bloquer la modification contradictoire"]
-    IsManualEdit -- "Import / Réconciliation Fichiers" --> DropContradictory["Évincer l'observation contradictoire et notifier BloodGroupConflict"]
+    ConflictBranch -- "1. Saisie Formulaire (ResultFormBottomSheet.kt:539)" --> GuardCheck["ResultBloodGroupGuard.check() détecte le conflit"]
+    GuardCheck --> ShowDialog["Afficher MaterialAlertDialogBuilder (ResultFormBottomSheet.kt:566)"]
+    ShowDialog --> DialogOptions{"Choix de l'Utilisateur"}
+    DialogOptions -- "Bouton Annuler (:573)" --> AbortForm["Fermer la boîte, retour au formulaire, AUCUN enregistrement"]
+    DialogOptions -- "Bouton Modifier dans l'identité (:577)" --> OpenIdent["openIdentity(profileId): redirection vers l'écran d'identité"]
     
-    GenerateObs --> SaveProfile["Persistance sous writeMutex (ProfilesRepository.kt:146)"]
+    ConflictBranch -- "2. Import / Écriture Repository (ProfilesRepository.kt:451)" --> Reconcile["IpsBloodGroup.reconcile() remplace 882-1 par p.bt"]
+    Reconcile --> EmitConflict["Émettre BloodGroupConflict sur _bloodGroupConflictFlow (:459)"]
+    EmitConflict --> ShowBanner["Afficher dialogue d'avertissement dans ResultsEditFragment (:128)"]
+    
+    GenerateObs --> SaveProfile["Persistance sous writeMutex (ProfilesRepository.kt:146, 371)"]
     Consistent --> SaveProfile
-    DropContradictory --> SaveProfile
+    Reconcile --> SaveProfile
     SaveProfile --> Finish(["Profil Persisté avec Intégrité Sanguine Assurée"])
 ```
 
@@ -1094,7 +1126,7 @@ Cette section rassemble expressément les concepts, classes et propositions d'ar
    - *Proposition* : Remplacer par une expression régulière avec frontières de mots `\bains\b` ou une tokenisation lexicale stricte pour exclure les sous-chaînes accidentelles.
 
 3. **Normalisation Universelle Zenkaku / Hankaku & Table Katakana Dédiée** :
-   - *Statut actuel* : Normalisation gérée par un bloc `when` codé en dur pour 10 molécules (`kb/KnowledgeBaseService.kt:153-166`).
+   - *Statut actuel* : Normalisation gérée par un bloc `when` codé en dur normalisant vers 9 noms de molécules en anglais (`kb/KnowledgeBaseService.kt:153-166`).
    - *Proposition* : Intégrer un analyseur morphologique ou une table de correspondance formelle Katakana -> HOT / YJ / ATC pour l'ensemble de la pharmacopée japonaise.
 
 4. **Somme de Contrôle et Identifiant de Lot dans les Trames QR Multi-Frames** :
@@ -1104,3 +1136,25 @@ Cette section rassemble expressément les concepts, classes et propositions d'ar
 5. **Signature Cryptographique de Lot et Chiffrement Bout-en-Bout** :
    - *Statut actuel* : Les trames transitent en clair (Base64 deflate-raw ou JSON brut).
    - *Proposition* : Intégrer une couche de signature numérique (Ed25519) pour authentifier l'émetteur du pass en milieu d'urgence.
+
+---
+
+## 9. Table des Sources et Affirmations Vérifiées (Affirmation → URL Profonde → Date de Consultation)
+
+| Affirmation / Sujet Technique | Statut & Éléments Vérifiés | URL Source Profonde Officielle | Date Consultation |
+| :--- | :--- | :--- | :---: |
+| **Norme IPS (HL7 FHIR R4 IPS)** | Standard international pour le résumé patient d'urgence | [ISO 27269:2021](https://www.iso.org/standard/79491.html) | 2026-10-02 |
+| **Profil National Japon JP Core** | Profil HL7 FHIR national promu pour le programme Medical DX | [NeXEHRS / JP Core v1.1.2](https://j-core.org/) | 2026-10-02 |
+| **Loi Japonaise My Number (番号法)** | Interdiction pénale stricte de collecte/stockage du numéro à 12 chiffres | [Loi n° 27 du 31 mai 2013 (e-Gov)](https://elaws.e-gov.go.jp/document?lawid=425AC0000000027) | 2026-10-02 |
+| **Réglementation SaMD PMDA** | Statut dispositif médical logiciel (PMD Act / 薬機法) | [PMDA SaMD Regulatory Info](https://www.pmda.go.jp/english/review-services/regulatory-info/0002.html) | 2026-10-02 |
+| **Codes HOT Médicaments Japon** | Nomenclature standard à 9 et 13 chiffres gérée par le MEDIS-DC | [MEDIS-DC Master Standard](https://www.medis.or.jp/2_kaihatu/kizyun/kizyun.html) | 2026-10-02 |
+| **Codes YJ Tarification MHLW** | Codes nationaux de tarification des médicaments remboursés | [MHLW Drug Tariff List](https://www.mhlw.go.jp/topics/2024/04/tp20240401-01.html) | 2026-10-02 |
+| **Standard Carnet Okusuri Techou** | Spécifications des QR codes d'ordonnance JAHIS | [JAHIS Standards & Specifications](https://www.jahis.jp/standard/) | 2026-10-02 |
+| **Code ATC M01AE04 (Fenoprofen)** | Preuve formelle que M01AE04 n'est pas Loxoprofen mais Fenoprofen | [WHOCC ATC Index - M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04) | 2026-10-02 |
+| **Statut Loxoprofène (Japon)** | Molécule sans code ATC L5 OMS, répertoriée sous KEGG / JAPIC | [KEGG Drug Entry D01709](https://www.kegg.jp/entry/D01709) | 2026-10-02 |
+| **Code ATC Edoxaban (B01AF03)** | Anticoagulant oral direct (inhibiteur direct facteur Xa) | [WHOCC ATC Index - B01AF03](https://www.whocc.no/atc_ddd_index/?code=B01AF03) | 2026-10-02 |
+| **Indexation CJK Trigram FTS5** | Tokeniseur SQLite FTS5 adapté aux langues sans espaces | [SQLite FTS5 Trigram Tokenizer](https://www.sqlite.org/fts5.html#the_trigram_tokenizer) | 2026-10-02 |
+| **Génération PDF Native iOS** | API UIKit de génération de documents PDF vectoriels | [Apple UIGraphicsPDFRenderer](https://developer.apple.com/documentation/uikit/uigraphicspdfrenderer) | 2026-10-02 |
+| **Moteur d'Inférence LiteRT** | Runtime d'inférence on-device de Google pour LLM / Edge | [Google LiteRT](https://ai.google.dev/edge/litert) | 2026-10-02 |
+| **Part de Marché iOS Japon** | Estimation ~65-70% sur le marché mobile japonais | [StatCounter Mobile OS Japan](https://gs.statcounter.com/os-market-share/mobile/japan) | 2026-10-02 |
+
