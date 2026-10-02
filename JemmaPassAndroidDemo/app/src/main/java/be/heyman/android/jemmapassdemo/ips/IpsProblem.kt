@@ -19,10 +19,7 @@ object IpsProblemStatus {
     const val ACTIVE = "active"
     const val RECURRENCE = "recurrence"
     const val RELAPSE = "relapse"
-    const val INACTIVE = "inactive"
-    const val REMISSION = "remission"
-    const val RESOLVED = "resolved"
-    val ALL = listOf(ACTIVE, RECURRENCE, RELAPSE, INACTIVE, REMISSION, RESOLVED)
+    val ALL = listOf(ACTIVE, RECURRENCE, RELAPSE)
 
     /** Full codes, plus the legacy one-letter `_j` values ("A"). */
     fun normalize(raw: String?): String {
@@ -36,9 +33,6 @@ object IpsProblemStatus {
     fun display(code: String): String = when (code) {
         RECURRENCE -> "Recurrence"
         RELAPSE -> "Relapse"
-        INACTIVE -> "Inactive"
-        REMISSION -> "Remission"
-        RESOLVED -> "Resolved"
         else -> "Active"
     }
 }
