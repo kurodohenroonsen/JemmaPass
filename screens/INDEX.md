@@ -21,6 +21,7 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [201a-dialog-furosemide-kidney.png](../feat-ips-18-pillars-cleanup/e093854-20261001-1928/screenshots/201a-dialog-furosemide-kidney.png) | `e093854` | e093854-20261001-1928 |
 | [201b-dialog-fexofenadine-kidney.png](../feat-ips-18-pillars-cleanup/e093854-20261001-1928/screenshots/201b-dialog-fexofenadine-kidney.png) | `e093854` | e093854-20261001-1928 |
 | [230-e1-alert-kamekichi.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/230-e1-alert-kamekichi.png) | `8a675b3` | 8a675b3-20261002-0515 |
+| [231-e6-incomplete-dialog.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/231-e6-incomplete-dialog.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [236-e8-blood-group-conflict-dialog.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/236-e8-blood-group-conflict-dialog.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [31-delete-dialog.png](../feat-ips-18-pillars-cleanup/1c1b7e5-20260930-1849/screenshots/31-delete-dialog.png) | `1c1b7e5` | 1c1b7e5-20260930-1849 |
 | [32-delete-dialog.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/32-delete-dialog.png) | `f7c500e` | f7c500e-20260930-2015 |
@@ -70,7 +71,11 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [234-e5-allergy-date-future-disabled.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/234-e5-allergy-date-future-disabled.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [235-e7-medication-5-routes.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/235-e7-medication-5-routes.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [237-e9-medication-scan-badge.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/237-e9-medication-scan-badge.png) | `8a675b3` | 8a675b3-20261002-0515 |
+| [237-e9-radar-badge.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/237-e9-radar-badge.png) | `8a675b3` | 8a675b3-20261002-0515 |
+| [238-e6-amber-banner.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/238-e6-amber-banner.png) | `8a675b3` | 8a675b3-20261002-0515 |
+| [239-e6-banner-gone.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/239-e6-banner-gone.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [250-pdf-haru-preview.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/250-pdf-haru-preview.png) | `8a675b3` | 8a675b3-20261002-0515 |
+| [251-pdf-kamekichi-page.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/251-pdf-kamekichi-page.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [70-haru.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/70-haru.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [71-kamekichi.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/71-kamekichi.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [80-haru-meds.png](../feat-ips-18-pillars-cleanup/1c1b7e5-20260930-1849/screenshots/80-haru-meds.png) | `1c1b7e5` | 1c1b7e5-20260930-1849 |

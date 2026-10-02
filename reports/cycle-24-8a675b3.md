@@ -5,7 +5,6 @@
 - **Appareil** : Google Pixel 9 Pro XL (Android 17)
 - **Dossier de sortie** : `qa/device/out/8a675b3-20261002-0515`
 - **Statut global** : **SUCCÈS TOTAL (PASS 110/110 checks finaux, 0 failed)**
-- **Publication device-reports** : commit `80e21e4`
 
 ---
 
