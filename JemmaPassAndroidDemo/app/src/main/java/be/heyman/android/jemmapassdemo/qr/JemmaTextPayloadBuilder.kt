@@ -82,15 +82,15 @@ object JemmaTextPayloadBuilder {
     private const val RANK_ALLERGIES = 1
     private const val RANK_MEDICATIONS = 2
     private const val RANK_CONDITIONS = 3
-    private const val RANK_CONTACTS = 4
-    private const val RANK_PATIENT_EXTRA = 5   // address, phone, e-mail, national id
-    private const val RANK_DEVICES = 6
-    private const val RANK_PAST_PROBLEMS = 7
-    private const val RANK_PROCEDURES = 8
-    private const val RANK_RESULTS = 9
-    private const val RANK_IMMUNIZATIONS = 10
-    private const val RANK_PREGNANCY = 11
-    private const val RANK_FUNCTIONAL = 12
+    private const val RANK_PREGNANCY = 4
+    private const val RANK_FUNCTIONAL = 5
+    private const val RANK_CONTACTS = 6
+    private const val RANK_DEVICES = 7
+    private const val RANK_PATIENT_EXTRA = 8   // address, phone, e-mail, national id
+    private const val RANK_PAST_PROBLEMS = 9
+    private const val RANK_PROCEDURES = 10
+    private const val RANK_RESULTS = 11
+    private const val RANK_IMMUNIZATIONS = 12
 
     /** One droppable group of lines. [title] == null → bare lines (patient extras). */
     private class Part(
