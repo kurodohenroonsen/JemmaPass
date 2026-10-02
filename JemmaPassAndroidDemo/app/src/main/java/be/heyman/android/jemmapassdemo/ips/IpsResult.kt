@@ -109,9 +109,8 @@ data class IpsResult(
     fun valueLabel(): String = when {
         isNumeric -> listOfNotNull(IpsDecimal.normalize(value), unit?.takeIf { it.isNotBlank() }).joinToString(" ")
         isCoded -> valueDisplay?.takeIf { it.isNotBlank() } ?: valueCode.orEmpty()
+        value != null && value.isNotBlank() -> listOfNotNull(value, unit?.takeIf { it.isNotBlank() }).joinToString(" ")
         valueText != null && valueText.isNotBlank() -> valueText
-        value != null && value.isNotBlank() ->
-            if (unit != null && unit.isNotBlank() && !value.contains(unit)) "$value $unit" else value
         else -> ""
     }
 
@@ -136,12 +135,16 @@ data class IpsResult(
         status = status.takeIf { it != IpsResultStatus.FINAL },
         value = when {
             isNumeric -> IpsDecimal.normalize(value)
-            else -> valueLabel().takeIf { it.isNotBlank() }
+            isCoded -> valueDisplay?.takeIf { it.isNotBlank() } ?: valueCode.orEmpty()
+            value != null && value.isNotBlank() -> value
+            valueText != null && valueText.isNotBlank() -> valueText
+            else -> null
         },
         unit = unit?.takeIf { it.isNotBlank() },
         interpretation = IpsResultInterpretation.normalize(interpretation),
         referenceRange = referenceRangeLabel(),
-        valueCode = if (isCoded && (valueCodeSystem == null || valueCodeSystem == IpsCodeSystems.SNOMED)) valueCode else null,
+        valueCode = if (isCoded) valueCode else null,
+        valueCodeSystem = if (isCoded && valueCodeSystem != null && valueCodeSystem != IpsCodeSystems.SNOMED) valueCodeSystem else null,
         category = category.takeIf { it != IpsResultCategory.LABORATORY },
     )
 
@@ -185,6 +188,7 @@ data class IpsResult(
                 value = if (numeric) rawValue else null,
                 unit = entry.unit?.takeIf { it.isNotBlank() },
                 valueCode = coded,
+                valueCodeSystem = entry.valueCodeSystem?.takeIf { it.isNotBlank() } ?: IpsCodeSystems.SNOMED,
                 valueDisplay = if (coded != null) rawValue else null,
                 valueText = if (!numeric && coded == null) rawValue else null,
                 interpretation = IpsResultInterpretation.normalize(entry.interpretation),
@@ -212,4 +216,34 @@ object IpsDecimal {
     /** "120.0" → "120", "5.40" → "5.4", "0.50" → "0.5" (FHIR JSON always writes a fraction part). */
     fun trimZeros(plain: String): String =
         if (plain.contains('.')) plain.trimEnd('0').trimEnd('.') else plain
+}
+
+/** Parser for almost-numeric laboratory values: comparators ("<0.5", ">=10"), thousands spaces ("1 234,5"), trailing dot ("5."). */
+object IpsAlmostNumeric {
+    private val COMPARATOR_REGEX = Regex("^\\s*(<=|>=|<|>)\\s*(.*)$")
+
+    data class ParsedQuantity(
+        val comparator: String?,
+        val numericString: String,
+        val originalRaw: String,
+    )
+
+    fun parse(raw: String?): ParsedQuantity? {
+        if (raw.isNullOrBlank()) return null
+        val trimmed = raw.trim()
+        val compMatch = COMPARATOR_REGEX.find(trimmed)
+        val comparator = compMatch?.groupValues?.get(1)
+        val rest = (if (compMatch != null) compMatch.groupValues[2] else trimmed).trim()
+        val normalized = rest.replace(" ", "").replace(',', '.')
+            .let { if (it.endsWith(".")) it.dropLast(1) else it }
+        if (IpsDecimal.isDecimal(normalized)) {
+            val validDecimal = IpsDecimal.normalize(normalized) ?: return null
+            return ParsedQuantity(
+                comparator = comparator,
+                numericString = validDecimal,
+                originalRaw = trimmed,
+            )
+        }
+        return null
+    }
 }

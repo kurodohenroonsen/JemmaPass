@@ -588,7 +588,11 @@ object IpsFhirCodec {
             category = IpsResultCategory.normalize(category),
             value = quantity?.extension?.firstOrNull { it.url == EXT_ORIGINAL_TEXT }
                 ?.value?.asString()?.value?.value
-                ?: quantity?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
+                ?: run {
+                    val comp = quantity?.comparator?.value?.getCode()
+                    val num = quantity?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) }
+                    if (comp != null && num != null) "$comp$num" else num
+                },
             unit = (quantity?.code?.value ?: quantity?.unit?.value)?.takeIf { it.isNotBlank() },
             valueCode = codedCoding?.code?.value?.takeIf { it.isNotBlank() },
             valueCodeSystem = codedCoding?.system?.value?.takeIf { it.isNotBlank() } ?: IpsCodeSystems.SNOMED,
@@ -663,32 +667,46 @@ object IpsFhirCodec {
     }
 
     private fun observationValue(rs: IpsResult): Observation.Value? {
-        val numeric = IpsDecimal.normalize(rs.value)
+        val almost = IpsAlmostNumeric.parse(rs.value)
         return when {
-            numeric != null -> Observation.Value.Quantity(quantity(numeric, rs.unit).build())
+            almost != null -> Observation.Value.Quantity(
+                quantity(almost.numericString, rs.unit, almost.comparator, almost.originalRaw).build()
+            )
             !rs.valueCode.isNullOrBlank() ->
                 Observation.Value.CodeableConcept(codeableConcept(rs.valueCode, rs.valueCodeSystem ?: IpsCodeSystems.SNOMED, rs.valueDisplay, null).build())
             !rs.valueText.isNullOrBlank() -> Observation.Value.String(String.Builder().apply { value = rs.valueText }.build())
-            !rs.value.isNullOrBlank() -> {
-                val txt = if (!rs.unit.isNullOrBlank() && !rs.value.contains(rs.unit)) "${rs.value} ${rs.unit}" else rs.value
-                Observation.Value.String(String.Builder().apply { value = txt }.build())
-            }
+            !rs.value.isNullOrBlank() -> Observation.Value.String(String.Builder().apply { value = rs.value }.build())
             else -> null
         }
     }
 
     /** UCUM quantity : `value` as an exact decimal, `code` = `unit` = the UCUM code. */
-    private fun quantity(decimal: kotlin.String, ucum: kotlin.String?): Quantity.Builder =
+    private fun quantity(
+        decimal: kotlin.String,
+        ucum: kotlin.String?,
+        comparatorCode: kotlin.String? = null,
+        rawTyped: kotlin.String? = null,
+    ): Quantity.Builder =
         Quantity.Builder().apply {
             value = Decimal.Builder().apply { value = BigDecimal.parseString(decimal) }
+            comparatorCode?.let { comp ->
+                try {
+                    comparator = Enumeration.of(Quantity.QuantityComparator.fromCode(comp), null)
+                } catch (_: Exception) {}
+            }
             ucum?.takeIf { it.isNotBlank() }?.let { u ->
                 unit = String.Builder().apply { value = u }
                 system = Uri.Builder().apply { value = SYSTEM_UCUM }
                 code = Code.Builder().apply { value = u }
             }
-            if (decimal.filter { it.isDigit() }.length > 15) {
+            if (comparatorCode != null && rawTyped != null) {
                 extension.add(Extension.Builder(EXT_ORIGINAL_TEXT).apply {
-                    value = Extension.Value.String(String.Builder().apply { value = decimal }.build())
+                    value = Extension.Value.String(String.Builder().apply { value = rawTyped }.build())
+                })
+            } else if (decimal.filter { it.isDigit() }.length > 15) {
+                val extreme = rawTyped ?: decimal
+                extension.add(Extension.Builder(EXT_ORIGINAL_TEXT).apply {
+                    value = Extension.Value.String(String.Builder().apply { value = extreme }.build())
                 })
             }
         }
