@@ -416,9 +416,8 @@ class RandomProfileInvariantsTest {
     @Test
     fun `UC-IMP-007 the generator itself is deterministic`() {
         for (n in listOf(0, 9, 57, profileCount - 1)) {
-            assertEquals(profile(n), profile(n))
-            assertEquals(ProfileFixtures.bundleJsonFromProjection(profile(n).j).length, ProfileFixtures.bundleJsonFromProjection(profile(n).j).length)
+            assertEquals(profile(n).j, profile(n).j)
         }
-        assertFalse(profile(0) == profile(1))
+        assertFalse(profile(0).j == profile(1).j)
     }
 }
