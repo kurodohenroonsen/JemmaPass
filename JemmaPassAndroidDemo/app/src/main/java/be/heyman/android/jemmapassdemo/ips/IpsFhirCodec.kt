@@ -93,6 +93,7 @@ object IpsFhirCodec {
         "http://hl7.org/fhir/uv/ips/StructureDefinition/Condition-uv-ips"
 
     const val EXT_DATA_ABSENT_REASON = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+    const val EXT_ORIGINAL_TEXT = "http://hl7.org/fhir/StructureDefinition/originalText"
     const val PATIENT_REPORTED = "Patient-reported"
 
     /** FHIR resource ids allow [A-Za-z0-9\-.]{1,64} only (profile sids carry underscores). */
@@ -585,15 +586,21 @@ object IpsFhirCodec {
             date = o.effective?.asDateTime()?.value?.value?.toString(),
             status = IpsResultStatus.normalize(o.status.value?.getCode()),
             category = IpsResultCategory.normalize(category),
-            value = quantity?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
+            value = quantity?.extension?.firstOrNull { it.url == EXT_ORIGINAL_TEXT }
+                ?.value?.asString()?.value?.value
+                ?: quantity?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
             unit = (quantity?.code?.value ?: quantity?.unit?.value)?.takeIf { it.isNotBlank() },
             valueCode = codedCoding?.code?.value?.takeIf { it.isNotBlank() },
             valueCodeSystem = codedCoding?.system?.value?.takeIf { it.isNotBlank() } ?: IpsCodeSystems.SNOMED,
             valueDisplay = (codedCoding?.display?.value ?: codedValue?.text?.value)?.takeIf { it.isNotBlank() },
             valueText = stringValue?.takeIf { it.isNotBlank() },
             interpretation = IpsResultInterpretation.normalize(o.interpretation.flatMap { it.coding }.firstOrNull()?.code?.value),
-            refLow = range?.low?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
-            refHigh = range?.high?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
+            refLow = range?.low?.extension?.firstOrNull { it.url == EXT_ORIGINAL_TEXT }
+                ?.value?.asString()?.value?.value
+                ?: range?.low?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
+            refHigh = range?.high?.extension?.firstOrNull { it.url == EXT_ORIGINAL_TEXT }
+                ?.value?.asString()?.value?.value
+                ?: range?.high?.value?.value?.let { IpsDecimal.trimZeros(it.toStringExpanded()) },
             performer = o.performer.firstOrNull()
                 ?.takeUnless { it.reference?.value != null && it.reference?.value == o.subject?.reference?.value }
                 ?.display?.value?.takeIf { it.isNotBlank() },
@@ -681,6 +688,11 @@ object IpsFhirCodec {
                 unit = String.Builder().apply { value = u }
                 system = Uri.Builder().apply { value = SYSTEM_UCUM }
                 code = Code.Builder().apply { value = u }
+            }
+            if (decimal.filter { it.isDigit() }.length > 15) {
+                extension.add(Extension.Builder(EXT_ORIGINAL_TEXT).apply {
+                    value = Extension.Value.String(String.Builder().apply { value = decimal }.build())
+                })
             }
         }
 
