@@ -203,14 +203,22 @@ data class IpsResult(
 /** Decimal helpers shared by the form, the projection and the FHIR codec. */
 object IpsDecimal {
     private val DECIMAL = Regex("^[-+]?[0-9]+([.,][0-9]+)?$")
+    val AMBIGUOUS_COMMA = Regex("^[+-]?[1-9]\\d*,\\d{3}$")
 
-    fun isDecimal(raw: String?): Boolean = raw != null && DECIMAL.matches(raw.trim())
+    fun isDecimal(raw: String?): Boolean {
+        if (raw == null) return false
+        val t = raw.trim()
+        if (AMBIGUOUS_COMMA.matches(t)) return false
+        return DECIMAL.matches(t)
+    }
 
-    /** "5,4" → "5.4", " 120 " → "120"; null when not a decimal. */
+    /** "5,4" → "5.4", " 120 " → "120"; null when not a decimal or ambiguous comma ("1,000"). */
     fun normalize(raw: String?): String? {
-        val t = raw?.trim()?.replace(',', '.') ?: return null
-        if (!DECIMAL.matches(t)) return null
-        return t.removePrefix("+")
+        val t = raw?.trim() ?: return null
+        if (AMBIGUOUS_COMMA.matches(t)) return null
+        val replaced = t.replace(',', '.')
+        if (!DECIMAL.matches(replaced)) return null
+        return replaced.removePrefix("+")
     }
 
     /** "120.0" → "120", "5.40" → "5.4", "0.50" → "0.5" (FHIR JSON always writes a fraction part). */
@@ -234,6 +242,8 @@ object IpsAlmostNumeric {
         val compMatch = COMPARATOR_REGEX.find(trimmed)
         val comparator = compMatch?.groupValues?.get(1)
         val rest = (if (compMatch != null) compMatch.groupValues[2] else trimmed).trim()
+        if (IpsDecimal.AMBIGUOUS_COMMA.matches(rest)) return null
+
         val normalized = rest.replace(" ", "").replace(',', '.')
             .let { if (it.endsWith(".")) it.dropLast(1) else it }
         if (IpsDecimal.isDecimal(normalized)) {
