@@ -132,7 +132,7 @@ object JemmaFhirBundleBuilder {
                 try {
                     birthDate = dev.ohs.fhir.model.r4.Date.Builder().apply { value = FhirDate.fromString(it) }
                 } catch (e: Exception) {
-                    android.util.Log.w(TAG, "build: non-ISO birthDate '$it' omitted from Patient resource", e)
+                    android.util.Log.w(TAG, "build: birthDate not ISO, omitted", e)
                 }
             }
             
@@ -301,14 +301,14 @@ object JemmaFhirBundleBuilder {
                                 try {
                                     start = DateTime.Builder().apply { value = FhirDateTime.fromString(startStr) }
                                 } catch (e: Exception) {
-                                    android.util.Log.w(TAG, "build: unparseable medication effective start '$startStr' omitted", e)
+                                    android.util.Log.w(TAG, "build: medication effective start unparseable, omitted", e)
                                 }
                             }
                             e?.let { endStr ->
                                 try {
                                     end = DateTime.Builder().apply { value = FhirDateTime.fromString(endStr) }
                                 } catch (e: Exception) {
-                                    android.util.Log.w(TAG, "build: unparseable medication effective end '$endStr' omitted", e)
+                                    android.util.Log.w(TAG, "build: medication effective end unparseable, omitted", e)
                                 }
                             }
                         }.build())
@@ -318,7 +318,7 @@ object JemmaFhirBundleBuilder {
                                 DateTime.Builder().apply { value = FhirDateTime.fromString(eff.trim()) }.build()
                             )
                         } catch (e: Exception) {
-                            android.util.Log.w(TAG, "build: unparseable medication effective date '$eff' omitted", e)
+                            android.util.Log.w(TAG, "build: medication effective date unparseable, omitted", e)
                         }
                     }
                 }
@@ -595,7 +595,7 @@ object JemmaFhirBundleBuilder {
                     try {
                         use = Enumeration.of(dev.ohs.fhir.model.r4.Address.AddressUse.fromCode(it), null)
                     } catch (e: Exception) {
-                        android.util.Log.w(TAG, "build: unrecognised address.use '$it' omitted", e)
+                        android.util.Log.w(TAG, "build: address.use unrecognised, omitted", e)
                     }
                 }
                 a.line?.takeIf { it.isNotBlank() }?.let { line.add(String.Builder().apply { value = it }) }
@@ -628,7 +628,7 @@ object JemmaFhirBundleBuilder {
                     try {
                         system = Enumeration.of(ContactPoint.ContactPointSystem.fromCode(t.system), null)
                     } catch (e: Exception) {
-                        android.util.Log.w(TAG, "build: unrecognised telecom.system '${t.system}' omitted", e)
+                        android.util.Log.w(TAG, "build: telecom.system unrecognised, omitted", e)
                     }
                 }
                 t.value?.takeIf { it.isNotBlank() }?.let { value = String.Builder().apply { value = it } }
@@ -636,7 +636,7 @@ object JemmaFhirBundleBuilder {
                     try {
                         use = Enumeration.of(ContactPoint.ContactPointUse.fromCode(t.use), null)
                     } catch (e: Exception) {
-                        android.util.Log.w(TAG, "build: unrecognised telecom.use '${t.use}' omitted", e)
+                        android.util.Log.w(TAG, "build: telecom.use unrecognised, omitted", e)
                     }
                 }
             })
