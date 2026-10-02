@@ -793,7 +793,12 @@ class JemmaTools @Inject constructor(
             "candidate_display" to r.candidateDisplay,
             "lang" to lang,
             "duration_ms" to r.totalDurationMs,
-            "is_clean" to r.isClean,
+            // UC-AI (qa/usecases/02): an unresolved drug was NOT checked — never report it as clean.
+            "is_clean" to (r.candidateAtc.isNotEmpty() && r.isClean),
+            "checked" to r.candidateAtc.isNotEmpty(),
+            "warning" to (if (r.candidateAtc.isEmpty())
+                "NOT CHECKED: this drug was not found in the knowledge base, so no allergy / interaction / disease check was done. Do not tell the user it is safe."
+            else ""),
             "has_major" to r.hasMajor,
             "total_hits" to r.totalHits,
             "allergy_hits" to r.allergyHits.map { allergyHitToMap(it) },

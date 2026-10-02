@@ -72,6 +72,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 @Singleton
@@ -102,6 +103,9 @@ class ProfilesRepository @Inject constructor(
 
     private val profileAdapter: JsonAdapter<JemmaProfileJ> =
         moshi.adapter(JemmaProfileJ::class.java).indent("  ")
+
+    /** Serialises every read-modify-write of the profile files (UC-STO: two edits in quick succession). */
+    private val writeMutex = kotlinx.coroutines.sync.Mutex()
 
     private val _profilesFlow = MutableStateFlow<List<ProfileSummary>>(emptyList())
 
@@ -182,7 +186,10 @@ class ProfilesRepository @Inject constructor(
         sourceFormat: String = "UNKNOWN",
     ): SaveResult = withContext(Dispatchers.IO) {
         ensureInitialScan()
-        val id = profile.sid?.takeIf { it.isNotBlank() } ?: generateNewId()
+        // The id becomes a file name: an id from a scanned payload is untrusted (UC-STO, path traversal).
+        val id = ProfileFiles.safeIdOrNull(profile.sid) ?: generateNewId().also {
+            if (!profile.sid.isNullOrBlank()) Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ unsafe profile id rejected, new id generated")
+        }
         val tStart = System.currentTimeMillis()
         val file = File(profilesDir, "$id.json")
         val alreadyExisted = file.exists()
@@ -190,8 +197,10 @@ class ProfilesRepository @Inject constructor(
         try {
             // FHIR-native pillars : decide who is authoritative for this save,
             // then regenerate BOTH files (JSON projection + FHIR Bundle).
-            val native = resolveNativePillars(id, profile, sourceFormat)
-            writeProfileFiles(id, profile, native)
+            writeMutex.withLock {
+                val native = resolveNativePillars(id, profile, sourceFormat)
+                writeProfileFiles(id, profile, native)
+            }
 
             Log.i(
                 TAG,
@@ -303,10 +312,15 @@ class ProfilesRepository @Inject constructor(
         update: (IpsNativePillars) -> IpsNativePillars,
     ): Boolean = withContext(Dispatchers.IO) {
         ensureInitialScan()
-        val profile = loadProfile(id) ?: return@withContext false
-        val native = update(readNativePillars(id, profile))
         try {
-            writeProfileFiles(id, profile, native)
+            // read-modify-write under one lock: two quick edits can no longer overwrite each other
+            val ok = writeMutex.withLock {
+                val profile = loadProfile(id) ?: return@withLock false
+                val native = update(readNativePillars(id, profile))
+                writeProfileFiles(id, profile, native)
+                true
+            }
+            if (!ok) return@withContext false
             Log.i(TAG, "[t=${System.currentTimeMillis()}] $what saved for $id")
         } catch (e: Exception) {
             Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ saveNativePillars($id, $what) failed : ${e.message}", e)
@@ -390,16 +404,31 @@ class ProfilesRepository @Inject constructor(
             pg = native.pregnancy.map { it.toJEntry() },
             fs = native.functional.map { it.toJEntry() },
         )
-        // 1. `_j` projection (QR / Nearby / legacy screens)
-        file.writeText(profileAdapter.toJson(projected))
-        // 2. 🏥 FHIR IPS Bundle (source of truth for the native pillars)
-        try {
-            val hydrated = hydrator.hydrate(projected)
-            val fhirJson = JemmaFhirBundleBuilder.build(hydrated, native)
-            fhirFile.writeText(fhirJson)
-            Log.i(TAG, "[t=${System.currentTimeMillis()}] 🏥 IPS FHIR profile saved for $id (${fhirJson.length} bytes · ${native.immunizations.size} immunizations · ${native.procedures.size} procedures · ${native.devices.size} devices · ${native.results.size} results · ${native.pastProblems.size} past problems · ${native.problems.size} problems · ${native.pregnancy.size} pregnancy obs)")
+        // Both documents are built BEFORE anything is written, then each file is replaced
+        // atomically (temp file + rename): a crash never leaves a half-written record.
+        val json = profileAdapter.toJson(projected)
+        val fhirJson: String? = try {
+            JemmaFhirBundleBuilder.build(hydrator.hydrate(projected), native)
         } catch (e: Throwable) {
             Log.e(TAG, "⚠️ Failed to generate FHIR IPS for $id : ${e.message}", e)
+            null
+        }
+        // 1. `_j` projection (QR / Nearby / legacy screens)
+        ProfileFiles.writeAtomic(file, json)
+        // 2. 🏥 FHIR IPS Bundle (source of truth for the native pillars)
+        if (fhirJson == null) {
+            // A stale Bundle would silently win over the edit just saved in `_j` at the next
+            // read (UC-STO): without a fresh Bundle the projection must be the only source.
+            if (fhirFile.exists() && !fhirFile.delete()) throw java.io.IOException("stale Bundle of $id could not be removed")
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ $id saved WITHOUT Bundle — `_j` projection is authoritative until the next successful save")
+            return
+        }
+        try {
+            ProfileFiles.writeAtomic(fhirFile, fhirJson)
+            Log.i(TAG, "[t=${System.currentTimeMillis()}] 🏥 IPS FHIR profile saved for $id (${fhirJson.length} bytes · ${native.immunizations.size} immunizations · ${native.procedures.size} procedures · ${native.devices.size} devices · ${native.results.size} results · ${native.pastProblems.size} past problems · ${native.problems.size} problems · ${native.pregnancy.size} pregnancy obs)")
+        } catch (e: Throwable) {
+            Log.e(TAG, "⚠️ Failed to write FHIR IPS for $id : ${e.message}", e)
+            fhirFile.delete()
         }
     }
 
