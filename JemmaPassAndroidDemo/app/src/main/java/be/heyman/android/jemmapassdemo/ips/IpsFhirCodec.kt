@@ -661,8 +661,14 @@ object IpsFhirCodec {
             numeric != null -> Observation.Value.Quantity(quantity(numeric, rs.unit).build())
             !rs.valueCode.isNullOrBlank() ->
                 Observation.Value.CodeableConcept(codeableConcept(rs.valueCode, rs.valueCodeSystem ?: IpsCodeSystems.SNOMED, rs.valueDisplay, null).build())
-            !rs.valueText.isNullOrBlank() -> Observation.Value.String(String.Builder().apply { value = rs.valueText }.build())
-            !rs.value.isNullOrBlank() -> Observation.Value.String(String.Builder().apply { value = rs.value }.build())
+            !rs.valueText.isNullOrBlank() -> {
+                val txt = if (!rs.unit.isNullOrBlank() && !rs.valueText.contains(rs.unit)) "${rs.valueText} ${rs.unit}" else rs.valueText
+                Observation.Value.String(String.Builder().apply { value = txt }.build())
+            }
+            !rs.value.isNullOrBlank() -> {
+                val txt = if (!rs.unit.isNullOrBlank() && !rs.value.contains(rs.unit)) "${rs.value} ${rs.unit}" else rs.value
+                Observation.Value.String(String.Builder().apply { value = txt }.build())
+            }
             else -> null
         }
     }

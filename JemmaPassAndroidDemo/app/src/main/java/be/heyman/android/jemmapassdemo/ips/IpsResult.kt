@@ -109,7 +109,11 @@ data class IpsResult(
     fun valueLabel(): String = when {
         isNumeric -> listOfNotNull(IpsDecimal.normalize(value), unit?.takeIf { it.isNotBlank() }).joinToString(" ")
         isCoded -> valueDisplay?.takeIf { it.isNotBlank() } ?: valueCode.orEmpty()
-        else -> valueText?.takeIf { it.isNotBlank() } ?: value.orEmpty()
+        valueText != null && valueText.isNotBlank() ->
+            if (unit != null && unit.isNotBlank() && !valueText.contains(unit)) "$valueText $unit" else valueText
+        value != null && value.isNotBlank() ->
+            if (unit != null && unit.isNotBlank() && !value.contains(unit)) "$value $unit" else value
+        else -> ""
     }
 
     /** "3.5-5.1", "≥3.5", "≤5.1" or null. */
@@ -135,7 +139,7 @@ data class IpsResult(
             isNumeric -> IpsDecimal.normalize(value)
             else -> valueLabel().takeIf { it.isNotBlank() }
         },
-        unit = if (isNumeric) unit?.takeIf { it.isNotBlank() } else null,
+        unit = unit?.takeIf { it.isNotBlank() },
         interpretation = IpsResultInterpretation.normalize(interpretation),
         referenceRange = referenceRangeLabel(),
         valueCode = if (isCoded && (valueCodeSystem == null || valueCodeSystem == IpsCodeSystems.SNOMED)) valueCode else null,
@@ -180,7 +184,7 @@ data class IpsResult(
                 status = IpsResultStatus.normalize(entry.status),
                 category = IpsResultCategory.normalize(entry.category),
                 value = if (numeric) rawValue else null,
-                unit = if (numeric) entry.unit?.takeIf { it.isNotBlank() } else null,
+                unit = entry.unit?.takeIf { it.isNotBlank() },
                 valueCode = coded,
                 valueDisplay = if (coded != null) rawValue else null,
                 valueText = if (!numeric && coded == null) rawValue else null,
