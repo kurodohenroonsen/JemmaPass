@@ -128,7 +128,11 @@ object JemmaFhirBundleBuilder {
             
             p?.gs?.let { gender = Enumeration.of(mapGender(it), null) }
             p?.bd?.takeIf { it.isNotBlank() }?.let {
-                birthDate = dev.ohs.fhir.model.r4.Date.Builder().apply { value = FhirDate.fromString(it) }
+                try {
+                    birthDate = dev.ohs.fhir.model.r4.Date.Builder().apply { value = FhirDate.fromString(it) }
+                } catch (_: Throwable) {
+                    // Non-ISO birth date: omit rather than crash
+                }
             }
             
             address.addAll(buildPatientAddresses(hydrated))
@@ -554,7 +558,11 @@ object JemmaFhirBundleBuilder {
         }
         p.adrs.forEach { a ->
             out.add(dev.ohs.fhir.model.r4.Address.Builder().apply {
-                a.use?.takeIf { it.isNotBlank() }?.let { use = Enumeration.of(dev.ohs.fhir.model.r4.Address.AddressUse.fromCode(it), null) }
+                a.use?.takeIf { it.isNotBlank() }?.let {
+                    try {
+                        use = Enumeration.of(dev.ohs.fhir.model.r4.Address.AddressUse.fromCode(it), null)
+                    } catch (_: Throwable) {}
+                }
                 a.line?.takeIf { it.isNotBlank() }?.let { line.add(String.Builder().apply { value = it }) }
                 a.city?.takeIf { it.isNotBlank() }?.let { city = String.Builder().apply { value = it } }
                 a.postalCode?.takeIf { it.isNotBlank() }?.let { postalCode = String.Builder().apply { value = it } }
@@ -581,9 +589,17 @@ object JemmaFhirBundleBuilder {
         }
         p.tels.forEach { t ->
             out.add(ContactPoint.Builder().apply {
-                t.system?.takeIf { it.isNotBlank() }?.let { system = Enumeration.of(ContactPoint.ContactPointSystem.fromCode(t.system), null) }
+                t.system?.takeIf { it.isNotBlank() }?.let {
+                    try {
+                        system = Enumeration.of(ContactPoint.ContactPointSystem.fromCode(t.system), null)
+                    } catch (_: Throwable) {}
+                }
                 t.value?.takeIf { it.isNotBlank() }?.let { value = String.Builder().apply { value = it } }
-                t.use?.takeIf { it.isNotBlank() }?.let { use = Enumeration.of(ContactPoint.ContactPointUse.fromCode(t.use), null) }
+                t.use?.takeIf { it.isNotBlank() }?.let {
+                    try {
+                        use = Enumeration.of(ContactPoint.ContactPointUse.fromCode(t.use), null)
+                    } catch (_: Throwable) {}
+                }
             })
         }
         return out
