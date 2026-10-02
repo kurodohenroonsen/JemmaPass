@@ -361,13 +361,20 @@ object IpsFhirCodec {
             im.note?.takeIf { it.isNotBlank() }?.let { n ->
                 note.add(Annotation.Builder(Markdown.Builder().apply { value = n }))
             }
-            im.doseNumber?.takeIf { it > 0 }?.let { dn ->
+            val doseNum = when {
+                im.doseNumber != null && im.doseNumber > 0 ->
+                    Immunization.ProtocolApplied.DoseNumber.PositiveInt(
+                        PositiveInt.Builder().apply { value = im.doseNumber }.build()
+                    )
+                im.seriesDoses != null && im.seriesDoses > 0 ->
+                    Immunization.ProtocolApplied.DoseNumber.String(
+                        String.Builder().apply { value = OCCURRENCE_UNKNOWN }.build()
+                    )
+                else -> null
+            }
+            if (doseNum != null) {
                 protocolApplied.add(
-                    Immunization.ProtocolApplied.Builder(
-                        Immunization.ProtocolApplied.DoseNumber.PositiveInt(
-                            PositiveInt.Builder().apply { value = dn }.build()
-                        )
-                    ).apply {
+                    Immunization.ProtocolApplied.Builder(doseNum).apply {
                         im.seriesDoses?.takeIf { it > 0 }?.let { sd ->
                             seriesDoses = Immunization.ProtocolApplied.SeriesDoses.PositiveInt(
                                 PositiveInt.Builder().apply { value = sd }.build()
