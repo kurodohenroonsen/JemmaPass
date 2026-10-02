@@ -41,31 +41,32 @@
 7. [Spécifications Formelles des Contrats d'Interface Vérifiés](#7-spécifications-formelles-des-contrats-dinterface-vérifiés)
    - 7.1. Contrat Réel du Service de Connaissance Médicale (`KnowledgeBaseService`)
    - 7.2. Contrat Réel du Moteur de Contrôle Croisé (`KbCrossCheck`)
-   - 7.3. Contrat Réel des Codecs QR et Trames (`JemmaPayloadCodec` & `JemmaTextPayloadBuilder`)
+   - 7.3. Contrat Réel des Codecs QR, Trames et Triage
 8. [Proposé — N'existe pas encore (Cibles d'Évolution & Portages)](#8-proposé--nexiste-pas-encore-cibles-dévolution--portages)
 
 ---
 
 ## 1. Principes Directeurs & Invariants Système
 
-Le système JemmaPass repose sur 5 invariants fonctionnels, implémentés dans le code Android existant :
+Le système JemmaPass repose sur 5 invariants fonctionnels vérifiés dans le code Android existant :
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │                   LES 5 INVARIANTS SYSTÈME JEMMAPASS                   │
 ├────────────────────────────────────────────────────────────────────────┤
 │ 1. ZERO-NETWORK AT RUNTIME                                             │
-│    Aucune opération vitale en cours d'intervention (scan, contrôle     │
-│    clinique, triage SALT, transfert QR/BLE) ne dépend du réseau.      │
-│    Le runtime opère 100% hors-ligne. Les modèles (.litertlm) et la     │
-│    base KB (knowledge_full.db) sont pré-téléchargés au besoin depuis   │
+│    Aucune opération vitale en intervention (scan, contrôle clinique,   │
+│    triage SALT, transfert QR/BLE) ne dépend du réseau. Le runtime     │
+│    opère 100% hors-ligne. Les modèles (.litertlm) et la base KB       │
+│    (knowledge_full.db) sont pré-téléchargés au besoin depuis           │
 │    https://jemmapass.net/models/ (downloads/JemmaModelCatalog.kt:33). │
 │                                                                        │
-│ 2. FHIR R4 AS SINGLE SOURCE OF TRUTH                                   │
+│ 2. FHIR R4 AS SOURCE OF TRUTH FOR FHIR-NATIVE PILLARS                  │
 │    Le document médical d'autorité est le Bundle HL7 FHIR R4 IPS        │
-│    (<sid>.fhir.json). Le format JSON court `_j 1.2` (<sid>.json)      │
-│    est une projection compacte de transport pour les canaux contraints │
-│    (profiles/ProfilesRepository.kt:23-35).                             │
+│    (<sid>.fhir.json) pour les seuls piliers FHIR-natifs (vaccins,      │
+│    actes, dispositifs, résultats... - profiles/ProfilesRepository.kt:  │
+│    23-27). Les 4 piliers historiques (patient, allergies, médocs,     │
+│    conditions) restent issus de la saisie _j 1.2 (<sid>.json).         │
 │                                                                        │
 │ 3. STRICT SAFETY DECISION MATRIX                                       │
 │    Tout conflit détecté donne ALERT (kb/KbCrossCheck.kt:131).          │
@@ -79,7 +80,7 @@ Le système JemmaPass repose sur 5 invariants fonctionnels, implémentés dans l
 │    UTF-8 (qr/JemmaTextPayloadBuilder.kt:67). En cas de dépassement,    │
 │    les sections sont évincées par rangs et marquées ✂️ (jamais de coupure│
 │    silencieuse). Les trames QR multi-frames sont indexées 1..N         │
-│    (qr/JemmaQrFrameAssembler.kt:25).                                   │
+│    (qr/JemmaQrFrameAssembler.kt:26).                                   │
 │                                                                        │
 │ 5. MULTILINGUAL NATIVE EXPERIENCE                                      │
 │    Restitution dans la langue locale (25 langues) via les dictionnaires│
@@ -145,7 +146,7 @@ flowchart TD
         UC1_5["Enregistrer Vaccins (im), Actes (pr) & Dispositifs (dv)"]
         UC1_6["Saisir Résultats Biologiques (rs) & Groupe Sanguin"]
         UC1_7["Renseigner Grossesse (pg) & Statut Fonctionnel (fs)"]
-        UC1_8["Sauvegarde Atomique sous Mutex (ProfilesRepository.kt:371)"]
+        UC1_8["Sauvegarde sous writeMutex (ProfilesRepository.kt:146)"]
     end
 
     UC1_2 -.->|include| UC1_8
@@ -164,10 +165,10 @@ flowchart TD
         IMPORT["Scanner Pass Victime (QR / Mesh)"]
         EVAL["Exécuter Contrôle Croisé Sécurité (KbCrossCheck.kt:652)"]
         VERDICT{"Évaluation Verdict (KbCrossCheck.kt:130)"}
-        RED["🔴 ALERT (totalHits > 0 : DDI, Allergie ou Pathologie)"]
-        GREEN["🟢 CLEAN (Aucun hit ET vérification 100% complète)"]
-        AMBER["🟠 INCOMPLETE (Candidat résolu mais profil incomplet)"]
-        GRAY["⚫ NOT_CHECKED (Base absente ou médicament non reconnu)"]
+        RED["🔴 ALERT: Au moins une collision (totalHits > 0)"]
+        GREEN["🟢 CLEAN: Aucun hit ET vérification complète"]
+        AMBER["🟠 INCOMPLETE: Candidat résolu mais profil incomplet"]
+        GRAY["⚫ NOT_CHECKED: Base absente ou médicament non reconnu"]
         VULG["Demander Vulgarisation Thérapeutique (Gemma 4)"]
     end
 
@@ -184,13 +185,13 @@ flowchart TD
 
 ### 2.4. Package 3 : Triage en Zone de Catastrophe (SALT Mesh)
 
-Implémenté dans `triage/SaltCode.kt:36-51` et `triage/StatusResolver.kt:11-45`. Les couleurs réelles du code sont :
-- **WAIT** : Gris (`#9E9E9E`, "⏳")
-- **EVAL** : Jaune (`#FFC107`, "🔍")
-- **STAB** : Vert (`#4CAF50`, "✅")
-- **HELP** : Rouge (`#F44336`, "🆘")
-- **EVAC** : Bleu (`#2196F3`, "🚑")
-- **DCD** : Noir (`#000000`, "🕊️")
+Implémenté dans `triage/SaltCode.kt:34-51` et `triage/StatusResolver.kt:46-99`. Les couleurs réelles du code sont :
+- **WAIT** : Gris (`#9E9E9E`, "⏳", `SaltCode.kt:36`)
+- **EVAL** : Jaune (`#FFC107`, "🔍", `SaltCode.kt:39`)
+- **STAB** : Vert (`#4CAF50`, "✅", `SaltCode.kt:42`)
+- **HELP** : Rouge (`#F44336`, "🆘", `SaltCode.kt:45`)
+- **EVAC** : Bleu (`#2196F3`, "🚑", `SaltCode.kt:48`)
+- **DCD** : Noir (`#000000`, "🕊️", `SaltCode.kt:51`)
 
 ```mermaid
 flowchart TD
@@ -198,8 +199,8 @@ flowchart TD
         DISC["Découvrir Victimes via BLE (JemmaSosBleScanner.kt)"]
         RADAR["Afficher le Radar des Victimes (RadarController.kt)"]
         ASSIGN["Affecter Statut SALT (WAIT gris / STAB vert / HELP rouge / EVAC bleu / DCD noir)"]
-        RESOLVE["Résoudre Conflits : Asymmetric LWW + 30s Grace DCD (StatusResolver.kt:56)"]
-        BROADCAST["Diffuser Trame BLE Chunk <= 131B (JemmaSosChunkCodec.kt)"]
+        RESOLVE["Résoudre Conflits: shouldOverwrite() & apply() (StatusResolver.kt:68, 108)"]
+        BROADCAST["Diffuser Paquet BLE (MAX_CHUNK_BYTES = 200, JemmaSosChunkCodec.kt:175)"]
     end
 
     DISC --> RADAR
@@ -212,10 +213,10 @@ flowchart TD
 
 ## 3. Modèle du Domaine Fonctionnel (Class Diagrams)
 
-### 3.1. Structure des 18 Piliers IPS & Projection `_j 1.2`
+### 3.1. Structure des 18 Piliers IPS & Dualité FHIR R4 vs Projection `_j 1.2`
 
 Sur Android, la persistance locale maintient deux fichiers par profil (`profiles/ProfilesRepository.kt:23-28`) :
-- `<sid>.fhir.json` : Le Bundle FHIR R4 officiel (généré et sérialisé via `qr/JemmaFhirBundleBuilder.kt:30` et `ips/IpsFhirCodec.kt:18`).
+- `<sid>.fhir.json` : Le Bundle FHIR R4 (source de vérité pour les piliers FHIR-natifs, généré via `qr/JemmaFhirBundleBuilder.kt:30` et `ips/IpsFhirCodec.kt:18`).
 - `<sid>.json` : La projection compacte `JemmaProfileJ` (`qr/JemmaProfileJ.kt:43-103`).
 
 ```mermaid
@@ -275,9 +276,12 @@ classDiagram
         +String st
         +String d
         +String m
-        +String d_display
-        +criticality : AllergyCriticality
-        +clinicalStatus : AllergyClinicalStatus
+        +String displayLabel
+        +String codeSystem
+        +String type
+        +String category
+        +String onset
+        +List~JReaction~ reactions
     }
 
     class JMedication {
@@ -288,29 +292,31 @@ classDiagram
         +String u
         +String rs
         +String rc
-        +String d_display
+        +String displayLabel
+        +String codeSystem
+        +String status
+        +String effective
+        +String effectiveAbsenceReason
     }
 
     class JCondition {
         +String c
-        +String severity
         +String s
+        +String st
         +String d
-        +String onsetDate
+        +String rs
+        +String rc
         +String displayLabel
+        +String date
+        +String codeSystem
     }
 
     class JEntryGeneric {
         +String c
-        +String codeSystem
         +String d
         +String displayLabel
         +String date
-        +String status
-        +Integer doseNumber
-        +String value
-        +String unit
-        +String interpretation
+        +String codeSystem
     }
 
     JemmaProfileJ *-- JPatient : p
@@ -328,21 +334,22 @@ Modèle strictement aligné sur `kb/KbCrossCheck.kt` et `kb/KbSafety.kt` :
 ```mermaid
 classDiagram
     class KnowledgeBaseService {
-        +resolveDrug(name) ResolvedConcept [kb/KnowledgeBaseService.kt:143]
-        +queryDDIByAtc(atcA, atcB) DDIResult [kb/KnowledgeBaseService.kt:440]
-        +queryDDI(drugA, drugB) DDIResult [kb/KnowledgeBaseService.kt:478]
-        +queryDrugDisease(atc, diseaseName) DrugDiseaseResult [kb/KnowledgeBaseService.kt:758]
-        +searchCodes(query, lang, categoryFilter, maxResults) KbSearchResult [kb/KnowledgeBaseService.kt:833]
+        +resolveDrug(name: String?) ResolvedConcept [kb/KnowledgeBaseService.kt:143]
+        +queryDDIByAtc(atcA: String?, atcB: String?) DDIResult [kb/KnowledgeBaseService.kt:440]
+        +queryDDI(drugA: String?, drugB: String?) DDIResult [kb/KnowledgeBaseService.kt:478]
+        +queryDrugDisease(atc: String?, diseaseName: String?) DrugDiseaseResult [kb/KnowledgeBaseService.kt:758]
+        +searchCodes(query: String?, lang: String, categoryFilter: String?, maxResults: Int) KbSearchResult [kb/KnowledgeBaseService.kt:833]
     }
 
     class KbCrossCheck {
         +checkOneDrugAgainstProfile(candidateName, allergies, meds, conditions, lang) CrossCheckResult [kb/KbCrossCheck.kt:652]
         +checkOneAtcAgainstAllergies(allergies, candidateAtc, candidateAllAtcs, candidateDisplay, lang) List~AllergyHit~ [kb/KbCrossCheck.kt:184]
         +checkAllergiesWithStatus(...) PillarCheck~AllergyHit~ [kb/KbCrossCheck.kt:233]
-        +checkOneAtcAgainstDdi(...) List~DdiHit~ [kb/KbCrossCheck.kt:436]
+        +checkOneAtcAgainstMedications(meds, candidateAtc, candidateAllAtcs, candidateDisplay, includeMinor, lang) List~DdiHit~ [kb/KbCrossCheck.kt:439]
         +checkMedicationsWithStatus(...) PillarCheck~DdiHit~ [kb/KbCrossCheck.kt:481]
-        +checkOneAtcAgainstConditions(...) List~DrugDiseaseHit~ [kb/KbCrossCheck.kt:556]
+        +checkOneAtcAgainstConditions(conditions, candidateAtc, candidateDisplay, lang) List~DrugDiseaseHit~ [kb/KbCrossCheck.kt:556]
         +checkConditionsWithStatus(...) PillarCheck~DrugDiseaseHit~ [kb/KbCrossCheck.kt:568]
+        -inferAtcFromAllergyName(name: String) String? [kb/KbCrossCheck.kt:818]
     }
 
     class CrossCheckResult {
@@ -401,8 +408,8 @@ Modèle réel des composants d'exportation et de transmission hors-ligne :
 classDiagram
     class JemmaPayloadCodec {
         +String MAGIC_PREFIX = "_j2:" [qr/JemmaPayloadCodec.kt:57]
-        +encode(profile: JemmaProfileJ) String [qr/JemmaPayloadCodec.kt:80]
-        +decode(payload: String) JemmaProfileJ [qr/JemmaPayloadCodec.kt:117]
+        +encode(profile: JemmaProfileJ) EncodeResult [qr/JemmaPayloadCodec.kt:189]
+        +decode(text: String?) DecodeResult [qr/JemmaPayloadCodec.kt:122]
     }
 
     class JemmaTextPayloadBuilder {
@@ -413,19 +420,21 @@ classDiagram
 
     class JemmaQrFrameSplitter {
         +Int QR_MAX_SINGLE = 1800 [qr/JemmaQrFrameSplitter.kt:53]
-        +split(payload: String, chunkSize: Int) List~String~ [qr/JemmaQrFrameSplitter.kt:71]
+        +split(payload: String, maxSingle: Int, frameChunk: Int) List~String~ [qr/JemmaQrFrameSplitter.kt:94]
     }
 
     class JemmaQrFrameAssembler {
-        +feed(text: String) Result [qr/JemmaQrFrameAssembler.kt:65]
-        +missing() List~Int~ [qr/JemmaQrFrameAssembler.kt:52]
-        +reset() [qr/JemmaQrFrameAssembler.kt:56]
+        +offer(raw: String?) Result [qr/JemmaQrFrameAssembler.kt:65]
+        +missing() List~Int~ [qr/JemmaQrFrameAssembler.kt:53]
+        +reset() [qr/JemmaQrFrameAssembler.kt:57]
     }
 
     class JemmaSosChunkCodec {
-        +Int MAX_CHUNK_PAYLOAD = 131 [sos/JemmaSosChunkCodec.kt]
-        +encodeChunk(...) String
-        +decodeChunk(rawString) Chunk
+        +Int MAX_CHUNK_BYTES = 200 [sos/JemmaSosChunkCodec.kt:175]
+    }
+
+    class JemmaNearbyEndpointCodec {
+        +Int MAX_ENDPOINT_NAME_LEN = 131 [sos/JemmaNearbyEndpointCodec.kt:51]
     }
 
     class SaltCode {
@@ -441,13 +450,14 @@ classDiagram
 
     class StatusResolver {
         +Long DCD_GRACE_SEC = 30L [triage/StatusResolver.kt:56]
-        +resolve(existing: StatusEvent?, incoming: StatusEvent) StatusEvent [triage/StatusResolver.kt:80]
+        +shouldOverwrite(existing: StatusEvent, incoming: StatusEvent) Boolean [triage/StatusResolver.kt:68]
+        +apply(incoming: StatusEvent) StatusEvent [triage/StatusResolver.kt:108]
     }
 ```
 
 ### 3.4. Pipeline d'Intelligence Artificielle & Outils Embarqués (`@Tool`)
 
-L'agent Jemma (Gemma 4 via LiteRT-LM) dispose de **21 outils typés** exposés dans `ai/JemmaTools.kt:8-41,172-709` :
+L'agent Jemma (Gemma 4 via LiteRT-LM) dispose de **21 outils typés** exposés dans `ai/JemmaTools.kt:128` :
 
 ```mermaid
 classDiagram
@@ -460,16 +470,16 @@ classDiagram
         +checkDdiByAtc(atc1, atc2) Map [ai/JemmaTools.kt:376]
         +getAtcAncestors(atcCode) Map [ai/JemmaTools.kt:405]
         +getFocusProfileSummary() Map [ai/JemmaTools.kt:431]
-        +getFocusProfileAllergies() Map [ai/JemmaTools.kt:451]
-        +getFocusProfileMedications() Map [ai/JemmaTools.kt:477]
-        +getFocusProfileConditions() Map [ai/JemmaTools.kt:501]
-        +getFocusProfileImmunizations() Map [ai/JemmaTools.kt:517]
-        +getFocusProfileProcedures() Map [ai/JemmaTools.kt:531]
-        +getFocusProfileDevices() Map [ai/JemmaTools.kt:539]
+        +getFocusProfileAllergies() Map [ai/JemmaTools.kt:452]
+        +getFocusProfileMedications() Map [ai/JemmaTools.kt:461]
+        +getFocusProfileConditions() Map [ai/JemmaTools.kt:470]
+        +getFocusProfileImmunizations() Map [ai/JemmaTools.kt:479]
+        +getFocusProfileProcedures() Map [ai/JemmaTools.kt:503]
+        +getFocusProfileDevices() Map [ai/JemmaTools.kt:526]
         +getFocusProfileResults() Map [ai/JemmaTools.kt:549]
         +getFocusProfilePastProblems() Map [ai/JemmaTools.kt:577]
         +checkOneDrugAgainstFocusProfile(drugName) Map [ai/JemmaTools.kt:607]
-        +checkOneAtcAgainstFocusProfile(atcCode) Map [ai/JemmaTools.kt:634]
+        +checkOneAtcAgainstFocusProfile(atc, display) Map [ai/JemmaTools.kt:625]
         +triggerRedAlert(title, body) Map [ai/JemmaTools.kt:668]
         +triggerToast(message, severity) Map [ai/JemmaTools.kt:679]
         +getCurrentDateTime() Map [ai/JemmaTools.kt:699]
@@ -486,9 +496,6 @@ classDiagram
         +cancelUI() [ai/assistant/VulgariseHelper.kt:228]
         +end() [ai/assistant/VulgariseHelper.kt:235]
     }
-
-    JemmaTools --> VulgariseRepository : stocke vulgarisations
-    VulgariseRepository --> ThrottledTextAppender : lissage 150ms
 ```
 
 ---
@@ -497,7 +504,7 @@ classDiagram
 
 ### 4.1. Cycle de Vie & Persistance du Dossier Patient
 
-La persistance dans `profiles/ProfilesRepository.kt:370-375` protège le cycle par un `writeMutex` (`Mutex()`, non-réentrant) et utilise des écritures de fichiers temporaires renommés atomiquement.
+La persistance dans `profiles/ProfilesRepository.kt:370-375` protège le cycle par un `writeMutex` (`Mutex()`, non-réentrant, ligne 146).
 
 ```mermaid
 stateDiagram-v2
@@ -517,9 +524,9 @@ stateDiagram-v2
     Validating --> ReleaseError : Validation Échouée (Conflit Sanguin Saisie)
 
     state WritingTemp {
-        [*] --> ProjectToJ : moshi.toJson(profile) -> .json.tmp
-        ProjectToJ --> BuildFhirBundle : JemmaFhirBundleBuilder.build() -> .fhir.json.tmp
-        BuildFhirBundle --> AtomicRename : Renommage Atomique (.tmp -> .json)
+        [*] --> ProjectToJ : moshi.toJson(profile) vers fichier .json.tmp
+        ProjectToJ --> BuildFhirBundle : JemmaFhirBundleBuilder.build() vers .fhir.json.tmp
+        BuildFhirBundle --> AtomicRename : Renommage Atomique (.tmp vers .json)
         AtomicRename --> [*]
     }
 
@@ -560,37 +567,37 @@ stateDiagram-v2
     EvaluateClean --> INCOMPLETE : checks.overall == INCOMPLETE (checks.overall, :133)
     EvaluateClean --> NOT_CHECKED : checks.overall == KB_UNAVAILABLE
 
-    ALERT --> [*] : 🔴 Écran Rouge Vif + triggerRedAlert
-    CLEAN --> [*] : 🟢 Écran Vert ("Rien à signaler")
-    INCOMPLETE --> [*] : 🟠 Bandeau Ambre ("Vérification partielle")
-    NOT_CHECKED --> [*] : ⚫ Bandeau Avertissement ("Non vérifié")
+    ALERT --> [*] : "🔴 Écran Rouge Vif + triggerRedAlert"
+    CLEAN --> [*] : "🟢 Écran Vert (Rien à signaler)"
+    INCOMPLETE --> [*] : "🟠 Bandeau Ambre (Vérification partielle)"
+    NOT_CHECKED --> [*] : "⚫ Bandeau Avertissement (Non vérifié)"
 ```
 
-> **Règle vérifiée dans le code (`kb/KbCrossCheck.kt:418`)** : Une allergie sans code ATC est testée via les heuristiques de mots-clés et sous-chaînes textuelles (`matchClassByKeywords`). Si aucun mot-clé ne correspond, elle ne bloque pas le pilier et retourne le statut `KbCheckStatus.CHECKED` (`KbSafety.pillarStatus(kbUp, allergies.size)` sans `unverifiedItems`).
+> **Règle vérifiée dans le code (`kb/KbCrossCheck.kt:418`)** : Une allergie sans code ATC est testée via `inferAtcFromAllergyName` (`kb/KbCrossCheck.kt:818`). Si aucun mot-clé ne correspond, elle ne bloque pas le pilier et retourne le statut `KbCheckStatus.CHECKED` (`KbSafety.pillarStatus(kbUp, allergies.size)` sans `unverifiedItems`).
 
 ### 4.3. Protocole de Tri de Catastrophe SALT (Asymmetric LWW & Grace Window)
 
-Le code dans `triage/StatusResolver.kt:11-38` et `triage/SaltCode.kt:36-51` n'impose **aucune transition séquentielle contrainte**. Tout statut peut écraser tout statut selon la règle **Last-Write-Wins asymétrique** avec fenêtre de grâce de 30 secondes pour annuler un faux statut décédé (DCD) :
+Le code dans `triage/StatusResolver.kt:68-98` et `triage/SaltCode.kt:36-51` applique un **Last-Write-Wins asymétrique** avec fenêtre de grâce de 30 secondes pour rétrograder un statut décédé (DCD) :
 
 ```mermaid
 stateDiagram-v2
-    [*] --> ReceivedEvent : Événement SALT Reçu (Trame E)
+    [*] --> ReceivedEvent : Événement SALT Reçu
     
     state Decision <<choice>>
-    ReceivedEvent --> Decision : Comparer avec Statut Local Existant
+    ReceivedEvent --> Decision : shouldOverwrite(existing, incoming)
 
-    Decision --> Overwrite : incoming.timestamp > existing.timestamp && !(existing == DCD && incoming != DCD)
-    Decision --> DemoteDcdGrace : existing == DCD && incoming != DCD && delta <= 30s (StatusResolver.kt:56)
-    Decision --> DemoteDcdOverride : existing == DCD && incoming.isExplicitOverride == true (StatusResolver.kt:101)
-    Decision --> DiscardStale : incoming.timestamp < existing.timestamp
-    Decision --> TieBreak : incoming.timestamp == existing.timestamp
+    Decision --> Overwrite : "incoming.timestampSec > existing.timestampSec && !(existing == DCD && incoming != DCD)"
+    Decision --> DemoteDcdGrace : "existing == DCD && incoming.timestampSec > existing.timestampSec + 30 (StatusResolver.kt:89)"
+    Decision --> DemoteDcdOverride : "existing == DCD && incoming.isExplicitOverride == true (StatusResolver.kt:88)"
+    Decision --> DiscardStale : incoming.timestampSec < existing.timestampSec
+    Decision --> TieBreak : incoming.timestampSec == existing.timestampSec
 
     DemoteDcdGrace --> Overwrite : Rétrogradation Autorisée
     DemoteDcdOverride --> Overwrite : Rétrogradation Forcée Sauveteur
-    TieBreak --> Overwrite : incoming.rescuerSid > existing.rescuerSid (Ordre Lexicographique Déterministe)
+    TieBreak --> Overwrite : incoming.rescuerSid > existing.rescuerSid (Ordre Lexicographique)
     TieBreak --> DiscardStale : incoming.rescuerSid <= existing.rescuerSid
 
-    Overwrite --> Updated : Appliquer Statut (WAIT gris / EVAL jaune / STAB vert / HELP rouge / EVAC bleu / DCD noir)
+    Overwrite --> Updated : "apply(incoming) applique Statut"
     DiscardStale --> Ignore : Conserver Statut Existant
     Updated --> [*]
     Ignore --> [*]
@@ -598,7 +605,7 @@ stateDiagram-v2
 
 ### 4.4. Cycle d'Assemblage des Trames QR Multi-Frames (`JF:i/N`)
 
-Conforme à `qr/JemmaQrFrameAssembler.kt:16-44` :
+Conforme à `qr/JemmaQrFrameAssembler.kt:25-85` :
 - Format des trames : `JF:<index>/<total>|<data>` où `index` est **1-based** (`1..N`).
 - **Absence d'identifiant de lot et de checksum au niveau de la trame** (`qr/JemmaQrFrameAssembler.kt:16-19`) : Si une trame annonce un total différent ou un contenu divergent pour un même index, la collecte redémarre à zéro (`restarted = true`).
 - Pour le canal FHIR Slideshow, les données sont le JSON FHIR brut découpé, sans compression deflate.
@@ -607,25 +614,25 @@ Conforme à `qr/JemmaQrFrameAssembler.kt:16-44` :
 stateDiagram-v2
     [*] --> Idle : Scanner QR Actif
 
-    Idle --> Collecting : Trame JF:i/N|data reçue (index 1..N)
+    Idle --> Collecting : "offer(raw) reçoit trame JF:i/N|data (index 1..N)"
 
     state Collecting {
         [*] --> CheckTotal : total annoncé == expectedTotal ?
         CheckTotal --> ResetBuffer : Non (Nouveau total ou conflit) -> reset()
         CheckTotal --> StorePart : Oui -> parts[i] = data
         ResetBuffer --> StorePart : Nouveau lot initialisé avec frame i
-        StorePart --> ComputeMissing : missing = (1..total).filter { it !in parts }
+        StorePart --> ComputeMissing : "missing = (1..total).filter { it !in parts }"
         ComputeMissing --> [*]
     }
 
     state CompletionCheck <<choice>>
-    Collecting --> CompletionCheck : Évaluation
+    Collecting --> CompletionCheck : "parts.size == total ?"
 
-    CompletionCheck --> Progress : missing.isNotEmpty() (Afficher Progression i/N)
-    CompletionCheck --> Completed : missing.isEmpty() (100% des trames 1..N présentes)
+    CompletionCheck --> Progress : "parts.size < total (Result.Progress)"
+    CompletionCheck --> Completed : "parts.size == total (Result.Complete)"
 
     Progress --> Collecting : Trame suivante
-    Completed --> Joining : payload = (1..total).joinToString { parts[i] }
+    Completed --> Joining : Concaténation ordinale des parts de 1 à total
     Joining --> PayloadValidation : Décodage via JemmaPayloadCodec ou Parse JSON FHIR
     PayloadValidation --> Success : Payload Validé
     PayloadValidation --> PayloadCorrupted : Erreur Syntaxe / Décompression
@@ -639,7 +646,7 @@ stateDiagram-v2
 
 ### 5.1. Détection de Collision Létale : Scénario Kurodo (Pénicilline × Augmentin)
 
-Flux démontrant l'intervention de l'agent Gemma 4 via les outils `@Tool` de `ai/JemmaTools.kt` :
+Flux démontrant l'intervention de l'agent Gemma 4 via les outils `@Tool` de `ai/medscan/MedScanController.kt:10-12` et `ai/JemmaTools.kt:668` :
 
 ```mermaid
 sequenceDiagram
@@ -647,30 +654,25 @@ sequenceDiagram
     actor Secouriste as 🎒 Kamekichi (Secouriste)
     participant UI as 📱 Interface Caméra
     participant OCR as 👁️ ML Kit Japanese (app/build.gradle.kts:141)
+    participant Ctrl as ⚙️ MedScanController (ai/medscan/MedScanController.kt)
     participant Gemma as ✨ Gemma 4 (LiteRT-LM)
-    participant Tools as 🛠️ JemmaTools (ai/JemmaTools.kt)
-    participant KB as 🧠 KnowledgeBaseService (kb/KnowledgeBaseService.kt)
     participant Cross as 🛡️ KbCrossCheck (kb/KbCrossCheck.kt)
+    participant Tools as 🛠️ JemmaTools (ai/JemmaTools.kt)
 
     Secouriste->>UI: Filme boîte "Augmentin 1g"
     UI->>OCR: Analyse de l'image caméra
-    OCR-->>UI: Texte extrait : "Augmentin 1g amoxicilline clavulanate"
-    UI->>Gemma: Inférence avec Tools (Focus = Profil Kurodo)
-    Gemma->>Tools: resolveDrug("Augmentin") [Tool 1, ai/JemmaTools.kt:172]
-    Tools->>KB: resolveDrug("Augmentin") [kb/KnowledgeBaseService.kt:143]
-    KB-->>Tools: Normalisé "Augmentin" -> ATC J01CR02
-    Tools-->>Gemma: {code: "J01CR02", display: "Amoxicillin and beta-lactamase inhibitor"}
-    Gemma->>Tools: checkOneDrugAgainstFocusProfile("Augmentin") [Tool 17, ai/JemmaTools.kt:607]
-    Tools->>Cross: checkOneDrugAgainstProfile("Augmentin", p.al, p.md, p.cn, "ja")
+    OCR-->>Ctrl: Texte extrait : "Augmentin 1g amoxicilline clavulanate"
+    Ctrl->>Gemma: Démarre agent de scan (system prompt + image)
+    Gemma->>Ctrl: searchDrugCandidates(["Augmentin", "amoxicilline"]) [MedScanController.kt:10]
+    Ctrl-->>Gemma: ["Augmentin -> J01CR02", "Amoxicillin -> J01CA04"]
+    Gemma->>Ctrl: checkInteractions("J01CR02") [MedScanController.kt:12]
+    Ctrl->>Cross: checkOneAtcAgainstAllergies(p.al, "J01CR02", ...)
     Cross->>Cross: Auto-réactivité ATC L3 "J01C" (KbCrossCheck.kt:327)
-    Cross-->>Tools: CrossCheckResult(verdict=ALERT, totalHits=1, allergyHits=[Penicillins])
-    Tools-->>Gemma: {verdict: "ALERT", hits: 1, collision: "Allergy to Penicillins (HIGH)"}
-    Gemma->>Tools: triggerRedAlert("Allergie Mortelle", "Kurodo est allergique aux pénicillines.") [Tool 19, ai/JemmaTools.kt:668]
+    Cross-->>Ctrl: [AllergyHit: "auto:J01C", severity=HIGH]
+    Ctrl-->>Gemma: Collision mortelle trouvée (Allergie Pénicillines)
+    Gemma->>Tools: triggerRedAlert("Allergie Mortelle", "Kurodo est allergique aux pénicillines.") [ai/JemmaTools.kt:668]
     Tools-->>UI: Émission JemmaToolEvent.RedAlert
     UI->>Secouriste: 🔴 ÉCRAN ROUGE + Signal Sonore d'Urgence
-    Secouriste->>UI: Appuie sur "Vulgariser"
-    UI->>Gemma: Demande explication (buildVulgariseSystemPrompt, VulgariseHelper.kt:100)
-    Gemma-->>UI: Explication pédagogique en japonais naturel
 ```
 
 ### 5.2. Contrôle Sans Interaction : Scénario Paracétamol chez un Profil Sain (Verdict CLEAN)
@@ -686,11 +688,11 @@ sequenceDiagram
     participant Tools as 🛠️ JemmaTools (ai/JemmaTools.kt)
     participant Cross as 🛡️ KbCrossCheck (kb/KbCrossCheck.kt)
 
-    Secouriste->>UI: Soumet "Paracétamol 500mg" (Profil sans atteinte hépatique ni DDI)
-    UI->>Gemma: Contrôle candidat (Focus = Profil Patient)
+    Secouriste->>UI: Soumet "Paracétamol 500mg" (Profil sain)
+    UI->>Gemma: Contrôle candidat
     Gemma->>Tools: resolveDrug("Paracétamol") [ai/JemmaTools.kt:172]
     Tools-->>Gemma: {atc: "N02BE01", display: "Paracetamol"}
-    Gemma->>Tools: checkOneAtcAgainstFocusProfile("N02BE01") [ai/JemmaTools.kt:634]
+    Gemma->>Tools: checkOneAtcAgainstFocusProfile("N02BE01", "Paracetamol") [ai/JemmaTools.kt:625]
     Tools->>Cross: checkAllergiesWithStatus + checkMedicationsWithStatus + checkConditionsWithStatus
     Note over Cross: Allergies : 0 hit (CHECKED)<br/>DDI : 0 hit (CHECKED)<br/>Pathologies : 0 hit (CHECKED)
     Cross-->>Tools: CrossCheckResult(totalHits=0, checks=all(CHECKED), isClean=true, verdict=CLEAN)
@@ -699,7 +701,7 @@ sequenceDiagram
     UI->>Secouriste: 🟢 ÉCRAN VERT ("Rien à signaler — Médicament vérifié compatible")
 ```
 
-> **Note de correction clinique** : L'association Edoxaban × Aspirine génère une ligne d'interaction dans `v_ddi_emergency` et donne obligatoirement le verdict `ALERT` dans `kb/KbCrossCheck.kt:130-135`. L'anticoagulant oral direct combiné à l'aspirine ne peut jamais afficher un écran vert.
+> **Note sur Edoxaban × Aspirine** : Le résultat de l'interaction Edoxaban × Aspirine dépend de la présence de la paire dans la base locale (`v_ddi_emergency` / `ddi_facts`), à vérifier par `kb-sql`. Si la paire est présente, elle donne `ALERT` (`kb/KbCrossCheck.kt:131`).
 
 ### 5.3. Génération du QR Texte 25 Langues avec Budget d'Éviction Strict (1800 octets UTF-8)
 
@@ -734,23 +736,24 @@ sequenceDiagram
 
 ### 5.4. Découverte, Alerte et Propagation Maillée P2P SALT (Zone Sinistrée)
 
-Implémenté dans `sos/JemmaSosBleScanner.kt`, `sos/JemmaSosChunkCodec.kt` et `triage/StatusResolver.kt` :
+Implémenté dans `sos/JemmaSosBleScanner.kt`, `sos/JemmaSosChunkCodec.kt:175` (`MAX_CHUNK_BYTES = 200`), `sos/JemmaNearbyEndpointCodec.kt:51` (`MAX_ENDPOINT_NAME_LEN = 131`) et `triage/StatusResolver.kt:68, 108` :
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor SecouristeA as 🎒 Secouriste A (DMAT)
     participant PhoneA as 📱 Terminal A
-    participant BLE as 📡 BLE Broadcast P2P (Chunks <= 131B)
+    participant BLE as 📡 BLE Broadcast P2P (MAX_CHUNK_BYTES = 200)
     participant PhoneB as 📱 Terminal B (Poste Médical)
     participant ResolverB as ⚖️ StatusResolver (triage/StatusResolver.kt)
 
-    SecouristeA->>PhoneA: Assigne statut SALT "HELP" (Rouge #F44336) pour Victime Haru
-    PhoneA->>PhoneA: Encode trame chunk type 'E' (<= 131 octets UTF-8)
+    SecouristeA->>PhoneA: Assigne statut SALT "HELP" (Rouge "#F44336") pour Victime Haru
+    PhoneA->>PhoneA: Encode trame chunk type 'E' (<= 200 octets UTF-8)
     PhoneA->>BLE: Diffusion BLE Advertising
     BLE->>PhoneB: Trame reçue par Terminal B
-    PhoneB->>ResolverB: resolve(existing, incoming) [triage/StatusResolver.kt:80]
-    ResolverB-->>PhoneB: Statut HELP validé (Timestamp plus récent)
+    PhoneB->>ResolverB: shouldOverwrite(existing, incoming) [triage/StatusResolver.kt:68]
+    ResolverB-->>PhoneB: true (Timestamp plus récent)
+    PhoneB->>ResolverB: apply(incoming) [triage/StatusResolver.kt:108]
     PhoneB->>PhoneB: Met à jour le Radar (Point rouge clignotant)
     PhoneB->>PhoneB: Notifie le secouriste B
 ```
@@ -781,7 +784,7 @@ sequenceDiagram
         end
         Gemma-->>UI: Inférence terminée
         UI->>Repo: save(cacheKey, lang, fullText) [ai/assistant/VulgariseRepository.kt:74]
-        Repo->>Repo: Écriture JSON atomique dans vulgarise_cache.json
+        Repo->>Repo: Écriture simple cacheFile.writeText(json) [:86]
     end
 ```
 
@@ -826,37 +829,37 @@ flowchart TD
 
 ### 6.2. Algorithme de Détection d'Allergie Croisée par Arborescence de Classes
 
-Implémentation exacte observée dans `kb/KbCrossCheck.kt:304-418,845-885` :
+Implémentation exacte observée dans `kb/KbCrossCheck.kt:304-418,818-885` :
 
 ```mermaid
 flowchart TD
     Start(["Médicament Candidat (ATC Set) + Liste Allergies"]) --> LoopAllergies["Pour chaque allergie du profil"]
     
     LoopAllergies --> ExactCode{"Code Substance Exact Identique ? (KbCrossCheck.kt:306)"}
-    ExactCode -- Oui --> DirectHit["AllergyHit : Type 'code' (KbCrossCheck.kt:307)"]
+    ExactCode -- Oui --> DirectHit["AllergyHit: Type 'code' (KbCrossCheck.kt:307)"]
     
     ExactCode -- Non --> AutoReactivity{"Même Famille ATC L3 ? (ex: J01C, KbCrossCheck.kt:327)"}
-    AutoReactivity -- Oui --> AutoHit["AllergyHit : Type 'auto:L3' (KbCrossCheck.kt:333)"]
+    AutoReactivity -- Oui --> AutoHit["AllergyHit: Type 'auto:L3' (KbCrossCheck.kt:333)"]
     
     AutoReactivity -- Non --> CrossTable{"Paire dans allergy_cross_reactivity ? (KbCrossCheck.kt:348)"}
-    CrossTable -- Oui --> CrossHit["AllergyHit : Type 'cross:table' (KbCrossCheck.kt:364)"]
+    CrossTable -- Oui --> CrossHit["AllergyHit: Type 'xreact:...' (KbCrossCheck.kt:364)"]
     
-    CrossTable -- Non --> KeywordMatch{"Keywords connus ? (matchClassByKeywords, KbCrossCheck.kt:845)"}
-    KeywordMatch -- "contient 'ains' -> M01AE01" --> BugAins["Attention : Match aussi 'grains' (Défaut UC-ALM-009)"]
-    KeywordMatch -- "contient 'statin' -> C10AA01" --> BugStatin["Attention : Match aussi 'nystatine' (Défaut UC-ALM-010)"]
-    KeywordMatch -- "Autre mot-clé reconnu" --> KeyHit["AllergyHit : Type 'class:matched'"]
+    CrossTable -- Non --> InferAtc{"inferAtcFromAllergyName(name) ? (KbCrossCheck.kt:818)"}
+    InferAtc -- "contient 'ains' -> M01AE01 (:858)" --> BugAins["Attention: Match aussi 'grains' (Défaut UC-ALM-009)"]
+    InferAtc -- "contient 'statin' -> C10AA01 (:878)" --> BugStatin["Attention: Match aussi 'nystatine' (Défaut UC-ALM-010)"]
+    InferAtc -- "Autre mot-clé reconnu" --> ClassHit["AllergyHit: Type 'class:$matchedClass' (:402)"]
     
-    BugAins --> KeyHit
-    BugStatin --> KeyHit
+    BugAins --> ClassHit
+    BugStatin --> ClassHit
     
-    KeywordMatch -- Non --> SubstringCheck{"Allergie >= 4 chars contenue dans Display ? (:410)"}
-    SubstringCheck -- Oui --> SubstringHit["AllergyHit : Type 'name' (:411)"]
+    InferAtc -- Non --> SubstringCheck{"Allergie >= 4 chars contenue dans Display ? (:410)"}
+    SubstringCheck -- Oui --> SubstringHit["AllergyHit: Type 'name' (:411)"]
     SubstringCheck -- Non --> NoHit["Aucun hit pour cette allergie"]
     
     DirectHit --> Collect["Ajout à la liste des hits"]
     AutoHit --> Collect
     CrossHit --> Collect
-    KeyHit --> Collect
+    ClassHit --> Collect
     SubstringHit --> Collect
     NoHit --> NextAllergy["Allergie suivante"]
     Collect --> NextAllergy
@@ -918,7 +921,7 @@ flowchart TD
     IsManualEdit -- "Saisie Formulaire Manuelle" --> RejectEdit["Bloquer la modification contradictoire"]
     IsManualEdit -- "Import / Réconciliation Fichiers" --> DropContradictory["Évincer l'observation contradictoire et notifier BloodGroupConflict"]
     
-    GenerateObs --> SaveProfile["Persistance sous writeMutex"]
+    GenerateObs --> SaveProfile["Persistance sous writeMutex (ProfilesRepository.kt:146)"]
     Consistent --> SaveProfile
     DropContradictory --> SaveProfile
     SaveProfile --> Finish(["Profil Persisté avec Intégrité Sanguine Assurée"])
@@ -928,7 +931,7 @@ flowchart TD
 
 ## 7. Spécifications Formelles des Contrats d'Interface Vérifiés
 
-Signatures réelles en Kotlin, relevées ligne par ligne dans le code source :
+Signatures réelles en Kotlin relevées ligne par ligne dans le code source :
 
 ### 7.1. Contrat Réel du Service de Connaissance Médicale (`KnowledgeBaseService`)
 
@@ -1015,6 +1018,17 @@ class KbCrossCheck @Inject constructor(
         kbAvailable: Boolean? = null,
     ): PillarCheck<DdiHit>
 
+    // Accès simplifié DDI
+    // Ligne 439
+    suspend fun checkOneAtcAgainstMedications(
+        meds: List<JMedication>,
+        candidateAtc: String,
+        candidateAllAtcs: List<String>,
+        candidateDisplay: String,
+        includeMinor: Boolean = false,
+        lang: String = "en",
+    ): List<DdiHit>
+
     // Contrôle contre les pathologies actives avec statut de vérification
     // Ligne 568
     suspend fun checkConditionsWithStatus(
@@ -1027,15 +1041,20 @@ class KbCrossCheck @Inject constructor(
 }
 ```
 
-### 7.3. Contrat Réel des Codecs QR et Trames
+### 7.3. Contrat Réel des Codecs QR, Trames et Triage
 
 ```kotlin
-// Source : qr/JemmaPayloadCodec.kt, qr/JemmaTextPayloadBuilder.kt, qr/JemmaQrFrameAssembler.kt
+// Source : qr/JemmaPayloadCodec.kt, qr/JemmaTextPayloadBuilder.kt, qr/JemmaQrFrameAssembler.kt, triage/StatusResolver.kt
 
 object JemmaPayloadCodec {
     const val MAGIC_PREFIX = "_j2:" // Ligne 57
-    fun encode(profile: JemmaProfileJ): String // Ligne 80
-    fun decode(payload: String): JemmaProfileJ // Ligne 117
+    fun encode(profile: JemmaProfileJ): EncodeResult // Ligne 189
+    fun decode(text: String?): DecodeResult // Ligne 122
+}
+
+object JemmaQrFrameSplitter {
+    const val QR_MAX_SINGLE = 1800 // Ligne 53
+    fun split(payload: String, maxSingle: Int, frameChunk: Int): List<String> // Ligne 94
 }
 
 object JemmaTextPayloadBuilder {
@@ -1046,9 +1065,17 @@ object JemmaTextPayloadBuilder {
 
 class JemmaQrFrameAssembler {
     data class Frame(val index: Int, val total: Int, val data: String) // Ligne 26 (index 1-based)
-    fun feed(text: String): Result // Ligne 65
-    fun missing(): List<Int> // Ligne 52
-    fun reset() // Ligne 56
+    fun offer(raw: String?): Result // Ligne 65
+    fun missing(): List<Int> // Ligne 53
+    fun reset() // Ligne 57
+}
+
+class StatusResolver {
+    companion object {
+        const val DCD_GRACE_SEC = 30L // Ligne 56
+        fun shouldOverwrite(existing: StatusEvent, incoming: StatusEvent): Boolean // Ligne 68
+    }
+    fun apply(incoming: StatusEvent): StatusEvent // Ligne 108
 }
 ```
 
