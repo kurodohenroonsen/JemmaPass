@@ -36,6 +36,7 @@ package be.heyman.android.jemmapassdemo.ai.livescan
 import android.graphics.Bitmap
 import be.heyman.android.jemmapassdemo.kb.AllergyCriticality
 import be.heyman.android.jemmapassdemo.kb.CrossSeverity
+import be.heyman.android.jemmapassdemo.kb.KbSafetyVerdict
 
 // ──────────────────────────────────────────────────────────────────────
 // State machine
@@ -184,6 +185,8 @@ data class CandidateAtc(
  * de KbCrossCheck en :
  *   • normalisant les sévérités (AllergyCriticality + CrossSeverity → Severity)
  *   • précalculant `overall` = la sévérité maximale cross-pillars
+ *     (UC-SAFE-SCAN : jamais NONE quand le check n'a pas (entièrement) tourné —
+ *     voir `ScanSafety.displaySeverity` ; un check non fait remonte en MODERATE)
  *   • virant le pillar "duplicate" (n'existe pas dans le legacy)
  *
  * Cet objet est sûr à passer au LLM (zéro PII) : il ne contient que
@@ -196,7 +199,27 @@ data class CrossCheckReport(
     val allergyHits: List<AllergyHit>,
     val ddiHits: List<DdiHit>,
     val conditionHits: List<ConditionHit>,
-)
+    /**
+     * UC-SAFE-SCAN — what may be said about this report. Only [KbSafetyVerdict.CLEAN]
+     * may be rendered / spoken as "no interaction". The default is fail-safe : a report
+     * built without a verdict is NOT_CHECKED (or ALERT when it carries hits).
+     */
+    val verdict: KbSafetyVerdict =
+        if (allergyHits.isNotEmpty() || ddiHits.isNotEmpty() || conditionHits.isNotEmpty()) {
+            KbSafetyVerdict.ALERT
+        } else {
+            KbSafetyVerdict.NOT_CHECKED
+        },
+    /** True only when the drug was recognised and the three pillars were really verified. */
+    val fullyChecked: Boolean = false,
+) {
+    /** "Checked and nothing found". Read this, never `overall == NONE` or empty hit lists alone. */
+    val isClean: Boolean
+        get() = verdict == KbSafetyVerdict.CLEAN
+
+    val totalHits: Int
+        get() = allergyHits.size + ddiHits.size + conditionHits.size
+}
 
 /** Sévérité unifiée cross-pillars. ordinal: NONE=0 < MINOR=1 < MODERATE=2 < MAJOR=3. */
 enum class Severity { NONE, MINOR, MODERATE, MAJOR }

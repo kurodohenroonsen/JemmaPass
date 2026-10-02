@@ -9,7 +9,11 @@
  *
  * ─── Sélection de phrase ───
  *
- *   overall == NONE     → tts_safe
+ *   verdict CLEAN       → tts_safe (seul chemin vers "aucune interaction")
+ *   verdict NOT_CHECKED → tts_scan_not_checked ("vérification impossible, demander
+ *                         à un pharmacien ou un médecin")
+ *   verdict INCOMPLETE  → tts_scan_incomplete (idem, vérification partielle)
+ *   hit + check partiel → phrase du hit + tts_scan_incomplete_note
  *   allergy HIGH/Major  → tts_major_allergy avec nom allergène
  *   ddi MAJOR           → tts_major_ddi avec nom drug du patient
  *   condition MAJOR     → tts_major_condition avec nom condition
@@ -84,30 +88,27 @@ class TtsStaticVerdict @Inject constructor(
     fun buildPhrase(report: CrossCheckReport, lang: String): String {
         val res = localizedResources(lang)
 
-        if (report.overall == Severity.NONE) {
-            return res.getString(R.string.tts_safe)
+        // UC-SAFE-SCAN — the sentence is chosen by pure logic (ScanSafety) from the
+        // report verdict : tts_safe is reachable only for a CLEAN verdict.
+        val plan = ScanSafety.phrasePlan(report)
+        val name = plan.arg.orEmpty()
+        val main = when (plan.phrase) {
+            ScanSafety.Phrase.SAFE -> res.getString(R.string.tts_safe)
+            ScanSafety.Phrase.NOT_CHECKED -> res.getString(R.string.tts_scan_not_checked)
+            ScanSafety.Phrase.INCOMPLETE -> res.getString(R.string.tts_scan_incomplete)
+            ScanSafety.Phrase.MAJOR_ALLERGY -> res.getString(R.string.tts_major_allergy, name)
+            ScanSafety.Phrase.MAJOR_DDI -> res.getString(R.string.tts_major_ddi, name)
+            ScanSafety.Phrase.MAJOR_CONDITION -> res.getString(R.string.tts_major_condition, name)
+            ScanSafety.Phrase.MODERATE_ALLERGY -> res.getString(R.string.tts_moderate_allergy, name)
+            ScanSafety.Phrase.MODERATE_DDI -> res.getString(R.string.tts_moderate_ddi, name)
+            ScanSafety.Phrase.MODERATE_CONDITION -> res.getString(R.string.tts_moderate_condition, name)
+            ScanSafety.Phrase.MINOR -> res.getString(R.string.tts_minor, name)
         }
-
-        // Cherche le pire hit cross-pillars
-        data class HitRef(val severity: Severity, val kind: String, val name: String)
-        val candidates = mutableListOf<HitRef>()
-        report.allergyHits.forEach { candidates.add(HitRef(it.severity, "allergy", it.patientAllergyName)) }
-        report.ddiHits.forEach { candidates.add(HitRef(it.severity, "ddi", it.withDrugName)) }
-        report.conditionHits.forEach { candidates.add(HitRef(it.severity, "condition", it.conditionName)) }
-
-        val worst = candidates.maxByOrNull { it.severity.ordinal }
-            ?: return res.getString(R.string.tts_safe)
-
-        val stringId = when {
-            worst.severity == Severity.MAJOR && worst.kind == "allergy" -> R.string.tts_major_allergy
-            worst.severity == Severity.MAJOR && worst.kind == "ddi" -> R.string.tts_major_ddi
-            worst.severity == Severity.MAJOR && worst.kind == "condition" -> R.string.tts_major_condition
-            worst.severity == Severity.MODERATE && worst.kind == "allergy" -> R.string.tts_moderate_allergy
-            worst.severity == Severity.MODERATE && worst.kind == "ddi" -> R.string.tts_moderate_ddi
-            worst.severity == Severity.MODERATE && worst.kind == "condition" -> R.string.tts_moderate_condition
-            else -> R.string.tts_minor
+        return if (plan.appendIncompleteNote) {
+            main + " " + res.getString(R.string.tts_scan_incomplete_note)
+        } else {
+            main
         }
-        return res.getString(stringId, worst.name)
     }
 
     /**

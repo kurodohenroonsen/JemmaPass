@@ -2,7 +2,7 @@
  * IpsRouteCatalog.kt — JEMMA Pass · Plan B · v2.6.0 · L5d
  *
  * Catalog FHIR R4 des routes d'administration de medications.
- * 4 valeurs courtes mappées sur JMedication.r (1 char compact pour QR).
+ * 5 valeurs courtes mappées sur JMedication.r (1 char compact pour QR).
  *
  * Mapping JEMMA short → FHIR SNOMED route code :
  *   O = oral         → 26643006   (Oral route)
@@ -10,6 +10,12 @@
  *                                                       toute injection (IV/IM/SC)
  *   T = topical      → 6064005    (Topical route)
  *   S = subcutaneous → 34206005   (Subcutaneous route)
+ *   H = inhaled      → 447694001  (Respiratory tract route) — UC-MED-ROUTE-01.
+ *                                  "I" was stored for inhalers before; "I" keeps
+ *                                  meaning injection (no migration of stored entries),
+ *                                  new inhaled entries are stored as "H" — the value
+ *                                  JemmaFhirBundleBuilder.routeConcept already exports
+ *                                  as 447694001.
  *
  * Pourquoi 4 valeurs et pas plus : c'est ce qui est dans JMedication.r doc string
  * actuel. Suffisant pour le pitch hackathon — un médecin urgentiste a juste besoin
@@ -41,6 +47,9 @@ object IpsRouteCatalog {
     /** SNOMED-CT codeset for FHIR Medication.route export */
     const val CODE_SYSTEM = "http://snomed.info/sct"
 
+    /** Short code of the inhaled route. Never "I", which is injection. */
+    const val INHALED = "H"
+
     val ALL: List<RouteEntry> = listOf(
         RouteEntry(
             shortCode = "O", snomedCode = "26643006",
@@ -61,6 +70,11 @@ object IpsRouteCatalog {
             shortCode = "S", snomedCode = "34206005",
             displayEn = "Subcutaneous", displayFr = "Sous-cutané", displayJa = "皮下",
             emoji = "🩹",
+        ),
+        RouteEntry(
+            shortCode = INHALED, snomedCode = "447694001",
+            displayEn = "Inhaled",    displayFr = "Inhalée",    displayJa = "吸入",
+            emoji = "🫁",
         ),
     )
 

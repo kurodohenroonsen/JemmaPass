@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UC-SAFE-SCAN : spoken / displayed when the scan cross-check did not (fully) run.
+     Never worded as "no interaction" : the user is sent to a pharmacist or a doctor. -->
+<resources>
+    <string name="tts_scan_not_checked">Sicherheitsprüfung nicht möglich. Dieses Medikament wurde nicht geprüft. Fragen Sie vor der Gabe einen Apotheker oder Arzt.</string>
+    <string name="tts_scan_incomplete">Sicherheitsprüfung unvollständig. Ein Teil des Profils konnte nicht geprüft werden. Fragen Sie vor der Gabe einen Apotheker oder Arzt.</string>
+    <string name="tts_scan_incomplete_note">Die Prüfung war unvollständig. Fragen Sie einen Apotheker oder Arzt.</string>
+</resources>

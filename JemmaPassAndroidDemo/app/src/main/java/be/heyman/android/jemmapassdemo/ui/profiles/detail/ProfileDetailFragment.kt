@@ -273,20 +273,53 @@ class ProfileDetailFragment : Fragment() {
         binding.profileDetailMeta.isVisible = headerLine.isNotEmpty()
 
         // ── Alert banner (red if any Major DDI / allergy) ──
-        if (h.totalMajorAlerts > 0) {
-            binding.profileDetailAlertBanner.text = ctx.getString(
+        val safety = SafetyBannerDecision.decide(
+            overall = h.checks.overall,
+            totalAlerts = h.ddiAlerts.size + h.allergyAlerts.size + h.drugDiseaseAlerts.size,
+            majorAlerts = h.totalMajorAlerts,
+            unverifiedItems = SafetyBannerDecision.countUnverified(
+                h.medications.map { it.atcCode != null || it.allAtcCodes.isNotEmpty() },
+            ),
+        )
+        when (safety.alert) {
+            SafetyAlertBanner.MAJOR -> binding.profileDetailAlertBanner.text = ctx.getString(
                 R.string.profile_detail_alert_banner_major,
-                h.totalMajorAlerts,
+                safety.majorCount,
             )
-            binding.profileDetailAlertBanner.isVisible = true
-        } else if (h.hasAlerts) {
-            binding.profileDetailAlertBanner.text = ctx.getString(
+            SafetyAlertBanner.OTHER -> binding.profileDetailAlertBanner.text = ctx.getString(
                 R.string.profile_detail_alert_banner_other,
             )
-            binding.profileDetailAlertBanner.isVisible = true
-        } else {
-            binding.profileDetailAlertBanner.isVisible = false
+            SafetyAlertBanner.NONE -> Unit
         }
+        binding.profileDetailAlertBanner.isVisible = safety.showAlert
+
+        // ── Safety check status (amber) : UC-SAFE-UI — "no alert" must not look
+        //    like "verified clean" when the checks did not (fully) run. Shown
+        //    next to the alert banner when both apply.
+        val safetyNote: String? = when (safety.note) {
+            SafetyCheckNote.NOT_CHECKED -> ctx.getString(R.string.profile_detail_safety_not_checked)
+            SafetyCheckNote.INCOMPLETE ->
+                if (safety.unverifiedCount > 0) {
+                    ctx.resources.getQuantityString(
+                        R.plurals.profile_detail_safety_incomplete_count,
+                        safety.unverifiedCount,
+                        safety.unverifiedCount,
+                    )
+                } else {
+                    ctx.getString(R.string.profile_detail_safety_incomplete_generic)
+                }
+            SafetyCheckNote.NONE -> null
+        }
+        if (safetyNote != null) {
+            val full = safetyNote + "\n" + ctx.getString(R.string.profile_detail_safety_status_hint)
+            binding.profileDetailSafetyStatusBanner.text = full
+            binding.profileDetailSafetyStatusBanner.contentDescription = ctx.getString(
+                R.string.profile_detail_safety_status_desc,
+                full.replace("ⓘ ", ""),
+            )
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ safety banner · ${safety.verdict} · ${h.checks}")
+        }
+        binding.profileDetailSafetyStatusBanner.isVisible = safetyNote != null
 
         // ── Allergies ──
         renderAllergies(h)

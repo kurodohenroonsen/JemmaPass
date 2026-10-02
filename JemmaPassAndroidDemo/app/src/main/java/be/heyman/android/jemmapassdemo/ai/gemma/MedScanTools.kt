@@ -15,6 +15,10 @@
  *      (allergies, médicaments, conditions) de la victime courante via
  *      KbCrossCheck, renvoie un JSON structuré que Gemma utilisera pour
  *      formuler le verdict naturel (texte court à parler/afficher).
+ *      UC-SAFE-SCAN : severity_overall = "NONE" uniquement si le verdict KB
+ *      est CLEAN ; KB absente / ATC inconnu / exception / check partiel →
+ *      "NOT_CHECKED" / "INCOMPLETE" + consigne "demander à un pharmacien ou
+ *      un médecin" (logique pure dans MedScanSafety.kt).
  *
  * Pourquoi ces 2 tools précisément :
  *
@@ -42,8 +46,10 @@
 package be.heyman.android.jemmapassdemo.ai.gemma
 
 import android.util.Log
+import be.heyman.android.jemmapassdemo.kb.CrossCheckResult
 import be.heyman.android.jemmapassdemo.kb.KbConcept
 import be.heyman.android.jemmapassdemo.kb.KbCrossCheck
+import be.heyman.android.jemmapassdemo.kb.KbSafetyVerdict
 import be.heyman.android.jemmapassdemo.kb.KbSearchResult
 import be.heyman.android.jemmapassdemo.kb.KnowledgeBaseService
 import be.heyman.android.jemmapassdemo.qr.JAllergy
@@ -253,11 +259,31 @@ class CheckInteractionsTool(
     private val victimLang: String,
 ) : ToolSet {
 
+    /**
+     * UC-SAFE-SCAN — how many times the LLM really called [checkInteractions] on this
+     * per-scan instance. 0 after the agent answered = NO cross-check ran : the caller
+     * must not mark the cross-check step OK nor relay a "safe" verdict.
+     */
+    @Volatile
+    var invocationCount: Int = 0
+        private set
+
+    /** Verdict of the last [checkInteractions] call, null while the tool was never called. */
+    @Volatile
+    var lastVerdict: KbSafetyVerdict? = null
+        private set
+
+    /** True only when the tool was called and its last answer was a full, clean check. */
+    val lastCallWasClean: Boolean
+        get() = lastVerdict == KbSafetyVerdict.CLEAN
+
     @Tool(description = """
         Check clinical interactions between a drug (identified by ATC code) and
         the victim's stored clinical profile (allergies, current medications,
         known conditions). Returns a structured JSON with :
-          - severity_overall : "MAJOR" / "MODERATE" / "NONE"
+          - severity_overall : "MAJOR" / "MODERATE" / "NONE" / "INCOMPLETE" / "NOT_CHECKED"
+          - verdict          : "ALERT" / "CLEAN" / "INCOMPLETE" / "NOT_CHECKED"
+          - instruction      : what you must tell the user for this result
           - allergy_hits     : matched allergies with reason and criticality
           - ddi_hits         : drug-drug interactions
           - condition_hits   : drug-disease contraindications
@@ -268,6 +294,11 @@ class CheckInteractionsTool(
         whether to administer the drug and why. If severity_overall is MAJOR,
         start with "DO NOT ADMINISTER" / "NE PAS DONNER" / "投与しないでください"
         depending on the language.
+        Only severity_overall "NONE" (verdict "CLEAN") means nothing was found.
+        If severity_overall is "NOT_CHECKED" or "INCOMPLETE", or the answer has
+        an "error" field, the check could NOT be done : never say the drug is
+        safe or OK — say the check could not be done and to ask a pharmacist
+        or a doctor.
     """)
     fun checkInteractions(
         @ToolParam(description = "ATC code of the drug to check (e.g. 'J01CR02', 'B01AA03')")
@@ -275,82 +306,121 @@ class CheckInteractionsTool(
     ): String {
         val tStart = System.currentTimeMillis()
         val cleanAtc = atcCode.trim().uppercase()
+        invocationCount++
+        // Fail-safe until a result is actually produced.
+        lastVerdict = KbSafetyVerdict.NOT_CHECKED
         Log.i(TAG_CHECK, "[t=$tStart] 🚨 checkInteractions · atc=$cleanAtc · victim='$victimDisplayName' · " +
             "al=${allergies.size} md=${medications.size} cn=${conditions.size}")
 
         if (cleanAtc.isBlank()) {
-            return JSONObject().apply { put("error", "atc_code is blank") }.toString()
+            return failureJson(cleanAtc, MedScanSafety.REASON_BLANK_ATC)
         }
 
-        val result = runBlocking {
-            // Resolve display name via resolveDrug for nicer reporting.
-            val resolved = kb.resolveDrug(cleanAtc)
-            val concept = resolved.concept
-            val displayName = concept?.primaryDisplay ?: cleanAtc
+        // UC-SAFE-SCAN — any exception = the check did not run → NOT_CHECKED, never "NONE".
+        val pack = try {
+            runBlocking {
+                val kbUp = kb.isKbAvailable()
 
-            // Build full ATC chain (primary + ancestors) so class-level
-            // allergy matches fire (e.g. J01CR02 matches J01C penicillin).
-            val ancestors = try { kb.getAtcAncestors(cleanAtc) } catch (_: Exception) { emptyList() }
-            val allAtcs = (listOf(cleanAtc) + ancestors.map { it.atcCode }).distinct()
+                // Resolve display name via resolveDrug for nicer reporting ; an ATC the KB
+                // does not know cannot be checked.
+                val concept = if (kbUp) kb.resolveDrug(cleanAtc).concept else null
+                val displayName = concept?.primaryDisplay ?: cleanAtc
 
-            val aHits = if (allergies.isNotEmpty()) {
-                xcheck.checkOneAtcAgainstAllergies(
+                // Build full ATC chain (primary + ancestors) so class-level
+                // allergy matches fire (e.g. J01CR02 matches J01C penicillin).
+                var ancestorsResolved = kbUp
+                val ancestors = if (kbUp) {
+                    try {
+                        kb.getAtcAncestors(cleanAtc)
+                    } catch (e: Exception) {
+                        Log.w(TAG_CHECK, "[t=${System.currentTimeMillis()}] ⚠ getAtcAncestors threw : ${e.message}")
+                        ancestorsResolved = false
+                        emptyList()
+                    }
+                } else {
+                    emptyList()
+                }
+                val allAtcs = (listOf(cleanAtc) + ancestors.map { it.atcCode }).distinct()
+
+                val allergyCheck = xcheck.checkAllergiesWithStatus(
                     allergies = allergies,
                     candidateAtc = cleanAtc,
                     candidateAllAtcs = allAtcs,
                     candidateDisplay = displayName,
                     lang = victimLang,
+                    kbAvailable = kbUp,
                 )
-            } else emptyList()
-
-            val dHits = if (medications.isNotEmpty()) {
-                xcheck.checkOneAtcAgainstMedications(
+                val ddiCheck = xcheck.checkMedicationsWithStatus(
                     meds = medications,
                     candidateAtc = cleanAtc,
                     candidateAllAtcs = allAtcs,
                     candidateDisplay = displayName,
                     lang = victimLang,
+                    kbAvailable = kbUp,
                 )
-            } else emptyList()
-
-            val cHits = if (conditions.isNotEmpty()) {
-                xcheck.checkOneAtcAgainstConditions(
+                val diseaseCheck = xcheck.checkConditionsWithStatus(
                     conditions = conditions,
                     candidateAtc = cleanAtc,
                     candidateDisplay = displayName,
                     lang = victimLang,
+                    kbAvailable = kbUp,
                 )
-            } else emptyList()
 
-            CheckPack(aHits, dHits, cHits, displayName, allAtcs)
+                val bundle = MedScanSafety.bundle(
+                    atc = cleanAtc,
+                    display = displayName,
+                    candidateResolved = concept != null,
+                    kbAvailable = kbUp,
+                    ancestorsResolved = ancestorsResolved,
+                    allergy = allergyCheck,
+                    ddi = ddiCheck,
+                    disease = diseaseCheck,
+                    durationMs = System.currentTimeMillis() - tStart,
+                    allergiesInProfile = allergies.size,
+                )
+                CheckPack(bundle, displayName, allAtcs)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG_CHECK, "[t=${System.currentTimeMillis()}] ❌ checkInteractions threw — NOT CHECKED", e)
+            return failureJson(cleanAtc, MedScanSafety.REASON_CHECK_FAILED)
         }
 
-        val overall = when {
-            result.allergyHits.isNotEmpty() -> "MAJOR"
-            result.ddiHits.isNotEmpty() || result.conditionHits.isNotEmpty() -> "MODERATE"
-            else -> "NONE"
-        }
+        val result = pack.result
+        val overall = MedScanSafety.severityOverall(result)
+        lastVerdict = result.verdict
 
         val out = JSONObject().apply {
             put("drug_atc", cleanAtc)
-            put("drug_display", result.displayName)
-            put("drug_atc_chain", JSONArray(result.allAtcs))
+            put("drug_display", pack.displayName)
+            put("drug_atc_chain", JSONArray(pack.allAtcs))
             put("victim_display_name", victimDisplayName)
             put("victim_lang", victimLang)
             put("victim_pillars_summary",
                 "${allergies.size} allergies, ${medications.size} medications, ${conditions.size} conditions")
-            put("severity_overall", overall)
+            // severity_overall, verdict, is_clean, checked, kb_available, per-pillar status,
+            // warning, instruction — "NONE" / is_clean only for a CLEAN verdict.
+            for ((k, v) in MedScanSafety.safetyFields(result)) put(k, v)
             put("allergy_hits", buildHitsArray(result.allergyHits))
             put("ddi_hits", buildHitsArray(result.ddiHits))
-            put("condition_hits", buildHitsArray(result.conditionHits))
-            put("total_hits",
-                result.allergyHits.size + result.ddiHits.size + result.conditionHits.size)
+            put("condition_hits", buildHitsArray(result.drugDiseaseHits))
+            put("total_hits", result.totalHits)
         }.toString()
 
         val dt = System.currentTimeMillis() - tStart
         Log.i(TAG_CHECK, "[t=${System.currentTimeMillis()}] ✅ checkInteractions done · overall=$overall · " +
-            "al=${result.allergyHits.size} ddi=${result.ddiHits.size} cn=${result.conditionHits.size} · ${dt}ms")
+            "verdict=${result.verdict} · checks=${result.checks} · " +
+            "al=${result.allergyHits.size} ddi=${result.ddiHits.size} cn=${result.drugDiseaseHits.size} · ${dt}ms")
         return out
+    }
+
+    /** NOT_CHECKED answer (blank ATC, exception) — never readable as "nothing found". */
+    private fun failureJson(cleanAtc: String, reason: String): String {
+        lastVerdict = KbSafetyVerdict.NOT_CHECKED
+        return JSONObject().apply {
+            put("drug_atc", cleanAtc)
+            put("victim_lang", victimLang)
+            for ((k, v) in MedScanSafety.failureFields(reason)) put(k, v)
+        }.toString()
     }
 
     /**
@@ -382,9 +452,7 @@ class CheckInteractionsTool(
     }
 
     private data class CheckPack(
-        val allergyHits: List<Any>,
-        val ddiHits: List<Any>,
-        val conditionHits: List<Any>,
+        val result: CrossCheckResult,
         val displayName: String,
         val allAtcs: List<String>,
     )

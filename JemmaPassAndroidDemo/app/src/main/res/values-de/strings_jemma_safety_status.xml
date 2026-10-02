@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Profile detail : safety checks not run / incomplete (UC-SAFE-UI) ─── -->
+    <string name="profile_detail_safety_not_checked">ⓘ Sicherheitsprüfungen nicht durchgeführt — Wissensdatenbank nicht verfügbar</string>
+    <string name="profile_detail_safety_incomplete_generic">ⓘ Sicherheitsprüfungen unvollständig — einige Einträge konnten nicht überprüft werden</string>
+    <plurals name="profile_detail_safety_incomplete_count">
+        <item quantity="one">ⓘ Sicherheitsprüfungen unvollständig — %d Eintrag konnte nicht überprüft werden</item>
+        <item quantity="other">ⓘ Sicherheitsprüfungen unvollständig — %d Einträge konnten nicht überprüft werden</item>
+    </plurals>
+    <!-- Second line of the banner -->
+    <string name="profile_detail_safety_status_hint">Keine angezeigte Warnung bedeutet nicht, dass kein Risiko besteht.</string>
+    <!-- Screen-reader description ; %1$s = banner text -->
+    <string name="profile_detail_safety_status_desc">Achtung: %1$s</string>
+
+</resources>

@@ -469,9 +469,10 @@ object JemmaFhirBundleBuilder {
 
     /**
      * UC-FHIR-026 — `md[].r` → Dosage.route. Only an unambiguous route gets a SNOMED CT code;
-     * "I" (any injection: IV, IM…, and the value the form stores today for inhalers) and
-     * unrecognised values are text-only, so the Bundle never asserts a route it does not know.
-     * A blank route is omitted.
+     * "H" (what the form and the KB dose mapping store for inhalers, UC-MED-ROUTE-01) is the
+     * respiratory route. "I" (any injection: IV, IM… — and inhalers saved before "H" existed,
+     * which are not migrated) and unrecognised values are text-only, so the Bundle never
+     * asserts a route it does not know. A blank route is omitted.
      */
     internal fun routeConcept(rawRoute: kotlin.String?): CodeableConcept.Builder? {
         val r = rawRoute?.trim().orEmpty()

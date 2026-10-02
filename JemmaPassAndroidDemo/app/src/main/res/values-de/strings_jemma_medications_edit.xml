@@ -43,6 +43,7 @@
     <string name="medication_form_route_injection">💉 IV/IM</string>
     <string name="medication_form_route_topical">🧴 Topisch</string>
     <string name="medication_form_route_subcutaneous">🩹 SC</string>
+    <string name="medication_form_route_inhaled">🫁 Inhalativ</string>
 
     <string name="medication_form_cancel">Abbrechen</string>
     <string name="medication_form_save">💾  Speichern</string>

@@ -50,10 +50,12 @@ class IpsBloodGroupTest {
         // Unknown blood type → the derived entry disappears, the labs stay.
         assertEquals(listOf(lab), IpsBloodGroup.sync(again, "demo_haru", null))
 
-        // A user-authored 882-1 result wins over the derived one.
+        // UC-BLOOD-03 — `p.bt` is the single 882-1: a user-authored result that contradicts it
+        // no longer wins (it left a stale group next to the profile's one); it is replaced by
+        // the profile value and reported by IpsBloodGroup.reconcile (see IpsBloodGroupSyncTest).
         val userBg = IpsResult(id = "rs-user", code = IpsBloodGroup.LOINC_ABO_RH, display = "ABO/Rh", valueCode = "278148006", valueDisplay = "O-")
         val withUser = IpsBloodGroup.sync(listOf(userBg, lab), "demo_haru", "O+")
-        assertEquals(listOf(userBg, lab), withUser)
+        assertEquals(listOf(IpsBloodGroup.derivedResult("demo_haru", "O+"), lab), withUser)
     }
 
     private fun hydrated(sid: String, bt: String?, fn: String?): HydratedProfile = HydratedProfile(

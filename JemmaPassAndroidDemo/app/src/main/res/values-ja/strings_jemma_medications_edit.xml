@@ -38,6 +38,7 @@
     <string name="medication_form_route_injection">💉 IV/IM</string>
     <string name="medication_form_route_topical">🧴 外用</string>
     <string name="medication_form_route_subcutaneous">🩹 SC</string>
+    <string name="medication_form_route_inhaled">🫁 吸入</string>
 
     <string name="medication_form_cancel">キャンセル</string>
     <string name="medication_form_save">💾  保存</string>

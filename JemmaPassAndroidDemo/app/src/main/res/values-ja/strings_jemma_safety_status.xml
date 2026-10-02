@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Profile detail : safety checks not run / incomplete (UC-SAFE-UI) ─── -->
+    <string name="profile_detail_safety_not_checked">ⓘ 安全性チェックは未実施です — ナレッジベースを利用できません</string>
+    <string name="profile_detail_safety_incomplete_generic">ⓘ 安全性チェックは未完了です — 一部の項目を確認できませんでした</string>
+    <plurals name="profile_detail_safety_incomplete_count">
+        <item quantity="other">ⓘ 安全性チェックは未完了です — %d 件の項目を確認できませんでした</item>
+    </plurals>
+    <!-- Second line of the banner -->
+    <string name="profile_detail_safety_status_hint">警告が表示されていなくても、リスクがないとは限りません。</string>
+    <!-- Screen-reader description ; %1$s = banner text -->
+    <string name="profile_detail_safety_status_desc">注意：%1$s</string>
+
+</resources>

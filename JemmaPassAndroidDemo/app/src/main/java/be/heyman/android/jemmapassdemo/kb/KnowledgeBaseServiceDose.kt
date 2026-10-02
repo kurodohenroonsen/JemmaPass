@@ -207,29 +207,33 @@ fun formatDoseForDisplay(dose: DoseStandard, lang: String = "fr"): String {
 }
 
 /**
- * 🆕 PHASE12 — Mappe une route de la KB vers le shortCode de IpsRouteCatalog (O/I/T/S).
+ * 🆕 PHASE12 — Mappe une route de la KB vers le shortCode de IpsRouteCatalog (O/I/T/S/H).
  *
- * Les 16 routes de la KB n'ont que 4 correspondants dans IpsRouteCatalog :
+ * Les 16 routes de la KB n'ont que 5 correspondants dans IpsRouteCatalog :
  *   oral, sublingual, chewing gum         → O (Oral)
  *   parenteral, implant, s.c. implant     → I (Injection)
  *   inhal.aerosol, inhal.powder,
- *     inhal.solution                       → I (faute de mieux — pas idéal cliniquement)
+ *     inhal.solution (any "inhal…")        → H (Inhaled) — UC-MED-ROUTE-01 : was "I",
+ *                                            which exported an inhaler as an injection
  *   topical, transdermal, nasal,
  *     instill.solution, intravesical,
  *     rectal, vaginal                      → T (Topical)
  *   (subcutaneous serait S mais aucune entrée DB n'utilise ce mot exact)
  *
- * @return un shortCode parmi "O"/"I"/"T"/"S" ou null si route inconnue
+ * @return un shortCode parmi "O"/"I"/"T"/"S"/"H" ou null si route inconnue
  */
 fun mapKbRouteToShortCode(kbRoute: String?): String? {
     if (kbRoute.isNullOrBlank()) return null
-    return when (kbRoute.lowercase().trim()) {
-        "oral", "sublingual", "chewing gum" -> "O"
-        "parenteral", "implant", "s.c. implant",
-        "inhal.aerosol", "inhal.powder", "inhal.solution" -> "I"
-        "topical", "transdermal", "nasal",
-        "instill.solution", "intravesical",
-        "rectal", "vaginal" -> "T"
+    val route = kbRoute.lowercase().trim()
+    return when {
+        route in setOf("oral", "sublingual", "chewing gum") -> "O"
+        route in setOf("parenteral", "implant", "s.c. implant") -> "I"
+        route.startsWith("inhal") -> "H"
+        route in setOf(
+            "topical", "transdermal", "nasal",
+            "instill.solution", "intravesical",
+            "rectal", "vaginal",
+        ) -> "T"
         else -> null
     }
 }

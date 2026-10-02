@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Profile detail : safety checks not run / incomplete (UC-SAFE-UI) ─── -->
+    <string name="profile_detail_safety_not_checked">ⓘ Contrôles de sécurité non effectués — base de connaissances indisponible</string>
+    <string name="profile_detail_safety_incomplete_generic">ⓘ Contrôles de sécurité incomplets — certains éléments n\'ont pas pu être vérifiés</string>
+    <plurals name="profile_detail_safety_incomplete_count">
+        <item quantity="one">ⓘ Contrôles de sécurité incomplets — %d élément n\'a pas pu être vérifié</item>
+        <item quantity="other">ⓘ Contrôles de sécurité incomplets — %d éléments n\'ont pas pu être vérifiés</item>
+    </plurals>
+    <!-- Second line of the banner -->
+    <string name="profile_detail_safety_status_hint">L\'absence d\'alerte ne signifie pas l\'absence de risque.</string>
+    <!-- Screen-reader description ; %1$s = banner text -->
+    <string name="profile_detail_safety_status_desc">Attention : %1$s</string>
+
+</resources>

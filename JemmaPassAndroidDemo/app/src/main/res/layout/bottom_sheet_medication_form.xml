@@ -224,6 +224,15 @@
                     android:layout_weight="1"
                     android:text="@string/medication_form_route_subcutaneous"
                     android:textSize="12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/medication_form_route_inhaled"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/medication_form_route_inhaled"
+                    android:textSize="12sp" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <!-- ─── 🆕 v2.6.0k — IPS-FULL : Status ─────────── -->

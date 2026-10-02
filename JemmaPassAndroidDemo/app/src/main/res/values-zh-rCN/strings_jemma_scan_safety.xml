@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UC-SAFE-SCAN : spoken / displayed when the scan cross-check did not (fully) run.
+     Never worded as "no interaction" : the user is sent to a pharmacist or a doctor. -->
+<resources>
+    <string name="tts_scan_not_checked">无法完成安全检查。此药物未经核对。给药前请咨询药剂师或医生。</string>
+    <string name="tts_scan_incomplete">安全检查不完整。部分档案内容无法核对。给药前请咨询药剂师或医生。</string>
+    <string name="tts_scan_incomplete_note">检查不完整。请咨询药剂师或医生。</string>
+</resources>

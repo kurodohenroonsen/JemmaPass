@@ -158,6 +158,11 @@ data class IpsResult(
             return null to null
         }
 
+        /**
+         * The id is derived from the entry content, so the blood-group Observation mirrored
+         * from `p.bt` (stable id on the sender) comes back with another id: it is recognised
+         * by its shape, see [IpsBloodGroup.looksDerived] / [IpsBloodGroup.reconcile].
+         */
         fun fromJEntry(entry: JEntryGeneric, index: Int = 0): IpsResult {
             val code = entry.c?.takeIf { it.isNotBlank() }
             val seed = "rs|${index}|${code.orEmpty()}|${entry.date.orEmpty()}|${entry.displayLabel.orEmpty()}|${entry.value.orEmpty()}"

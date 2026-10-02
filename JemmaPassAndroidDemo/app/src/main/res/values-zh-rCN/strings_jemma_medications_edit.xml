@@ -41,6 +41,7 @@
     <string name="medication_form_route_injection">💉 静脉/肌注</string>
     <string name="medication_form_route_topical">🧴 外用</string>
     <string name="medication_form_route_subcutaneous">🩹 皮下</string>
+    <string name="medication_form_route_inhaled">🫁 吸入</string>
 
     <string name="medication_form_cancel">取消</string>
     <string name="medication_form_save">💾  保存</string>

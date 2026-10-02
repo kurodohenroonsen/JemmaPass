@@ -33,7 +33,10 @@ import be.heyman.android.jemmapassdemo.kb.AllergyHit
 import be.heyman.android.jemmapassdemo.kb.CrossCheckResult
 import be.heyman.android.jemmapassdemo.kb.CrossSeverity
 import be.heyman.android.jemmapassdemo.kb.DdiHit
+import be.heyman.android.jemmapassdemo.kb.KbCheckStatus
 import be.heyman.android.jemmapassdemo.kb.KbCrossCheck
+import be.heyman.android.jemmapassdemo.kb.KbSafety
+import be.heyman.android.jemmapassdemo.kb.KbSafetyVerdict
 import be.heyman.android.jemmapassdemo.kb.KnowledgeBaseService
 import be.heyman.android.jemmapassdemo.qr.JAllergy
 import be.heyman.android.jemmapassdemo.qr.JCondition
@@ -68,29 +71,47 @@ class FormCrossCheckHelper @Inject constructor(
      *                   OU un code ATC direct (ex: "J01CR02")
      * @param profile    le profile courant — utilisé pour récupérer `al` + `md`
      * @param lang       langue UI pour les displays localisés
-     * @return CrossCheckResult avec allergy + DDI hits, OU null si pas
-     *         résolvable (le caller doit alors sauver sans alerte)
+     * @return CrossCheckResult avec allergy + DDI hits, OU null.
+     *         ⚠ UC-SAFE-SCAN : null veut dire SOIT "rien à vérifier" SOIT "le check
+     *         a planté" — ne jamais l'afficher comme "aucune interaction". Les
+     *         nouveaux callers utilisent [checkNewMedication], qui distingue les
+     *         deux ; lire aussi `result.verdict` (jamais `totalHits == 0` seul).
      */
     suspend fun checkNewMedicationAgainstProfile(
         medDisplay: String,
         profile: JemmaProfileJ?,
         lang: String = "en",
-    ): CrossCheckResult? = withContext(Dispatchers.IO) {
+    ): CrossCheckResult? = checkNewMedication(medDisplay, profile, lang).resultOrNull
+
+    /**
+     * Same check as [checkNewMedicationAgainstProfile], but says WHY there is no
+     * result : [FormCrossCheckOutcome.NothingToCheck] (blank input, no / empty
+     * profile) versus [FormCrossCheckOutcome.Failed] (exception → nothing was
+     * verified). Only `outcome.verdict == CLEAN` may be shown as "no interaction".
+     */
+    suspend fun checkNewMedication(
+        medDisplay: String,
+        profile: JemmaProfileJ?,
+        lang: String = "en",
+    ): FormCrossCheckOutcome = withContext(Dispatchers.IO) {
         val tStart = System.currentTimeMillis()
         if (medDisplay.isBlank()) {
             Log.w(TAG, "[t=$tStart] ⚠ checkNewMed: empty display")
-            return@withContext null
+            return@withContext FormCrossCheckOutcome.NothingToCheck(
+                FormCrossCheckOutcome.SkipReason.BLANK_INPUT)
         }
         if (profile == null) {
             Log.i(TAG, "[t=$tStart] ↪ checkNewMed: no profile yet (first med) — skip xchk")
-            return@withContext null
+            return@withContext FormCrossCheckOutcome.NothingToCheck(
+                FormCrossCheckOutcome.SkipReason.NO_PROFILE)
         }
         val allergies = profile.al
         val meds = profile.md
         val conditions = profile.cn
         if (allergies.isEmpty() && meds.isEmpty() && conditions.isEmpty()) {
             Log.i(TAG, "[t=$tStart] ↪ checkNewMed: empty profile — skip xchk")
-            return@withContext null
+            return@withContext FormCrossCheckOutcome.NothingToCheck(
+                FormCrossCheckOutcome.SkipReason.EMPTY_PROFILE)
         }
 
         Log.i(TAG, "[t=$tStart] 💊 checkNewMed · display='$medDisplay' · " +
@@ -105,14 +126,19 @@ class FormCrossCheckHelper @Inject constructor(
                 lang = lang,
             )
         } catch (e: Exception) {
-            Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ xchk failed: ${e.message}", e)
-            return@withContext null
+            Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ xchk failed — NOT CHECKED: ${e.message}", e)
+            return@withContext FormCrossCheckOutcome.Failed(e.message)
         }
         val totalMs = System.currentTimeMillis() - tStart
         Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ checkNewMed done · ${totalMs}ms · " +
             "al=${result.allergyHits.size} ddi=${result.ddiHits.size} dd=${result.drugDiseaseHits.size} · " +
-            "hasMajor=${result.hasMajor}")
-        result
+            "hasMajor=${result.hasMajor} · verdict=${result.verdict} · checks=${result.checks}")
+        val uncoded = FormCrossCheckLogic.uncodedLabels(meds)
+        if (uncoded.isNotEmpty()) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ checkNewMed: ${uncoded.size} stored med(s) " +
+                "without code — not reliably compared")
+        }
+        FormCrossCheckOutcome.Completed(result, uncoded)
     }
 
     /**
@@ -134,7 +160,11 @@ class FormCrossCheckHelper @Inject constructor(
      * @param allergyCode SNOMED code optionnel (ex: "91936005")
      * @param profile profile courant
      * @param lang lang UI
-     * @return un set de medication hits OU null
+     * @return les hits + ce qui n'a PAS pu être vérifié
+     *         ([NewAllergyConflicts.uncheckedMeds], [NewAllergyConflicts.status],
+     *         [NewAllergyConflicts.verdict]) ; null uniquement quand il n'y a rien à
+     *         vérifier (pas de profile / aucun médicament). Une exception ne renvoie
+     *         plus null : elle donne un résultat NOT_CHECKED / INCOMPLETE.
      */
     suspend fun checkNewAllergyAgainstMeds(
         allergyDisplay: String,
@@ -166,20 +196,41 @@ class FormCrossCheckHelper @Inject constructor(
                 displayLabel = allergyDisplay,
             )
         )
+        // UC-SAFE-SCAN — no KB = class-level matching did not run : not a clean result.
+        val kbUp = try {
+            kb.isKbAvailable()
+        } catch (e: Exception) {
+            Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ KB probe failed: ${e.message}", e)
+            false
+        }
         val hits = mutableListOf<NewAllergyConflict>()
+        val unchecked = mutableListOf<String>()
+        var uncoded = 0
+        var failed = 0
         for ((idx, med) in meds.withIndex()) {
-            val medAtc = med.c?.takeIf { it.isNotBlank() } ?: continue
+            val medLabel = med.displayLabel?.trim().orEmpty()
+            val medAtc = med.c?.takeIf { it.isNotBlank() }
+            if (medAtc == null) {
+                // Free-text medication : cannot be matched against the allergen class.
+                // Reported in `uncheckedMeds` instead of being skipped silently.
+                uncoded++
+                unchecked.add(medLabel.ifBlank { "?" })
+                continue
+            }
             // Resolve med → check ATC ancestors against allergy
             val result = try {
-                crossCheck.checkOneAtcAgainstAllergies(
+                crossCheck.checkAllergiesWithStatus(
                     allergies = tempAllergyList,
                     candidateAtc = medAtc,
                     candidateAllAtcs = listOf(medAtc),
                     candidateDisplay = med.displayLabel ?: medAtc,
                     lang = lang,
-                )
+                    kbAvailable = kbUp,
+                ).hits
             } catch (e: Exception) {
-                Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk med[$idx] failed: ${e.message}")
+                Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk med[$idx] failed — NOT CHECKED: ${e.message}")
+                failed++
+                unchecked.add(medLabel.ifBlank { medAtc })
                 continue
             }
             for (hit in result) {
@@ -194,9 +245,16 @@ class FormCrossCheckHelper @Inject constructor(
                 )
             }
         }
+        val status = FormCrossCheckLogic.allergyCheckStatus(
+            kbAvailable = kbUp,
+            medsToCheck = meds.size,
+            uncodedMeds = uncoded,
+            failedMeds = failed,
+        )
         val totalMs = System.currentTimeMillis() - tStart
-        Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ checkNewAllergy done · ${totalMs}ms · hits=${hits.size}")
-        NewAllergyConflicts(hits = hits, durationMs = totalMs)
+        Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ checkNewAllergy done · ${totalMs}ms · hits=${hits.size} · " +
+            "status=$status · unchecked=${unchecked.size}")
+        NewAllergyConflicts(hits = hits, durationMs = totalMs, uncheckedMeds = unchecked, status = status)
     }
 }
 
@@ -216,9 +274,24 @@ data class NewAllergyConflict(
 data class NewAllergyConflicts(
     val hits: List<NewAllergyConflict>,
     val durationMs: Long,
+    /** Stored medications that could NOT be checked (no code, or the lookup failed). */
+    val uncheckedMeds: List<String> = emptyList(),
+    /**
+     * Did the check really run ? Fail-safe default : a result built without a status
+     * is treated as not verified.
+     */
+    val status: KbCheckStatus = KbCheckStatus.KB_UNAVAILABLE,
 ) {
+    /** No hit FOUND — which is "nothing to report" only when [verdict] is CLEAN. */
     val isEmpty: Boolean get() = hits.isEmpty()
     val isNotEmpty: Boolean get() = hits.isNotEmpty()
+
+    /** What the form may say. CLEAN is the only verdict that may be shown as "no conflict". */
+    val verdict: KbSafetyVerdict
+        get() = KbSafety.verdict(status, hits.size)
+
+    val isClean: Boolean
+        get() = verdict == KbSafetyVerdict.CLEAN
     /** True si au moins 1 hit avec criticality HIGH (urticaria, anaphylaxis). */
     val hasHigh: Boolean
         get() = hits.any { it.criticality == be.heyman.android.jemmapassdemo.kb.AllergyCriticality.HIGH }

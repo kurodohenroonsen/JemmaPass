@@ -351,6 +351,22 @@
                 tools:text="⚠ 1 interaction MAJEURE détectée"
                 tools:visibility="visible" />
 
+            <!-- ─── SAFETY CHECK STATUS (amber : checks not run / incomplete — UC-SAFE-UI) ─── -->
+            <TextView
+                android:id="@+id/profile_detail_safety_status_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:accessibilityLiveRegion="polite"
+                android:background="@color/jemma_warning"
+                android:padding="12dp"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:text="@string/profile_detail_safety_not_checked"
+                tools:visibility="visible" />
+
             <!-- ─── ALLERGIES ─── -->
             <LinearLayout
                 android:id="@+id/profile_detail_allergies_section"

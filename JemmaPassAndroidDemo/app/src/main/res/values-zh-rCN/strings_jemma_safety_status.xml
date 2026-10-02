@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Profile detail : safety checks not run / incomplete (UC-SAFE-UI) ─── -->
+    <string name="profile_detail_safety_not_checked">ⓘ 未执行安全检查 — 知识库不可用</string>
+    <string name="profile_detail_safety_incomplete_generic">ⓘ 安全检查不完整 — 部分项目无法核实</string>
+    <plurals name="profile_detail_safety_incomplete_count">
+        <item quantity="other">ⓘ 安全检查不完整 — %d 个项目无法核实</item>
+    </plurals>
+    <!-- Second line of the banner -->
+    <string name="profile_detail_safety_status_hint">未显示警报并不代表没有风险。</string>
+    <!-- Screen-reader description ; %1$s = banner text -->
+    <string name="profile_detail_safety_status_desc">注意：%1$s</string>
+
+</resources>

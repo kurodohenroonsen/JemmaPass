@@ -73,8 +73,10 @@ import be.heyman.android.jemmapassdemo.R
 import be.heyman.android.jemmapassdemo.databinding.BottomSheetMedicationFormBinding
 import be.heyman.android.jemmapassdemo.kb.KnowledgeBaseService
 import be.heyman.android.jemmapassdemo.kb.ResolvedConcept
+import be.heyman.android.jemmapassdemo.kb.mapKbRouteToShortCode
 import be.heyman.android.jemmapassdemo.kb.resolveAtcCode
 import be.heyman.android.jemmapassdemo.pillars.IpsMedicationStatusCatalog
+import be.heyman.android.jemmapassdemo.pillars.IpsRouteCatalog
 import be.heyman.android.jemmapassdemo.profiles.ProfilesRepository
 import be.heyman.android.jemmapassdemo.qr.JMedication
 import be.heyman.android.jemmapassdemo.qr.JemmaProfileJ
@@ -261,6 +263,8 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
         binding.medicationFormRouteInjection.setOnClickListener { selectRoute("I") }
         binding.medicationFormRouteTopical.setOnClickListener { selectRoute("T") }
         binding.medicationFormRouteSubcutaneous.setOnClickListener { selectRoute("S") }
+        // UC-MED-ROUTE-01 — inhaled is its own route ("H"), never "I" (injection).
+        binding.medicationFormRouteInhaled.setOnClickListener { selectRoute(IpsRouteCatalog.INHALED) }
 
         // 🆕 v2.6.0k — IPS-FULL wiring
         binding.medicationFormStatusRow.setOnClickListener { openStatusPicker() }
@@ -350,7 +354,8 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
                 lang = lang,
             ) ?: return@launch
             if (result.totalHits == 0) {
-                Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 xchk clean on pick · $codeOrAtc")
+                // No hit ≠ clean : an unverified check is reported at submit (verdict).
+                Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 no xchk hit on pick · $codeOrAtc · verdict=${result.verdict}")
                 return@launch
             }
             Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk hits on pick · " +
@@ -424,15 +429,9 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
                         Log.d(TAG, "[t=${System.currentTimeMillis()}] 🚫 dose not auto-filled · existing value preserved")
                     }
                     // Auto-cocher la route correspondante si on a un mapping
-                    val mappedRoute = when (picked.doseRoute?.lowercase()?.trim()) {
-                        "oral", "sublingual", "chewing gum" -> "O"
-                        "parenteral", "implant", "s.c. implant",
-                        "inhal.aerosol", "inhal.powder", "inhal.solution" -> "I"
-                        "topical", "transdermal", "nasal",
-                        "instill.solution", "intravesical",
-                        "rectal", "vaginal" -> "T"
-                        else -> null
-                    }
+                    // UC-MED-ROUTE-01 — single mapping shared with the KB layer : inhalation
+                    // forms give "H" (inhaled), no longer "I" (injection).
+                    val mappedRoute = mapKbRouteToShortCode(picked.doseRoute)
                     if (mappedRoute != null && pickedRoute == "O") {
                         // On considère que "O" est le default — si l'user n'a pas explicitement
                         // choisi autre chose, on aligne sur la route DDD
@@ -463,6 +462,7 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
         binding.medicationFormRouteInjection.isChecked = pickedRoute == "I"
         binding.medicationFormRouteTopical.isChecked = pickedRoute == "T"
         binding.medicationFormRouteSubcutaneous.isChecked = pickedRoute == "S"
+        binding.medicationFormRouteInhaled.isChecked = pickedRoute == IpsRouteCatalog.INHALED
     }
 
     // ─── 🆕 v2.6.0k — IPS-FULL : Status picker ───────────────────
@@ -662,10 +662,14 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             try {
+                val candidateLabel = display ?: code
                 val profile = loadProfileSnapshotForXchk()
                 if (profile == null) {
-                    Log.i(TAG, "[t=${System.currentTimeMillis()}] ↪ no profile snapshot — skip xchk, commit")
-                    commit()
+                    // Nothing could be compared : say so instead of saving silently.
+                    Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ no profile snapshot — xchk not run")
+                    confirmSafetyGapsThen(
+                        MedicationFormLogic.SafetyCheckGaps(checkNotRun = true), candidateLabel, commit,
+                    )
                     return@launch
                 }
                 val result = crossCheckHelper.checkNewMedicationAgainstProfile(
@@ -673,15 +677,16 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
                     profile = profile,
                     lang = lang,
                 )
+                // The verdict of the cross-check decides (KbSafety) : only CLEAN saves
+                // without a dialog ; NOT_CHECKED / INCOMPLETE show "Safety check incomplete".
                 val gaps = MedicationFormLogic.safetyCheckGaps(
                     profileHasData = profile.al.isNotEmpty() || profile.md.isNotEmpty() || profile.cn.isNotEmpty(),
-                    resultAvailable = result != null,
-                    candidateAtc = result?.candidateAtc,
+                    result = result,
                     otherMeds = profile.md,
                 )
-                val candidateLabel = display ?: code
                 if (result == null || result.totalHits == 0) {
-                    Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 no xchk hit on submit · gaps=$gaps")
+                    Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 no xchk hit on submit · " +
+                        "verdict=${result?.verdict} · checked=${result?.checked} · gaps=$gaps")
                     confirmSafetyGapsThen(gaps, candidateLabel, commit)
                     return@launch
                 }
@@ -736,14 +741,19 @@ class MedicationFormBottomSheet : BottomSheetDialogFragment() {
             releaseSubmit()
             return
         }
+        val uncodedMessage = gaps.uncodedExistingMeds.takeIf { it.isNotEmpty() }?.let {
+            getString(R.string.medication_form_xchk_gap_uncoded_meds, it.joinToString(", "))
+        }
         val message = when {
             gaps.checkNotRun -> getString(R.string.medication_form_xchk_gap_not_run)
             gaps.candidateUnresolved ->
                 getString(R.string.medication_form_xchk_gap_unresolved, candidateLabel)
-            else -> getString(
-                R.string.medication_form_xchk_gap_uncoded_meds,
-                gaps.uncodedExistingMeds.joinToString(", "),
-            )
+            // Part of the check did not run for another reason than an uncoded medication :
+            // no dedicated string yet, the "could not run" wording errs on the safe side.
+            gaps.checkIncomplete -> listOfNotNull(
+                getString(R.string.medication_form_xchk_gap_not_run), uncodedMessage,
+            ).joinToString("\n\n")
+            else -> uncodedMessage.orEmpty()
         }
         Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk gap shown · $gaps")
         MaterialAlertDialogBuilder(ctx)

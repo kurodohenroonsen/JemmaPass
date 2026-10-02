@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UC-SAFE-SCAN : spoken / displayed when the scan cross-check did not (fully) run.
+     Never worded as "no interaction" : the user is sent to a pharmacist or a doctor. -->
+<resources>
+    <string name="tts_scan_not_checked">Veiligheidscontrole niet mogelijk. Dit geneesmiddel is niet gecontroleerd. Vraag een apotheker of arts voordat u het geeft.</string>
+    <string name="tts_scan_incomplete">Veiligheidscontrole onvolledig. Een deel van het profiel kon niet worden gecontroleerd. Vraag een apotheker of arts voordat u het geeft.</string>
+    <string name="tts_scan_incomplete_note">De controle was onvolledig. Vraag een apotheker of arts.</string>
+</resources>

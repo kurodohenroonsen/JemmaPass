@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Profile detail : safety checks not run / incomplete (UC-SAFE-UI) ─── -->
+    <string name="profile_detail_safety_not_checked">ⓘ Veiligheidscontroles niet uitgevoerd — kennisbank niet beschikbaar</string>
+    <string name="profile_detail_safety_incomplete_generic">ⓘ Veiligheidscontroles onvolledig — sommige items konden niet worden geverifieerd</string>
+    <plurals name="profile_detail_safety_incomplete_count">
+        <item quantity="one">ⓘ Veiligheidscontroles onvolledig — %d item kon niet worden geverifieerd</item>
+        <item quantity="other">ⓘ Veiligheidscontroles onvolledig — %d items konden niet worden geverifieerd</item>
+    </plurals>
+    <!-- Second line of the banner -->
+    <string name="profile_detail_safety_status_hint">Geen waarschuwing betekent niet dat er geen risico is.</string>
+    <!-- Screen-reader description ; %1$s = banner text -->
+    <string name="profile_detail_safety_status_desc">Let op: %1$s</string>
+
+</resources>

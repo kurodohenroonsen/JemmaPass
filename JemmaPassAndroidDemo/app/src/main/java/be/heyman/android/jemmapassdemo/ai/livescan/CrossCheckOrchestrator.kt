@@ -5,7 +5,8 @@
  *   1. Appelle KbCrossCheck.checkOneDrugAgainstProfile(bestCode, patient)
  *      → SQL pur, déterministe, auditable
  *   2. Adapte le `CrossCheckResult` legacy en notre `CrossCheckReport`
- *      unifié (Severity enum + 3 pillars sans duplicate)
+ *      unifié (Severity enum + 3 pillars sans duplicate + verdict KB :
+ *      CLEAN / ALERT / INCOMPLETE / NOT_CHECKED — UC-SAFE-SCAN)
  *   3. Update LiveScanRepository : CrossChecking → RenderedWithVerdict
  *   4. Déclenche TtsStaticVerdict en parallèle (TTS immédiat)
  *   5. Retourne le report — caller (Fragment) déclenche ensuite Phase D
@@ -79,15 +80,9 @@ class CrossCheckOrchestrator @Inject constructor(
             )
         } catch (e: Exception) {
             Log.e(TAG, "[t=${System.currentTimeMillis()}] ❌ checkOneDrugAgainstProfile threw", e)
-            // Fallback : report vide
-            CrossCheckResult(
-                candidateAtc = bestCode,
-                candidateDisplay = drugName,
-                allergyHits = emptyList(),
-                ddiHits = emptyList(),
-                drugDiseaseHits = emptyList(),
-                totalDurationMs = 0L,
-            )
+            // UC-SAFE-SCAN — the check did not run : NOT_CHECKED, never an empty
+            // "all checked" result (which the TTS would read as "no interaction").
+            ScanSafety.notCheckedResult(bestCode, drugName)
         }
 
         val report = adaptToReport(rawResult, bestCode, drugName)
@@ -95,7 +90,7 @@ class CrossCheckOrchestrator @Inject constructor(
         val elapsed = System.currentTimeMillis() - tStart
         Log.i(
             TAG,
-            "[t=${System.currentTimeMillis()}] ✅ Phase C done · overall=${report.overall} · " +
+            "[t=${System.currentTimeMillis()}] ✅ Phase C done · verdict=${report.verdict} · overall=${report.overall} · " +
                 "al=${report.allergyHits.size} ddi=${report.ddiHits.size} " +
                 "cn=${report.conditionHits.size} · ${elapsed}ms",
         )
@@ -129,6 +124,10 @@ class CrossCheckOrchestrator @Inject constructor(
      * Adapte le `CrossCheckResult` legacy en `CrossCheckReport` unifié.
      * Public car aussi appelé par `AlternativeFinder.findSafe` pendant
      * la cascade (re-cross-check de chaque candidate alternative).
+     *
+     * UC-SAFE-SCAN : le `verdict` du résultat KB est propagé tel quel, et
+     * `overall` ne vaut NONE que pour un verdict CLEAN (un check non fait ou
+     * partiel remonte au minimum en MODERATE — cf. [ScanSafety.displaySeverity]).
      */
     suspend fun adaptToReport(
         rawResult: CrossCheckResult,
@@ -144,7 +143,13 @@ class CrossCheckOrchestrator @Inject constructor(
             ddiHits.map { it.severity },
             conditionHits.map { it.severity },
         ).flatten()
-        val overall = all.maxByOrNull { it.ordinal } ?: Severity.NONE
+        val verdict = rawResult.verdict
+        val fullyChecked = rawResult.checked
+        val overall = ScanSafety.displaySeverity(
+            verdict = verdict,
+            maxHitSeverity = all.maxByOrNull { it.ordinal },
+            fullyChecked = fullyChecked,
+        )
 
         return CrossCheckReport(
             drugAtc = bestCode,
@@ -153,6 +158,8 @@ class CrossCheckOrchestrator @Inject constructor(
             allergyHits = allergyHits,
             ddiHits = ddiHits,
             conditionHits = conditionHits,
+            verdict = verdict,
+            fullyChecked = fullyChecked,
         )
     }
 
