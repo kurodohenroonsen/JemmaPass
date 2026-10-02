@@ -4,3 +4,4 @@
 - En attente chez Antigravity : report-raw RAW-07/08 (0042, 0044), docs (0043), analyse contacts + guide (0026), SD-06 (0029), PDF 36 Mo + albuterol (0030).
 - À écrire par moi : RAW-08 ; test Patient.contact.relationship codé ; tests SD-06 quand la signature est proposée ; tests du pilier contacts quand l'analyse arrive.
 - Décisions de Kudoro en attente : choix cliniques SD-09 ; directives anticipées sur le QR ; sens de cs/pv ; sections IPS supplémentaires.
+- Vague 2 ouverte : tests/sd-wave-2 @ b5a237d (SD-24 relation de contact codée, 432 tests / 2 rouges voulus) ; tests/qa-guard @ f7ba094 (RAW-07, RAW-08) → tâche 0045.
