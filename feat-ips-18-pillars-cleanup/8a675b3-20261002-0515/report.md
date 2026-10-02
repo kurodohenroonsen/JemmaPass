@@ -2,9 +2,10 @@
 
 - **Date** : 2026-10-02
 - **Commit testé** : `8a675b3` (314 tests JVM pass)
-- **Appareil** : Google Pixel 9 Pro XL (`46071FDAS00AFP`, Android 14)
+- **Appareil** : Google Pixel 9 Pro XL (Android 17)
 - **Dossier de sortie** : `qa/device/out/8a675b3-20261002-0515`
 - **Statut global** : **SUCCÈS TOTAL (PASS 110/110 checks finaux, 0 failed)**
+- **Publication device-reports** : commit `80e21e4`
 
 ---
 
@@ -60,9 +61,9 @@
 ### BLOC F — QR Texte (Haru EN/FR/JA & Kamekichi EN)
 | Persona / Langue | Fichier décodé | Taille (max 1800 octets) | Marqueur ✂️ | Contacts d'urgence | Capture |
 |---|---|---|---|---|---|
-| **Haru (EN)** | `qr/haru-text-en.txt` | **1675 octets** | Absent (non tronqué) | Présents | `240-qr-haru-text-en.png` |
-| **Haru (FR)** | `qr/haru-text-fr.txt` | **1764 octets** | Absent (non tronqué) | Présents | `241-qr-haru-text-fr.png` |
-| **Haru (JA)** | `qr/haru-text-ja.txt` | **1782 octets** | Absent (non tronqué) | Présents | `242-qr-haru-text-ja.png` |
+| **Haru (EN)** | `qr/haru-text-en.txt` | **1675 octets** | Absent (non tronqué) | Absents (aucun contact dans le profil) | `240-qr-haru-text-en.png` |
+| **Haru (FR)** | `qr/haru-text-fr.txt` | **1764 octets** | Absent (non tronqué) | Absents (aucun contact dans le profil) | `241-qr-haru-text-fr.png` |
+| **Haru (JA)** | `qr/haru-text-ja.txt` | **1782 octets** | Absent (non tronqué) | Absents (aucun contact dans le profil) | `242-qr-haru-text-ja.png` |
 | **Kamekichi (EN)** | `qr/kamekichi-text-en.txt` | **858 octets** | Absent (non tronqué) | `☎️ [ CONTACTS ] ▪️ Kurodo Henro (friend)` | `243-qr-kamekichi-text-en.png` |
 
 ### BLOC G — Export & Aperçu PDF
@@ -122,31 +123,39 @@
 ### Extrait QR Texte Kamekichi EN (`qr/kamekichi-text-en.txt`)
 ```text
 🏥 === JEMMA CLINICAL SUMMARY (EN) ===
-Patient: Kamekichi Tanaka (M, 1980-05-15)
-ID: JP-87654321 · Blood: A+
 
-☎️ [ CONTACTS ]
-▪️ Kurodo Henro (friend)
+👤 [ PATIENT ]
+ 🔹 Kamekichi  (M)
+ 📅 Birth: 2000-05-20
+ 🩸 Blood: B+
+ 🗣 Language: ja-JP
+ 📍 Address: 75 Avenue Louise, Bruxelles, Belgique
+ 🆔 ID: BE-570815-987-65
 
-⚠️ [ ALLERGIES / INTOLERANCES ]
-▪️ Latex (LOW)
-▪️ Penicillin (HIGH)
-▪️ Peanuts (HIGH)
+⚠️ [ ALLERGIES ]
+  ▪️ Latex allergy (LOW)
+  ▪️ Allergy to penicillin (HIGH)
+  ▪️ Allergy to peanut (HIGH)
 
 💊 [ MEDICATIONS ]
-▪️ Aspirin 100mg (Daily)
-▪️ Ibuprofen 400mg (PRN pain)
-▪️ Omeprazole 20mg (Daily)
-▪️ Lisinopril 10mg (Daily)
-▪️ Metformin 500mg (BID)
+  ▪️ Bisoprolol 1tab Bisoprolol 2.5mg
+  ▪️ Warfarin 5mg Warfarin 5mg
+  ▪️ Ibuprofen 400mg Ibuprofen 400mg
+  ▪️ Sildenafil 50mg Sildenafil 50mg
+  ▪️ Isosorbide dinitrate 20mg Isosorbide Dinitrate 20mg
 
-🩺 [ PROBLEMS ]
-▪️ Hypertension
-▪️ Type 2 Diabetes
-▪️ GERD
+🩺 [ CONDITIONS ]
+  ▪️ Essential hypertension
+  ▪️ Atrial fibrillation
+  ▪️ Angina
+
+☎️ [ CONTACTS ]
+  ▪️ Kurodo Henro (friend)
 
 🧪 [ RESULTS ]
-▪️ HbA1c: 7.2 %
+  ▪️ ABO and Rh blood group: B+
+
+✅ JEMMA on-device · `_j 1.2`
 ```
 
 ---
@@ -155,5 +164,6 @@ ID: JP-87654321 · Blood: A+
 1. **Saisie de médicament libre bloquée (E.2)** :
    `MedicationFormBottomSheet.kt:622` effectue `if (code.isNullOrBlank())` et déclenche le toast bloquant `medication_form_validation_substance` ("Choisis un médicament dans la liste"). Il est donc impossible pour l'utilisateur d'ajouter un traitement non codifié (ex: remède maison, tisane, complément) depuis le formulaire standard sans sélection préalable dans la base DIAMOND.
 2. **Mesure de device-reports** :
-   Mesure avant-cycle : 355 fichiers, 53 215 634 octets (~53.2 Mo).
-   Mesure après-cycle reportée lors de la publication.
+   - Avant-cycle : 355 fichiers, 53 215 634 octets (~53.2 Mo).
+   - Après-cycle (`publish 24-8a675b3` @ commit `80e21e4`) : 272 fichiers, 33 664 588 octets (~33.6 Mo).
+   - Dépôt repassé sous le plafond des ~35 Mo comme exigé (nettoyage de 83 fichiers PNG redondants).
