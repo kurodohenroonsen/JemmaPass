@@ -251,7 +251,8 @@ object JemmaPersonasSeeder {
                 ct = listOf(
                     JContact(
                         n = "Kamekichi",
-                        r = "friend",
+                        r = "FRND",
+                        p = "+32 2 000 00 01",
                         adr = "75 Avenue Louise, Bruxelles"
                     )
                 )
@@ -307,7 +308,8 @@ object JemmaPersonasSeeder {
                 ct = listOf(
                     JContact(
                         n = "Kurodo Henro",
-                        r = "friend",
+                        r = "FRND",
+                        p = "+32 2 000 00 02",
                         adr = "Rue de la Paix 12, 5660 Couvin"
                     )
                 )
