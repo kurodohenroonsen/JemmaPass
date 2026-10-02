@@ -99,9 +99,10 @@ act() {
       if [[ "$target" != /* ]]; then
         if [ -n "${OUT:-}" ] && [ -d "$OUT" ]; then target="$OUT/$target"; else target="$PWD/$target"; fi
       fi
+      local rel count=0
+      local tmp_target="${target}.tmp.$$"
       mkdir -p "$(dirname "$target")"
-      : > "$target"
-      local rel
+      : > "$tmp_target"
       for dir in "$OUT/qr" "$OUT/json" "$OUT/validator"; do
         [ -d "$dir" ] || continue
         for f in "$dir"/*; do
@@ -112,16 +113,29 @@ act() {
               ;;
           esac
           rel="${f#$OUT/}"
-          echo "### \`$rel\`" >> "$target"
-          echo '```' >> "$target"
-          cat "$f" >> "$target"
-          [ -z "$(tail -c 1 "$f")" ] || echo "" >> "$target"
-          echo '```' >> "$target"
-          echo "" >> "$target"
+          count=$((count+1))
+          if [ "$dir" = "$OUT/json" ] && [ "$(wc -c < "$f")" -gt 20480 ]; then
+            echo "### \`$rel\` ($(wc -c < "$f" | tr -d ' ') bytes > 20 kB, omitted)" >> "$tmp_target"
+            echo "" >> "$tmp_target"
+            continue
+          fi
+          echo "### \`$rel\`" >> "$tmp_target"
+          echo '```' >> "$tmp_target"
+          cat "$f" >> "$tmp_target"
+          [ -z "$(tail -c 1 "$f")" ] || echo "" >> "$tmp_target"
+          echo '```' >> "$tmp_target"
+          echo "" >> "$tmp_target"
         done
       done
+      if [ "$count" -eq 0 ]; then
+        rm -f "$tmp_target"
+        echo "report-raw: error: no report pieces found in $OUT" >&2
+        return 1
+      fi
+      mv "$tmp_target" "$target"
       echo "report-raw: wrote $(wc -l < "$target" | tr -d ' ') lines to $target"
       ;;
+    report-test)    bash "$ROOT/qa/device/tests/test_report_raw.sh" ;;
     *)              echo "unknown action: $a"; return 64 ;;
   esac
 }
