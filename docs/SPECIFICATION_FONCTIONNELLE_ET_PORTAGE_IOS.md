@@ -1,91 +1,82 @@
 # 🐢 JemmaPass — Dossier d'Architecture Fonctionnelle & Cahier des Charges de Portage iOS (Japon)
 
-> **Document de Référence Orchestrateur Multi-Agents**  
+> **Document Technique d'Architecture & Spécification de Portage**  
 > **Auteur du projet d'origine** : Claude Heyman (*Kurodo Henro Onsen*)  
-> **Version** : 3.0.0-PROD · Octobre 2026  
-> **Statut** : Document Maître d'Ingénierie & Stratégie Produit  
-> **Périmètre** : Spécification Fonctionnelle Complète (18 Piliers IPS, Moteur Clinique, AI Edge, Transfert Hors-Ligne) & Blueprint d'Ingénierie pour le Portage iOS Ciblant le Marché Japonais.
+> **Version** : 1.0.14-SPEC (aligné sur l'application Android v1.0.14, `app/build.gradle.kts:38`)  
+> **Statut** : Document de Travail & Spécification de Portage iOS (En cours de révision technique — non approuvé comme norme unique)  
+> **Périmètre** : Spécification Fonctionnelle (18 Piliers IPS, Moteur Clinique, AI Edge, Transfert Hors-Ligne) & Blueprint d'Ingénierie pour le Portage iOS ciblant le Japon.  
+> **Conventions de classification** :  
+> Chaque exigence ou composant technique est rigoureusement classé sous l'une des 3 catégories suivantes :  
+> - `[EXISTE SUR ANDROID (fichier:ligne)]` : Fonctionnalité ou classe existante, vérifiée sur pièces dans le code source.  
+> - `[PROPOSITION IOS]` : Architecture ou composant cible proposé pour le portage iOS.  
+> - `[HYPOTHÈSE À VÉRIFIER]` : Hypothèse médicale, réglementaire, de marché ou faisabilité OS nécessitant une validation empirique ou juridique.
 
 ---
 
 ## Table des Matières
 
 1. [Vision Stratégique & Contexte Japon](#1-vision-stratégique--contexte-japon)
-   - 1.1. La promesse JemmaPass : *Zero-Cloud, 100% On-Device, Cross-Border*
-   - 1.2. Le quatuor narratif : Kurodo, Haru, Kamekichi, Jemma
-   - 1.3. Pourquoi le portage iOS est vital au Japon (~70% PDM)
-   - 1.4. Scénarios critiques au Japon : Catastrophe naturelle (Noto/Nankai) et Pèlerinage (Shikoku)
+   - 1.1. La promesse JemmaPass : *Zero-Cloud at Runtime, On-Device, Cross-Border*
+   - 1.2. Le quatuor narratif : Kurodo, Haru, Kamekichi, Gemma
+   - 1.3. Pourquoi le portage iOS est vital au Japon (PDM et usages)
+   - 1.4. Scénarios critiques au Japon : Catastrophe naturelle et Pèlerinage
 2. [Cartographie Fonctionnelle Complète de l'Existant](#2-cartographie-fonctionnelle-complète-de-lexistant)
    - 2.1. Les 18 Piliers de l'International Patient Summary (HL7 FHIR R4)
    - 2.2. Dualité des formats : FHIR R4 (Source de Vérité) vs `_j 1.2` (Projection Compacte)
    - 2.3. Moteur Clinique & Sécurité Décisionnelle (`KbCrossCheck` + `KbSafety`)
-   - 2.4. Le Moteur de Vulgarisation Thérapeutique (Gemma 4 + `VulgariseHelper`)
-   - 2.5. Les 16 Outils Typés `@Tool` de Jemma
-   - 2.6. Canaux de Transfert Multi-Supports Hors-Ligne (Triple-Layer QR, Mesh P2P, Pocket Pass PDF, Lock-screen SOS)
+   - 2.4. Le Moteur de Vulgarisation Thérapeutique (Gemma 4 + `VulgariseRepository`)
+   - 2.5. Les 21 Outils Typés `@Tool` de Jemma
+   - 2.6. Canaux de Transfert Multi-Supports Hors-Ligne
 3. [Spécificités Médicales, Réglementaires et Linguistiques Japonaises](#3-spécificités-médicales-réglementaires-et-linguistiques-japonaises)
-   - 3.1. L'écosystème de santé japonais : MHLW (厚生労働省), PMDA et DMAT
-   - 3.2. Pharmacopée & Nomenclatures : Codes HOT/YJ, DCI vs Noms Commerciaux en Katakana (ex: Loxonin, Rixiana)
-   - 3.3. Carnet de santé numérique (*Okusuri Techou* - お薬手帳) et Carte My Number
-   - 3.4. Tokenisation FTS5 CJK (Trigramme) vs Analyseurs Morphologiques (MeCab)
-   - 3.5. Tri de Catastrophe : Protocole SALT adapté aux fiches japonaises (*Triage Tag*)
+   - 3.1. Écosystème de santé : MHLW, PMDA et statut Dispositif Médical (SaMD)
+   - 3.2. Nomenclatures et Pharmacopée : Noms en Katakana, Codes HOT/YJ et Classes ATC
+   - 3.3. Carnet de santé (*Okusuri Techou*) et Restrictions Légales du My Number
+   - 3.4. Recherche FTS5 CJK (Trigramme) vs Analyseurs Morphologiques
+   - 3.5. Tri de Catastrophe : Protocole SALT adapté et Grille Réelle
 4. [Cahier des Charges Architectural du Portage iOS](#4-cahier-des-charges-architectural-du-portage-ios)
-   - 4.1. Stratégie d'implémentation : KMP (Kotlin Multiplatform) vs 100% Swift Natif
+   - 4.1. Stratégie d'implémentation : KMP partagé vs 100% Swift Natif
    - 4.2. Matrice d'Équivalence Technologique Complète (Android ➔ iOS)
    - 4.3. Base de Données Clinique (`knowledge_full.db`) & Moteur FTS5 sous iOS
    - 4.4. Intelligence Artificielle Embarquée : Inférence LLM & Vision OCR sur Apple Silicon
-   - 4.5. Le Défi du Réseau Maillé P2P (Nearby Connections vs CoreBluetooth / Multipeer)
-   - 4.6. Expérience Utilisateur & Intégration Écosystème Apple (Dynamic Island, Live Activities, Wallet, HealthKit)
-5. [Orchestration Multi-Agents & Feuille de Route d'Exécution](#5-orchestration-multi-agents--feuille-de-route-dexécution)
-   - 5.1. Rôles et responsabilités des Sub-Agents spécialisés
-   - 5.2. Protocole de communication inter-agents
-   - 5.3. Plan par jalons (Milestones M1 à M5)
-   - 5.4. Matrice d'assurance qualité & cas d'usage critiques (577 micro-cas)
+   - 4.5. Le Défi du Réseau Maillé P2P (BLE CoreBluetooth vs Nearby Connections)
+   - 4.6. Expérience Utilisateur & Intégration Écosystème Apple
+5. [Orchestration & Feuille de Route d'Exécution](#5-orchestration--feuille-de-route-dexécution)
+   - 5.1. Rôles et responsabilités
+   - 5.2. Plan par jalons (Milestones M1 à M5)
+   - 5.3. Matrice d'assurance qualité & cas d'usage critiques
 
 ---
 
 ## 1. Vision Stratégique & Contexte Japon
 
-### 1.1. La promesse JemmaPass : *Zero-Cloud, 100% On-Device, Cross-Border*
+### 1.1. La promesse JemmaPass : *Zero-Cloud at Runtime, On-Device, Cross-Border*
 
-JemmaPass résout une faille majeure de la santé numérique mondiale : **la dépendance aux infrastructures cloud en situation d'urgence ou de rupture de connectivité transfrontalière**.
+- `[EXISTE SUR ANDROID (downloads/JemmaModelCatalog.kt:33)]` : **Modèle de distribution hybride** : Le runtime fonctionne à 100% hors-ligne lors des interventions d'urgence. En revanche, l'installation ou la mise à jour initiale de la base clinique (`knowledge_full.db`, ~2,0 Go) et des modèles de langage (`gemma-4-E2B-it.litertlm`, ~2,4 Go ou `gemma-4-E4B-it.litertlm`, ~3,4 Go) s'effectue via téléchargement HTTP depuis `https://jemmapass.net/models/`.
+- `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:23-28)]` : **Standard International HL7 FHIR R4 IPS** : Le document maître persisté est le Bundle FHIR R4 IPS (`<sid>.fhir.json`), projeté en format court `_j 1.2` (`<sid>.json`).
+- `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:130-135)]` : **Contrôle Pharmacologique Embarqué Déterministe** : Détection des interactions médicamenteuses majeures et modérées (DDInter 2.0 via `v_ddi_emergency`) et des allergies croisées sans appel réseau.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Conformité réglementaire APPI / RGPD / HIPAA** : Bien que le stockage soit strictement local (on-device sans serveur central), la conformité formelle aux lois de protection des données de santé (APPI au Japon, RGPD en Europe, HIPAA aux USA) nécessite un audit juridique certifié, notamment en raison de la sensibilité des données médicales d'urgence.
 
-Lorsqu'un voyageur s'effondre à l'étranger, ou qu'un séisme majeur détruit les réseaux de télécommunications, les dossiers médicaux électroniques (DME) hospitaliers deviennent inaccessibles. De plus, la fiche d'urgence native des smartphones (*Medical ID*) est le plus souvent verrouillée dans la langue locale du propriétaire et dépourvue de sémantique clinique exploitable.
+### 1.2. Le quatuor narratif : Kurodo, Haru, Kamekichi, Gemma
 
-JemmaPass transforme un smartphone grand public en un **terminal autonome de passeport médical d'urgence**, garantissant :
-- **100% Hors-Ligne (Zero-Cloud)** : Aucune requête réseau, aucune télémétrie, aucune fuite de données privées (HIPAA / RGPD / APPI par conception).
-- **Standard International HL7 FHIR R4 IPS** : Conformité stricte avec le profil *International Patient Summary* (ISO 27269).
-- **Vérification Pharmacologique Embarquée** : Moteur de détection des interactions médicamenteuses (DDI) et des allergies croisées s'appuyant sur une base SQLite de 2,2 Go et 1,4 million de concepts.
-- **Assistance IA Explicable** : Modèle de langage multimodal (Gemma 4) traduisant et vulgarisant instantanément les alertes en 25 langues.
+Le système a été conçu autour de 4 personas :
+- 🚶‍♂️ **Kurodo** : Pèlerin étranger (Belge). Allergie létale à la pénicilline (`SNOMED 91936005`). Risque vital immédiat si administration d'Augmentin (`ATC J01CR02`).
+- 👵 **Haru** : Citoyenne japonaise (80 ans). Sous anticoagulant oral direct Edoxaban (`ATC B01AF03` / Lixiana).
+  > `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:131)]` : Toute association d'Edoxaban avec un antiagrégant (ex: Aspirine) ou un AINS est détectée dans la vue `v_ddi_emergency` et produit impérativement le verdict `ALERT` (écran rouge de danger hémorragique). L'affirmation selon laquelle cette association serait "sûre" ou "verte" est médicalement erronée et formellement infirmée par le code.
+- 🎒 **Kamekichi** : Secouriste bénévole / DMAT. Scanne les médicaments et pass via la caméra hors-ligne et coordonne le tri de catastrophe.
+- ✨ **Gemma / Jemma** : Agent IA local exploitant LiteRT-LM, pilotant 21 outils `@Tool` et vulgarisant les alertes dans la langue de l'intervenant.
 
-### 1.2. Le quatuor narratif : Kurodo, Haru, Kamekichi, Jemma
+### 1.3. Pourquoi le portage iOS est vital au Japon
 
-Le système a été conçu autour de 4 personas emblématiques incarnant la réalité du terrain :
-
-| Personnage | Statut | Rôle clinique & Scénario |
-| :--- | :--- | :--- |
-| 🚶‍♂️ **Kurodo** | Pèlerin étranger (Belge) | Marche sur le sentier des 88 temples de Shikoku. Ne parle pas japonais. Allergie létale à la **pénicilline** et aux poissons. En cas de malaise, un soignant local pourrait lui administrer de l'Augmentin (amoxicilline). |
-| 👵 **Haru** | Citoyenne japonaise (80 ans) | Vit seule à Shikoku ou Aomori. Insuffisance cardiaque, sous anticoagulant direct (**Edoxaban** / リクシアナ). Ne lit pas l'anglais. Risque d'interaction hémorragique avec l'aspirine ou les AINS. |
-| 🎒 **Kamekichi** | Secouriste bénévole / DMAT | Volontaire de premier secours, non-médecin. Équipé de son sac à dos d'urgence. Doit scanner des plaquettes de médicaments, obtenir un verdict de sécurité instantané et trier les victimes sans réseau. |
-| ✨ **Jemma** | IA embarquée (Gemma 4) | L'esprit-tortue gardienne vivant exclusivement dans la puce du téléphone. Elle interroge la base locale via 16 outils typés et vulgarise les alertes dans la langue native du soignant et du soigné. |
-
-### 1.3. Pourquoi le portage iOS est vital au Japon (~70% PDM)
-
-Au Japon, la structure du marché mobile est unique parmi les pays développés :
-- **Part de marché iOS** : Entre **65% et 70%** de façon constante depuis 10 ans. Les cohortes jeunes, actives, ainsi que le personnel soignant et les secouristes utilisent massivement l'iPhone.
-- **Adoption chez les seniors** : Bien que certains utilisent la gamme Android "Raku-Raku Phone", une immense proportion de personnes âgées (ou leurs aidants familiaux) sont équipées d'iPhones configurés par leurs enfants.
-- **Tourisme et Pèlerinage** : Les voyageurs internationaux entrants (Occidentaux, Taïwanais, Sud-Coréens) disposent majoritairement d'iPhones.
-- **Constat d'échec d'une solution Android exclusive** : Un outil d'urgence déployé uniquement sur Android au Japon laisse de côté **7 secouristes sur 10** et **7 victimes sur 10**. Le portage iOS n'est pas une simple déclinaison commerciale : c'est la condition sine qua non de la pertinence opérationnelle de JemmaPass en Asie de l'Est.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Part de marché iOS au Japon (~65–70%)** : Selon les agrégateurs statistiques du marché mobile (ex: StatCounter Global Stats Japan 2024-2025, estimant iOS entre 65% et 68%), le Japon présente une pénétration d'iOS exceptionnellement élevée, y compris chez les seniors équipés par leurs enfants et les soignants.
+- `[PROPOSITION IOS]` : Le portage iOS permet d'éliminer la rupture opérationnelle actuelle où seuls les terminaux Android peuvent participer au réseau de triage ou décoder les pass `_j2`.
 
 ### 1.4. Scénarios critiques au Japon
 
-#### 1.4.1. Catastrophe Naturelle Majeure (Le précédent de Noto, Janvier 2024 & Séisme du Nankai)
-Lors du tremblement de terre de la péninsule de Noto (1er janvier 2024), les routes ont été coupées et les antennes 4G/5G ont cessé d'émettre pendant plusieurs jours. Les équipes DMAT (Disaster Medical Assistance Team) et la Croix-Rouge japonaise ont dû prodiguer des soins sans accès aux serveurs d'assurance maladie en ligne (*On-line Shikaku Kakunin*).
-- **Rôle de JemmaPass** : Communication maillée P2P (BLE/Mesh) entre tentes de secours, tri SALT hors-ligne, transmission de l'historique médical par QR code papier (*Pocket Pass*) ou écran à écran, sans aucun relais cellulaire.
-
-#### 1.4.2. Le Pèlerinage de Shikoku (Henro - 88 Temples) & Voyageurs Étrangers
-Un marcheur étranger déshydraté ou blessé s'évanouit près d'un temple rural dans les montagnes de Tokushima. L'équipe d'ambulanciers locale ne parle pas anglais ni français :
-- **Rôle de JemmaPass** : L'ambulancier scanne avec son iPhone le QR code de Kurodo. Même sans l'application installée, la caméra native d'iOS décode le **Canal 2 (Texte brut traduit en japonais)** affichant en kanji/katakana clairs : `⚠️ アレルギー: ペニシリン (重篤)`.
-- Si l'ambulancier a JemmaPass iOS, il bénéficie de l'alerte rouge en 200 ms et de la vulgarisation vocale en japonais naturel.
+- **Catastrophe Naturelle Majeure (ex: Péninsule de Noto 2024, Séisme du Nankai)** : Rupture totale des réseaux télécoms.
+  - `[EXISTE SUR ANDROID (sos/JemmaSosBleScanner.kt)]` : Découverte et partage maillé de balises SOS hors-ligne.
+  - `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:152)]` : QR Code lisible sans application par tout smartphone en mode texte traduit.
+- **Pèlerinage de Shikoku (Henro - 88 Temples) & Tourisme International** :
+  - `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:109-125)]` : Canal 2 traduisant instantanément le pass en 25 langues (dont japonais, anglais, français, chinois, coréen).
 
 ---
 
@@ -93,431 +84,256 @@ Un marcheur étranger déshydraté ou blessé s'évanouit près d'un temple rura
 
 ### 2.1. Les 18 Piliers de l'International Patient Summary (HL7 FHIR R4)
 
-L'architecture s'aligne rigoureusement sur le guide d'implémentation **HL7 FHIR R4 IPS** (ISO 27269). Le système déploie **11 piliers actifs** et prépare l'intégration des 7 piliers complémentaires.
+L'architecture s'aligne sur le standard HL7 FHIR R4 IPS (ISO 27269) :
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │                      JEMMAPASS — 18 PILIERS IPS                        │
 ├───────────────────────────────────┬────────────────────────────────────┤
-│ 11 PILIERS ACTIFS                 │ 7 PILIERS STUBS (PHASE 2)          │
+│ 11 PILIERS ACTIFS                 │ 7 PILIERS STUBS                    │
 ├───────────────────────────────────┼────────────────────────────────────┤
-│ 👤 Patient (Demographics/Contact)  │ ⚖️ Advance Directives (11453-8)    │
-│ ⚠️ Allergies & Intolérances       │ 🤝 Consents & Authorizations       │
-│ 💊 Médications / Traitements      │ 🎯 Care Goals (11383-7)            │
-│ 🩺 Liste des Problèmes Actifs     │ 🏥 Encounters / Hospitalisations   │
-│ 📜 Antécédents Médicaux (Passés)  │ 💼 Occupational Data               │
-│ 💉 Vaccinations / Immunisations   │ 👨‍⚕️ Healthcare Providers           │
-│ 🏥 Actes & Procédures Chirurgicales│ 📞 Extended Care Contacts          │
-│ 📟 Dispositifs Médicaux & Implants │                                    │
-│ 🧪 Résultats Biologiques & Labo   │                                    │
-│ 🤰 Grossesse & Obstétrique        │                                    │
-│ ♿ Statut Fonctionnel & Handicap  │                                    │
+│ 👤 Patient (Demographics/Contact)  │ ⚖️ Advance Directives (ad)         │
+│ ⚠️ Allergies & Intolérances (al)  │ 🤝 Consents & Authorizations (cs)  │
+│ 💊 Médications en Cours (md)      │ 🎯 Care Goals (gl)                 │
+│ 🩺 Problèmes Actifs (cn)          │ 🏥 Encounters (en)                 │
+│ 📜 Antécédents Passés (ph)        │ 💼 Occupational Data (oc)          │
+│ 💉 Vaccinations (im)              │ 👨‍⚕️ Healthcare Providers (gp)      │
+│ 🏥 Actes & Chirurgies (pr)        │ 📞 Provenance / History (pv)       │
+│ 📟 Dispositifs Médicaux (dv)      │                                    │
+│ 🧪 Biologie & Labo (rs)           │                                    │
+│ 🤰 Grossesse & Maternité (pg)     │                                    │
+│ ♿ Statut Fonctionnel (fs)        │                                    │
 └───────────────────────────────────┴────────────────────────────────────┘
 ```
 
-#### Détail des 11 Piliers Actifs :
+- `[EXISTE SUR ANDROID (qr/JemmaProfileJ.kt:43-96)]` : Les 18 piliers sont modélisés dans `JemmaProfileJ` sous leurs clés courtes JSON (`al, md, cn, ph, im, pr, dv, fs, pg, rs, ad, cs, gl, en, oc, pv`).
+- `[PROPOSITION IOS / HYPOTHÈSE À VÉRIFIER]` : Les codes LOINC 11453-8 (Advance Directives) et 11383-7 (Care Goals) mentionnés dans les ébauches antérieures sont **totalement absents du code source Android** et constituent des cibles d'implémentation future.
+- `[EXISTE SUR ANDROID (qr/JemmaProfileJ.kt:109-160)]` : Les contacts d'urgence sont stockés dans `p.ct` (liste `JContact`) au sein de l'objet patient, et non à la racine du profil.
+- `[EXISTE SUR ANDROID (ips/IpsBloodGroup.kt:1-90)]` : Le groupe sanguin déclaré (`p.bt`) est synchronisé avec l'Observation LOINC 882-1 correspondante (`rs`).
 
-1. **Patient 👤 (`JPatient`)** : Identité, sexe administratif, date de naissance (support des dates partielles : année seule ou année-mois pour réfugiés/seniors), nationalité, groupe sanguin, adresses structurées, téléphones, identifiants multiples (passeport, MyNumber, NSS, NRN).
-2. **Allergies & Intolérances ⚠️ (`JAllergy` / `AllergyIntolerance`)** : Substance (code SNOMED/RxNorm), criticité (`H` high, `L` low, `U` unknown), statut clinique (actif, inactif, résolu), type (allergie vs intolérance), catégorie (médicament, aliment, environnement, biologique), liste de réactions documentées avec sévérité.
-3. **Médications 💊 (`JMedication` / `MedicationStatement`)** : Code DCI/ATC/RxNorm, nom de marque dénormalisé, posologie, fréquence, voie d'administration (O oral, I injection, T topique, S sous-cutané, H inhalé - SNOMED 447694001), statut du traitement, dates de prise.
-4. **Problèmes Actifs 🩺 (`IpsProblem` / `Condition` section 11450-4)** : Diagnostics en cours, sévérité LOINC (mild, moderate, severe), statut actif/récurrent/rechute.
-5. **Antécédents Passés 📜 (`IpsPastProblem` / `Condition` section 11348-0)** : Maladies résolues ou en rémission, date de début et d'abattement (*abatement date*).
-6. **Vaccinations 💉 (`IpsImmunization` / `Immunization` section 11369-6)** : Code vaccin SNOMED/CVX, date de vaccination, rang de dose (`dn`), statut (*completed*, *not-done*).
-7. **Procédures & Chirurgie 🏥 (`IpsProcedure` / `Procedure` section 47519-4)** : Interventions passées (ex: pontage aortocoronarien, appendicectomie), date, site anatomique, statut.
-8. **Dispositifs Médicaux & Implants 📟 (`IpsDevice` / `Device` + `DeviceUseStatement` section 46264-8)** : Pacemaker, prothèses, implants auditifs, pompe à insuline. Numéro d'identifiant unique (UDI GS1), fabricant, modèle, date d'implantation.
-9. **Résultats de Biologie & Imagerie 🧪 (`IpsResult` / `Observation` section 30954-2)** : Analyses sanguines (HbA1c, DFG/créatinine, potassium, cholestérol), imagerie (radio pulmonaire). Support des valeurs numériques avec unités UCUM (`system="http://unitsofmeasure.org"`), interprétation v3 (H, L, N) et plages de référence. Cas particulier inviolable : **Groupe sanguin (LOINC 882-1)** synchronisé sur le profil.
-10. **Grossesse & Maternité 🤰 (`IpsPregnancy` / `Observation` section 10162-6)** : Statut de grossesse (LOINC 82810-3), date présumée d'accouchement (DPA / EDD), antécédents obstétricaux (gestité, parité, fausses couches).
-11. **Statut Fonctionnel & Aides Techniques ♿ (`IpsFunctional` / `Condition` section 47420-5)** : Limitations d'autonomie (cécité, surdité, marche avec canne, dépendance ventilatoire). Totalement disjoint de la liste des maladies actives pour éviter tout faux positif d'interaction médicamenteuse.
+### 2.2. Dualité des formats : FHIR R4 vs `_j 1.2`
 
-### 2.2. Dualité des formats : FHIR R4 (Source de Vérité) vs `_j 1.2` (Projection Compacte)
-
-Une innovation architecturale fondamentale de JemmaPass (adoptée lors du refactoring septembre 2026) est la **séparation nette entre la source de vérité et le format de transmission** :
-
-```
-             ┌────────────────────────────────────────────────────────┐
-             │       STOCKAGE LOCAL SUR L'APPAREIL (PERSISTANCE)       │
-             └───────────────────────────┬────────────────────────────┘
-                                         │
-             ┌───────────────────────────┴────────────────────────────┐
-             ▼                                                        ▼
-┌─────────────────────────┐                              ┌─────────────────────────┐
-│     <sid>.fhir.json     │                              │        <sid>.json       │
-│  FHIR R4 Bundle (JSON)  │                              │      JemmaProfileJ      │
-│   SOURCE DE VÉRITÉ      │                              │   PROJECTION COMPACTE   │
-│                         │                              │                         │
-│ Contient l'exhaustivité │      Projeté par             │ Modèle ultra-allégé     │
-│ sémantique HL7 :        │   ProfilesRepository         │ codes courts (c, d, md) │
-│ - Dates précises/heures │ ───────────────────────────> │ Utilisé pour :          │
-│ - Statuts FHIR complets │                              │ - QR Code _j2 (1.8 KB)  │
-│ - Identifiants UDI GS1  │                              │ - Chunks BLE Mesh       │
-│ - Unités UCUM           │                              │ - Inférence IA légère   │
-└─────────────────────────┘                              └─────────────────────────┘
-```
-
-- **Garantie d'intégrité** : Écritures atomiques via fichier temporaire et renommage (`writeAtomic`). Verrou réentrant sur le cycle Lecture-Modification-Écriture pour éliminer tout risque de concurrence.
+- `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:23-35)]` :
+  - **Source de Vérité** : `<sid>.fhir.json` (HL7 FHIR R4 Bundle).
+  - **Projection Compacte** : `<sid>.json` (`JemmaProfileJ`, schéma `_j 1.2`).
+- `[EXISTE SUR ANDROID (profiles/ProfilesRepository.kt:146,371)]` :
+  - **Contrôle de Concurrence** : Le cycle Lecture-Modification-Écriture est protégé par `private val writeMutex = kotlinx.coroutines.sync.Mutex()`.
+  - **Nuance technique critique** : Le `Mutex` de coroutines Kotlin est **strictement non-réentrant**. Tout appel imbriqué à `withLock` dans la même coroutine provoque un interblocage (deadlock) immédiat.
 
 ### 2.3. Moteur Clinique & Sécurité Décisionnelle (`KbCrossCheck` + `KbSafety`)
 
-Le moteur de règles fonctionne à 100% sur la base SQLite locale `knowledge_full.db` (2,2 Go) sans aucun service distant.
+- `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:154)]` : Classe `KbCrossCheck` (injectée via Hilt).
+- `[EXISTE SUR ANDROID (kb/KbSafety.kt:30-42)]` : Énumération quadrivalente `KbSafetyVerdict` :
+  - `ALERT` : Au moins une collision détectée (`totalHits > 0`, `kb/KbCrossCheck.kt:131`).
+  - `CLEAN` : Vérification complète achevée sans aucune collision (`isClean = true`, `kb/KbCrossCheck.kt:145`).
+  - `INCOMPLETE` : Contrôle partiel (entrée non résolue ou pilier non exhaustif).
+  - `NOT_CHECKED` : Base KB indisponible ou médicament non résolu (`kb/KbCrossCheck.kt:132`).
+- `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:418)]` : **Comportement des allergies sans ATC** : Une allergie sans code ATC est évaluée par mot-clé textuel et compte avec le statut `CHECKED` dans le rapport global (`KbSafety.pillarStatus(kbUp, allergies.size)`).
+- `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:858,878)]` : **Défauts connus de filtrage lexical (UC-ALM-009 / UC-ALM-010)** : L'implémentation actuelle utilise `contains("ains")` et `contains("statin")`, générant de réels faux positifs (ex: l'allergie alimentaire aux "grains" déclenche l'alerte AINS, et "nystatine" déclenche l'alerte statines). Le filtrage par frontières de mots relève d'une correction requise.
 
-#### 2.3.1. Les 4 Axes de Contrôle Croisé
-1. **DDI (Drug-Drug Interactions)** :
-   - Table `ddi_facts` (260 100 interactions issues de DDInter 2.0).
-   - Filtrage pré-calculé via `v_ddi_emergency` (niveaux *Major* et *Moderate*).
-   - Gestion fine des multi-ATC : Si un médicament possède plusieurs codes ATC (ex: ibuprofène : G02CC01 et M01AE01), le moteur interroge l'union des codes pour ne rater aucune interaction.
-   - Sélection déterministe de la sévérité maximale au sein d'une même paire.
-2. **Allergie × Médicament** :
-   - Détection hiérarchique par classe ATC (L3/L4) : Une allergie déclarée à la pénicilline active automatiquement la classe `J01C`. L'Augmentin (`J01CR02`) est immédiatement capté.
-   - Table de réactivité croisée (`allergy_cross_reactivity`) : Couvre les risques croisés entre pénicillines et céphalosporines de première génération (`J01D`).
-   - Filtrage sémantique rigoureux : Exclusion des faux positifs lexicaux (ex: interdire qu'une allergie alimentaire aux *grains* déclenche une alerte *AINS*, ou que la *nystatine* déclenche une alerte sur les *statines*).
-3. **Médicament × Pathologie (Drug-Disease Contraindications)** :
-   - Table `drug_disease_interactions` (8 121 règles).
-   - Exemple : Anticoagulants (Edoxaban) en présence d'ulcère gastrique ou d'insuffisance rénale terminale.
-4. **Intégrité du Groupe Sanguin** :
-   - Le groupe sanguin déclaré (`p.bt`) génère obligatoirement une Observation LOINC 882-1 correspondante.
-   - Tout import ou saisie contradictoire est intercepté et rejeté.
+### 2.4. Le Moteur de Vulgarisation Thérapeutique (Gemma 4 + `VulgariseRepository`)
 
-#### 2.3.2. Le Système de Verdict Quadrivalent Inviolable (`KbSafetyVerdict`)
-Pour éradiquer le risque létal où une erreur technique (base de données absente, nom mal orthographié) afficherait par défaut un faux "Rien à signaler", le système impose une machine à états stricte :
+- `[EXISTE SUR ANDROID (ai/assistant/VulgariseHelper.kt:100)]` : Prompt système imposant l'explication simple ("expliquer à un enfant de 10 ans") dans la langue de l'appareil (`deviceLang`).
+- `[EXISTE SUR ANDROID (ai/assistant/VulgariseRepository.kt:27-92)]` : Cache local stocké dans `vulgarise_cache.json`, accédé par `get(key, lang)` et `save(key, lang, text)`.
+- `[EXISTE SUR ANDROID (ai/assistant/VulgariseHelper.kt:186-195)]` : `ThrottledTextAppender` régulant l'affichage du streaming de tokens avec un intervalle de **150 ms** (`intervalMs = 150L`).
 
-```
-                  ┌──────────────────────────────────────────────┐
-                  │          RÉSULTAT DU CONTRÔLE CLINIQ.        │
-                  └──────────────────────┬───────────────────────┘
-                                         │
-         ┌───────────────────────────────┴───────────────────────────────┐
-         ▼                                                               ▼
-   [ COLLISION ? ]                                                [ AUCUN HIT ]
-         │                                                               │
-   OUI ──┴──> 🔴 ALERT                                    ┌──────────────┴──────────────┐
-              (Danger vital détecté)                      ▼                             ▼
-              Écran rouge instantané              [ CHECK COMPLET ? ]         [ PROBLÈME RÉSOLUTION ]
-              Bouton "Vulgariser"                         │                             │
-                                                    OUI ──┴──> 🟢 CLEAN           NON ──┴──> 🟠 INCOMPLETE
-                                                               (Vérifié 100%)                ou ⚫ NOT_CHECKED
-                                                               Seul cas autorisé             Avertissement
-                                                               pour "Rien à signaler"        Bandeau ambre
-```
+### 2.5. Les 21 Outils Typés `@Tool` de Jemma
 
-- **`ALERT`** : Au moins une interaction ou allergie majeure trouvée.
-- **`CLEAN`** : Vérifié intégralement contre la base, aucun conflit trouvé. **Seul et unique statut autorisant la mention "Rien à signaler"**.
-- **`INCOMPLETE`** : Le contrôle a tourné mais une partie du profil n'a pas pu être vérifiée (médicament sans code ATC, format non reconnu).
-- **`NOT_CHECKED`** : Base de données non prête, absente, ou substance candidate totalement inconnue. L'application interdit formellement de prétendre que le patient est en sécurité.
+`[EXISTE SUR ANDROID (ai/JemmaTools.kt:8-41,172-709)]` : L'interface d'outils exposée à Gemma 4 comprend exactement **21 méthodes `@Tool`** réparties en 6 familles :
 
-### 2.4. Le Moteur de Vulgarisation Thérapeutique (Gemma 4 + `VulgariseHelper`)
-
-JemmaPass ne se contente pas d'émettre des codes d'erreur cliniques : il éduque le patient et guide le sauveteur grâce à l'IA générative on-device.
-
-1. **Vulgarisation d'Alerte (DDI / Allergie)** :
-   - Structure pédagogique quadripartite imposée par prompt :
-     1. Rôle individuel de chaque molécule avec des mots simples.
-     2. Mécanisme pharmacologique de l'interaction (pourquoi elles s'affrontent).
-     3. Manifestations concrètes ressenties dans le corps (ex: risque de saignement, étourdissement).
-     4. Phrase bienveillante rappelant de consulter un professionnel de santé.
-2. **Règle Absolue de Langue Native** :
-   - Gemma 4 reçoit l'instruction stricte (répétée en début, milieu et fin de prompt) de générer **100% de sa réponse dans la langue configurée sur l'appareil**.
-   - Si un sauveteur japonais scanne un touriste français, l'explication s'affiche en japonais naturel sans aucun anglicisme.
-3. **Persistance en Cache Local (`VulgariseRepository`)** :
-   - Les explications générées sont enregistrées dans un cache JSON local (`vulgarise_cache.json`) indexé par `(cacheKey, langue)`.
-   - **Bénéfice** : Dès qu'une interaction a été vulgarisée une fois, tout secouriste ultérieur la consulte en **0 milliseconde**, sans solliciter le NPU et sans consommer de batterie.
-4. **Protection ANR & Lissage de Rendu (`ThrottledTextAppender`)** :
-   - L'inférence générant 20 à 30 tokens/seconde, l'injection token par token dans l'UI provoque des saccades graphiques. Un tampon de 100 ms regroupe les émissions pour préserver un défilement à 60/120 fps.
-
-### 2.5. Les 16 Outils Typés `@Tool` de Jemma
-
-Gemma 4 interagit avec le système via 16 fonctions natives fournies par LiteRT-LM :
-
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                   LES 16 OUTILS TYPÉS GEMMA 4                          │
-├────────────────────┬───────────────────────────────────────────────────┤
-│ FAMILLE            │ FONCTIONS (@Tool)                                 │
-├────────────────────┼───────────────────────────────────────────────────┤
-│ 🔍 Recherche KB    │ 1. resolveDrug(name) ➔ ATC, RxNorm, display        │
-│                    │ 2. resolveAllergy(name) ➔ SNOMED, catégorie       │
-│                    │ 3. resolveByCode(code, system) ➔ concept          │
-│                    │ 4. searchCodes(query, category) ➔ FTS5 matches    │
-├────────────────────┼───────────────────────────────────────────────────┤
-│ 💊 Interactions    │ 5. checkDdi(drug1, drug2)                         │
-│                    │ 6. checkDdiByAtc(atc1, atc2)                      │
-│                    │ 7. getAtcAncestors(atcCode)                       │
-├────────────────────┼───────────────────────────────────────────────────┤
-│ 👤 Profil Focus    │ 8. getFocusProfileSummary()                       │
-│    (Victime active)│ 9. getFocusProfileAllergies()                     │
-│                    │ 10. getFocusProfileMedications()                  │
-│                    │ 11. getFocusProfileConditions()                   │
-├────────────────────┼───────────────────────────────────────────────────┤
-│ 🎯 Contrôle Maître │ 12. checkOneDrugAgainstFocusProfile(drugName)     │
-│                    │ 13. checkOneAtcAgainstFocusProfile(atcCode)       │
-├────────────────────┼───────────────────────────────────────────────────┤
-│ 🖥️ Interface UI    │ 14. triggerRedAlert(reason, severity)             │
-│                    │ 15. triggerToast(message)                         │
-├────────────────────┼───────────────────────────────────────────────────┤
-│ ⏰ Utilitaire      │ 16. getCurrentDateTime()                          │
-└────────────────────┴───────────────────────────────────────────────────┘
-```
+| Famille | Méthode `@Tool` | Rôle clinique & Signature réelle |
+| :--- | :--- | :--- |
+| **🔍 Recherche KB** | 1. `resolveDrug(name: String)` | Nom libre ➔ ATC, RxNorm, display (`:172`) |
+| | 2. `resolveAllergy(name: String)` | Nom allergène ➔ SNOMED CT, display, catégorie (`:238`) |
+| | 3. `resolveByCode(code: String, system: String)` | Lookup par code et système terminologique (`:277`) |
+| | 4. `searchCodes(query: String, category: String)` | Recherche FTS5 floue autocomplétion (`:302`) |
+| **💊 Interactions** | 5. `checkDdi(drug1: String, drug2: String)` | DDI sur noms libres via résolution (`:348`) |
+| | 6. `checkDdiByAtc(atc1: String, atc2: String)` | DDI direct sur codes ATC (`v_ddi_emergency`, `:376`) |
+| | 7. `getAtcAncestors(atcCode: String)` | Parcours arborescence hiérarchique ATC (`:405`) |
+| **👤 Profil Focus** | 8. `getFocusProfileSummary()` | Démographie et totaux par pilier (`:431`) |
+| | 9. `getFocusProfileAllergies()` | Liste des allergies du patient sous revue (`:451`) |
+| | 10. `getFocusProfileMedications()` | Liste des traitements en cours (`:477`) |
+| | 11. `getFocusProfileConditions()` | Diagnostics et problèmes actifs (`:501`) |
+| | 12. `getFocusProfileImmunizations()` | Historique vaccinal (`:517`) |
+| | 13. `getFocusProfileProcedures()` | Actes et interventions chirurgicales (`:531`) |
+| | 14. `getFocusProfileDevices()` | Implants et dispositifs médicaux UDI (`:539`) |
+| | 15. `getFocusProfileResults()` | Analyses de biologie et groupe sanguin (`:549`) |
+| | 16. `getFocusProfilePastProblems()` | Antécédents médicaux passés / résolus (`:577`) |
+| **🎯 Contrôle Maître** | 17. `checkOneDrugAgainstFocusProfile(drugName: String)` | Contrôle maître d'une molécule contre le profil (`:607`) |
+| | 18. `checkOneAtcAgainstFocusProfile(atcCode: String)` | Contrôle maître rapide sur code ATC (`:634`) |
+| **🖥️ Interface UI** | 19. `triggerRedAlert(title: String, body: String)` | Déclenche écran rouge plein écran avec alarme (`:668`) |
+| | 20. `triggerToast(message: String, severity: String)` | Émet notification non-bloquante (info/warn/crit, `:679`) |
+| **⏰ Utilitaire** | 21. `getCurrentDateTime()` | Horodatage local ISO 8601 fuseau courant (`:699`) |
 
 ### 2.6. Canaux de Transfert Multi-Supports Hors-Ligne
 
-JemmaPass intègre 4 canaux complémentaires pour transférer les données vitales en l'absence totale d'Internet :
-
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│               CANAUX DE TRANSFERT HORS-LIGNE JEMMAPASS                 │
-├────────────────────────────────────────────────────────────────────────┤
-│ 1. CANAL QR COMPACT (_j2)                                              │
-│    Format : _j2:<base64(deflate-raw(json))>  ·  Taille : 1.5 à 3 Ko    │
-│    Portée : Écran à écran vers un autre terminal JemmaPass             │
-├────────────────────────────────────────────────────────────────────────┤
-│ 2. CANAL QR TEXTE UNIVERSEL (25 Langues)                               │
-│    Format : Texte formaté clair  ·  Budget strict : ≤ 1800 octets UTF-8│
-│    Portée : Lisible par N'IMPORTE QUEL iPhone/Android (App Caméra pure)│
-├────────────────────────────────────────────────────────────────────────┤
-│ 3. CANAL QR FHIR SLIDESHOW (Multi-Trames JF:i/N)                       │
-│    Format : Bundle FHIR R4 complet découpé en 3 à 8 QR animés          │
-│    Portée : Transmission intégrale vers les dossiers hospitaliers/EHR  │
-├────────────────────────────────────────────────────────────────────────┤
-│ 4. RÉSEAU MAILLÉ P2P BLE / NEARBY (SALT Triage)                        │
-│    Format : Trames 131 octets UTF-8 (V, VR, S, SR, E, F)               │
-│    Portée : Balise de détresse portée 50-100m, retransmission multi-hop│
-├────────────────────────────────────────────────────────────────────────┤
-│ 5. POCKET PASS (PDF Haute Résolution) & WIDGET ÉCRAN DE VERROUILLAGE   │
-│    Passeport papier pliable format portefeuille + SOS en double appui  │
-└────────────────────────────────────────────────────────────────────────┘
-```
+- `[EXISTE SUR ANDROID (qr/JemmaPayloadCodec.kt:57)]` : **Canal 1 (QR Compact `_j2`)** : Format `_j2:<base64(deflate-raw(json))>` (RFC 1951).
+- `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:67,152)]` : **Canal 2 (QR Texte Universel)** : Texte clair 25 langues, plafonné à **1800 octets UTF-8**, avec éviction par rangs (du rang 12 fonctionnel au rang 1 allergies) et marqueur `✂️ …`.
+- `[EXISTE SUR ANDROID (qr/JemmaQrFrameSplitter.kt:11, qr/JemmaQrFrameAssembler.kt:25)]` : **Canal 3 (FHIR Slideshow)** : Trames `JF:i/N|<data>` avec index **1-based** (`1..N`), sans hash ni signature de trame, transportant le JSON FHIR brut.
+- `[EXISTE SUR ANDROID (sos/JemmaSosChunkCodec.kt)]` : **Canal 4 (Mesh P2P BLE SALT)** : Paquets limités à 131 octets UTF-8.
+- `[EXISTE SUR ANDROID (sos/JemmaEmergencyWidget.kt)]` : **Canal 5 (Widget Accueil & Service)** : Sur Android, le déclenchement SOS s'appuie sur un `AppWidgetProvider` et un `ForegroundService` (`JemmaWidgetEmergencyService.kt`), et **non sur un overlay de fenêtre système**.
 
 ---
 
 ## 3. Spécificités Médicales, Réglementaires et Linguistiques Japonaises
 
-### 3.1. L'écosystème de santé japonais : MHLW, PMDA et DMAT
+### 3.1. Écosystème de santé : MHLW, PMDA et statut Dispositif Médical (SaMD)
 
-Pour réussir son intégration et son adoption au Japon, JemmaPass doit adopter les standards de l'écosystème de santé nippon :
-- **MHLW (Ministère de la Santé, du Travail et des Affaires Sociales - 厚生労働省, *Kōsei-rōdō-shō*)** : Pilote la numérisation de la santé (*Medical DX*) et impose l'adoption progressive de FHIR sous le profil national **JP Core (NeXEHRS / HL7 Japan)**.
-- **PMDA (Agence des Dispositifs Médicaux et Pharmaceutiques - 医薬品医療機器総合機構)** : Organisme de régulation pharmacologique équivalent de la FDA/EMA. Fournit les notices officielles des médicaments (*Tenpum bunsho* - 添付文書).
-- **DMAT (Disaster Medical Assistance Team - 日本DMAT)** : Corps médical de secours d'urgence déployé lors des séismes, inondations et éruptions volcaniques. Ce sont les premiers utilisateurs cibles du mode Secouriste/Radar de JemmaPass.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Adoption de FHIR par le MHLW (厚生労働省)** : Le MHLW promeut le profil **JP Core** (développé par NeXEHRS / HL7 Japan) dans le cadre du programme national *Medical DX*. L'obligation légale universelle de ce standard pour les applications d'urgence non hospitalières reste une hypothèse réglementaire en cours d'évaluation.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Réglementation PMDA & Statut SaMD (Software as a Medical Device)** :
+  Au Japon, selon la loi sur les dispositifs médicaux et les produits pharmaceutiques (PMD Act / 医薬品医療機器等法 - 薬機法), tout logiciel fournissant une aide à la décision clinique (Clinical Decision Support) ou calculant des contre-indications médicamenteuses peut être classé comme **dispositif médical logiciel (SaMD)** soumis à l'homologation de la PMDA (*Pharmaceuticals and Medical Devices Agency* - 医薬品医療機器総合機構).
+  - *Conséquence pour le portage iOS* : L'application doit intégrer un avertissement médical formel de non-responsabilité (simple aide d'appoint non contraignante) ou se conformer au processus d'enregistrement SaMD de Classe I/II au Japon.
 
-### 3.2. Pharmacopée & Nomenclatures : Noms Commerciaux en Katakana
+### 3.2. Nomenclatures et Pharmacopée : Noms en Katakana, Codes HOT/YJ et Classes ATC
 
-Au Japon, les prescriptions médicales et les carnets de santé utilisent quasi-exclusivement des noms commerciaux ou génériques transcrits en **Katakana**, et non les dénominations DCI latines occidentales :
+- `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:153-166)]` : La normalisation actuelle des noms commerciaux japonais repose sur un bloc `when` codé en dur pour 10 molécules critiques :
+  - `オーグメンチン` ➔ Augmentin (`J01CR02`)
+  - `アモキシシリン` ➔ Amoxicillin (`J01CA04`)
+  - `アスピリン` / `バイアスピリン` / `バファリン` ➔ Aspirin (`B01AC06` / `N02BA01`)
+  - `ロキソニン` / `ロキソプロフェン` ➔ Loxoprofen
+  - `カロナール` / `アセトアミノフェン` ➔ Acetaminophen (`N02BE01`)
+  - `ワーファリン` ➔ Warfarin (`B01AA03`)
+  - `クラビット` / `レボフロキサシン` ➔ Levofloxacin (`J01MA12`)
+  - `アドレナリン` / `エピネフリン` ➔ Epinephrine (`C01CA24`)
+  - `ボルタレン` ➔ Diclofenac (`M01AB05`)
+- `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:862)]` vs `[HYPOTHÈSE À VÉRIFIER]` :
+  - Dans le code Android (`kb/KbCrossCheck.kt:862`), la règle interne associe le mot-clé Loxoprofène à `M01AE01` (famille de l'ibuprofène).
+  - Dans la nomenclature officielle OMS / KEGG Japon, le Loxoprofène sodique est codé `M01AE04`. L'alignement strict vers `M01AE04` sur iOS est une proposition à valider.
+- `[PROPOSITION IOS]` : Pour le portage iOS, intégrer les tables officielles des codes **HOT** (9/13 chiffres, MEDIS-DC) et **YJ** (tarification nationale MHLW) pour une couverture exhaustive des prescriptions japonaises.
 
-| Molécule (DCI / Western) | Nom Commercial au Japon | Katakana | Spécificité / Risque au Japon |
-| :--- | :--- | :--- | :--- |
-| **Loxoprofen sodium** | Loxonin | ロキソニン | **AINS n°1 absolu au Japon**, omniprésent en vente libre et sur ordonnance. Inconnu dans la pharmacopée standard US/EU. Doit impérativement être résolu vers la classe ATC `M01AE` ! |
-| **Edoxaban** | Lixiana | リクシアナ | Anticoagulant oral direct (AOD) extrêmement fréquent chez les personnes âgées au Japon (cf. Haru). |
-| **Amoxicillin / Clavulanate** | Augmentin / Clavamox | オーグメンチン / クラバモックス | Pénicilline combinée (cf. scénario Kurodo). |
-| **Warfarin** | Warfarin | ワーファリン | Anticoagulant historique à marge thérapeutique étroite. |
-| **Acetaminophen** | Calonal | カロナール | Antipyrétique/antalgique pédiatrique et gériatrique de référence. |
+### 3.3. Carnet de santé (*Okusuri Techou*) et Restrictions Légales du My Number
 
-- **Codes d'identification japonais** :
-  - **Code HOT (9 ou 13 chiffres)** : *Health care Order Terminology*, géré par le MEDIS-DC (Centre de développement des systèmes d'information médicale).
-  - **Code YJ (12 caractères alphanumériques)** : Code individuel de médicament figurant sur le tarif officiel des médicaments remboursables.
-- **Exigence JemmaPass** : La base SQLite `knowledge_full.db` et le module OCR doivent impérativement mapper les termes Katakana et les codes HOT vers les identifiants internationaux ATC / RxNorm / SNOMED CT.
+- `[PROPOSITION IOS]` : Ingestion des codes-barres JAHIS figurant sur les carnets de santé médicamenteux japonais (*Okusuri Techou* - お薬手帳).
+- `[HYPOTHÈSE À VÉRIFIER]` : **Restrictions légales strictes sur la carte et le numéro My Number (マイナンバー)** :
+  En vertu de la *Loi sur l'utilisation des numéros pour identifier une personne spécifique dans les procédures administratives* (番号法 - *Act on the Use of Numbers to Identify a Specific Individual in the Administrative Procedure*), la collecte, le stockage, l'utilisation ou la transmission du **numéro individuel à 12 chiffres (My Number)** sont expressément interdits en dehors des institutions publiques et des employeurs pour la fiscalité/sécurité sociale, sous peine de **sanctions pénales sévères**.
+  - *Règle impérative JemmaPass* : L'application a l'interdiction absolue de collecter le numéro My Number à 12 chiffres brut. Seuls les identifiants d'assurance maladie décorrélés du numéro régalien ou les identifiants hospitaliers privés peuvent être gérés dans `ids` (`JIdentifier`).
 
-### 3.3. Carnet de santé numérique (*Okusuri Techou* - お薬手帳) et Carte My Number
+### 3.4. Recherche FTS5 CJK (Trigramme) vs Analyseurs Morphologiques
 
-1. **L'Okusuri Techou (お薬手帳)** : 
-   Chaque citoyen japonais possède un carnet de santé médicamenteux (papier ou app mobile) dans lequel les pharmaciens collent les vignettes codes-barres/QR codes de chaque délivrance. JemmaPass doit être capable de scanner ces vignettes (code JAHIS) pour ingérer instantanément le traitement d'un patient japonais.
-2. **Carte My Number (マイナンバーカード)** :
-   La carte d'identité numérique japonaise fait désormais office de carte d'assurance maladie (*Myna Insurance Card*). Le format de données patient de JemmaPass intègre déjà le système d'identifiant `JP-MyNumber` dans sa classe `JIdentifier`.
+- `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:821-825,849-850)]` : L'application utilise la table virtuelle SQLite `terminology_cjk` configurée avec le tokeniseur `trigram` (`tokenize='trigram case_sensitive 0'`) dès lors qu'un caractère CJK est détecté dans la requête.
+- `[PROPOSITION IOS]` : Sous iOS, SQLite supporte également le tokeniseur `trigram` via le framework SQLite 3.34+ sous GRDB.swift. En complément, l'API native `NLTokenizer` (Natural Language framework d'Apple) peut être évaluée pour le découpage morphologique du japonais sans espaces.
 
-### 3.4. Tokenisation FTS5 CJK (Trigramme) vs Analyseurs Morphologiques
+### 3.5. Tri de Catastrophe : Protocole SALT adapté et Grille Réelle
 
-La langue japonaise ne comporte pas d'espaces entre les mots. Une recherche plein texte classique (index `unicode61`) est incapable d'indexer du texte japonais :
-- **Solution Android actuelle** : Utilisation de la table virtuelle `terminology_cjk` configurée avec le tokeniseur `trigram` (`tokenize='trigram case_sensitive 0'`). Le trigramme décompose les chaînes en blocs de 3 caractères (ex: `オーグメンチン` ➔ `オーグ`, `ーグメ`, `グメン`...), permettant une recherche floue performante sans embarquer de dictionnaire morphologique lourd.
-- **Portage iOS** : iOS SQLite supporte nativement le tokeniseur `trigram` sous SQLite 3.34+. Pour une précision clinique supérieure dans l'analyse de texte libre sur iOS, l'API native Apple `NLTokenizer` (Natural Language framework) peut être utilisée en amont pour segmenter le japonais en lemmes médicaux.
+`[EXISTE SUR ANDROID (triage/SaltCode.kt:36-51)]` : Les 6 codes et couleurs réels du moteur SALT sont :
 
-### 3.5. Tri de Catastrophe : Protocole SALT adapté aux fiches japonaises
+| Code SALT | Définition dans JemmaPass | Emoji | Couleur Réelle Hex | Rôle clinique |
+| :--- | :--- | :---: | :--- | :--- |
+| `WAIT` | Awaiting assessment | ⏳ | **Gris (`#9E9E9E`)** | Blessé ambulatoire / attente |
+| `EVAL` | Under active evaluation | 🔍 | **Jaune (`#FFC107`)** | Évaluation des constantes en cours |
+| `STAB` | Stabilized | ✅ | **Vert (`#4CAF50`)** | Stabilisé, pas de besoin vital immédiat |
+| `HELP` | Needs help right now | 🆘 | **Rouge (`#F44336`)** | Détresse vitale, intervention urgente |
+| `EVAC` | Ready for evacuation | 🚑 | **Bleu (`#2196F3`)** | Prêt pour évacuation prioritaire |
+| `DCD` | Deceased | 🕊️ | **Noir (`#000000`)** | Décédé (fenêtre de grâce 30s) |
 
-Lors d'un séisme au Japon, les secouristes DMAT apposent sur chaque victime une étiquette physique standardisée appelée **Triage Tag (トリアージタッグ)**, comportant 4 coupons détachables correspondant aux 4 couleurs de tri.
-
-JemmaPass implémente le protocole international **SALT** (Sort, Assess, Lifesaving, Treatment), directement aligné sur le système japonais :
-
-| Code SALT | Catégorie Japonaise | Couleur | Définition clinique |
-| :--- | :--- | :--- | :--- |
-| `WAIT` | 緑 (Green) · 軽症 (Catégorie III) | 🟢 Vert | Blessés légers ambulatoires, surveillance différée. |
-| `EVAL` | — | 🟡 Jaune | En cours d'évaluation par le secouriste. |
-| `STAB` | 黄 (Yellow) · 中等症 (Catégorie II) | 🟡 Jaune | Blessés stables mais non ambulatoires, transport différé possible. |
-| `HELP` | 赤 (Red) · 重症 (Catégorie I) | 🔴 Rouge | Détresse vitale immédiate, soins d'urgence requis. |
-| `EVAC` | 赤 (Red) · 最優先搬送 | 🔴 Rouge | Évacuation prioritaire immédiate vers hôpital de référence. |
-| `DCD` | 黒 (Black) · 不処置 (Catégorie 0) | ⚫ Noir | Décédé ou blessures non viables (propageable avec TTL=3 pour avertir les renforts). |
+- `[HYPOTHÈSE À VÉRIFIER]` : **Alignement sur le Triage Tag japonais** : Le protocole officiel japonais de catastrophe (DMAT) s'appuie sur la méthode START / PAT à 4 couleurs (Rouge I, Jaune II, Vert III, Noir 0). La grille SALT à 6 statuts ci-dessus (incluant WAIT gris, STAB vert et EVAC bleu) constitue une adaptation logicielle propre à JemmaPass et non une copie stricte de la fiche papier japonaise.
 
 ---
 
 ## 4. Cahier des Charges Architectural du Portage iOS
 
-### 4.1. Stratégie d'implémentation : KMP vs 100% Swift Natif
-
-L'analyse de faisabilité met en concurrence deux options stratégiques pour le portage iOS :
+### 4.1. Stratégie d'implémentation : KMP partagé vs 100% Swift Natif
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │                   COMPARAISON DES STRATÉGIES PORTAGE                   │
 ├──────────────────────────┬─────────────────────────────────────────────┤
-│ CRITÈRE                  │ OPTION A : KMP (KOTLIN MULTIPLATFORM)       │
+│ CRITÈRE                  │ OPTION A : MODULE KMP PARTAGÉ (COEUR)       │
 ├──────────────────────────┼─────────────────────────────────────────────┤
-│ Réutilisation du Code    │ ⭐⭐⭐⭐⭐ ~75% du code métier partagé       │
-│ Maintenance à long terme │ ⭐⭐⭐⭐⭐ Évolution synchrone Android/iOS   │
-│ Accès Matériel iOS       │ ⭐⭐⭐ Nécessite des bridges Kotlin/Native │
-│ Adoption Écosystème      │ ⭐⭐⭐ Framework binaire lourd dans Xcode   │
+│ Réutilisation du Code    │ ~70% du code métier partagé (Codecs, Modèle)│
+│ Maintenance à long terme │ Évolution synchronisée Android / iOS        │
+│ Accès Matériel iOS       │ Ponts Kotlin/Native requis                  │
 ├──────────────────────────┼─────────────────────────────────────────────┤
-│ CRITÈRE                  │ OPTION B : 100% SWIFT 6 / SWIFTUI NATIF     │
+│ CRITÈRE                  │ OPTION B : COUCHE APPLICATIVE SWIFTUI       │
 ├──────────────────────────┼─────────────────────────────────────────────┤
-│ Réutilisation du Code    │ ⭐ Réécriture complète des codecs/règles    │
-│ Performance & Mémoire    │ ⭐⭐⭐⭐⭐ Optimisation Metal/ANE maximale    │
-│ Intégration OS (Widgets) │ ⭐⭐⭐⭐⭐ SwiftUI, ActivityKit, App Intents │
-│ Recrutement iOS Japon    │ ⭐⭐⭐⭐⭐ Pool de développeurs Swift vaste │
+│ Interface Utilisateur    │ 100% SwiftUI native (Human Interface Apple) │
+│ Inférence LLM & Vision   │ Intégration directe Apple Silicon / Vision  │
+│ Intégration Système      │ Widgets, ActivityKit, Live Activities       │
 └──────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-#### Recommandation de l'Orchestrateur : Architecture Hybride Modulaire
-1. **Module Partagé KMP (`JemmaCore.xcframework`)** :
-   - Modèles de données purs (`JemmaProfileJ`, types IPS).
-   - Codec QR `_j2` (compression RFC 1951 deflate-raw).
-   - Règles d'encodage Mesh (131 octets UTF-8, chunks V/VR/S/SR/E/F).
-   - Algorithmes de tri et de priorité d'éviction du QR texte.
-2. **Couche Native Swift 6 / SwiftUI (Application iOS)** :
-   - Interface utilisateur 100% SwiftUI (Human Interface Guidelines d'Apple).
-   - Moteur SQLite via **GRDB.swift** (accès rapide et typé à `knowledge_full.db`).
-   - Inférence IA via **Apple Core ML / llama.cpp Metal** ou **Google LiteRT iOS**.
-   - OCR via **Apple Vision Framework** (optimisé pour les kanji/katakana).
-   - Intégration système : **WidgetKit**, **ActivityKit (Live Activities / Dynamic Island)**, **Apple HealthKit**, **Apple Wallet**.
+- `[PROPOSITION IOS]` : Architecture recommandée :
+  - **Module KMP partagé (`JemmaCore.xcframework`)** : Modèles `JemmaProfileJ`, parsing FHIR, codecs `_j2` (deflate-raw RFC 1951), algorithmes d'éviction du QR texte 1800 octets (`JemmaTextPayloadBuilder`), résolveur SALT (`StatusResolver`).
+  - **Application Swift 6 / SwiftUI** : Interface utilisateur, accès SQLite via **GRDB.swift**, Vision Framework, capture audio et widgets.
 
 ### 4.2. Matrice d'Équivalence Technologique Complète (Android ➔ iOS)
 
-| Composant Fonctionnel | Implémentation Android (Actuelle) | Équivalent Recommandé iOS (Cible) |
-| :--- | :--- | :--- |
-| **Langage & UI** | Kotlin 2.x + ViewBinding / Compose | **Swift 6 + SwiftUI** |
-| **Injection de Dépendances** | Hilt (Dagger) + KSP | **Factory / Swift Dependencies (Point-Free)** |
-| **Base de Données KB** | requery/sqlite-android (libsqliteX.so FTS5) | **GRDB.swift** avec SQLite FTS5 (unicode61 + trigram) |
-| **Inférence LLM (Gemma 4)** | LiteRT-LM (C++ runtime + ToolProvider) | **LiteRT for iOS (C API)** OU **llama.cpp (Metal)** OU **Core ML** |
-| **Reconnaissance OCR** | Google ML Kit (Text Japanese + Latin) | **Apple Vision Framework** (`VNRecognizeTextRequest`) |
-| **Audio Capture / PCM** | AudioRecord 16 kHz PCM + Header RIFF/WAVE | **AVAudioEngine** + AVAudioConverter 16 kHz Mono |
-| **Synthèse Vocale (TTS)** | Android TextToSpeech (25 locales) | **AVSpeechSynthesizer** (Voix japonaises *Kyoko* / *Otoya*) |
-| **Génération QR Code** | ZXing Core 3.5.3 (BitMatrix ➔ Bitmap) | **CoreImage** (`CIQRCodeGenerator`) + CoreGraphics |
-| **Lecture Caméra / QR** | CameraX + ZXing / ML Kit Barcode | **AVFoundation** (`AVCaptureMetadataOutput` natif 60 fps) |
-| **Génération PDF** | Android PdfDocument | **PDFKit** (`UIGraphicsPDFRenderer`) |
-| **Réseau P2P / Mesh** | Google Nearby Connections (`P2P_CLUSTER`) | **CoreBluetooth** (GATT Custom) + **MultipeerConnectivity** |
-| **Mode Écran Verrouillé** | Foreground Service + LockScreen Overlay | **WidgetKit** (LockScreen) + **ActivityKit** (Live Activities) |
-| **Passeport Portefeuille** | Widget écran d'accueil | **Apple Wallet** (`.pkpass` Pass d'urgence avec QR) |
-| **Interopérabilité Santé** | Stockage JSON local privé | **Apple HealthKit** (Clinical Records FHIR import/export) |
+| Composant | Implémentation Android (Vérifiée) | Équivalent Recommandé iOS | Catégorie |
+| :--- | :--- | :--- | :--- |
+| **Langage & UI** | Kotlin 2.x + ViewBinding / Compose | Swift 6 + SwiftUI | `[PROPOSITION IOS]` |
+| **Injection** | Hilt (Dagger) + KSP | Factory / Swift Dependencies | `[PROPOSITION IOS]` |
+| **Base KB & FTS5** | requery/sqlite-android (libsqliteX.so) | **GRDB.swift** (SQLite FTS5 trigram + unicode61) | `[PROPOSITION IOS]` |
+| **Inférence LLM** | LiteRT-LM (`.litertlm`, C++ runtime) | LiteRT for iOS (C API) OU llama.cpp Metal | `[PROPOSITION IOS]` |
+| **Format Modèle** | `.litertlm` (`downloads/JemmaModelCatalog.kt:5`) | Fichiers `.litertlm` ou quantifiés GGUF/CoreML | `[PROPOSITION IOS]` |
+| **OCR Caméra** | ML Kit Text Japanese seul (`:16.0.1`) | Apple **Vision Framework** (`VNRecognizeTextRequest`) | `[PROPOSITION IOS]` |
+| **Synthèse Vocale** | Android TextToSpeech (25 langues) | **AVSpeechSynthesizer** (Voix japonaises natives) | `[PROPOSITION IOS]` |
+| **Génération QR** | ZXing Core 3.5.3 (BitMatrix) | **CoreImage** (`CIQRCodeGenerator`) + CoreGraphics | `[PROPOSITION IOS]` |
+| **Lecture QR** | CameraX + ZXing / ML Kit Barcode | **AVFoundation** (`AVCaptureMetadataOutput` natif) | `[PROPOSITION IOS]` |
+| **Génération PDF** | Android `PdfDocument` | **PDFKit** (`UIGraphicsPDFRenderer`) | `[PROPOSITION IOS]` |
+| **Mesh P2P** | BLE Advertising + Nearby Connections | **CoreBluetooth** (GATT Custom Service) | `[PROPOSITION IOS]` |
+| **Déclenchement SOS** | Home AppWidget + Foreground Service | **WidgetKit** (LockScreen) + **App Intents** | `[PROPOSITION IOS]` |
+| **Live Alertes** | Notification persistante Foreground | **ActivityKit** (Live Activities / Dynamic Island) | `[PROPOSITION IOS]` |
+| **Pass Numérique** | Widget écran d'accueil | **Apple Wallet** (`.pkpass` Pass d'urgence) | `[PROPOSITION IOS]` |
+| **Données Santé** | Fichiers privés `<sid>.fhir.json` | Stockage privé + **HealthKit** (Optionnel) | `[PROPOSITION IOS]` |
 
 ### 4.3. Base de Données Clinique (`knowledge_full.db`) & Moteur FTS5 sous iOS
 
-- **Taille & Déploiement** : La base de données pèse 2,2 Go. Sur iOS, intégrer un asset de 2,2 Go dans le bundle principal de l'App Store est déconseillé (limite de 4 Go pour le binaire décompressé, temps de téléchargement pénalisant).
-  - **Solution** : **On-Demand Resources (ODR)** d'Apple ou téléchargement au premier lancement via un `URLSessionDownloadTask` avec reprise en tâche de fond (*Background Transfer Service*).
-- **Moteur SQLite** :
-  - La bibliothèque **GRDB.swift** offre la vitesse maximale sur iOS grâce à ses liaisons C directes.
-  - La compilation de SQLite avec les flags `-DSQLITE_ENABLE_FTS5` et `-DSQLITE_ENABLE_JSON1` permet de reproduire fidèlement les requêtes `checkDdi`, `resolveDrug` et les vues `v_ddi_emergency`.
+- `[EXISTE SUR ANDROID (downloads/JemmaModelCatalog.kt:7)]` : La base pèse ~2,0 Go.
+- `[PROPOSITION IOS]` : Sur iOS, la base ne peut pas être incluse dans le bundle initial de l'application (contrainte de taille et téléchargement App Store). Elle sera téléchargée au premier lancement via `URLSessionDownloadTask` avec support de reprise en arrière-plan depuis `https://jemmapass.net/models/knowledge_full.db`.
+- `[PROPOSITION IOS]` : Utilisation de **GRDB.swift** configuré avec SQLite compilé avec les extensions FTS5 pour reproduire fidèlement les index `terminology_cjk` et les requêtes DDI.
 
 ### 4.4. Intelligence Artificielle Embarquée sur Apple Silicon
 
-Les puces Apple Silicon de la série A (A16, A17 Pro, A18) disposent d'un **Neural Engine (ANE)** à 16 cœurs ultra-performant et d'une mémoire unifiée :
-1. **Contrainte Mémoire RAM sous iOS** :
-   - Un modèle Gemma 4 E4B quantifié en 4-bit (`Q4_K_M`) nécessite environ **3,2 Go d'espace mémoire actif**.
-   - Sur un iPhone 15/16 standard (6 Go de RAM totale), la limite d'allocation mémoire par application imposée par iOS (*Jetsam memory limit*) se situe autour de 3,5 à 4 Go. Un dépassement provoque un crash immédiat `EXC_RESOURCE RESOURCE_TYPE_MEMORY`.
-   - **Stratégie d'ingénierie iOS** :
-     - Pour les modèles Pro (iPhone 15 Pro, iPhone 16 / 16 Pro avec 8 Go de RAM unifiée) : Exécution intégrale de Gemma 4 E4B.
-     - Pour les modèles standard (6 Go) : Déploiement d'un modèle adapté (Gemma 2 2B quantifié ou Gemma 4 E2B) ou limitation de la fenêtre de contexte à 1024 tokens.
-2. **Framework d'Inférence** :
-   - **Option 1 (Google Native)** : SDK **LiteRT for iOS** (Google AI Edge). Permet de réutiliser exactement les modèles `.tflite` / LiteRT-LM d'Android.
-   - **Option 2 (Performance Apple)** : Conversion Core ML via `coremltools` pour une exécution directe sur le Neural Engine (ANE) avec zéro charge CPU/GPU.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Limites de mémoire RAM et contraintes Jetsam sous iOS** :
+  - Sur un iPhone standard équipé de 6 Go de RAM (ex: iPhone 15), la limite de mémoire maximale allouable à un processus unique avant terminaison brutale par le démon système **Jetsam** se situe généralement entre 2,8 Go et 3,5 Go.
+  - Le modèle `gemma-4-E4B-it.litertlm` pesant ~3,4 Go, son chargement en mémoire active présente un risque très élevé de crash `EXC_RESOURCE (MEMORY)` sur les terminaux à 6 Go.
+  - *Stratégie iOS* :
+    - Terminaux à 8 Go de RAM unifiée (iPhone 15 Pro, iPhone 16 / 16 Pro) : Support de Gemma 4 E4B.
+    - Terminaux à 6 Go de RAM : Déploiement exclusif de Gemma 4 E2B (`gemma-4-E2B-it.litertlm`, ~2,4 Go) avec fenêtre de contexte contrainte.
 
-### 4.5. Le Défi du Réseau Maillé P2P (Nearby vs Apple Ecosystème)
+### 4.5. Le Défi du Réseau Maillé P2P (BLE CoreBluetooth vs Nearby)
 
-C'est le défi d'ingénierie le plus complexe du portage : **Google Nearby Connections n'offre pas d'API d'arrière-plan complète sur iOS et ne permet pas le mode P2P_CLUSTER BLE public de manière transparente avec Android**.
-
-#### Architecture Réseau Maillé Hybride iOS/Android :
-Pour que secouristes et victimes puissent communiquer sans réseau quel que soit leur OS :
-1. **Couche BLE Universelle (CoreBluetooth)** :
-   - Utilisation d'un **Service GATT BLE dédié JemmaPass** (UUID propriétaire 128-bit).
-   - Les trames de 131 octets UTF-8 (`MeshByteSafety`) sont injectées soit dans les paquets publicitaires étendus (*Extended Advertising*), soit dans une caractéristique GATT en lecture/diffusion périodique.
-   - **Interopérabilité** : Un terminal Android en écoute BLE scanne et décode les chunks émis par l'iPhone, et inversement.
-2. **Couche MultipeerConnectivity (Intra-iOS)** :
-   - Pour les transferts volumineux (échange complet de dossiers FHIR) entre deux iPhones, le framework natif Apple `MultipeerConnectivity` prend automatiquement le relais via Wi-Fi direct ad-hoc.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Faisabilité du BLE Extended Advertising en tâche de fond sous iOS** :
+  - Sous iOS, l'API `CBPeripheralManager` impose des restrictions strictes sur l'émission publicitaire en arrière-plan : les identifiants de service sont masqués dans une zone réservée propriétaire et les données publicitaires personnalisées (`CBAdvertisementData`) ne peuvent pas transporter de gros volumes arbitraires lorsque l'application est suspendue.
+  - *Solution d'ingénierie proposée* : Mettre en œuvre un service GATT standardisé JemmaPass où le terminal agit comme serveur périphérique BLE en premier plan ou diffuse des trames de 131 octets via des caractéristiques accessibles en lecture/écriture par les pairs Android et iOS.
 
 ### 4.6. Expérience Utilisateur & Intégration Écosystème Apple
 
-L'application iOS offrira une expérience spécifiquement conçue pour l'ergonomie Apple :
-1. **Dynamic Island & Live Activities (ActivityKit)** :
-   - Lors d'une situation d'urgence ou d'un déclenchement SOS, une *Live Activity* s'affiche sur l'écran de verrouillage et dans la *Dynamic Island*.
-   - Affiche en temps réel : Statut d'émission SOS, groupe sanguin, statut SALT, nombre de secouristes à portée.
-2. **Lock Screen Widgets (WidgetKit)** :
-   - Widget circulaire d'urgence : déclenchement du mode SOS en 1 appui sans déverrouiller l'iPhone.
-   - Widget rectangulaire : affichage permanent du QR code d'identité médicale d'urgence.
-3. **Apple Wallet Pass (`.pkpass`)** :
-   - Génération d'une carte d'urgence officielle dans l'application Apple Wallet.
-   - **Bénéfice majeur au Japon** : Accessible par **double-clic sur le bouton latéral de l'iPhone**, même téléphone verrouillé, compatible avec les bornes NFC et les scanners optiques des hôpitaux.
-4. **Intégration Apple Health (HealthKit)** :
-   - Synchronisation bidirectionnelle avec l'application *Santé* d'Apple : lecture des allergies et traitements enregistrés par l'utilisateur, et export au format international FHIR Clinical Records.
+- `[PROPOSITION IOS]` : **Dynamic Island & Live Activities (ActivityKit)** : Affichage de l'état de l'alerte SOS, du statut SALT et du nombre de secouristes à proximité pendant une situation d'urgence active.
+- `[HYPOTHÈSE À VÉRIFIER]` : **SOS depuis un Widget écran de verrouillage verrouillé** : Bien qu'iOS 17+ supporte les boutons interactifs via App Intents dans WidgetKit, l'exécution d'actions lourdes (recherche réseau, alarme sonore continue, émission radio) sans déverrouillage de l'appareil nécessite une validation des politiques de sécurité d'Apple.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Pass Apple Wallet (`.pkpass`) et interopérabilité hospitalière** : La génération d'un pass Apple Wallet permet une présentation rapide via double-clic sur le bouton latéral. En revanche, l'affirmation selon laquelle les bornes NFC hospitalières japonaises liraient nativement ce pass comme dossier médical officiel n'est pas vérifiée (les hôpitaux japonais utilisent principalement le système de carte d'assurance My Number ou des lecteurs de QR codes dédiés).
+- `[HYPOTHÈSE À VÉRIFIER]` : **Intégration Apple HealthKit "bidirectionnelle"** : L'accès en lecture et écriture aux dossiers cliniques HL7 FHIR sous HealthKit (*Health Records API*) est soumis à un agrément développeur spécifique accordé par Apple (*Clinical Health Records entitlement*) et n'est pas ouvert de façon générale à toutes les applications tierces.
 
 ---
 
-## 5. Orchestration Multi-Agents & Feuille de Route d'Exécution
+## 5. Orchestration & Feuille de Route d'Exécution
 
-En tant qu'**Orchestrateur Principal de Sub-Agents**, la conduite du projet est segmentée en 5 agents autonomes hautement spécialisés :
+### 5.1. Rôles et responsabilités
 
-### 5.1. Rôles et responsabilités des Sub-Agents spécialisés
+L'exécution du portage iOS est confiée à des sous-agents spécialisés :
+1. **Agent Clinique & Données Japon** : Intégration des nomenclatures de pharmacopée japonaise (HOT, YJ, MHLW), règles d'interaction Katakana, conformité SaMD PMDA et restrictions My Number.
+2. **Agent Moteur Partagé & Codecs** : Module KMP partagé (`JemmaCore`), codec `_j2`, assembleur de trames QR `JF:i/N` (1..N) et budget 1800 octets.
+3. **Agent IA Embarquée & Vision** : Pipeline LiteRT iOS / Core ML, reconnaissance de texte japonais avec Apple Vision, prompt engineering vulgarisation.
+4. **Agent Réseau Maillé & SOS** : Protocole CoreBluetooth GATT compatible avec les chunks Android de 131 octets, machine à états SALT LWW (StatusResolver).
+5. **Agent SwiftUI & Intégration Système** : Interface SwiftUI, Live Activities, Lock Screen Widgets.
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│             STRUCTURE DE L'ÉQUIPE DE SUB-AGENTS JEMMAPASS              │
-├────────────────────────────────────────────────────────────────────────┤
-│                       ORCHESTRATEUR PRINCIPAL                          │
-│               (Coordination, Arbitrage, Intégration)                   │
-└──────┬───────────────┬────────────────┬───────────────┬────────────────┘
-       │               │                │               │
-       ▼               ▼                ▼               ▼
-┌─────────────┐ ┌─────────────┐  ┌─────────────┐ ┌─────────────┐
-│ SUB-AGENT 1 │ │ SUB-AGENT 2 │  │ SUB-AGENT 3 │ │ SUB-AGENT 4 │
-│ CLINIQUE &  │ │ CODECS,     │  │ AI EDGE &   │ │ P2P MESH &  │
-│ SANTÉ JAPON │ │ FORMATS QR  │  │ MULTIMODAL  │ │ RESCUE SOS  │
-└─────────────┘ └─────────────┘  └─────────────┘ └─────────────┘
-       │
-       ▼
-┌─────────────┐
-│ SUB-AGENT 5 │
-│ SWIFTUI &   │
-│ APPLE ECO.  │
-└─────────────┘
-```
+### 5.2. Plan par jalons (Milestones M1 à M5)
 
-1. **Sub-Agent 1 : Clinique, Termonilogie & Santé Japon (`@agent-clinical-jp`)**
-   - **Mission** : Validation sémantique HL7 FHIR R4 IPS, intégration des tables de pharmacopée japonaise (MHLW/PMDA/HOT/YJ), règles d'interaction Katakana, extension des 7 piliers stubs restants.
-2. **Sub-Agent 2 : Moteur Multiplateforme & Codecs (`@agent-core-codecs`)**
-   - **Mission** : Développement du module KMP partagé (`JemmaCore`), portage du codec `_j2` (deflate-raw RFC 1951), réassembleur multi-trames `JF:i/N`, algorithmes de découpage QR texte 1800 octets.
-3. **Sub-Agent 3 : IA Embarquée & Vision (`@agent-edge-ai`)**
-   - **Mission** : Pipeline d'inférence Gemma 4 sur iOS (Core ML / LiteRT iOS), intégration de Vision Framework pour l'OCR japonais, prompt engineering vulgarisation multi-locales, cache local.
-4. **Sub-Agent 4 : Réseau Maillé & Protocoles d'Urgence (`@agent-mesh-sos`)**
-   - **Mission** : Protocole CoreBluetooth interopérable avec Android Nearby, gestion des 131 octets UTF-8, synchronisation des statuts de tri SALT, algorithmes anti-zombie.
-5. **Sub-Agent 5 : Interface SwiftUI & Écosystème Apple (`@agent-apple-ui`)**
-   - **Mission** : Conception de l'UI native SwiftUI, intégration Lock Screen Widgets, Dynamic Island (ActivityKit), Apple Wallet Pass (.pkpass) et Apple HealthKit.
-
-### 5.2. Protocole de communication inter-agents
-
-- **Format des échanges** : Spécifications fonctionnelles validées par l'Orchestrateur sous forme de contrats d'interface (Interface Definition Language / Swift Protocols).
-- **Règle de non-régression** : Chaque développement d'un sous-agent doit s'adosser à l'un des 577 micro-cas d'usage du catalogue d'assurance qualité (`qa/usecases/`).
-
-### 5.3. Plan par jalons (Milestones M1 à M5)
-
-| Jalon | Intitulé | Livrables Principaux | Échéance |
+| Jalon | Titre | Livrables Principaux | Échéance |
 | :--- | :--- | :--- | :--- |
-| **M1** | **Spécification & Module KMP Core** | `JemmaCore.xcframework` opérationnel (Codecs QR `_j2`, modèles IPS, projections, tests unitaires croisés). | S+2 |
-| **M2** | **Base Clinique & Moteur Décisionnel iOS** | SQLite FTS5 (GRDB.swift) fonctionnel sous iOS, import de `knowledge_full.db`, requêtes DDI et allergies validées. | S+4 |
-| **M3** | **Vision OCR & Pipeline IA On-Device** | Reconnaissance de texte japonais (Vision), inférence Gemma 4 locale, outils `@Tool` portés en Swift. | S+7 |
-| **M4** | **Canaux de Transfert & Mesh BLE** | Scanner/Générateur QR triple-layer sous iOS, couche BLE CoreBluetooth interopérable avec Android. | S+9 |
-| **M5** | **UI SwiftUI & Intégration Système Apple** | Écrans SwiftUI, Widgets écran de verrouillage, Dynamic Island, Apple Wallet Pass, tests terrain au Japon. | S+12 |
+| **M1** | **Module KMP Core & Codecs** | `JemmaCore.xcframework` (Modèles `JemmaProfileJ`, compression `_j2`, parseur trames `JF:i/N`, tests croisés JVM/iOS). | S+2 |
+| **M2** | **Base Clinique & Moteur Décisionnel** | GRDB.swift avec FTS5, import de `knowledge_full.db`, portage du moteur `KbCrossCheck` et des règles quadrivalentes. | S+5 |
+| **M3** | **OCR Vision & Inférence IA** | Intégration de Vision Framework (Katakana/Kanji), exécution de Gemma 4 (LiteRT iOS / Metal), portage des 21 `@Tool`. | S+8 |
+| **M4** | **Canaux de Transfert & Mesh BLE** | Scanner QR AVFoundation, export QR texte 1800B, service CoreBluetooth GATT interopérable avec Android. | S+10 |
+| **M5** | **UI SwiftUI & Intégration Système** | Application SwiftUI complète, Live Activities, Lock Screen Widgets, validation des contraintes Jetsam sur iPhone. | S+13 |
 
-### 5.4. Matrice d'assurance qualité & Cas Critiques (577 micro-cas)
+### 5.3. Matrice d'assurance qualité & cas d'usage critiques
 
-Le portage iOS devra satisfaire 100% des cas d'usage à haut risque documentés dans `qa/usecases/` :
-- **UC-SAFE-KB** : Interdiction absolue du statut "Rien à signaler" en cas de base inaccessible ou de médicament non reconnu.
-- **UC-DDI** : Résolution exacte des marques japonaises en Katakana (ex: *Loxonin* ➔ M01AE) et détection des interactions majeures avec les anticoagulants (*Edoxaban*).
-- **UC-ALM** : Détection des allergies croisées par classe ATC et blocage de l'Augmentin pour les allergiques à la pénicilline.
-- **UC-QR-TEXT** : Respect strict du plafond de 1800 octets UTF-8 pour le QR universel, avec éviction prioritaire propre des sections non vitales.
-- **UC-BLOOD** : Inviolabilité du groupe sanguin et synchronisation stricte avec l'Observation LOINC 882-1.
-
----
-
-> **Validation de l'Orchestrateur** :  
-> Ce document constitue la feuille de route officielle et exhaustive pour la pérennisation et l'extension internationale de JemmaPass, positionnant la solution comme le standard incontournable du passeport médical d'urgence décentralisé au Japon et dans le monde.
+Le portage iOS devra valider l'ensemble des scénarios critiques documentés dans `qa/usecases/` :
+- **UC-SAFE-KB** : Interdiction absolue d'émettre le verdict `CLEAN` si la base est absente ou si le médicament candidat n'est pas résolu (`kb/KbCrossCheck.kt:130-135`).
+- **UC-DDI** : Résolution des médicaments japonais (Loxonine, Lixiana) et détection systématique de l'alerte rouge `ALERT` en cas d'interaction majeure (Edoxaban × Aspirine / AINS).
+- **UC-ALM** : Détection des allergies croisées par classe ATC (Kurodo : Pénicilline J01C × Augmentin J01CR02).
+- **UC-ALM-FIX** : Implémentation d'un filtrage lexical rigoureux par frontières de mots sur iOS pour éliminer les faux positifs historiques (grains/AINS, nystatine/statines).
+- **UC-QR-TEXT** : Plafond strict de 1800 octets UTF-8 pour le QR texte universel, avec éviction prioritaire propre et marqueur `✂️ …`.
+- **UC-BLOOD** : Synchronisation inviolable entre le groupe sanguin (`p.bt`) et l'Observation LOINC 882-1.
+- **UC-LEGAL-JP** : Contrôle bloquant interdisant la saisie ou la mémorisation d'un numéro My Number à 12 chiffres conformément à la loi japonaise (番号法).
