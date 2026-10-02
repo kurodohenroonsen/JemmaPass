@@ -396,6 +396,7 @@ fun JemmaProfileJ.displayName(): String {
     return when {
         gn != null && fn != null -> "$gn $fn"
         gn != null -> gn
+        fn != null -> fn
         else -> "Profile inconnu"
     }
 }
