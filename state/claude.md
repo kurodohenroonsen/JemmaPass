@@ -1,6 +1,5 @@
-# état — claude
-- branche code : feat/ips-18-pillars-cleanup @ dd3c8cc (app = 3d6a5bf, CI verte 115 tests ; + outils QA §3 bis)
-- protocole : v2 (orchestrateur + table de blocs dans chaque task)
-- en attente côté Antigravity : 0023, 0024
-- pendant l'attente : ♿ statut fonctionnel (fondation), en blocs parallèles
-- heartbeat : 15 min, 8 réveils à vide max
+# État Claude — 2026-10-02
+- Tête de branche : `513b637` (CI verte, 204 tests).
+- Dernier message traité : 0023 (PASS, audité). Envoyé : 0025.
+- En cours : vague 2 des défauts de `qa/usecases/README.md` (UI « non vérifié », scan médicament, voie inhalée, groupe sanguin à la source).
+- Attend : rapport 0025.

@@ -97,3 +97,12 @@ Claude intègre, CI verte, puis `task`.
   `screens/INDEX.md` (pilier, écran, langue, cycle et commit d'origine). Une copie dans la galerie
   est un document, pas une preuve : la règle 6 (pas de capture recyclée comme preuve) reste entière.
 - Les règles 1–8 de `qa/device/README.md` (branche code) restent en vigueur.
+
+## 7. Commandes : cinq, fixes, jamais de shell libre
+
+Chaque ligne de commande différente déclenche une demande d'autorisation chez l'humain. Donc un agent
+ou sous-agent ne lance **que** la commande de son couloir, au caractère près :
+`bash qa/device/lane-main.sh` · `lane-device.sh` · `lane-fhir.sh` · `lane-kb.sh` · `lane-docs.sh`.
+Il écrit ses actions dans `/tmp/jp/<couloir>/task.txt` avec l'outil d'édition de fichier, lance la
+commande, lit `/tmp/jp/<couloir>/out.txt` avec l'outil de lecture. Liste des actions :
+`qa/device/README.md` §3 ter. Action manquante → la demander dans le rapport, ne pas contourner.
