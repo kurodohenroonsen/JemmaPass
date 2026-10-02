@@ -63,5 +63,5 @@
     <string name="drug_picker_status_empty">无结果。请尝试其他关键词。</string>
     <string name="drug_picker_status_error">知识库错误</string>
     <string name="drug_picker_cancel">取消</string>
-
+    <string name="drug_picker_add_as_is">➕ 按原样添加“%1$s”</string>
 </resources>

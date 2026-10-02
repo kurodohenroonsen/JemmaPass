@@ -65,5 +65,5 @@
     <string name="drug_picker_status_empty">Aucun résultat. Essaie un autre terme.</string>
     <string name="drug_picker_status_error">Erreur de la base de connaissances</string>
     <string name="drug_picker_cancel">Annuler</string>
-
+    <string name="drug_picker_add_as_is">➕ Ajouter « %1$s » tel quel</string>
 </resources>

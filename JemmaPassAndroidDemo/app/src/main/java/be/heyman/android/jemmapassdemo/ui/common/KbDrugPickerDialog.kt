@@ -339,22 +339,21 @@ class KbDrugPickerDialog : DialogFragment() {
                             "kb=${filtered.size} · deduped=$deduped · localized=${localized.size}")
                     }
                     val trimmedQuery = query.trim()
-                    if (currentResults.isEmpty() && trimmedQuery.isNotBlank() && category == CATEGORY_MEDICATION) {
-                        currentResults.add(
-                            PickedDrug(
-                                code = "",
-                                display = trimmedQuery,
-                                system = "",
+                    if (trimmedQuery.isNotBlank() && category == CATEGORY_MEDICATION) {
+                        val hasExactMatch = currentResults.any { it.display.equals(trimmedQuery, ignoreCase = true) }
+                        if (!hasExactMatch) {
+                            currentResults.add(
+                                PickedDrug(
+                                    code = "",
+                                    display = trimmedQuery,
+                                    system = "",
+                                )
                             )
-                        )
+                        }
                     }
                     val labels = currentResults.map { picked ->
                         if (picked.code.isBlank()) {
-                            when {
-                                lang.startsWith("fr") -> "➕ Ajouter « ${picked.display} » tel quel"
-                                lang.startsWith("ja") -> "➕ 「${picked.display}」をそのまま追加"
-                                else -> "➕ Add \"${picked.display}\" as is"
-                            }
+                            getString(R.string.drug_picker_add_as_is, picked.display)
                         } else if (picked.doseDdd != null && picked.doseUnit != null) {
                             val dose = DoseStandard(
                                 atcCode = picked.atcCode ?: "",
