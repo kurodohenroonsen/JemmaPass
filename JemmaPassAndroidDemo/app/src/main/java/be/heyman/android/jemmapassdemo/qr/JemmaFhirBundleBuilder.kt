@@ -172,9 +172,23 @@ object JemmaFhirBundleBuilder {
                                 value = String.Builder().apply { value = it }
                             })
                         }
-                        c.r?.takeIf { it.isNotBlank() }?.let {
+                        c.r?.takeIf { it.isNotBlank() }?.let { rawRel ->
+                            val entry = be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog.ALL.firstOrNull {
+                                it.code.equals(rawRel.trim(), ignoreCase = true)
+                            }
                             relationship.add(CodeableConcept.Builder().apply {
-                                text = String.Builder().apply { value = it }
+                                if (entry != null) {
+                                    coding.add(Coding.Builder().apply {
+                                        system = Uri.Builder().apply {
+                                            value = be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog.CODE_SYSTEM
+                                        }
+                                        code = dev.ohs.fhir.model.r4.Code.Builder().apply { value = entry.code }
+                                        display = String.Builder().apply { value = entry.displayEn }
+                                    })
+                                    text = String.Builder().apply { value = entry.pick(hydrated.uiLang).ifBlank { entry.displayEn } }
+                                } else {
+                                    text = String.Builder().apply { value = rawRel }
+                                }
                             })
                         }
                     })
