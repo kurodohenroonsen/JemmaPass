@@ -373,10 +373,11 @@ class KbDrugPickerDialog : DialogFragment() {
                     adapter.clear()
                     adapter.addAll(labels)
                     adapter.notifyDataSetChanged()
-                    val text = if (currentResults.isEmpty() || (currentResults.size == 1 && currentResults[0].code.isBlank())) {
+                    val codedCount = currentResults.count { it.code.isNotBlank() }
+                    val text = if (codedCount == 0) {
                         getString(R.string.drug_picker_status_empty)
                     } else {
-                        getString(R.string.drug_picker_status_count, currentResults.size)
+                        getString(R.string.drug_picker_status_count, codedCount)
                     }
                     statusText.text = text
                     Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ search done · " +

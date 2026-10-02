@@ -131,8 +131,8 @@ object JemmaFhirBundleBuilder {
             p?.bd?.takeIf { it.isNotBlank() }?.let {
                 try {
                     birthDate = dev.ohs.fhir.model.r4.Date.Builder().apply { value = FhirDate.fromString(it) }
-                } catch (_: Throwable) {
-                    // Non-ISO birth date: omit rather than crash
+                } catch (e: Exception) {
+                    android.util.Log.w(TAG, "build: non-ISO birthDate '$it' omitted from Patient resource", e)
                 }
             }
             
@@ -300,12 +300,16 @@ object JemmaFhirBundleBuilder {
                             s?.let { startStr ->
                                 try {
                                     start = DateTime.Builder().apply { value = FhirDateTime.fromString(startStr) }
-                                } catch (_: Throwable) {}
+                                } catch (e: Exception) {
+                                    android.util.Log.w(TAG, "build: unparseable medication effective start '$startStr' omitted", e)
+                                }
                             }
                             e?.let { endStr ->
                                 try {
                                     end = DateTime.Builder().apply { value = FhirDateTime.fromString(endStr) }
-                                } catch (_: Throwable) {}
+                                } catch (e: Exception) {
+                                    android.util.Log.w(TAG, "build: unparseable medication effective end '$endStr' omitted", e)
+                                }
                             }
                         }.build())
                     } else {
@@ -313,7 +317,9 @@ object JemmaFhirBundleBuilder {
                             effective = MedicationStatement.Effective.DateTime(
                                 DateTime.Builder().apply { value = FhirDateTime.fromString(eff.trim()) }.build()
                             )
-                        } catch (_: Throwable) {}
+                        } catch (e: Exception) {
+                            android.util.Log.w(TAG, "build: unparseable medication effective date '$eff' omitted", e)
+                        }
                     }
                 }
                 
@@ -588,7 +594,9 @@ object JemmaFhirBundleBuilder {
                 a.use?.takeIf { it.isNotBlank() }?.let {
                     try {
                         use = Enumeration.of(dev.ohs.fhir.model.r4.Address.AddressUse.fromCode(it), null)
-                    } catch (_: Throwable) {}
+                    } catch (e: Exception) {
+                        android.util.Log.w(TAG, "build: unrecognised address.use '$it' omitted", e)
+                    }
                 }
                 a.line?.takeIf { it.isNotBlank() }?.let { line.add(String.Builder().apply { value = it }) }
                 a.city?.takeIf { it.isNotBlank() }?.let { city = String.Builder().apply { value = it } }
@@ -619,13 +627,17 @@ object JemmaFhirBundleBuilder {
                 t.system?.takeIf { it.isNotBlank() }?.let {
                     try {
                         system = Enumeration.of(ContactPoint.ContactPointSystem.fromCode(t.system), null)
-                    } catch (_: Throwable) {}
+                    } catch (e: Exception) {
+                        android.util.Log.w(TAG, "build: unrecognised telecom.system '${t.system}' omitted", e)
+                    }
                 }
                 t.value?.takeIf { it.isNotBlank() }?.let { value = String.Builder().apply { value = it } }
                 t.use?.takeIf { it.isNotBlank() }?.let {
                     try {
                         use = Enumeration.of(ContactPoint.ContactPointUse.fromCode(t.use), null)
-                    } catch (_: Throwable) {}
+                    } catch (e: Exception) {
+                        android.util.Log.w(TAG, "build: unrecognised telecom.use '${t.use}' omitted", e)
+                    }
                 }
             })
         }
