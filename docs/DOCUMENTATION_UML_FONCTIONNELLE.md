@@ -87,7 +87,7 @@ Le système JemmaPass repose sur 5 invariants fonctionnels vérifiés dans le co
 │                                                                        │
 │ 5. MULTILINGUAL NATIVE EXPERIENCE                                      │
 │    Restitution dans la langue locale (25 langues) via les dictionnaires│
-│    embarqués (qr/JemmaTranslations.kt:12) et l'agent Gemma 4.          │
+│    embarqués (qr/JemmaTranslations.kt:5) et l'agent Gemma 4.           │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -341,7 +341,8 @@ Modèle strictement aligné sur `kb/KbCrossCheck.kt` et `kb/KbSafety.kt` :
 ```mermaid
 classDiagram
     class KnowledgeBaseService {
-        +resolveDrug(name: String?) ResolvedConcept [kb/KnowledgeBaseService.kt:143]
+        +resolveDrug(name: String?) ResolvedConcept [kb/KnowledgeBaseService.kt:144]
+        +resolveAllergy(name: String?) ResolvedConcept [kb/KnowledgeBaseService.kt:315]
         +queryDDIByAtc(atcA: String?, atcB: String?) DDIResult [kb/KnowledgeBaseService.kt:440]
         +queryDDI(drugA: String?, drugB: String?) DDIResult [kb/KnowledgeBaseService.kt:478]
         +queryDrugDisease(atc: String?, diseaseName: String?) DrugDiseaseResult [kb/KnowledgeBaseService.kt:758]
@@ -349,11 +350,11 @@ classDiagram
     }
 
     class KbCrossCheck {
-        +checkOneDrugAgainstProfile(candidateName, allergies, meds, conditions, lang) CrossCheckResult [kb/KbCrossCheck.kt:652]
+        +checkOneDrugAgainstProfile(candidateName, allergies, meds, conditions, lang) CrossCheckResult [kb/KbCrossCheck.kt:646]
         +checkOneAtcAgainstAllergies(allergies, candidateAtc, candidateAllAtcs, candidateDisplay, lang) List~AllergyHit~ [kb/KbCrossCheck.kt:184]
-        +checkAllergiesWithStatus(...) PillarCheck~AllergyHit~ [kb/KbCrossCheck.kt:233]
+        +checkAllergiesWithStatus(...) PillarCheck~AllergyHit~ [kb/KbCrossCheck.kt:201]
         +checkOneAtcAgainstMedications(meds, candidateAtc, candidateAllAtcs, candidateDisplay, includeMinor, lang) List~DdiHit~ [kb/KbCrossCheck.kt:439]
-        +checkMedicationsWithStatus(...) PillarCheck~DdiHit~ [kb/KbCrossCheck.kt:481]
+        +checkMedicationsWithStatus(...) PillarCheck~DdiHit~ [kb/KbCrossCheck.kt:454]
         +checkOneAtcAgainstConditions(conditions, candidateAtc, candidateDisplay, lang) List~DrugDiseaseHit~ [kb/KbCrossCheck.kt:556]
         +checkConditionsWithStatus(...) PillarCheck~DrugDiseaseHit~ [kb/KbCrossCheck.kt:568]
         -inferAtcFromAllergyName(name: String) String? [kb/KbCrossCheck.kt:818]
@@ -522,13 +523,13 @@ stateDiagram-v2
     AcquiringLock --> Validating : writeMutex.withLock (ProfilesRepository.kt:371)
     
     state Validating {
-        [*] --> BloodGroupSync : Synchronisation Observation LOINC 882-1
-        BloodGroupSync --> ValidatePillars : Validation Cohérence FHIR
+        [*] --> BloodGroupSync : Réconciliation LOINC 882-1 (ProfilesRepository.kt:451)
+        BloodGroupSync --> ValidatePillars : Remplacement si contradictoire + émission BloodGroupConflict
         ValidatePillars --> [*]
     }
 
-    Validating --> WritingTemp : Validation OK
-    Validating --> ReleaseError : Validation Échouée (Conflit Sanguin Saisie)
+    Validating --> WritingTemp : Validation OK (Réconciliation effectuée)
+    Validating --> ReleaseError : Erreur Interne Validation
 
     state WritingTemp {
         [*] --> ProjectToJ : moshi.toJson(profile) vers fichier .json.tmp
@@ -581,7 +582,7 @@ stateDiagram-v2
     EvaluateClean --> INCOMPLETE : checks.overall == INCOMPLETE (checks.overall, :133)
     EvaluateClean --> NOT_CHECKED : checks.overall == KB_UNAVAILABLE
 
-    ALERT --> [*] : "🔴 Écran Rouge Vif + triggerRedAlert"
+    ALERT --> [*] : "🔴 Alerte Rouge Vif (Collision Détectée)"
     CLEAN --> [*] : "🟢 Écran Vert (Rien à signaler)"
     INCOMPLETE --> [*] : "🟠 Bandeau Ambre (Vérification partielle)"
     NOT_CHECKED --> [*] : "⚫ Bandeau Avertissement (Non vérifié)"
@@ -679,17 +680,22 @@ sequenceDiagram
     Ctrl->>Gemma: ask(prompt, image, tools=[SearchDrugCandidatesTool, CheckInteractionsTool]) [MedScanController.kt:270]
     Gemma->>Ctrl: searchDrugCandidates(["Augmentin", "amoxicilline"])
     Ctrl-->>Gemma: ["Augmentin -> J01CR02", "Amoxicillin -> J01CA04"]
-    Gemma->>CheckTool: checkInteractions("J01CR02") [MedScanController.kt:263]
+    Gemma->>CheckTool: checkInteractions("J01CR02") [ai/gemma/MedScanTools.kt:303]
     CheckTool->>Cross: checkOneAtcAgainstAllergies(p.al, "J01CR02", ...)
     Cross->>Cross: Auto-réactivité ATC L3 "J01C" (KbCrossCheck.kt:327)
     Cross-->>CheckTool: [AllergyHit: "auto:J01C", severity=HIGH]
     CheckTool-->>Gemma: Rapport de collision (Allergie Pénicillines)
     Gemma-->>Ctrl: Explication textuelle de l'alerte
     Ctrl->>Ctrl: MedScanStepSafety.decide() -> validation stricte (MedScanController.kt:308)
-    Ctrl->>Ctrl: settleVerdict(Verdict.Alert(...)) [MedScanController.kt:345]
-    Ctrl-->>UI: Émission StateFlow Verdict.Alert
+    Ctrl->>Ctrl: settleVerdict(Verdict.AgentText(...)) [MedScanController.kt:343-345]
+    Ctrl-->>UI: Émission StateFlow Verdict.AgentText
     UI->>Secouriste: 🔴 BANDEAU ROUGE VIF ("Allergie Pénicillines détectée")
 ```
+
+> **Structure du Verdict (`ai/medscan/MedScanPipelineState.kt:52-107`)** :
+> La classe scellée `Verdict` définit 8 sous-classes formelles : `None`, `Major`, `Moderate`, `Minor`, `Clean`, `NotIdentified`, `Failed`, et `AgentText`.
+> Dans le pipeline agentique Gemma (`ai/medscan/MedScanController.kt:343-345`), le contrôleur émet `Verdict.AgentText(victimDisplayName = profile.displayName, text = cleanText)`. La synthèse textuelle en langage naturel est ainsi transmise directement au bandeau d'alerte IHM et au moteur TTS vocal, tandis que `MedScanStepSafety.decide()` (`:308`) pilote l'état du cycle de vie clinique. L'outil `checkInteractions` est défini dans `ai/gemma/MedScanTools.kt:303` (enregistré dans `perScanTools` à `MedScanController.kt:263`).
+
 
 ### 5.2. Contrôle Sans Interaction : Scénario Paracétamol chez un Profil Sain (Verdict CLEAN)
 
@@ -818,7 +824,7 @@ Implémentation exacte observée dans `kb/KnowledgeBaseService.kt:143-250,833-85
 
 ```mermaid
 flowchart TD
-    Start(["Chaîne Médicament Candidate"]) --> NormalizeHardcoded{"Correspondance Table des 10 Molécules ? (KnowledgeBaseService.kt:153)"}
+    Start(["Chaîne Médicament Candidate"]) --> NormalizeHardcoded{"Correspondance Table des 10 branches (9 noms distincts) ? (KnowledgeBaseService.kt:153-164)"}
     
     NormalizeHardcoded -- "Oui (Augmentin, Amoxicilline, Aspirine, Loxonine, Calonal, Warfarine, Cravit, Adrénaline, Voltaren...)" --> MapEnglish["Substitution par DCI Anglaise Standard"]
     NormalizeHardcoded -- Non --> ExactLookup["Recherche Exacte ddinter_drugs (COLLATE NOCASE, :174)"]
@@ -976,11 +982,11 @@ class KnowledgeBaseService @Inject constructor(
     private val kbManager: KnowledgeBaseManager,
 ) {
     // Résolution sémantique d'un médicament (nom de marque, DCI, katakana ou code ATC)
-    // Ligne 143
+    // Ligne 144
     suspend fun resolveDrug(name: String?): ResolvedConcept
 
     // Résolution sémantique d'une allergie (nom de substance ou aliment)
-    // Ligne 263
+    // Ligne 315
     suspend fun resolveAllergy(name: String?): ResolvedConcept
 
     // Interrogation DDI rapide sur la vue v_ddi_emergency (Major + Moderate)
@@ -1018,7 +1024,7 @@ class KbCrossCheck @Inject constructor(
     private val kbManager: KnowledgeBaseManager,
 ) {
     // Contrôle maître d'un médicament contre les 3 piliers (allergies, médocs, pathologies)
-    // Ligne 652
+    // Ligne 646
     suspend fun checkOneDrugAgainstProfile(
         candidateName: String,
         allergies: List<JAllergy>,
@@ -1028,7 +1034,7 @@ class KbCrossCheck @Inject constructor(
     ): CrossCheckResult
 
     // Contrôle spécifique contre les allergies avec statut de vérification
-    // Ligne 233
+    // Ligne 201
     suspend fun checkAllergiesWithStatus(
         allergies: List<JAllergy>,
         candidateAtc: String,
@@ -1039,7 +1045,7 @@ class KbCrossCheck @Inject constructor(
     ): PillarCheck<AllergyHit>
 
     // Contrôle DDI contre les médicaments existants avec statut de vérification
-    // Ligne 481
+    // Ligne 454
     suspend fun checkMedicationsWithStatus(
         meds: List<JMedication>,
         candidateAtc: String,
@@ -1126,7 +1132,7 @@ Cette section rassemble expressément les concepts, classes et propositions d'ar
    - *Proposition* : Remplacer par une expression régulière avec frontières de mots `\bains\b` ou une tokenisation lexicale stricte pour exclure les sous-chaînes accidentelles.
 
 3. **Normalisation Universelle Zenkaku / Hankaku & Table Katakana Dédiée** :
-   - *Statut actuel* : Normalisation gérée par un bloc `when` codé en dur normalisant vers 9 noms de molécules en anglais (`kb/KnowledgeBaseService.kt:153-166`).
+   - *Statut actuel* : Normalisation gérée par un bloc `when` codé en dur (10 branches, 9 noms distincts de molécules en anglais, `KnowledgeBaseService.kt:153-164`).
    - *Proposition* : Intégrer un analyseur morphologique ou une table de correspondance formelle Katakana -> HOT / YJ / ATC pour l'ensemble de la pharmacopée japonaise.
 
 4. **Somme de Contrôle et Identifiant de Lot dans les Trames QR Multi-Frames** :
@@ -1136,25 +1142,4 @@ Cette section rassemble expressément les concepts, classes et propositions d'ar
 5. **Signature Cryptographique de Lot et Chiffrement Bout-en-Bout** :
    - *Statut actuel* : Les trames transitent en clair (Base64 deflate-raw ou JSON brut).
    - *Proposition* : Intégrer une couche de signature numérique (Ed25519) pour authentifier l'émetteur du pass en milieu d'urgence.
-
----
-
-## 9. Table des Sources et Affirmations Vérifiées (Affirmation → URL Profonde → Date de Consultation)
-
-| Affirmation / Sujet Technique | Statut & Éléments Vérifiés | URL Source Profonde Officielle | Date Consultation |
-| :--- | :--- | :--- | :---: |
-| **Norme IPS (HL7 FHIR R4 IPS)** | Standard international pour le résumé patient d'urgence | [ISO 27269:2021](https://www.iso.org/standard/79491.html) | 2026-10-02 |
-| **Profil National Japon JP Core** | Profil HL7 FHIR national promu pour le programme Medical DX | [NeXEHRS / JP Core v1.1.2](https://j-core.org/) | 2026-10-02 |
-| **Loi Japonaise My Number (番号法)** | Interdiction pénale stricte de collecte/stockage du numéro à 12 chiffres | [Loi n° 27 du 31 mai 2013 (e-Gov)](https://elaws.e-gov.go.jp/document?lawid=425AC0000000027) | 2026-10-02 |
-| **Réglementation SaMD PMDA** | Statut dispositif médical logiciel (PMD Act / 薬機法) | [PMDA SaMD Regulatory Info](https://www.pmda.go.jp/english/review-services/regulatory-info/0002.html) | 2026-10-02 |
-| **Codes HOT Médicaments Japon** | Nomenclature standard à 9 et 13 chiffres gérée par le MEDIS-DC | [MEDIS-DC Master Standard](https://www.medis.or.jp/2_kaihatu/kizyun/kizyun.html) | 2026-10-02 |
-| **Codes YJ Tarification MHLW** | Codes nationaux de tarification des médicaments remboursés | [MHLW Drug Tariff List](https://www.mhlw.go.jp/topics/2024/04/tp20240401-01.html) | 2026-10-02 |
-| **Standard Carnet Okusuri Techou** | Spécifications des QR codes d'ordonnance JAHIS | [JAHIS Standards & Specifications](https://www.jahis.jp/standard/) | 2026-10-02 |
-| **Code ATC M01AE04 (Fenoprofen)** | Preuve formelle que M01AE04 n'est pas Loxoprofen mais Fenoprofen | [WHOCC ATC Index - M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04) | 2026-10-02 |
-| **Statut Loxoprofène (Japon)** | Molécule sans code ATC L5 OMS, répertoriée sous KEGG / JAPIC | [KEGG Drug Entry D01709](https://www.kegg.jp/entry/D01709) | 2026-10-02 |
-| **Code ATC Edoxaban (B01AF03)** | Anticoagulant oral direct (inhibiteur direct facteur Xa) | [WHOCC ATC Index - B01AF03](https://www.whocc.no/atc_ddd_index/?code=B01AF03) | 2026-10-02 |
-| **Indexation CJK Trigram FTS5** | Tokeniseur SQLite FTS5 adapté aux langues sans espaces | [SQLite FTS5 Trigram Tokenizer](https://www.sqlite.org/fts5.html#the_trigram_tokenizer) | 2026-10-02 |
-| **Génération PDF Native iOS** | API UIKit de génération de documents PDF vectoriels | [Apple UIGraphicsPDFRenderer](https://developer.apple.com/documentation/uikit/uigraphicspdfrenderer) | 2026-10-02 |
-| **Moteur d'Inférence LiteRT** | Runtime d'inférence on-device de Google pour LLM / Edge | [Google LiteRT](https://ai.google.dev/edge/litert) | 2026-10-02 |
-| **Part de Marché iOS Japon** | Estimation ~65-70% sur le marché mobile japonais | [StatCounter Mobile OS Japan](https://gs.statcounter.com/os-market-share/mobile/japan) | 2026-10-02 |
 

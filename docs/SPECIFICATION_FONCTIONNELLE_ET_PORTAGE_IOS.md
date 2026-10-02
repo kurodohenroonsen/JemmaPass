@@ -68,13 +68,13 @@ Le système a été conçu autour de 4 personas :
 
 ### 1.3. Pourquoi le portage iOS est vital au Japon
 
-- `[HYPOTHÈSE À VÉRIFIER]` : **Part de marché iOS au Japon (~65–70%)** : Selon les agrégateurs statistiques du marché mobile ([StatCounter Global Stats Mobile Japan](https://gs.statcounter.com/os-market-share/mobile/japan)), le Japon présente une pénétration d'iOS exceptionnellement élevée (estimée entre 65% et 68%), y compris chez les seniors équipés par leurs enfants et les soignants.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Part de marché iOS au Japon (68.2%, Août 2026)** : Selon les données de [StatCounter Mobile OS Market Share Japan (Août 2026)](https://gs.statcounter.com/os-market-share/mobile/japan), iOS détient **68.2%** des parts de marché des systèmes d'exploitation mobiles au Japon (contre 31.6% pour Android), confirmant la nécessité critique du portage pour toucher la majorité des secouristes, soignants et citoyens.
 - `[PROPOSITION IOS]` : Le portage iOS permet d'éliminer la rupture opérationnelle actuelle où seuls les terminaux Android peuvent participer au réseau de triage ou décoder les pass `_j2`.
 
 ### 1.4. Scénarios critiques au Japon
 
 - **Catastrophe Naturelle Majeure (ex: Séisme de la péninsule de Noto 2024, Séisme redouté du Nankai)** : Rupture totale des réseaux télécoms et électriques.
-  - `[EXISTE SUR ANDROID (sos/JemmaSosBleScanner.kt:29)]` : Découverte et partage maillé de balises SOS hors-ligne.
+  - `[EXISTE SUR ANDROID (sos/JemmaSosBleScanner.kt:49)]` : Découverte et partage maillé de balises SOS hors-ligne.
   - `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:152)]` : QR Code lisible sans application par tout smartphone en mode texte traduit.
 - **Pèlerinage de Shikoku (Henro - 88 Temples) & Tourisme International** :
   - `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:109-125)]` : Canal 2 traduisant instantanément le pass en 25 langues (dont japonais, anglais, français, chinois, coréen).
@@ -172,9 +172,9 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 - `[EXISTE SUR ANDROID (qr/JemmaTextPayloadBuilder.kt:67,152)]` : **Canal 2 (QR Texte Universel)** : Texte clair 25 langues, plafonné à **1800 octets UTF-8** (`QR_MAX_SINGLE = 1800`), avec éviction par rangs (du rang 12 fonctionnel au rang 1 allergies) et marqueur `✂️ …`.
 - `[EXISTE SUR ANDROID (qr/JemmaQrFrameSplitter.kt:94, qr/JemmaQrFrameAssembler.kt:26,65)]` : **Canal 3 (FHIR Slideshow)** : Trames `JF:i/N|<data>` avec index **1-based** (`1..N`), découpées via `split(payload, maxSingle, frameChunk)` et reconstituées via `offer(raw: String?): Result`.
 - `[EXISTE SUR ANDROID (sos/JemmaSosChunkCodec.kt:171-175, mesh/codec/EventChunk.kt:8, sos/JemmaNearbyEndpointCodec.kt:51)]` : **Canaux 4a & 4b (Transferts Sans-Fil SOS & Triage)** :
-  - **Canal 4a (Balise SOS BLE)** : Profil d'urgence `_j 1.2` découpé en trames binaires de **200 octets max** via BLE 5.0 Extended Advertising (`MAX_CHUNK_BYTES = 200`, `sos/JemmaSosChunkCodec.kt:171-175`, diffusé par `sos/JemmaSosBleAdvertiser.kt:31`).
+  - **Canal 4a (Balise SOS BLE)** : Profil d'urgence `_j 1.2` découpé en trames binaires de **200 octets max** via BLE 5.0 Extended Advertising (`MAX_CHUNK_BYTES = 200`, `sos/JemmaSosChunkCodec.kt:171-175`, diffusé par `sos/JemmaSosBleAdvertiser.kt:60`).
   - **Canal 4b (Réseau Maillé de Triage Nearby)** : Statut et événements SALT relayés sous forme d'événements texte `E|<source>|<victim>|<status>|<rescuer>|<ts>|<ttl>|<seq>` par **Google Nearby Connections** (`mesh/codec/EventChunk.kt:8`, `mesh/relay/RelayManager.kt:12`), soumis à la limite stricte de **131 octets UTF-8** (`MAX_ENDPOINT_NAME_LEN = 131`, `sos/JemmaNearbyEndpointCodec.kt:51`).
-- `[EXISTE SUR ANDROID (sos/JemmaEmergencyWidget.kt:31, sos/JemmaWidgetEmergencyService.kt)]` : **Canal 5 (Widget Accueil & Service)** : Sur Android, le déclenchement SOS s'appuie sur un `AppWidgetProvider` et un `ForegroundService` (`JemmaWidgetEmergencyService.kt`), et **non sur un overlay de fenêtre système**.
+- `[EXISTE SUR ANDROID (sos/JemmaEmergencyWidget.kt:24, sos/JemmaWidgetEmergencyService.kt)]` : **Canal 5 (Widget Accueil & Service)** : Sur Android, le déclenchement SOS s'appuie sur un `AppWidgetProvider` et un `ForegroundService` (`JemmaWidgetEmergencyService.kt`), et **non sur un overlay de fenêtre système**.
 
 ---
 
@@ -189,7 +189,7 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 
 ### 3.2. Nomenclatures et Pharmacopée : Noms en Katakana, Codes HOT/YJ et Classes ATC
 
-- `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:153-166)]` : La normalisation actuelle des noms commerciaux japonais repose sur un bloc `when` codé en dur normalisant textuellement vers **9 noms de molécules en anglais** (les codes ATC ne sont pas renvoyés par ce bloc mais résolus en aval par requête SQLite dans la table `ddinter_drugs` / `terminology`) :
+- `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:153-164)]` : La normalisation actuelle des noms commerciaux japonais repose sur un bloc `when` codé en dur (10 branches, 9 noms distincts de molécules en anglais) normalisant textuellement vers **9 noms de molécules en anglais** (les codes ATC ne sont pas renvoyés par ce bloc mais résolus en aval par requête SQLite dans la table `ddinter_drugs` / `terminology`) :
   1. `オーグメンチン` / `オーメンチン` / `オグメンチン` ➔ `"Augmentin"`
   2. `アモキシシリン` ➔ `"Amoxicillin"`
   3. `アスピリン` / `バイアスピリン` / `バファリン` ➔ `"Aspirin"`
@@ -201,17 +201,20 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
   9. `ボルタレン` ➔ `"Diclofenac"`
 - `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:158, kb/KbCrossCheck.kt:858-868)]` vs `[HYPOTHÈSE À VÉRIFIER]` :
   - Dans le code Android, `KnowledgeBaseService.kt:158` normalise `ロキソニン` / `ロキソプロフェン` en `"Loxoprofen"`. Dans `kb/KbCrossCheck.kt:858-868`, le bloc de reconnaissance des AINS associe les mots-clés (`ains`, `ibuprofène`, `naproxène`, `diclofénac`, `kétoprofène`) au code ATC `M01AE01` (Ibuprofène).
-  - **Correction nomenclature OMS & Statut Loxoprofène** : Dans l'index officiel de l'OMS ([WHOCC ATC M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04)), le code `M01AE04` correspond à **Fenoprofen**, et **non à Loxoprofen**. Le Loxoprofène ne possède pas de code ATC de niveau 5 officiel auprès de l'OMS (molécule essentiellement distribuée au Japon et en Asie de l'Est, enregistrée sous [KEGG Drug Entry D01709](https://www.kegg.jp/entry/D01709) / JAPIC).
-  - `[HYPOTHÈSE À VÉRIFIER]` : Pour le portage iOS ciblant le Japon, le Loxoprofène doit être rattaché soit à la classe ATC parent `M01AE` (dérivés de l'acide propionique), soit directement aux tables nationales japonaises de codes **HOT** ([MEDIS-DC Master Standard](https://www.medis.or.jp/2_kaihatu/kizyun/kizyun.html)) et **YJ** ([MHLW Drug Tariff List](https://www.mhlw.go.jp/topics/2024/04/tp20240401-01.html)).
+  - **Correction nomenclature OMS & Statut Loxoprofène** :
+    - Dans l'index officiel de l'OMS ([WHOCC ATC M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04)), le code `M01AE04` correspond à **Fenoprofen**, et **non à Loxoprofen**.
+    - L'OMS répertorie le Loxoprofène sous le code ATC topique **`M02AA31`** pour les formes locales (gel, patch, cataplasmes : [WHOCC ATC M02AA31](https://www.whocc.no/atc_ddd_index/?code=M02AA31)).
+    - En revanche, il n'existe **aucun code ATC de niveau 5 officiel de l'OMS pour la forme systémique orale dans la classe `M01AE`** (molécule orale largement prescrite au Japon et en Asie de l'Est, enregistrée sous [KEGG Drug Entry D01709](https://www.kegg.jp/entry/D01709) / JAPIC).
+  - `[HYPOTHÈSE À VÉRIFIER]` : Pour le portage iOS ciblant le Japon, le Loxoprofène oral doit être rattaché soit à la classe ATC parent `M01AE` (dérivés de l'acide propionique), soit directement aux tables nationales japonaises de codes **HOT** ([MEDIS-DC Master Standard](https://www.medis.or.jp/2_kaihatu/kizyun/kizyun.html)) et **YJ** ([MHLW Drug Tariff List](https://www.mhlw.go.jp/topics/2024/04/tp20240401-01.html)).
 - `[PROPOSITION IOS]` : Pour le portage iOS, intégrer les tables officielles des codes **HOT** (9/13 chiffres, MEDIS-DC) et **YJ** (tarification nationale MHLW) pour une couverture exhaustive des prescriptions japonaises.
 
 ### 3.3. Carnet de santé (*Okusuri Techou*) et Restrictions Légales du My Number
 
 - `[HYPOTHÈSE À VÉRIFIER]` : Ingestion des codes-barres JAHIS figurant sur les carnets de santé médicamenteux japonais (*Okusuri Techou* - お薬手帳, [JAHIS Standards & Specifications](https://www.jahis.jp/standard/)).
-- `[EXISTE LÉGALEMENT AU JAPON / RÈGLE IMPÉRATIVE JEMMAPASS]` vs `[HYPOTHÈSE À VÉRIFIER]` :
+- `[HYPOTHÈSE À VÉRIFIER]` : **Restrictions légales strictes du My Number (番号法) et gestion d'identifiants** :
   - **Cadre légal régalien** : En vertu de la *Loi sur l'utilisation des numéros pour identifier une personne spécifique dans les procédures administratives* (番号法 - [*Act on the Use of Numbers to Identify a Specific Individual in the Administrative Procedure*, Loi n° 27 du 31 mai 2013, e-Gov](https://elaws.e-gov.go.jp/document?lawid=425AC0000000027)), la collecte, le stockage, l'utilisation ou la transmission du **numéro individuel à 12 chiffres (My Number)** sont expressément interdits en dehors des institutions publiques et des employeurs pour la fiscalité/sécurité sociale, sous peine de **sanctions pénales sévères**.
   - **Règle impérative JemmaPass** : L'application a l'interdiction absolue de collecter le numéro My Number à 12 chiffres brut. Seuls les identifiants d'assurance maladie décorrélés du numéro régalien ou les identifiants hospitaliers privés peuvent être gérés dans `ids` (`JIdentifier`).
-  - `[HYPOTHÈSE À VÉRIFIER]` : Mécanisme technique de validation regex sous iOS (détection et rejet automatique à la saisie de tout identifiant à 12 chiffres respectant l'algorithme modulus 11 spécifique au My Number).
+  - **Mécanisme technique de validation regex sous iOS** : Détection et rejet automatique à la saisie de tout identifiant à 12 chiffres respectant l'algorithme modulus 11 spécifique au My Number.
 
 ### 3.4. Recherche FTS5 CJK (Trigramme) vs Analyseurs Morphologiques
 
@@ -276,7 +279,7 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 | **Génération QR** | ZXing Core 3.5.3 (BitMatrix) | **CoreImage** (`CIQRCodeGenerator`) + CoreGraphics | `[PROPOSITION IOS]` |
 | **Lecture QR** | CameraX + ZXing / ML Kit Barcode | **AVFoundation** (`AVCaptureMetadataOutput` natif) | `[PROPOSITION IOS]` |
 | **Génération PDF** | Android `PdfDocument` | **UIKit / PDFKit** ([`UIGraphicsPDFRenderer`](https://developer.apple.com/documentation/uikit/uigraphicspdfrenderer)) | `[PROPOSITION IOS]` |
-| **Mesh P2P** | BLE Advertising + Nearby Connections | **CoreBluetooth** (GATT Custom Service) | `[PROPOSITION IOS]` |
+| **Mesh P2P (Triage & SOS)** | Google Nearby Connections (`mesh/relay/RelayManager.kt:12`) + BLE Extended Advertising (`sos/JemmaSosBleAdvertiser.kt:60`) | **MultipeerConnectivity** (Triage) + **CoreBluetooth** (GATT SOS) | `[PROPOSITION IOS]` |
 | **Déclenchement SOS** | Home AppWidget + Foreground Service | **WidgetKit** (LockScreen) + **App Intents** | `[PROPOSITION IOS]` |
 | **Live Alertes** | Notification persistante Foreground | **ActivityKit** (Live Activities / Dynamic Island) | `[PROPOSITION IOS]` |
 | **Pass Numérique** | Widget écran d'accueil | **Apple Wallet** (`.pkpass` Pass d'urgence) | `[PROPOSITION IOS]` |
@@ -298,11 +301,15 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
     - Terminaux à 8 Go de RAM unifiée (iPhone 15 Pro, iPhone 16 / 16 Pro) : Support de Gemma 4 E4B.
     - Terminaux à 6 Go de RAM : Déploiement exclusif de Gemma 4 E2B (`gemma-4-E2B-it.litertlm`, ~2,4 Go) avec fenêtre de contexte contrainte.
 
-### 4.5. Le Défi du Réseau Maillé P2P (BLE CoreBluetooth vs Nearby)
+### 4.5. Le Défi du Réseau P2P : Google Nearby Connections (Android) ➔ MultipeerConnectivity & CoreBluetooth (iOS)
 
-- `[HYPOTHÈSE À VÉRIFIER]` : **Faisabilité du BLE Extended Advertising en tâche de fond sous iOS** :
-  - Sous iOS, l'API `CBPeripheralManager` impose des restrictions strictes sur l'émission publicitaire en arrière-plan : les identifiants de service sont masqués dans une zone réservée propriétaire et les données publicitaires personnalisées (`CBAdvertisementData`) ne peuvent pas transporter de gros volumes arbitraires lorsque l'application est suspendue.
-  - *Solution d'ingénierie proposée* : Mettre en œuvre un service GATT standardisé JemmaPass où le terminal agit comme serveur périphérique BLE en premier plan ou diffuse des trames BLE de 200 octets max (`MAX_CHUNK_BYTES = 200`, `sos/JemmaSosChunkCodec.kt:171-175`) via des caractéristiques accessibles en lecture/écriture par les pairs Android et iOS.
+- `[EXISTE SUR ANDROID (mesh/codec/EventChunk.kt:8, mesh/relay/RelayManager.kt:12, sos/JemmaNearbyEndpointCodec.kt:51)]` :
+  - Sur Android, la propagation maillée des statuts et événements de triage SALT (`E|<source>|<victim>|<status>|<rescuer>|<ts>|<ttl>|<seq>`, <= 131 octets) repose sur l'API **Google Nearby Connections**, tandis que la balise SOS d'urgence (`_j 1.2`) diffuse des trames binaires de 200 octets max via BLE 5.0 Extended Advertising (`sos/JemmaSosBleAdvertiser.kt:60`, `MAX_CHUNK_BYTES = 200`).
+- `[PROPOSITION IOS]` : **MultipeerConnectivity pour le relais de triage SALT** :
+  - Apple ne disposant pas de l'API Google Nearby Connections, le portage iOS utilise le framework natif **`MultipeerConnectivity`** (`MCSession`, `MCNearbyServiceAdvertiser`, `MCNearbyServiceBrowser`) comme équivalent direct hors-ligne pour la découverte et l'échange ad-hoc P2P (Wi-Fi direct et Bluetooth) des trames SALT sans infrastructure réseau.
+- `[PROPOSITION IOS]` vs `[HYPOTHÈSE À VÉRIFIER]` : **CoreBluetooth GATT pour l'interopérabilité SOS trans-OS** :
+  - Pour garantir la réception des balises SOS émises par Android (`sos/JemmaSosBleAdvertiser.kt:60`) et l'émission depuis iOS vers les scanners Android (`sos/JemmaSosBleScanner.kt:49`), iOS implémente un service GATT périphérique `CoreBluetooth`.
+  - `[HYPOTHÈSE À VÉRIFIER]` : Sous iOS, l'API `CBPeripheralManager` impose des restrictions strictes sur l'émission publicitaire en arrière-plan : les identifiants de service sont masqués dans une zone réservée propriétaire et les données publicitaires personnalisées (`CBAdvertisementData`) ne peuvent pas transporter de gros volumes arbitraires lorsque l'application est suspendue. L'émission continue en arrière-plan nécessite une validation empirique de conformité avec les politiques d'Apple.
 
 ### 4.6. Expérience Utilisateur & Intégration Écosystème Apple
 
@@ -331,7 +338,7 @@ L'exécution du portage iOS est confiée à des sous-agents spécialisés :
 | **M1** | **Module KMP Core & Codecs** | `JemmaCore.xcframework` (Modèles `JemmaProfileJ`, compression `_j2`, parseur trames `JF:i/N`, tests croisés JVM/iOS). | S+2 |
 | **M2** | **Base Clinique & Moteur Décisionnel** | GRDB.swift avec FTS5, import de `knowledge_full.db`, portage du moteur `KbCrossCheck` et des règles quadrivalentes. | S+5 |
 | **M3** | **OCR Vision & Inférence IA** | Intégration de Vision Framework (Katakana/Kanji), exécution de Gemma 4 ([Google LiteRT](https://ai.google.dev/edge/litert) / Metal), portage des 21 `@Tool`. | S+8 |
-| **M4** | **Canaux de Transfert & Mesh BLE** | Scanner QR AVFoundation, export QR texte 1800B, service CoreBluetooth GATT interopérable avec Android. | S+10 |
+| **M4** | **Canaux de Transfert & Réseau P2P** | Scanner QR AVFoundation, export QR texte 1800B, MultipeerConnectivity pour le relais de triage SALT `[PROPOSITION IOS]` et service CoreBluetooth GATT interopérable avec Android. | S+10 |
 | **M5** | **UI SwiftUI & Intégration Système** | Application SwiftUI complète, Live Activities, Lock Screen Widgets, validation des contraintes Jetsam sur iPhone. | S+13 |
 
 ### 5.3. Matrice d'assurance qualité & cas d'usage critiques
@@ -359,9 +366,11 @@ Le portage iOS devra valider l'ensemble des scénarios critiques documentés dan
 | **Codes YJ Tarification MHLW** | Codes nationaux de tarification des médicaments remboursés | [MHLW Drug Tariff List](https://www.mhlw.go.jp/topics/2024/04/tp20240401-01.html) | 2026-10-02 |
 | **Standard Carnet Okusuri Techou** | Spécifications des QR codes d'ordonnance JAHIS | [JAHIS Standards & Specifications](https://www.jahis.jp/standard/) | 2026-10-02 |
 | **Code ATC M01AE04 (Fenoprofen)** | Preuve formelle que M01AE04 n'est pas Loxoprofen mais Fenoprofen | [WHOCC ATC Index - M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04) | 2026-10-02 |
-| **Statut Loxoprofène (Japon)** | Molécule sans code ATC L5 OMS, répertoriée sous KEGG / JAPIC | [KEGG Drug Entry D01709](https://www.kegg.jp/entry/D01709) | 2026-10-02 |
+| **Code ATC Loxoprofène Topique (M02AA31)** | L'OMS répertorie le Loxoprofène sous M02AA31 pour formes locales (gel, patch), mais aucun code ATC M01AE oral systémique | [WHOCC ATC Index - M02AA31](https://www.whocc.no/atc_ddd_index/?code=M02AA31) | 2026-10-02 |
+| **Statut Loxoprofène Oral (Japon)** | Molécule sans code ATC L5 OMS systémique oral, répertoriée sous KEGG / JAPIC | [KEGG Drug Entry D01709](https://www.kegg.jp/entry/D01709) | 2026-10-02 |
 | **Code ATC Edoxaban (B01AF03)** | Anticoagulant oral direct (inhibiteur direct facteur Xa) | [WHOCC ATC Index - B01AF03](https://www.whocc.no/atc_ddd_index/?code=B01AF03) | 2026-10-02 |
 | **Indexation CJK Trigram FTS5** | Tokeniseur SQLite FTS5 adapté aux langues sans espaces | [SQLite FTS5 Trigram Tokenizer](https://www.sqlite.org/fts5.html#the_trigram_tokenizer) | 2026-10-02 |
 | **Génération PDF Native iOS** | API UIKit de génération de documents PDF vectoriels | [Apple UIGraphicsPDFRenderer](https://developer.apple.com/documentation/uikit/uigraphicspdfrenderer) | 2026-10-02 |
 | **Moteur d'Inférence LiteRT** | Runtime d'inférence on-device de Google pour LLM / Edge | [Google LiteRT](https://ai.google.dev/edge/litert) | 2026-10-02 |
-| **Part de Marché iOS Japon** | Estimation ~65-70% sur le marché mobile japonais | [StatCounter Mobile OS Japan](https://gs.statcounter.com/os-market-share/mobile/japan) | 2026-10-02 |
+| **Part de Marché iOS Japon** | StatCounter : 68.2% de part de marché des OS mobiles au Japon (Août 2026) | [StatCounter Mobile OS Japan](https://gs.statcounter.com/os-market-share/mobile/japan) | 2026-10-02 |
+| **Framework MultipeerConnectivity (iOS)** | API Apple de communication et découverte locale P2P hors infrastructure | [Apple MultipeerConnectivity](https://developer.apple.com/documentation/multipeerconnectivity) | 2026-10-02 |
