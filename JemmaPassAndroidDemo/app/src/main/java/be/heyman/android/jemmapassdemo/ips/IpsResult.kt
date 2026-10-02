@@ -109,8 +109,7 @@ data class IpsResult(
     fun valueLabel(): String = when {
         isNumeric -> listOfNotNull(IpsDecimal.normalize(value), unit?.takeIf { it.isNotBlank() }).joinToString(" ")
         isCoded -> valueDisplay?.takeIf { it.isNotBlank() } ?: valueCode.orEmpty()
-        valueText != null && valueText.isNotBlank() ->
-            if (unit != null && unit.isNotBlank() && !valueText.contains(unit)) "$valueText $unit" else valueText
+        valueText != null && valueText.isNotBlank() -> valueText
         value != null && value.isNotBlank() ->
             if (unit != null && unit.isNotBlank() && !value.contains(unit)) "$value $unit" else value
         else -> ""
