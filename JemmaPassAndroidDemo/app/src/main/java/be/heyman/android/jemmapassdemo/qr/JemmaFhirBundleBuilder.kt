@@ -520,8 +520,9 @@ object JemmaFhirBundleBuilder {
     internal fun reconcileBloodGroup(results: List<IpsResult>, sid: kotlin.String, bloodType: kotlin.String?): List<IpsResult> {
         val expected = IpsBloodGroup.snomedCode(bloodType)
             ?: return results.filterNot { IpsBloodGroup.isDerived(it) }
+        val canonical = IpsBloodGroup.normalize(bloodType)
         val isBloodGroup = { r: IpsResult -> r.code == IpsBloodGroup.LOINC_ABO_RH || IpsBloodGroup.isDerived(r) }
-        val keep = results.firstOrNull { isBloodGroup(it) && it.valueCode == expected }
+        val keep = results.firstOrNull { isBloodGroup(it) && (it.valueCode == expected || IpsBloodGroup.labelOf(it) == canonical) }
         if (keep != null) return results.filter { !isBloodGroup(it) || it === keep }
         val others = results.filterNot { isBloodGroup(it) }
         val derived = IpsBloodGroup.derivedResult(sid, bloodType) ?: return others
