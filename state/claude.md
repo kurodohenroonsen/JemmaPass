@@ -1,16 +1,6 @@
-# État Claude — 2026-10-02
-- Rôle (PROTOCOL §8) : tests + validation + fusion + réorientation. Plus de code d'app ni de doc.
-- Tête de `feat/ips-18-pillars-cleanup` : `c6f66f8` (CI verte, 380 tests ; app identique à `8a675b3`).
-- Envoyé : 0025 (cycle 24), 0026 (quatre couloirs), 0027 (38 tests rouges sur `tests/sd-wave-1` @ 23eeb54).
-- `ag/0030-qa-guard` fusionnée (61e540a, 8/8). Docs UML refusées, spec iOS à corriger → 0032. `ag/0027-impl` @ 03a5b83 ne compile pas (0031). À écrire : tests rouges « allergie sans ATC = CHECKED » et faux positifs `ains`/`statin`. Attend : 0026-*, 0031, 0032, analyse albuterol.
-- SD-22 (mots-clés d'allergie, 3 tests rouges) → 0033. tests/sd-wave-1 @ a3b9b28 : 426 tests, 42 rouges. À écrire encore : « allergie sans ATC = CHECKED ».
-- ag/0027-impl @ de23db1 : compile, 426 tests, 24 rouges (SD-01,02,04,09,10,11,13,14,18,22), pas de régression ; fusion quand vert + cycle 25. Docs f51f1bb : corrections restantes → 0034.
-- ag/0027-impl @ 1874d28 : 19 échecs dont 1 régression (PillarBoundaryRoundTripTest, SD-10 colle l'unité dans le texte) → redirect 0035 ; SD-22 accepté ; SD-14 à refaire avec champ vcs (test à écrire quand le champ existe).
-- 0031-report et 0032-report reçus (commits déjà relus) → ack 0036 renvoyant à 0034 et 0035. Rien fusionné depuis 61e540a.
-- ag/0027-impl @ 2fa3bbd : 426 tests, 2 rouges (SD-11), 0 régression → review 0037 (ordre QR décidé, SD-14 vcs, Log.w, dédoublonnage triage, cycle 25). Fusion quand 0 échec + cycle 25 validé.
-- ag/0027-impl @ e352381 validé (2 rouges SD-11). tests/sd-wave-1 @ cb69a50 : +SD-23 (« 1,000 » → 1, rouge confirmé sur son code) → 0038. Attend : SD-11, SD-23, dédoublonnage triage, cycle 25, docs.
-- Cycle 25 (0034-report-device) REFUSÉ → 0039 : rien publié sur device-reports (toujours 8c70db3), extraits QR inventés (4e fois), validateur absent. Docs fb474cd : relecture n°3 en cours.
-- Docs fb474cd : 3e relecture → 0040 (8 erreurs restantes dont inversion BLE 200/Nearby 131, 13 lignes décalées, sources). Pas fusionné.
-- ag/0027-impl @ 4d07531 : code vague 1 VALIDÉ ; avec tests/sd-wave-1 @ e07f97b → 429 tests, 0 échec (probe/sd23 05f5331). Fusion dans feat dès que cycle 25 validé sur pièces (0039). → ack 0041.
-- ag/0027-impl @ 512c8d2 : CI verte 429/0 (run #53). ag/0039-qa-report @ 619c2f6 : report-raw 6/7 (tests/qa-guard @ 53c7f67) → 0042. Fusion app : attend cycle 25 publié et audité.
-- Docs 2e58e52 : 4e relecture → 0043 (Verdict.Alert inventé, 9 lignes décalées, sources loxoprofène/My Number). Fusionnable après cette liste.
+# État Claude — 2026-10-02 (soir)
+- Rôle (PROTOCOL §8) : tests + validation + fusion + réorientation.
+- `feat/ips-18-pillars-cleanup` @ `d21272c` : vague 1 (SD-01..SD-23) fusionnée, CI 429/0 (run #54). Cycle 25 validé sur pièces (device-reports ff5e4bc).
+- En attente chez Antigravity : report-raw RAW-07/08 (0042, 0044), docs (0043), analyse contacts + guide (0026), SD-06 (0029), PDF 36 Mo + albuterol (0030).
+- À écrire par moi : RAW-08 ; test Patient.contact.relationship codé ; tests SD-06 quand la signature est proposée ; tests du pilier contacts quand l'analyse arrive.
+- Décisions de Kudoro en attente : choix cliniques SD-09 ; directives anticipées sur le QR ; sens de cs/pv ; sections IPS supplémentaires.
