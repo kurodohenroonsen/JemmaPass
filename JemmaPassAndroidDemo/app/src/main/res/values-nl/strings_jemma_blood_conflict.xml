@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Results form : blood-group result contradicting the profile (UC-BLOOD-10..) ─── -->
+    <string name="result_form_blood_conflict_title">Bloedgroep komt niet overeen met het profiel</string>
+    <!-- %1$s = profile blood group (e.g. O+) ; %2$s = blood group of the result being saved -->
+    <string name="result_form_blood_conflict_message">De bloedgroep van het profiel is %1$s. Dit resultaat vermeldt %2$s.\n\nDe bloedgroep in de identiteit is de referentie: een profiel bevat maar één bloedgroep, dus dit resultaat wordt niet opgeslagen.\n\nIs de bloedgroep in de identiteit fout, wijzig hem dan daar — controleer hem eerst met een laboratoriumverslag of een bloedgroepkaart.</string>
+    <string name="result_form_blood_conflict_change">Wijzigen in identiteit</string>
+    <string name="result_form_blood_conflict_cancel">Annuleren</string>
+    <!-- Used as %2$s when the value of the result cannot be read as an ABO/Rh group -->
+    <string name="result_form_blood_conflict_unreadable">een onleesbare waarde</string>
+
+</resources>

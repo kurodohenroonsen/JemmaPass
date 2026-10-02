@@ -45,6 +45,11 @@ enum class KbSafetyVerdict {
 data class PillarCheck<T>(
     val hits: List<T>,
     val status: KbCheckStatus,
+    /**
+     * Exact number of profile entries this pillar could not verify (UC-SAFE-UI-10..).
+     * 0 = none, or not countable (the default for callers that only report a status).
+     */
+    val unverifiedItems: Int = 0,
 )
 
 /** Per-pillar check status of a cross-check result. Defaults to "all checked" for legacy constructors. */
@@ -52,6 +57,13 @@ data class KbCheckReport(
     val allergy: KbCheckStatus = KbCheckStatus.CHECKED,
     val ddi: KbCheckStatus = KbCheckStatus.CHECKED,
     val drugDisease: KbCheckStatus = KbCheckStatus.CHECKED,
+    /**
+     * Exact number of distinct profile entries that could not be verified against the KB
+     * (UC-SAFE-UI-10..), as counted by whoever ran the checks. 0 = nothing unverified, or
+     * not counted : the status fields above stay the authority on whether the checks ran,
+     * this number only feeds the wording ("2 items could not be verified").
+     */
+    val unverifiedItems: Int = 0,
 ) {
     /** Worst of the three pillars. */
     val overall: KbCheckStatus
@@ -105,6 +117,15 @@ object KbSafety {
         itemsUnverified > 0 -> KbCheckStatus.INCOMPLETE
         else -> KbCheckStatus.CHECKED
     }
+
+    /**
+     * Exact unverified-entry count of a report built from several pillars checking the SAME
+     * entries (e.g. the profile medications seen by the DDI and the drug×disease pillars) :
+     * the largest pillar count, capped by the number of entries — summing would count one
+     * medication twice. Negative inputs count as 0.
+     */
+    fun unverifiedItems(itemsTotal: Int, vararg perPillar: Int): Int =
+        (perPillar.maxOrNull() ?: 0).coerceAtLeast(0).coerceAtMost(itemsTotal.coerceAtLeast(0))
 
     fun worst(vararg statuses: KbCheckStatus): KbCheckStatus =
         statuses.maxByOrNull { it.ordinal } ?: KbCheckStatus.CHECKED

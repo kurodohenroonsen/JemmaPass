@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Results form : blood-group result contradicting the profile (UC-BLOOD-10..) ─── -->
+    <string name="result_form_blood_conflict_title">血型与个人资料不一致</string>
+    <!-- %1$s = profile blood group (e.g. O+) ; %2$s = blood group of the result being saved -->
+    <string name="result_form_blood_conflict_message">个人资料中的血型为 %1$s，此结果为 %2$s。\n\n以身份信息中的血型为准：一份资料只能有一个血型，因此不会保存此结果。\n\n如果身份信息中的血型有误，请在那里修改——修改前请先对照化验报告或血型卡核实。</string>
+    <string name="result_form_blood_conflict_change">在身份信息中修改</string>
+    <string name="result_form_blood_conflict_cancel">取消</string>
+    <!-- Used as %2$s when the value of the result cannot be read as an ABO/Rh group -->
+    <string name="result_form_blood_conflict_unreadable">无法识别的值</string>
+
+</resources>

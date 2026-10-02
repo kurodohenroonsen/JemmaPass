@@ -113,6 +113,9 @@ class PatientDetailFragment : Fragment() {
     companion object {
         private const val TAG = "JEMMA-PATIENT"
 
+        /** UC-SAFE-UI — amber of the "not verified" / "incomplete" live-scan badge (white text). */
+        private val LIVESCAN_BADGE_AMBER: Int = 0xFFB45309.toInt()
+
         // 🆕 v4.2 HOTFIX-RESET-PATIENT — mémorisation du dernier peerSid
         // affiché à travers toute l'app. Permet de détecter le changement
         // de patient et reset le LiveScanRepo (Singleton, sinon le verdict
@@ -813,7 +816,10 @@ class PatientDetailFragment : Fragment() {
             }
             is LiveScanState.RenderedWithVerdict -> {
                 val report = state.crossCheckReport
-                val severity = report.overall
+                // UC-SAFE-UI — the green banner needs a CLEAN verdict, not just `overall == NONE`.
+                val severity = if (report.overall == Severity.NONE &&
+                    !LiveScanVerdictBadge.isGreen(LiveScanVerdictBadge.statusBadge(report))
+                ) Severity.MODERATE else report.overall
                 val (bgColor, prefix) = when (severity) {
                     Severity.MAJOR -> 0xFFDC2626.toInt() to "🚨"
                     Severity.MODERATE -> 0xFFEA580C.toInt() to "⚠️"
@@ -857,11 +863,10 @@ class PatientDetailFragment : Fragment() {
                 report.conditionHits.forEach { h ->
                     badges.addView(buildLiveScanBadge("🩺 ${h.conditionName}", h.severity))
                 }
-                if (report.allergyHits.isEmpty() && report.ddiHits.isEmpty() && report.conditionHits.isEmpty()) {
-                    badges.addView(buildLiveScanBadge(
-                        "✓ ${getString(R.string.livescan_verdict_safe)}",
-                        Severity.NONE,
-                    ))
+                // UC-SAFE-UI — empty hit lists are not "safe" : green only for a CLEAN,
+                // fully run check ; otherwise an amber "not verified" / "incomplete" badge.
+                LiveScanVerdictBadge.statusBadge(report)?.let { kind ->
+                    badges.addView(buildLiveScanStatusBadge(kind))
                 }
                 val durationSuffix = if (state.phaseCDurationMs > 0) " · ${state.phaseCDurationMs}ms" else ""
                 zoneTts.text = "🔊 \"${state.ttsStaticPhrase}\"$durationSuffix"
@@ -948,6 +953,33 @@ class PatientDetailFragment : Fragment() {
             )
             lp.setMargins(0, 4, 0, 4)
             layoutParams = lp
+        }
+    }
+
+    /**
+     * UC-SAFE-UI — status badge under the hit badges : green "safe" for a CLEAN check,
+     * amber "not verified" / "incomplete" otherwise (see [LiveScanVerdictBadge]).
+     */
+    private fun buildLiveScanStatusBadge(kind: LiveScanVerdictBadge.Kind): TextView {
+        return when (kind) {
+            LiveScanVerdictBadge.Kind.SAFE -> buildLiveScanBadge(
+                "✓ ${getString(R.string.livescan_verdict_safe)}",
+                Severity.NONE,
+            ).apply { contentDescription = getString(R.string.livescan_verdict_safe) }
+            LiveScanVerdictBadge.Kind.NOT_VERIFIED -> buildLiveScanBadge(
+                getString(R.string.livescan_badge_not_verified),
+                Severity.MODERATE,
+            ).apply {
+                setBackgroundColor(LIVESCAN_BADGE_AMBER)
+                contentDescription = getString(R.string.livescan_badge_not_verified_desc)
+            }
+            LiveScanVerdictBadge.Kind.INCOMPLETE -> buildLiveScanBadge(
+                getString(R.string.livescan_badge_incomplete),
+                Severity.MODERATE,
+            ).apply {
+                setBackgroundColor(LIVESCAN_BADGE_AMBER)
+                contentDescription = getString(R.string.livescan_badge_incomplete_desc)
+            }
         }
     }
 

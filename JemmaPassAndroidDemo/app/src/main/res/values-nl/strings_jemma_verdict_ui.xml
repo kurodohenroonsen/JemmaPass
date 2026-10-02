@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Live scan panel : status badge when the check is not CLEAN (UC-SAFE-UI-2x) ─── -->
+    <string name="livescan_badge_not_verified">⚠ Niet gecontroleerd — veiligheidscontrole is niet uitgevoerd</string>
+    <string name="livescan_badge_incomplete">⚠ Controle onvolledig — niet volledig gecontroleerd</string>
+    <!-- Screen-reader descriptions -->
+    <string name="livescan_badge_not_verified_desc">Waarschuwing: de veiligheidscontrole is niet uitgevoerd. Dit geneesmiddel is niet gecontroleerd. Vraag een apotheker of arts.</string>
+    <string name="livescan_badge_incomplete_desc">Waarschuwing: de veiligheidscontrole is onvolledig. Een deel van het profiel kon niet worden gecontroleerd. Vraag een apotheker of arts.</string>
+
+    <!-- ─── Allergy form : "Safety check incomplete" dialog (UC-SAFE-UI-2x) ─── -->
+    <string name="allergy_form_xchk_gap_title">⚠ Veiligheidscontrole onvolledig</string>
+    <string name="allergy_form_xchk_gap_not_run">De veiligheidscontrole met de geneesmiddelen van dit profiel kon niet worden uitgevoerd. Voor deze allergie is niets gecontroleerd.</string>
+    <!-- %1$s = comma-separated medication names -->
+    <string name="allergy_form_xchk_gap_unchecked_meds">Deze geneesmiddelen konden NIET met deze allergie worden gecontroleerd (geen code, of de opzoeking is mislukt): %1$s</string>
+    <string name="allergy_form_xchk_gap_incomplete">De veiligheidscontrole met de geneesmiddelen van dit profiel is slechts gedeeltelijk uitgevoerd. Sommige geneesmiddelen zijn voor deze allergie niet gecontroleerd.</string>
+
+</resources>

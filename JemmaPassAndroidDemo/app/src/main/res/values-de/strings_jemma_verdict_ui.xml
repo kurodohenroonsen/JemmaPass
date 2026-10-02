@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Live scan panel : status badge when the check is not CLEAN (UC-SAFE-UI-2x) ─── -->
+    <string name="livescan_badge_not_verified">⚠ Nicht geprüft — Sicherheitsprüfung wurde nicht ausgeführt</string>
+    <string name="livescan_badge_incomplete">⚠ Prüfung unvollständig — nicht vollständig geprüft</string>
+    <!-- Screen-reader descriptions -->
+    <string name="livescan_badge_not_verified_desc">Warnung: Die Sicherheitsprüfung wurde nicht ausgeführt. Dieses Medikament wurde nicht geprüft. Fragen Sie einen Apotheker oder Arzt.</string>
+    <string name="livescan_badge_incomplete_desc">Warnung: Die Sicherheitsprüfung ist unvollständig. Ein Teil des Profils konnte nicht geprüft werden. Fragen Sie einen Apotheker oder Arzt.</string>
+
+    <!-- ─── Allergy form : "Safety check incomplete" dialog (UC-SAFE-UI-2x) ─── -->
+    <string name="allergy_form_xchk_gap_title">⚠ Sicherheitsprüfung unvollständig</string>
+    <string name="allergy_form_xchk_gap_not_run">Die Sicherheitsprüfung gegen die Medikamente dieses Profils konnte nicht ausgeführt werden. Für diese Allergie wurde nichts geprüft.</string>
+    <!-- %1$s = comma-separated medication names -->
+    <string name="allergy_form_xchk_gap_unchecked_meds">Diese Medikamente konnten NICHT gegen diese Allergie geprüft werden (kein Code oder Abfrage fehlgeschlagen): %1$s</string>
+    <string name="allergy_form_xchk_gap_incomplete">Die Sicherheitsprüfung gegen die Medikamente dieses Profils wurde nur teilweise ausgeführt. Einige Medikamente wurden für diese Allergie nicht geprüft.</string>
+
+</resources>

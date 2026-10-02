@@ -14,8 +14,12 @@
  *
  * The verdict text is what we expose in `Verdict.AgentText`. No structured
  * severity is enforced — the language model already synthesized a
- * stress-readable message. The CROSS_CHECK step is marked OK as soon as
- * Gemma returns (because Gemma already cross-checked via the second tool).
+ * stress-readable message. UC-SAFE-SCAN-3x : the CROSS_CHECK step is OK only
+ * when the checkInteractions tool was really invoked during this scan and
+ * answered CLEAN or ALERT (see MedScanStepSafety). If Gemma skipped the tool,
+ * or the check came back NOT_CHECKED / INCOMPLETE, the step is shown as
+ * NOT VERIFIED and Gemma's prose is replaced by a "could not be verified —
+ * ask a pharmacist or a doctor" notice.
  *
  * Why this design (vs the previous strict-JSON 5-step pipeline) :
  *
@@ -245,18 +249,22 @@ class MedScanController @Inject constructor(
         // Build per-scan tools. SearchDrugCandidatesTool is stateless; we
         // rebuild it anyway for clean isolation. CheckInteractionsTool is
         // bound to THIS scan's profile and language via constructor closure.
+        val checkTool = CheckInteractionsTool(
+            kb = kb,
+            xcheck = xcheck,
+            allergies = profile.allergies,
+            medications = profile.medications,
+            conditions = profile.conditions,
+            victimDisplayName = profile.displayName,
+            victimLang = lang,
+        )
         val perScanTools = listOf(
             tool(SearchDrugCandidatesTool(kb)),
-            tool(CheckInteractionsTool(
-                kb = kb,
-                xcheck = xcheck,
-                allergies = profile.allergies,
-                medications = profile.medications,
-                conditions = profile.conditions,
-                victimDisplayName = profile.displayName,
-                victimLang = lang,
-            )),
+            tool(checkTool),
         )
+        // UC-SAFE-SCAN-3x — the model may skip the tool : only a counter that moved
+        // during this scan proves the cross-check ran.
+        val checkCallsBefore = checkTool.invocationCount
 
         val verdictText: String = try {
             gemma.ask(
@@ -296,11 +304,39 @@ class MedScanController @Inject constructor(
             return
         }
 
+        // UC-SAFE-SCAN-3x — never mark the safety check OK on the model's word alone.
+        val decision = MedScanStepSafety.decide(
+            invocationsBefore = checkCallsBefore,
+            invocationsAfter = checkTool.invocationCount,
+            lastVerdict = checkTool.lastVerdict,
+        )
+        if (!decision.agentTextTrusted) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ cross-check NOT VERIFIED · outcome=${decision.outcome} · " +
+                "toolCalls=${checkTool.invocationCount - checkCallsBefore} · lastVerdict=${checkTool.lastVerdict} · " +
+                "agent text discarded : '${cleanText.take(160)}'")
+            // The agent's prose may claim "safe" : it is not shown, neither in the
+            // timeline nor in the banner.
+            mark(StepKey.GEMMA_REASON, StepLifecycle.WARN,
+                detail = MedScanStepSafety.AGENT_DETAIL_UNTRUSTED,
+                durationMs = agentMs)
+            mark(StepKey.CROSS_CHECK, decision.lifecycle,
+                detail = decision.detail,
+                durationMs = 0L)
+            settleVerdict(
+                Verdict.Failed(
+                    stage = StepKey.CROSS_CHECK,
+                    reason = MedScanStepSafety.notVerifiedNotice(lang, decision.outcome),
+                ),
+                tStart,
+            )
+            return
+        }
+
         mark(StepKey.GEMMA_REASON, StepLifecycle.OK,
             detail = cleanText.take(120),
             durationMs = agentMs)
-        mark(StepKey.CROSS_CHECK, StepLifecycle.OK,
-            detail = "via @Tool checkInteractions",
+        mark(StepKey.CROSS_CHECK, decision.lifecycle,
+            detail = decision.detail,
             durationMs = 0L)
 
         Log.i(TAG, "[t=${System.currentTimeMillis()}] ✅ Gemma agent verdict (${agentMs}ms) : '${cleanText.take(160)}'")
@@ -431,8 +467,11 @@ class MedScanController @Inject constructor(
           Call checkInteractions(atcCode=...) with the ATC of your chosen
           candidate. The tool returns the victim's allergies, current
           medications, and conditions that may collide with this drug,
-          plus a severity_overall ("MAJOR", "MODERATE", or "NONE") and
+          plus a severity_overall ("MAJOR", "MODERATE", "NONE",
+          "INCOMPLETE" or "NOT_CHECKED"), an "instruction" to follow, and
           the victim's preferred language.
+          This call is MANDATORY. Never write a verdict about safety
+          without having called checkInteractions in this conversation.
 
         Final output — write the verdict for the rescuer
           Write a SHORT verdict (2 sentences max) in the victim's
@@ -448,8 +487,15 @@ class MedScanController @Inject constructor(
               and the drug name.
             • If severity_overall is MODERATE — say "Caution" / "Prudence"
               / "注意", then explain.
-            • If severity_overall is NONE — say it's safe to administer,
+            • If severity_overall is NONE — say that no allergy,
+              interaction or contraindication was found for this victim,
               with the drug's display name for confirmation.
+            • If severity_overall is NOT_CHECKED or INCOMPLETE, or the
+              tool answer has an "error" field, or you did not call
+              checkInteractions — say the safety check could not be
+              completed and advise asking a pharmacist or a doctor before
+              giving the drug. NEVER say the drug is safe, fine or OK in
+              that case, even if you believe it is.
             • If you couldn't identify the drug confidently — say "Drug
               not confidently identified" in the victim's language and ask
               the rescuer to retake the photo or check the packaging.

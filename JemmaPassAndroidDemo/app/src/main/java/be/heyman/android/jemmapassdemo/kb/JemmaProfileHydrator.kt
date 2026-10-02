@@ -744,13 +744,7 @@ class JemmaProfileHydrator @Inject constructor(
         else -> ClinicalStatus.ACTIVE   // FHIR R4 IPS default
     }
 
-    private fun parseMedicationRoute(s: String?): MedicationRoute = when (s?.uppercase()) {
-        "O" -> MedicationRoute.ORAL
-        "I" -> MedicationRoute.INJECTION
-        "T" -> MedicationRoute.TOPICAL
-        "S" -> MedicationRoute.SUBCUTANEOUS
-        else -> MedicationRoute.UNKNOWN
-    }
+    private fun parseMedicationRoute(s: String?): MedicationRoute = MedicationRoute.fromShortCode(s)
 
     /**
      * 🆕 Lot 14.5c7 — Inférence ATC depuis nom d'allergie.
@@ -958,4 +952,25 @@ data class DrugDiseaseAlert(
 
 enum class AllergyCriticality { HIGH, LOW, UNABLE_TO_ASSESS }
 enum class ClinicalStatus { ACTIVE, INACTIVE, RESOLVED }
-enum class MedicationRoute { ORAL, INJECTION, TOPICAL, SUBCUTANEOUS, UNKNOWN }
+enum class MedicationRoute {
+    ORAL, INJECTION, TOPICAL, SUBCUTANEOUS,
+
+    /** `md[].r` = "H" — inhaler / nebuliser (UC-MED-ROUTE-20..). Never an injection. */
+    INHALED,
+    UNKNOWN;
+
+    companion object {
+        /**
+         * `md[].r` short code → route. "I" stays injection (entries saved before "H" existed
+         * are not migrated) ; anything unrecognised is UNKNOWN, never guessed.
+         */
+        fun fromShortCode(s: String?): MedicationRoute = when (s?.trim()?.uppercase(java.util.Locale.ROOT)) {
+            "O" -> ORAL
+            "I" -> INJECTION
+            "T" -> TOPICAL
+            "S" -> SUBCUTANEOUS
+            "H" -> INHALED
+            else -> UNKNOWN
+        }
+    }
+}

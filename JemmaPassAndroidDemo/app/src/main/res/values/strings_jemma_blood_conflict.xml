@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Results form : blood-group result contradicting the profile (UC-BLOOD-10..) ─── -->
+    <string name="result_form_blood_conflict_title">Blood group does not match the profile</string>
+    <!-- %1$s = profile blood group (e.g. O+) ; %2$s = blood group of the result being saved -->
+    <string name="result_form_blood_conflict_message">The profile’s blood group is %1$s. This result says %2$s.\n\nThe blood group in identity is the reference: a profile holds only one blood group, so this result is not saved.\n\nIf the blood group in identity is wrong, change it there — check it against a laboratory report or a blood group card first.</string>
+    <string name="result_form_blood_conflict_change">Change it in identity</string>
+    <string name="result_form_blood_conflict_cancel">Cancel</string>
+    <!-- Used as %2$s when the value of the result cannot be read as an ABO/Rh group -->
+    <string name="result_form_blood_conflict_unreadable">an unreadable value</string>
+
+</resources>

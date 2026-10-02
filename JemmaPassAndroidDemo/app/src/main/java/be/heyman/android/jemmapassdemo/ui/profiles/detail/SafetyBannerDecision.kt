@@ -8,6 +8,7 @@
  */
 package be.heyman.android.jemmapassdemo.ui.profiles.detail
 
+import be.heyman.android.jemmapassdemo.kb.KbCheckReport
 import be.heyman.android.jemmapassdemo.kb.KbCheckStatus
 import be.heyman.android.jemmapassdemo.kb.KbSafety
 import be.heyman.android.jemmapassdemo.kb.KbSafetyVerdict
@@ -81,8 +82,18 @@ object SafetyBannerDecision {
     }
 
     /**
+     * UC-SAFE-UI-10.. — same decision from the check report itself : the number shown is the
+     * exact [KbCheckReport.unverifiedItems] counted by the checks, not a guess rebuilt by the
+     * screen. A report without a count (0) gives the wording without a number.
+     */
+    fun decide(checks: KbCheckReport, totalAlerts: Int, majorAlerts: Int): SafetyBannerState =
+        decide(checks.overall, totalAlerts, majorAlerts, checks.unverifiedItems)
+
+    /**
      * Medications that cannot be looked up in the KB : no ATC code at all
      * (typically a free-text entry). One flag per medication, true = has a code.
+     * Approximation kept for callers without a report : prefer [decide] with the
+     * [KbCheckReport], whose count also covers query errors and unusable conditions.
      */
     fun countUnverified(hasAnyCode: List<Boolean>): Int = hasAnyCode.count { !it }
 }

@@ -84,7 +84,6 @@ import be.heyman.android.jemmapassdemo.qr.JReaction
 import be.heyman.android.jemmapassdemo.ui.common.IpsCodePickerDialog
 import be.heyman.android.jemmapassdemo.ui.common.IpsPickerItem
 import be.heyman.android.jemmapassdemo.ui.profile.common.SingleShotGuard
-import be.heyman.android.jemmapassdemo.ui.profile.medications.MedicationFormLogic
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -488,7 +487,14 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
                 lang = lang,
             )
             if (result == null || result.isEmpty) {
-                Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 xchk clean on pick · $display")
+                // No hit ≠ clean : an unverified check is reported at submit (verdict).
+                if (AllergyFormSafetyLogic.isCleanAtPick(result)) {
+                    Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 xchk clean on pick · $display")
+                } else {
+                    Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk on pick NOT verified · " +
+                        "verdict=${result?.verdict} · status=${result?.status} · " +
+                        "unchecked=${result?.uncheckedMeds?.size}")
+                }
                 return@launch
             }
             Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk hits on pick · " +
@@ -515,16 +521,26 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
 
     /**
      * Cross-check trigger 2/2 : called at submit. If hits, shows the alert
-     * with [Review] (stay in form) / [Save anyway] (commit). If no profile
-     * or no hits, calls proceed() directly.
+     * with [Review] (stay in form) / [Save anyway] (commit).
+     *
+     * UC-SAFE-UI — "no hit" commits directly ONLY when the check is CLEAN
+     * (or there is no stored medication). A check that did not run or ran
+     * only partly shows the "Safety check incomplete" dialog first
+     * (see [AllergyFormSafetyLogic]).
      */
     private fun runCrossCheckAtSubmit(display: String, proceed: () -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val profile = loadProfileSnapshotForXchk()
                 if (profile == null) {
-                    Log.i(TAG, "[t=${System.currentTimeMillis()}] ↪ no profile snapshot — skip xchk, commit")
-                    proceed()
+                    // Nothing could be compared : say so instead of saving silently.
+                    Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ no profile snapshot — xchk not run")
+                    confirmSafetyGapsThen(
+                        AllergyFormSafetyLogic.safetyCheckGaps(
+                            profileAvailable = false, storedMedCount = 0, result = null,
+                        ),
+                        proceed,
+                    )
                     return@launch
                 }
                 val result = crossCheckHelper.checkNewAllergyAgainstMeds(
@@ -534,13 +550,17 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
                     profile = profile,
                     lang = lang,
                 )
-                // Medications without a code are skipped by the check : say so before
-                // committing instead of letting "no hit" read as "verified".
-                val uncheckedMeds = MedicationFormLogic.uncodedLabels(profile.md)
+                // The verdict of the check decides (KbSafety) : only CLEAN saves without a
+                // dialog ; NOT_CHECKED / INCOMPLETE show "Safety check incomplete".
+                val gaps = AllergyFormSafetyLogic.safetyCheckGaps(
+                    profileAvailable = true,
+                    storedMedCount = profile.md.size,
+                    result = result,
+                )
                 if (result == null || result.isEmpty) {
-                    Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 xchk clean on submit · " +
-                        "uncheckedMeds=${uncheckedMeds.size}")
-                    confirmUncheckedMedsThen(uncheckedMeds, proceed)
+                    Log.d(TAG, "[t=${System.currentTimeMillis()}] 🟢 no xchk hit on submit · " +
+                        "verdict=${result?.verdict} · status=${result?.status} · gaps=$gaps")
+                    confirmSafetyGapsThen(gaps, proceed)
                     return@launch
                 }
                 Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk hits on submit · hits=${result.hits.size}")
@@ -556,7 +576,7 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
                         candidateDisplay = display,
                         onConfirm = {
                             Log.i(TAG, "[t=${System.currentTimeMillis()}] ✓ user confirmed save anyway")
-                            confirmUncheckedMedsThen(uncheckedMeds, proceed)
+                            confirmSafetyGapsThen(gaps, proceed)
                         },
                         onCancel = {
                             Log.i(TAG, "[t=${System.currentTimeMillis()}] ✗ user cancelled — stay in form")
@@ -577,11 +597,17 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
     }
 
     /**
-     * Shows which medications of the profile could not be checked against this allergy
-     * (no code), then [proceed] on "Save anyway". Calls [proceed] directly when there is none.
+     * Tells the user what the safety check could not verify (check not run, medications
+     * that could not be compared, partial check), then [proceed] on "Save anyway".
+     * Calls [proceed] directly when the check was complete. "Review" / back / tap
+     * outside release the single-shot save guard so the form can be submitted again.
      */
-    private fun confirmUncheckedMedsThen(uncheckedMeds: List<String>, proceed: () -> Unit) {
-        if (uncheckedMeds.isEmpty()) {
+    private fun confirmSafetyGapsThen(
+        gaps: AllergyFormSafetyLogic.SafetyCheckGaps,
+        proceed: () -> Unit,
+    ) {
+        val kind = AllergyFormSafetyLogic.gapMessage(gaps)
+        if (kind == null) {
             proceed()
             return
         }
@@ -590,12 +616,18 @@ class AllergyFormBottomSheet : BottomSheetDialogFragment() {
             releaseSubmit()
             return
         }
-        Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk gap · ${uncheckedMeds.size} med(s) without code not checked")
+        val message = when (kind) {
+            AllergyFormSafetyLogic.GapMessage.NOT_RUN ->
+                getString(R.string.allergy_form_xchk_gap_not_run)
+            AllergyFormSafetyLogic.GapMessage.UNCHECKED_MEDS ->
+                getString(R.string.allergy_form_xchk_gap_unchecked_meds, gaps.uncheckedMeds.joinToString(", "))
+            AllergyFormSafetyLogic.GapMessage.INCOMPLETE ->
+                getString(R.string.allergy_form_xchk_gap_incomplete)
+        }
+        Log.i(TAG, "[t=${System.currentTimeMillis()}] ⚠ xchk gap shown · $gaps")
         MaterialAlertDialogBuilder(ctx)
-            .setTitle(R.string.medication_form_xchk_gap_title)
-            .setMessage(
-                getString(R.string.medication_form_xchk_gap_uncoded_meds, uncheckedMeds.joinToString(", ")),
-            )
+            .setTitle(R.string.allergy_form_xchk_gap_title)
+            .setMessage(message)
             .setPositiveButton(R.string.xchk_save_anyway) { _, _ -> proceed() }
             .setNegativeButton(R.string.xchk_cancel) { _, _ -> releaseSubmit() }
             .setOnCancelListener { releaseSubmit() }

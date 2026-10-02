@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Results form : blood-group result contradicting the profile (UC-BLOOD-10..) ─── -->
+    <string name="result_form_blood_conflict_title">血液型がプロフィールと一致しません</string>
+    <!-- %1$s = profile blood group (e.g. O+) ; %2$s = blood group of the result being saved -->
+    <string name="result_form_blood_conflict_message">プロフィールの血液型は %1$s です。この結果は %2$s となっています。\n\n本人情報の血液型が基準です。プロフィールに登録できる血液型は1つだけのため、この結果は保存されません。\n\n本人情報の血液型が誤っている場合は、そちらで変更してください。変更前に検査報告書または血液型カードで確認してください。</string>
+    <string name="result_form_blood_conflict_change">本人情報で変更する</string>
+    <string name="result_form_blood_conflict_cancel">キャンセル</string>
+    <!-- Used as %2$s when the value of the result cannot be read as an ABO/Rh group -->
+    <string name="result_form_blood_conflict_unreadable">読み取れない値</string>
+
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Live scan panel : status badge when the check is not CLEAN (UC-SAFE-UI-2x) ─── -->
+    <string name="livescan_badge_not_verified">⚠ 未核查 — 安全检查未运行</string>
+    <string name="livescan_badge_incomplete">⚠ 检查不完整 — 仅部分核查</string>
+    <!-- Screen-reader descriptions -->
+    <string name="livescan_badge_not_verified_desc">警告：安全检查未运行。此药物未经核查。请咨询药剂师或医生。</string>
+    <string name="livescan_badge_incomplete_desc">警告：安全检查不完整。档案中的部分内容无法核查。请咨询药剂师或医生。</string>
+
+    <!-- ─── Allergy form : "Safety check incomplete" dialog (UC-SAFE-UI-2x) ─── -->
+    <string name="allergy_form_xchk_gap_title">⚠ 安全检查不完整</string>
+    <string name="allergy_form_xchk_gap_not_run">未能对此档案中的药物运行安全检查。此过敏未经任何核查。</string>
+    <!-- %1$s = comma-separated medication names -->
+    <string name="allergy_form_xchk_gap_unchecked_meds">以下药物无法与此过敏进行核对（没有编码，或查询失败）：%1$s</string>
+    <string name="allergy_form_xchk_gap_incomplete">对此档案中药物的安全检查仅部分运行。部分药物未针对此过敏进行核查。</string>
+
+</resources>

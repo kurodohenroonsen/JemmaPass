@@ -11,6 +11,10 @@
  *   - Reference range    : low / high (same unit)
  *   - Date (effective), status, performer, note
  *
+ * UC-BLOOD-10.. — a blood-group result (LOINC 882-1) that contradicts the profile's blood
+ * group (`p.bt`, edited in identity) is refused before saving : a profile holds one blood
+ * group only. The sheet reads `p.bt` itself through ProfilesRepository.
+ *
  * Validation errors are inline (TextInputLayout.error) + toast + Log.w ; Save is
  * debounced ; Delete in EDIT mode.
  *
@@ -27,6 +31,8 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import be.heyman.android.jemmapassdemo.R
 import be.heyman.android.jemmapassdemo.databinding.BottomSheetResultFormBinding
 import be.heyman.android.jemmapassdemo.ips.IpsBloodGroup
@@ -41,6 +47,7 @@ import be.heyman.android.jemmapassdemo.pillars.IpsResultCategoryCatalog
 import be.heyman.android.jemmapassdemo.pillars.IpsResultInterpretationCatalog
 import be.heyman.android.jemmapassdemo.pillars.IpsResultStatusCatalog
 import be.heyman.android.jemmapassdemo.pillars.ResultValueKind
+import be.heyman.android.jemmapassdemo.profiles.ProfilesRepository
 import be.heyman.android.jemmapassdemo.ui.common.IpsCodePickerDialog
 import be.heyman.android.jemmapassdemo.ui.common.IpsPickerItem
 import be.heyman.android.jemmapassdemo.ui.common.normalizeForPickerSearch
@@ -51,13 +58,60 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 enum class ResultFormMode { CREATE, EDIT }
 
+/**
+ * UC-BLOOD-10.. — may this result be saved next to the profile's blood group ? Pure Kotlin.
+ *
+ * Stricter than [IpsBloodGroup.contradictsProfile] on purpose : a bare 882-1 value (no date,
+ * no note) with another group "looks derived" to the repository, which would replace it by
+ * the profile value without a word. In the form the user just typed it, so it is refused too.
+ */
+internal object ResultBloodGroupGuard {
+
+    data class Conflict(
+        /** Canonical profile blood group ("O+") — the reference. */
+        val profileBloodGroup: String,
+        /** Canonical group of the result being saved ("A+"), null when it cannot be read. */
+        val entered: String?,
+    )
+
+    /**
+     * Null = no objection : not a blood-group result, the profile has no (recognised) blood
+     * group, or both state the same group. A 882-1 result whose value cannot be read as an
+     * ABO/Rh group is a conflict as well : it cannot be shown to agree with the profile.
+     */
+    fun check(
+        code: String?,
+        valueCode: String?,
+        valueDisplay: String?,
+        valueText: String?,
+        profileBloodType: String?,
+    ): Conflict? {
+        if (code?.trim() != IpsBloodGroup.LOINC_ABO_RH) return null
+        val expected = IpsBloodGroup.normalize(profileBloodType) ?: return null
+        val entered = IpsBloodGroup.labelOf(
+            IpsResult(
+                id = "blood-group-check",
+                code = IpsBloodGroup.LOINC_ABO_RH,
+                valueCode = valueCode,
+                valueDisplay = valueDisplay,
+                valueText = valueText,
+            ),
+        )
+        return if (entered == expected) null else Conflict(expected, entered)
+    }
+}
+
+@AndroidEntryPoint
 class ResultFormBottomSheet : BottomSheetDialogFragment() {
 
     companion object {
@@ -85,13 +139,22 @@ class ResultFormBottomSheet : BottomSheetDialogFragment() {
         const val ARG_PERFORMER = "performer"
         const val ARG_NOTE = "note"
         const val ARG_DELETE = "delete"
+        /** Profile being edited (optional : resolved from the Results screen when absent). */
+        const val ARG_PROFILE_ID = "profile_id"
+        private const val NAV_ARG_PROFILE_ID = "profileId"
 
         private val ISO_DATE_REGEX = Regex("^\\d{4}(-\\d{2}(-\\d{2})?)?$")
 
-        fun newInstance(mode: ResultFormMode, lang: String, existing: IpsResult? = null): ResultFormBottomSheet =
+        fun newInstance(
+            mode: ResultFormMode,
+            lang: String,
+            existing: IpsResult? = null,
+            profileId: String? = null,
+        ): ResultFormBottomSheet =
             ResultFormBottomSheet().apply {
                 arguments = bundleOf(
                     ARG_MODE to mode.name,
+                    ARG_PROFILE_ID to profileId,
                     ARG_ID to existing?.id,
                     ARG_LANG to lang,
                     ARG_CODE to existing?.code,
@@ -114,6 +177,8 @@ class ResultFormBottomSheet : BottomSheetDialogFragment() {
                 )
             }
     }
+
+    @Inject lateinit var profilesRepo: ProfilesRepository
 
     private var _binding: BottomSheetResultFormBinding? = null
     private val binding get() = _binding!!
@@ -414,32 +479,123 @@ class ResultFormBottomSheet : BottomSheetDialogFragment() {
         }
         val date = pickedDateIso?.takeIf { it.isNotBlank() && ISO_DATE_REGEX.matches(it) }
 
-        Log.i(TAG, "[t=${System.currentTimeMillis()}] 💾 submit · mode=$mode · code=$code · value='$rawValue' · numeric=${numeric != null} · unit=$pickedUnit · coded=$pickedValueCode · date=$date")
-        setFragmentResult(
-            RESULT_KEY,
-            bundleOf(
-                ARG_MODE to mode.name,
-                ARG_ID to arguments?.getString(ARG_ID),
-                ARG_CODE to code,
-                ARG_CODE_SYSTEM to (if (code != null) (pickedCodeSystem ?: IpsCodeSystems.LOINC) else null),
-                ARG_DISPLAY to (if (code != null) pickedDisplay else null),
-                ARG_TEXT to (if (code == null) freeText else null),
-                ARG_DATE to date,
-                ARG_STATUS to pickedStatus,
-                ARG_CATEGORY to pickedCategory,
-                ARG_VALUE to (if (!isCodedTest && numeric != null) numeric else null),
-                ARG_UNIT to (if (!isCodedTest && numeric != null) pickedUnit else null),
-                ARG_VALUE_CODE to (if (isCodedTest) pickedValueCode else null),
-                ARG_VALUE_DISPLAY to (if (isCodedTest) pickedValueDisplay else null),
-                ARG_VALUE_TEXT to (if (!isCodedTest && numeric == null) rawValue else null),
-                ARG_INTERPRETATION to pickedInterpretation,
-                ARG_REF_LOW to (if (!isCodedTest) low else null),
-                ARG_REF_HIGH to (if (!isCodedTest) high else null),
-                ARG_PERFORMER to binding.resultFormPerformer.text?.toString()?.trim()?.ifBlank { null },
-                ARG_NOTE to binding.resultFormNote.text?.toString()?.trim()?.ifBlank { null },
-            ),
-        )
+        val coded = isCodedTest
+        val deliver = {
+            Log.i(TAG, "[t=${System.currentTimeMillis()}] 💾 submit · mode=$mode · code=$code · value='$rawValue' · numeric=${numeric != null} · unit=$pickedUnit · coded=$pickedValueCode · date=$date")
+            setFragmentResult(
+                RESULT_KEY,
+                bundleOf(
+                    ARG_MODE to mode.name,
+                    ARG_ID to arguments?.getString(ARG_ID),
+                    ARG_CODE to code,
+                    ARG_CODE_SYSTEM to (if (code != null) (pickedCodeSystem ?: IpsCodeSystems.LOINC) else null),
+                    ARG_DISPLAY to (if (code != null) pickedDisplay else null),
+                    ARG_TEXT to (if (code == null) freeText else null),
+                    ARG_DATE to date,
+                    ARG_STATUS to pickedStatus,
+                    ARG_CATEGORY to pickedCategory,
+                    ARG_VALUE to (if (!isCodedTest && numeric != null) numeric else null),
+                    ARG_UNIT to (if (!isCodedTest && numeric != null) pickedUnit else null),
+                    ARG_VALUE_CODE to (if (isCodedTest) pickedValueCode else null),
+                    ARG_VALUE_DISPLAY to (if (isCodedTest) pickedValueDisplay else null),
+                    ARG_VALUE_TEXT to (if (!isCodedTest && numeric == null) rawValue else null),
+                    ARG_INTERPRETATION to pickedInterpretation,
+                    ARG_REF_LOW to (if (!isCodedTest) low else null),
+                    ARG_REF_HIGH to (if (!isCodedTest) high else null),
+                    ARG_PERFORMER to binding.resultFormPerformer.text?.toString()?.trim()?.ifBlank { null },
+                    ARG_NOTE to binding.resultFormNote.text?.toString()?.trim()?.ifBlank { null },
+                ),
+            )
+            dismiss()
+        }
+
+        // UC-BLOOD-10.. — a blood-group result is only saved when it agrees with the profile.
+        if (code?.trim() != IpsBloodGroup.LOINC_ABO_RH) {
+            deliver()
+            return
+        }
+        val valueCode = if (coded) pickedValueCode else null
+        val valueDisplay = if (coded) pickedValueDisplay else null
+        val valueText = if (!coded && numeric == null) rawValue else null
+        viewLifecycleOwner.lifecycleScope.launch {
+            val pid = resolveProfileId()
+            val profile = try {
+                pid?.let { profilesRepo.loadProfile(it) }
+            } catch (e: Exception) {
+                Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ blood group check: profile $pid unreadable : ${e.message}")
+                null
+            }
+            if (_binding == null) return@launch
+            if (isStateSaved) {
+                // Too late to deliver a result or show a dialog : nothing saved, Save stays usable.
+                binding.resultFormSaveBtn.isEnabled = true
+                return@launch
+            }
+            if (profile == null) {
+                // No profile to compare with : the repository still keeps a single blood group
+                // on write (IpsBloodGroup.reconcile) and reports what it replaced.
+                Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ blood group check skipped: no profile (id=$pid)")
+            }
+            val conflict = ResultBloodGroupGuard.check(code, valueCode, valueDisplay, valueText, profile?.p?.bt)
+            if (conflict == null) {
+                deliver()
+            } else {
+                Log.w(TAG, "[t=${System.currentTimeMillis()}] 🩸⚠ blood group result ${conflict.entered ?: "?"} contradicts the profile (${conflict.profileBloodGroup}) — not saved")
+                showBloodGroupConflict(conflict, pid)
+            }
+        }
+    }
+
+    // ─── Blood group vs profile (UC-BLOOD-10..) ──────────────────────
+
+    /** The form's own argument, else the `profileId` of the Results screen, else the active profile. */
+    private fun resolveProfileId(): String? {
+        arguments?.getString(ARG_PROFILE_ID)?.takeIf { it.isNotBlank() }?.let { return it }
+        val fromNav = try {
+            findNavController().currentBackStackEntry
+                ?.takeIf { it.destination.id == R.id.dest_results }
+                ?.arguments?.getString(NAV_ARG_PROFILE_ID)?.takeIf { it.isNotBlank() }
+        } catch (e: Exception) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ no nav controller to read the profile id : ${e.message}")
+            null
+        }
+        return fromNav ?: profilesRepo.currentProfileId
+    }
+
+    /** Blocking explanation : nothing is saved, whichever button is used. */
+    private fun showBloodGroupConflict(conflict: ResultBloodGroupGuard.Conflict, profileId: String?) {
+        binding.resultFormSaveBtn.isEnabled = true
+        val entered = conflict.entered ?: getString(R.string.result_form_blood_conflict_unreadable)
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.result_form_blood_conflict_title)
+            .setMessage(getString(R.string.result_form_blood_conflict_message, conflict.profileBloodGroup, entered))
+            .setCancelable(false)
+            .setNegativeButton(R.string.result_form_blood_conflict_cancel) { d, _ ->
+                Log.i(TAG, "[t=${System.currentTimeMillis()}] ↩ blood group conflict · back to the form, nothing saved")
+                d.dismiss()
+            }
+            .setPositiveButton(R.string.result_form_blood_conflict_change) { d, _ ->
+                d.dismiss()
+                openIdentity(profileId)
+            }
+            .show()
+    }
+
+    /** Leaves the form WITHOUT saving and opens the identity screen of the same profile. */
+    private fun openIdentity(profileId: String?) {
+        Log.i(TAG, "[t=${System.currentTimeMillis()}] 🩸 blood group conflict · go to identity · profileId=$profileId")
+        val appContext = requireContext().applicationContext
+        // A null profileId means "create a new profile" for the identity screen : never navigate without one.
+        val nav = if (profileId.isNullOrBlank()) null else try { findNavController() } catch (_: Exception) { null }
         dismiss()
+        val opened = nav != null && try {
+            nav.navigate(R.id.dest_perso, bundleOf(NAV_ARG_PROFILE_ID to profileId))
+            true
+        } catch (e: Exception) {
+            Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ cannot open identity : ${e.message}")
+            false
+        }
+        if (!opened) Toast.makeText(appContext, R.string.results_derived_blood_group_hint, Toast.LENGTH_LONG).show()
     }
 
     private fun reject(messageRes: Int, layout: TextInputLayout, why: String) {

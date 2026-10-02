@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Live scan panel : status badge when the check is not CLEAN (UC-SAFE-UI-2x) ─── -->
+    <string name="livescan_badge_not_verified">⚠ Non vérifié — le contrôle de sécurité n\'a pas été exécuté</string>
+    <string name="livescan_badge_incomplete">⚠ Contrôle incomplet — vérification partielle</string>
+    <!-- Screen-reader descriptions -->
+    <string name="livescan_badge_not_verified_desc">Attention : le contrôle de sécurité n\'a pas été exécuté. Ce médicament n\'a pas été vérifié. Demandez à un pharmacien ou à un médecin.</string>
+    <string name="livescan_badge_incomplete_desc">Attention : le contrôle de sécurité est incomplet. Une partie du profil n\'a pas pu être vérifiée. Demandez à un pharmacien ou à un médecin.</string>
+
+    <!-- ─── Allergy form : "Safety check incomplete" dialog (UC-SAFE-UI-2x) ─── -->
+    <string name="allergy_form_xchk_gap_title">⚠ Contrôle de sécurité incomplet</string>
+    <string name="allergy_form_xchk_gap_not_run">Le contrôle de sécurité avec les médicaments de ce profil n\'a pas pu s\'exécuter. Rien n\'a été vérifié pour cette allergie.</string>
+    <!-- %1$s = comma-separated medication names -->
+    <string name="allergy_form_xchk_gap_unchecked_meds">Ces médicaments n\'ont PAS pu être contrôlés avec cette allergie (pas de code, ou recherche en échec) : %1$s</string>
+    <string name="allergy_form_xchk_gap_incomplete">Le contrôle de sécurité avec les médicaments de ce profil n\'a été exécuté qu\'en partie. Certains médicaments n\'ont pas été vérifiés pour cette allergie.</string>
+
+</resources>

@@ -67,9 +67,17 @@ class ExplainToolSet(
     @Tool(description = """
         Get the clinical cross-check report for a drug against the
         CURRENT patient (anonymized). Returns JSON with overall severity,
-        allergy hits, drug-drug interactions, and condition hits. Never
-        includes patient name, age, or any identifying info. Use this
+        allergy hits, drug-drug interactions, and condition hits, plus :
+          - verdict     : "ALERT" / "CLEAN" / "INCOMPLETE" / "NOT_CHECKED"
+          - checked     : true only when the whole profile was verified
+          - instruction : what you must tell the user for this result
+        Never includes patient name, age, or any identifying info. Use this
         FIRST in your reasoning to understand WHY the drug was flagged.
+        Only verdict "CLEAN" means nothing was found. If verdict is
+        "NOT_CHECKED" or "INCOMPLETE", or the answer has an "error" field,
+        the check could NOT be completed : never say the drug is safe or
+        OK — say the check could not be completed and to ask a pharmacist
+        or a doctor.
     """)
     fun getInteractionsForCurrentPatient(
         @ToolParam(description = "ATC code of the drug to check (e.g. 'J01CR02')")
@@ -77,7 +85,7 @@ class ExplainToolSet(
     ): String {
         val tStart = System.currentTimeMillis()
         val patient = patientContextHolder.current
-            ?: return """{"error":"no_patient_loaded"}"""
+            ?: return JSONObject(ExplainSafety.failureFields("no_patient_loaded")).toString()
 
         val raw = try {
             runBlocking {
@@ -91,17 +99,23 @@ class ExplainToolSet(
             }
         } catch (e: Exception) {
             Log.e(TAG_INTER, "[t=${System.currentTimeMillis()}] ❌ check threw", e)
-            return """{"error":"cross_check_failed","atc":"$atc"}"""
+            return notCheckedJson(atc)
         }
 
-        val drugName = runBlocking { kb.getDrugDisplayForAtc(atc, "en") }
-        val report = runBlocking { orchestrator.adaptToReport(raw, atc, drugName) }
+        // UC-SAFE-SCAN — a failure while building the report is also "not checked".
+        val report = try {
+            val drugName = runBlocking { kb.getDrugDisplayForAtc(atc, "en") }
+            runBlocking { orchestrator.adaptToReport(raw, atc, drugName) }
+        } catch (e: Exception) {
+            Log.e(TAG_INTER, "[t=${System.currentTimeMillis()}] ❌ report build threw", e)
+            return notCheckedJson(atc)
+        }
 
         val json = reportToJson(report)
         Log.i(
             TAG_INTER,
             "[t=${System.currentTimeMillis()}] 🩺 getInteractions atc=$atc · " +
-                "overall=${report.overall} · ${System.currentTimeMillis() - tStart}ms",
+                "verdict=${report.verdict} · overall=${report.overall} · ${System.currentTimeMillis() - tStart}ms",
         )
         return json
     }
@@ -171,6 +185,12 @@ class ExplainToolSet(
         return json
     }
 
+    /** NOT_CHECKED answer (exception) — never readable as "nothing found". */
+    private fun notCheckedJson(atc: String): String =
+        JSONObject(ExplainSafety.failureFields("cross_check_failed")).apply {
+            put("atc", atc)
+        }.toString()
+
     private fun reportToJson(report: CrossCheckReport): String {
         return JSONObject().apply {
             put("drug", JSONObject().apply {
@@ -178,6 +198,9 @@ class ExplainToolSet(
                 put("name", report.drugName)
             })
             put("overall", report.overall.name)
+            // UC-SAFE-SCAN — verdict / checked / is_clean / instruction : empty hit lists
+            // alone must never be read as "safe".
+            for ((k, v) in ExplainSafety.safetyFields(report.verdict, report.fullyChecked)) put(k, v)
             put("allergies", JSONArray().also { arr ->
                 report.allergyHits.forEach {
                     arr.put(JSONObject().apply {

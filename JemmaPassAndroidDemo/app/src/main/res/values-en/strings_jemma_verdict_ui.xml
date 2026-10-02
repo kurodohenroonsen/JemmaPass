@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Live scan panel : status badge when the check is not CLEAN (UC-SAFE-UI-2x) ─── -->
+    <string name="livescan_badge_not_verified">⚠ Not verified — safety check did not run</string>
+    <string name="livescan_badge_incomplete">⚠ Check incomplete — not fully verified</string>
+    <!-- Screen-reader descriptions -->
+    <string name="livescan_badge_not_verified_desc">Warning: the safety check did not run. This medication was not verified. Ask a pharmacist or a doctor.</string>
+    <string name="livescan_badge_incomplete_desc">Warning: the safety check is incomplete. Part of the profile could not be verified. Ask a pharmacist or a doctor.</string>
+
+    <!-- ─── Allergy form : "Safety check incomplete" dialog (UC-SAFE-UI-2x) ─── -->
+    <string name="allergy_form_xchk_gap_title">⚠ Safety check incomplete</string>
+    <string name="allergy_form_xchk_gap_not_run">The safety check against the medications of this profile could not run. Nothing was verified for this allergy.</string>
+    <!-- %1$s = comma-separated medication names -->
+    <string name="allergy_form_xchk_gap_unchecked_meds">These medications could NOT be checked against this allergy (no code, or the lookup failed): %1$s</string>
+    <string name="allergy_form_xchk_gap_incomplete">The safety check against the medications of this profile ran only partly. Some medications were not verified for this allergy.</string>
+
+</resources>

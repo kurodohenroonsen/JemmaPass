@@ -75,6 +75,44 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
+/**
+ * UC-BLOOD-10.. — what [ProfilesRepository] reports when a write dropped blood-group results
+ * that contradicted the profile's blood group (`p.bt`, the reference). Pure data, no Android class.
+ */
+data class BloodGroupConflict(
+    val profileId: String,
+    /** Canonical profile blood group ("O+") that was kept. */
+    val profileBloodGroup: String,
+    /** The contradicting results that were NOT stored. Never empty. */
+    val replaced: List<Replaced>,
+) {
+    data class Replaced(
+        val resultId: String,
+        /** Canonical group the result stated ("A+"), null when its value was unreadable. */
+        val stated: String?,
+        val date: String?,
+    )
+
+    companion object {
+        /** Null when the reconciliation dropped nothing contradictory (the normal case). */
+        fun of(
+            profileId: String,
+            bloodType: String?,
+            reconciliation: be.heyman.android.jemmapassdemo.ips.IpsBloodGroup.Reconciliation,
+        ): BloodGroupConflict? {
+            if (!reconciliation.hasConflict) return null
+            val expected = be.heyman.android.jemmapassdemo.ips.IpsBloodGroup.normalize(bloodType) ?: return null
+            return BloodGroupConflict(
+                profileId = profileId,
+                profileBloodGroup = expected,
+                replaced = reconciliation.conflicts.map {
+                    Replaced(it.id, be.heyman.android.jemmapassdemo.ips.IpsBloodGroup.labelOf(it), it.date)
+                },
+            )
+        }
+    }
+}
+
 @Singleton
 class ProfilesRepository @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -121,6 +159,22 @@ class ProfilesRepository @Inject constructor(
 
     /** Convenience synchronous accessor. */
     val currentProfileId: String? get() = _currentIdFlow.value
+
+    private val _bloodGroupConflictFlow = MutableStateFlow<BloodGroupConflict?>(null)
+
+    /**
+     * UC-BLOOD-10.. — last write in which a blood-group result entered by hand (or imported)
+     * contradicted the profile's blood group and was replaced by it. Null until it happens ;
+     * a screen that showed it calls [consumeBloodGroupConflict]. Callers that do not care can
+     * ignore it : the stored data is consistent either way (one blood group, the profile's).
+     */
+    val bloodGroupConflictFlow: StateFlow<BloodGroupConflict?> = _bloodGroupConflictFlow.asStateFlow()
+
+    /** Clears [bloodGroupConflictFlow] once shown (only if it is still [shown], or unconditionally when null). */
+    fun consumeBloodGroupConflict(shown: BloodGroupConflict? = null) {
+        if (shown == null) _bloodGroupConflictFlow.value = null
+        else _bloodGroupConflictFlow.compareAndSet(shown, null)
+    }
 
     @Volatile private var initialScanDone = false
 
@@ -392,7 +446,19 @@ class ProfilesRepository @Inject constructor(
         val file = File(profilesDir, "$id.json")
         val fhirFile = File(profilesDir, "$id.fhir.json")
         // The patient's blood type (`p.bt`) is mirrored as a Results Observation (LOINC 882-1).
-        val native = nativeIn.copy(results = be.heyman.android.jemmapassdemo.ips.IpsBloodGroup.sync(nativeIn.results, id, profile.p?.bt))
+        // While `p.bt` is a recognised group it is the only blood group of the profile : a
+        // contradicting result is replaced, and that is never silent (UC-BLOOD-10..).
+        val reconciled = be.heyman.android.jemmapassdemo.ips.IpsBloodGroup.reconcile(nativeIn.results, id, profile.p?.bt)
+        BloodGroupConflict.of(id, profile.p?.bt, reconciled)?.let { conflict ->
+            Log.w(
+                TAG,
+                "[t=${System.currentTimeMillis()}] 🩸⚠️ blood group conflict for $id : ${conflict.replaced.size} result(s) " +
+                    "stating ${conflict.replaced.map { it.stated ?: "?" }} contradicted the profile blood group " +
+                    "${conflict.profileBloodGroup} and were replaced by it (ids=${conflict.replaced.map { it.resultId }})"
+            )
+            _bloodGroupConflictFlow.value = conflict
+        }
+        val native = nativeIn.copy(results = reconciled.results)
         val projected = profile.copy(
             sid = id,
             im = native.immunizations.map { it.toJEntry() },

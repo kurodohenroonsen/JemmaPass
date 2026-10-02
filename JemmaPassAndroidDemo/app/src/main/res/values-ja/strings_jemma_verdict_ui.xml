@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ─── Live scan panel : status badge when the check is not CLEAN (UC-SAFE-UI-2x) ─── -->
+    <string name="livescan_badge_not_verified">⚠ 未確認 — 安全性チェックは実行されていません</string>
+    <string name="livescan_badge_incomplete">⚠ チェック未完了 — 一部のみ確認済み</string>
+    <!-- Screen-reader descriptions -->
+    <string name="livescan_badge_not_verified_desc">警告：安全性チェックは実行されていません。この薬は確認されていません。薬剤師または医師に相談してください。</string>
+    <string name="livescan_badge_incomplete_desc">警告：安全性チェックは不完全です。プロフィールの一部を確認できませんでした。薬剤師または医師に相談してください。</string>
+
+    <!-- ─── Allergy form : "Safety check incomplete" dialog (UC-SAFE-UI-2x) ─── -->
+    <string name="allergy_form_xchk_gap_title">⚠ 安全性チェックが不完全です</string>
+    <string name="allergy_form_xchk_gap_not_run">このプロフィールの薬との安全性チェックを実行できませんでした。このアレルギーについては何も確認されていません。</string>
+    <!-- %1$s = comma-separated medication names -->
+    <string name="allergy_form_xchk_gap_unchecked_meds">次の薬はこのアレルギーと照合できませんでした（コードがない、または照会に失敗）: %1$s</string>
+    <string name="allergy_form_xchk_gap_incomplete">このプロフィールの薬との安全性チェックは一部しか実行されませんでした。一部の薬はこのアレルギーについて確認されていません。</string>
+
+</resources>
