@@ -815,70 +815,7 @@ class KbCrossCheck @Inject constructor(
      * For KB v1.2 enrichment, the proper fix is to populate
      * `terminology_codes.atc_code` for the SNOMED allergy codes.
      */
-    private fun inferAtcFromAllergyName(name: String): String? {
-        if (name.isBlank()) return null
-        val n = name.lowercase()
-        return when {
-            // ── Beta-lactam antibacterials (J01C / J01D) ──────────────
-            n.contains("pénicill") || n.contains("penicill") ||
-            n.contains("amoxicill") || n.contains("ampicill") ||
-            n.contains("augmentin") -> "J01CA01"            // → J01C class
-
-            n.contains("céphalo") || n.contains("cephalo") ||
-            n.contains("céfa") || n.contains("cefa") ||
-            n.contains("ceftria") -> "J01DB01"               // → J01D class
-
-            n.contains("carbapénème") || n.contains("carbapenem") ||
-            n.contains("méropénème") || n.contains("meropenem") ||
-            n.contains("imipenem") -> "J01DH02"             // → J01DH
-
-            // ── Sulfonamides (J01E) ───────────────────────────────────
-            n.contains("sulfamide") || n.contains("sulfonamide") ||
-            n.contains("sulfa ") || n.endsWith("sulfa") ||
-            n.contains("cotrimo") || n.contains("bactrim") -> "J01EE01"
-
-            // ── Macrolides (J01F) ─────────────────────────────────────
-            n.contains("macrolid") || n.contains("érythromy") ||
-            n.contains("erythromy") || n.contains("azithromy") ||
-            n.contains("clarithromy") -> "J01FA01"
-
-            // ── Tetracyclines (J01A) ──────────────────────────────────
-            n.contains("tétracycl") || n.contains("tetracycl") ||
-            n.contains("doxycycl") -> "J01AA02"
-
-            // ── Quinolones (J01M) ─────────────────────────────────────
-            n.contains("quinolone") || n.contains("ciprofloxa") ||
-            n.contains("levofloxa") || n.contains("moxifloxa") -> "J01MA02"
-
-            // ── Aminoglycosides (J01G) ────────────────────────────────
-            n.contains("aminoside") || n.contains("aminoglyco") ||
-            n.contains("gentamicine") || n.contains("gentamicin") -> "J01GB03"
-
-            // ── NSAIDs (M01A) ─────────────────────────────────────────
-            n.contains("ains") || n.contains("nsaid") ||
-            n.contains("ibuprofène") || n.contains("ibuprofen") ||
-            n.contains("naproxène") || n.contains("naproxen") ||
-            n.contains("diclofénac") || n.contains("diclofenac") ||
-            n.contains("kétoprofène") || n.contains("ketoprofen") -> "M01AE01"
-
-            // ── Aspirin (N02BA / B01AC) ───────────────────────────────
-            n.contains("aspirine") || n.contains("aspirin") ||
-            n.contains("acide acétylsalicy") || n.contains("acetylsalicy") -> "N02BA01"
-
-            // ── Opioids (N02A) ────────────────────────────────────────
-            n.contains("opioïde") || n.contains("opioid") ||
-            n.contains("morphine") || n.contains("codéine") || n.contains("codeine") ||
-            n.contains("tramadol") -> "N02AA01"
-
-            // ── Iodine contrast (V08A) ────────────────────────────────
-            n.contains("iode") || n.contains("iodine") ||
-            n.contains("produit de contraste") || n.contains("contrast media") -> "V08AB02"
-
-            // ── Statins (C10AA) ───────────────────────────────────────
-            n.contains("statine") || n.contains("statin") ||
-            n.contains("atorvasta") || n.contains("simvasta") -> "C10AA01"
-
-            else -> null
-        }
-    }
+    private fun inferAtcFromAllergyName(name: String): String? =
+        AllergyKeywords.inferAtc(name)
 }
+
