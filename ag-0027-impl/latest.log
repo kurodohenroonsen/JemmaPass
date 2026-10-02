@@ -27,9 +27,9 @@ Daemon will be stopped at the end of the build
 > Task :app:generateDebugBuildConfig
 > Task :app:parseDebugLocalResources
 > Task :app:checkDebugAarMetadata
+> Task :app:compileDebugNavigationResources
 > Task :app:dataBindingGenBaseClassesDebug
 > Task :app:mapDebugSourceSetPaths
-> Task :app:compileDebugNavigationResources
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
 
@@ -40,21 +40,21 @@ Daemon will be stopped at the end of the build
 > Task :app:processDebugManifest
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
 > Task :app:javaPreCompileDebugUnitTest
+> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
-> Task :app:processDebugManifestForPackage
 > Task :app:compressDebugAssets
 > Task :app:processDebugResources
 > Task :app:checkDebugDuplicateClasses
 > Task :app:desugarDebugFileDependencies
 > Task :app:kspDebugKotlin
 > Task :app:mergeExtDexDebug
-> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugJniLibFolders
+> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -779,6 +779,9 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 
 > Task :app:testDebugUnitTest
 
+PillarBoundaryRoundTripTest > UC-IMP-016 unknown codes and unknown statuses from a payload never crash and fall back to the pillar default FAILED
+    org.junit.ComparisonFailure at PillarBoundaryRoundTripTest.kt:280
+
 Sd01TriageOrderTest > SD-01 UC-SOS-021 a third phone that receives a duplicate through a relay agrees with the two others FAILED
     java.lang.AssertionError at Sd01TriageOrderTest.kt:69
 
@@ -815,12 +818,6 @@ Sd09DrugDiseaseMatchingTest > SD-09 UC-DDS-016 an irregular plural does not bloc
 Sd09DrugDiseaseMatchingTest > SD-09 UC-DDS-013 usual synonyms of a condition are matched FAILED
     java.lang.AssertionError at Sd09DrugDiseaseMatchingTest.kt:55
 
-Sd10AlmostNumericResultUnitTest > SD-10 UC-RES-015 the unit of a value that is not a plain number stays in the document FAILED
-    java.lang.AssertionError at Sd10AlmostNumericResultUnitTest.kt:57
-
-Sd10AlmostNumericResultUnitTest > SD-10 UC-RES-015 the unit of a value that is not a plain number stays in the compact projection FAILED
-    java.lang.AssertionError at Sd10AlmostNumericResultUnitTest.kt:42
-
 Sd11HaruFunctionalStatusInTextQrTest > SD-11 UC-I18N-008 the functional status of Haru is in her text QR in French FAILED
     java.lang.AssertionError at Sd11HaruFunctionalStatusInTextQrTest.kt:30
 
@@ -833,28 +830,16 @@ Sd13ResolvedProblemImportTest > SD-13 UC-PRB-017 a problem imported as resolved 
 Sd13ResolvedProblemImportTest > SD-13 UC-IMP-017 a problem imported as resolved does not become an active problem FAILED
     java.lang.AssertionError at Sd13ResolvedProblemImportTest.kt:28
 
-Sd14CodedValueSystemTest > SD-14 UC-RES-024 a LOINC answer code does not come back from the projection as a SNOMED code FAILED
-    java.lang.AssertionError at Sd14CodedValueSystemTest.kt:26
-
 Sd18ExtremeDecimalTest > SD-18 UC-RES-014 very large values are exact FAILED
     org.junit.ComparisonFailure at Sd18ExtremeDecimalTest.kt:30
 
 Sd18ExtremeDecimalTest > SD-18 UC-RES-014 very small values are exact FAILED
     org.junit.ComparisonFailure at Sd18ExtremeDecimalTest.kt:30
 
-Sd22AllergyKeywordFalsePositiveTest > SD-22 UC-ALM-009 words that only contain iode are not iodine contrast FAILED
-    java.lang.AssertionError at Sd22AllergyKeywordFalsePositiveTest.kt:62
-
-Sd22AllergyKeywordFalsePositiveTest > SD-22 UC-ALM-009 grains and other words that only contain ains are not anti-inflammatory drugs FAILED
-    java.lang.AssertionError at Sd22AllergyKeywordFalsePositiveTest.kt:48
-
-Sd22AllergyKeywordFalsePositiveTest > SD-22 UC-ALM-010 nystatin and other molecules that end in statin are not statins FAILED
-    java.lang.AssertionError at Sd22AllergyKeywordFalsePositiveTest.kt:55
-
-426 tests completed, 24 failed
+426 tests completed, 19 failed
 
 > Task :app:testDebugUnitTest FAILED
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790924107866.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790924894313.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
 
@@ -1028,5 +1013,5 @@ Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 
 
-BUILD FAILED in 6m 41s
+BUILD FAILED in 8m 33s
 55 actionable tasks: 55 executed
