@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -29,12 +30,27 @@ import be.heyman.android.jemmapassdemo.ips.IpsResultCategory
 import be.heyman.android.jemmapassdemo.ips.IpsResultInterpretation
 import be.heyman.android.jemmapassdemo.ips.IpsResultStatus
 import be.heyman.android.jemmapassdemo.pillars.IpsResultCatalog
+import be.heyman.android.jemmapassdemo.profiles.BloodGroupConflict
 import be.heyman.android.jemmapassdemo.profiles.ProfilesRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.launch
+
+/** UC-BLOOD-10.. — wording of a blood-group conflict reported by the repository. Pure Kotlin. */
+internal object BloodGroupConflictText {
+
+    /**
+     * What the dropped results stated, for the `%2$s` of the conflict message : the distinct
+     * groups in order ("A+, B-"), [unreadable] standing for a value that is not an ABO/Rh group.
+     */
+    fun stated(conflict: BloodGroupConflict, unreadable: String): String =
+        conflict.replaced.map { it.stated?.takeIf { s -> s.isNotBlank() } ?: unreadable }
+            .distinct()
+            .joinToString(", ")
+            .ifEmpty { unreadable }
+}
 
 @AndroidEntryPoint
 class ResultsEditFragment : Fragment() {
@@ -80,6 +96,53 @@ class ResultsEditFragment : Fragment() {
         }
 
         if (loaded) renderList() else loadAndRender()
+        observeBloodGroupConflicts()
+    }
+
+    /**
+     * UC-BLOOD-10.. — the repository keeps one blood group per profile (the one in identity) :
+     * when a save dropped a contradicting result, say so instead of letting it vanish.
+     */
+    private fun observeBloodGroupConflicts() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            profilesRepo.bloodGroupConflictFlow.collect { conflict ->
+                if (conflict == null || _binding == null) return@collect
+                val pid = profileId ?: argProfileId ?: profilesRepo.currentProfileId
+                // A conflict of another profile is left for the screen showing that profile.
+                if (conflict.profileId != pid) return@collect
+                Log.w(TAG, "[t=${System.currentTimeMillis()}] 🩸⚠ blood group conflict reported · profileId=${conflict.profileId} · replaced=${conflict.replaced.size}")
+                // The stored list no longer holds the dropped result(s) : show what is really saved.
+                try {
+                    val list = profilesRepo.loadResults(conflict.profileId)
+                    results.clear(); results.addAll(list)
+                    if (_binding != null) renderList()
+                } catch (e: Exception) {
+                    Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ reload after blood group conflict failed : ${e.message}")
+                }
+                if (_binding == null) return@collect
+                showBloodGroupConflict(conflict)
+            }
+        }
+    }
+
+    private fun showBloodGroupConflict(conflict: BloodGroupConflict) {
+        val stated = BloodGroupConflictText.stated(conflict, getString(R.string.result_form_blood_conflict_unreadable))
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.result_form_blood_conflict_title)
+            .setMessage(getString(R.string.result_form_blood_conflict_message, conflict.profileBloodGroup, stated))
+            .setNegativeButton(R.string.result_form_blood_conflict_cancel) { d, _ -> d.dismiss() }
+            .setPositiveButton(R.string.result_form_blood_conflict_change) { d, _ ->
+                d.dismiss()
+                try {
+                    findNavController().navigate(R.id.dest_perso, bundleOf(ARG_PROFILE_ID to conflict.profileId))
+                } catch (e: Exception) {
+                    Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠ cannot open identity : ${e.message}")
+                    context?.let { Toast.makeText(it, R.string.results_derived_blood_group_hint, Toast.LENGTH_LONG).show() }
+                }
+            }
+            // Consumed once the user has seen it (a dialog lost to a rotation is shown again).
+            .setOnDismissListener { profilesRepo.consumeBloodGroupConflict(conflict) }
+            .show()
     }
 
     /** The derived blood group mirrors `p.bt`: explain where to change it instead of editing a copy. */
@@ -133,7 +196,8 @@ class ResultsEditFragment : Fragment() {
 
     private fun openForm(mode: ResultFormMode, existing: IpsResult? = null, index: Int = -1) {
         Log.i(TAG, "[t=${System.currentTimeMillis()}] 📝 openForm · mode=$mode · idx=$index · id=${existing?.id}")
-        ResultFormBottomSheet.newInstance(mode, currentLang, existing).show(parentFragmentManager, "result_form")
+        ResultFormBottomSheet.newInstance(mode, currentLang, existing, profileId = profileId ?: argProfileId)
+            .show(parentFragmentManager, "result_form")
     }
 
     private fun handleFormResult(bundle: Bundle) {

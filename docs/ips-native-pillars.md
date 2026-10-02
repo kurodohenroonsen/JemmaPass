@@ -149,7 +149,54 @@ numbers on disk (`5.4`, `120.0`); `IpsDecimal.trimZeros` restores the typed text
 | Seeds | Haru obstetric summary (3 counts) |
 | Next | edit screen (status + EDD + counts), FR/JA labels |
 
-### Checklist for the next pillar (Functional status, Pregnancy, Vital signs…)
+## Sprint 7 — Functional status ♿ (LOINC 47420-5) — commit `e41c181`
+
+| Layer | Functional status |
+|---|---|
+| Domain | `ips/IpsFunctional.kt` — one entry = a disability, a functional limitation or a reliance on an aid; clinicalStatus active / inactive / resolved (`IpsFunctionalStatus`, anything else normalised to active), onset (partial dates), note; SNOMED code from the problems free set or free text |
+| FHIR | `Condition` (Condition-uv-ips), `code.text` without `coding` for free text; section 47420-5 "Functional status assessment note" (`IpsFhirCodec.functionalFromFhir` / `toFhir(IpsFunctional)` / `functionalSection` / `functionalUrn`) |
+| Membership | strictly the entries of the 47420-5 section (`functionalOf`), no fallback; those Conditions are excluded from the 🩺 problem list and the 📜 past illnesses, and never feed the drug × disease projection |
+| `_j` | `fs` (`c`, `d` note, `d_display`, `dt` onset, `cs` non-SNOMED, `st` non-active) |
+| Store API | `loadFunctional` / `saveFunctional`; `readNativePillars` falls back to `_j.fs` when the Bundle has none |
+| Terminology | same KB picker as 📜/🩺 (`problems-snomed-ct-ips-free-set`); labels localised at render time through `pastProblemLabels` |
+| UI | third mode of the shared Condition screen and form (`ui/profile/pastproblems/*`, nav argument `kind = "functional"`): no end date, no severity, own strings `strings_jemma_functional_edit.xml` ×7 (values, en, fr, ja, de, nl, zh-rCN); statuses Present / Inactive / Resolved |
+| Wiring | `dest_functional`, `action_detail_to_functional`, `action_gallery_to_functional`, `ProfileDetailFragment.renderFunctional`, tile `profile_detail_tile_functional`, `MainActivity.FULL_BLEED_DESTINATION_NAMES` |
+| Channels | text QR `♿` section (`functional_title`, 25 languages); **no Gemma tool** for this pillar yet |
+| Seeds | Haru hearing loss (SNOMED 15188001, 2019) + "Walks with a cane outdoors" (free text, 2021) · Kurodo and Kamekichi none |
+| Tests (JVM) | `test/.../ips/IpsFunctionalCodecTest.kt` (round trip and statuses, projection, the three Condition pillars never mix, no leak into drug × disease) |
+| QA | `verify_profiles.py` ♿ `fs` (P6f), `--expect-fs`, seed ♿ K0 H2 Ka0, `qa/device/README.md` T22 |
+
+Pillar status after sprint 7 (`PillarRegistry.ALL`, `isActive`): **11 active** — patient,
+allergies, medications, conditions, past problems, immunizations, procedures, devices,
+functional status, pregnancy, results. **7 remaining stubs** — advance directives, consents,
+goals, encounters, occupational, providers, contacts (contacts was active until the demo
+freeze; the text QR still prints the emergency contacts held in `p.ct`).
+
+## Safety waves (commits `6ff4d31`, `513b637`, `ee830d5`, `178b379`)
+
+Not a pillar sprint: four commits that fix the defects found by the code-derived use cases
+(`qa/usecases/`). **Status: covered by JVM unit tests only (306 `@Test` at `178b379`). None of
+it has been verified on a device yet — device cycle 24 is pending.**
+
+| Area | What changed | Code | Tests (JVM) |
+|---|---|---|---|
+| Storage | profile files written atomically (temp file + rename); a Bundle that fails to build is removed instead of winning over the saved edit; one lock around every read-modify-write; a profile id coming from a scanned payload is a file name only if it is a plain token | `profiles/ProfileFiles.kt` (`writeAtomic`, `safeIdOrNull`), `ProfilesRepository` | `ProfileFilesTest` |
+| KB verdict | every cross-check carries whether it ran: `KbCheckStatus` (CHECKED / INCOMPLETE / KB_UNAVAILABLE) per pillar and a `KbSafetyVerdict` — **ALERT** (a hit, always wins), **CLEAN** (fully checked, no hit — the only verdict that may read "nothing to report"), **INCOMPLETE** (part of the profile not verified), **NOT_CHECKED** (KB absent or drug unknown). DDI keeps the most severe row of a pair | `kb/KbSafety.kt`, `KbCrossCheck`, `JemmaProfileHydrator`, `KnowledgeBaseService` | `KbSafetyTest` |
+| Where the verdict surfaces | profile detail: amber banner when checks did not run or are incomplete, with the count of unverified entries · medication and allergy forms: "check incomplete" dialog instead of a silent save, uncoded stored medications named · live scan: green radar badge only when CLEAN and complete · med scan: CROSS_CHECK step OK only if `checkInteractions` was really called during this scan, otherwise NOT VERIFIED and the model's text is discarded · TTS: sentence chosen from the verdict · LLM tool JSON: `is_clean`, `checked`, `verdict`, warning / `instruction` fields | `ui/profiles/detail/SafetyBannerDecision.kt`, `ui/profile/common/FormCrossCheckOutcome.kt`, `MedicationFormLogic`, `AllergyFormSafetyLogic`, `ui/radar/LiveScanVerdictBadge.kt`, `ai/medscan/MedScanStepSafety.kt`, `ai/gemma/MedScanSafety.kt`, `ai/livescan/ScanSafety.kt`, `TtsStaticVerdict`, `ExplainSafety`, `ai/JemmaTools.kt` | `SafetyBannerDecisionTest`, `SafetyBannerUnverifiedCountTest`, `FormCrossCheckOutcomeTest`, `MedicationFormSafetyVerdictTest`, `AllergyFormSafetyLogicTest`, `LiveScanVerdictBadgeTest`, `MedScanStepSafetyTest`, `MedScanSafetyTest`, `ScanSafetyTest`, `ExplainSafetyTest` |
+| Text QR | one frame: `JemmaTextPayloadBuilder.MAX_BYTES` = `QR_MAX_SINGLE` = 1800 UTF-8 bytes (was 2200). Over budget, whole lines are removed, last line first, from the least important section: ♿ functional, 🤰 pregnancy, 💉 immunizations, 🧪 results, 🏥 procedures, 📜 past illnesses, 📟 devices, patient address / phone / e-mail / id, ☎️ contacts, 🩺 conditions, 💊 medications, ⚠️ allergies. Header, identity (name, birth, blood group, language) and footer are never removed. A cut section ends with `✂️ … +N`; a final `✂️ … [ INCOMPLETE RECORD ] <icons>` line (label `truncated`, 25 languages) lists the affected sections. New ☎️ emergency contacts section (`p.ct`) | `qr/JemmaTextPayloadBuilder.kt`, `JemmaTranslations` | `QrTextBudgetTest` |
+| Multi-frame scan | `JF:i/N\|data` frames are reassembled in both scan screens: any order, duplicates ignored, missing indices known, never a partial payload; a frame with another total or another content restarts the collection | `qr/JemmaQrFrameAssembler.kt`, `QrImportScanFragment`, `RescueQrScanFragment` | `QrFrameAssemblerTest` |
+| PDF | allergies printed highest criticality first (high, unknown, low); unknown criticality prints `?`, never `L`; when rows run out the last row is an explicit `+N` (allergies, conditions, medications) — no entry dropped silently | `pdf/PdfPillarLayout.kt`, `qr/JemmaPdfExporter.kt` | `PdfPillarLayoutTest` |
+| Forms | all allergy reactions kept on edit; single-shot Save (allergy, medication, identity); no future dates; birth date may be year-only or year-month; addresses / telecoms / identifiers the identity form does not show survive an edit | `AllergyFormMerge`, `ui/profile/common/FormEditGuards.kt` (`SingleShotGuard`, `IsoDateRules`), `PatientFormMerge`, `MedicationFormLogic` | `AllergyFormMergeTest`, `FormEditGuardsTest`, `PatientFormMergeTest`, `MedicationFormLogicTest` |
+| FHIR | `MedicationStatement.status` from `md[].ms` (was always `active`); a decimal comma dose reaches the Bundle as a decimal; coded routes, with a distinct inhaled route `H` = SNOMED `447694001` ("I" stays injection, including inhalers saved before `H` existed); pregnancy Observations and results stay disjoint after a round trip | `qr/JemmaFhirBundleBuilder.kt`, `pillars/IpsRouteCatalog.kt`, `JemmaProfileHydrator` | `FhirMedicationBundleTest`, `MedicationRouteTest`, `MedicationRouteEnumTest`, `IpsBundleConsistencyTest` |
+| Blood group | exactly one 882-1 Observation, following `p.bt`: the derived copy is recognised by what it is (bare coded ABO/Rh value), not only by its id, so an imported copy no longer drifts; `IpsBloodGroup.reconcile` returns the contradicting results it replaced; the results form refuses an 882-1 result that contradicts the profile blood group | `ips/IpsBloodGroup.kt`, `ProfilesRepository` (`BloodGroupConflict`), `ui/profile/results/ResultFormBottomSheet.kt` (`ResultBloodGroupGuard`) | `IpsBloodGroupSyncTest`, `IpsBloodGroupTest`, `BloodGroupConflictTest`, `ResultBloodGroupGuardTest` |
+
+New safety strings exist in values, en, fr, ja, de, nl, zh-rCN (`strings_jemma_safety_status`,
+`strings_jemma_scan_safety` — also es —, `strings_jemma_verdict_ui`,
+`strings_jemma_blood_conflict`); the other locales fall back to the default.
+
+Open points are tracked in `qa/usecases/README.md` ("À vérifier puis corriger").
+
+### Checklist for the next pillar (Vital signs, Advance directives…)
 
 1. Tests first: FHIR round trip (full / minimal / edge dates / status
    normalisation), Bundle embedding + section wiring, projection contract.
@@ -163,6 +210,8 @@ numbers on disk (`5.4`, `120.0`); `IpsDecimal.trimZeros` restores the typed text
 
 ## Known limits / next steps
 
+- Safety waves: JVM-tested only, device cycle 24 pending (see above).
+- Functional status has no Gemma tool yet.
 - Pocket Pass PDF does not print immunizations / procedures / devices yet (≈55 pt free in column 1).
 - Mesh SOS chunks carry `im[].c` only; `guessSystem` tags all-digit codes as
   SNOMED (CVX codes would be mis-tagged — we default to SNOMED products).

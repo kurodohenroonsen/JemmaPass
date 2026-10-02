@@ -96,8 +96,8 @@ class JemmaProfileHydrator @Inject constructor(
                 val ddiCheck = ddiAlertsAsync.await()
                 val allergyAlerts = allergyAlertsAsync.await()
                 val drugDiseaseCheck = drugDiseaseAlertsAsync.await()
-                val ddiAlerts = ddiCheck.hits
-                val drugDiseaseAlerts = drugDiseaseCheck.hits
+                val ddiAlerts = ddiCheck.check.hits
+                val drugDiseaseAlerts = drugDiseaseCheck.check.hits
 
                 // UC-SAFE-KB — "no alert" is only a clean result if the KB was really
                 // queried. Without the KB the allergy matcher still runs its keyword
@@ -107,8 +107,17 @@ class JemmaProfileHydrator @Inject constructor(
                     allergy = KbSafety.pillarStatus(
                         kbUp, if (allergies.isEmpty() || medications.isEmpty()) 0 else allergies.size,
                     ),
-                    ddi = ddiCheck.status,
-                    drugDisease = drugDiseaseCheck.status,
+                    ddi = ddiCheck.check.status,
+                    drugDisease = drugDiseaseCheck.check.status,
+                    // UC-SAFE-UI-3x — exact number of distinct entries no check could verify :
+                    // a medication without ATC is seen by both the DDI and the drug×disease
+                    // pillar and counts once. The allergy pillar has no per-entry failure
+                    // (it is CHECKED or KB_UNAVAILABLE), so it adds nothing here.
+                    unverifiedItems = ProfileUnverifiedCount.distinct(
+                        ddiMedications = ddiCheck.unverifiedMedications,
+                        diseaseMedications = drugDiseaseCheck.unverifiedMedications,
+                        diseaseConditions = drugDiseaseCheck.unverifiedConditions,
+                    ),
                 )
                 if (!checks.fullyChecked) {
                     Log.w(TAG, "[t=${System.currentTimeMillis()}] ⚠️ safety cross-checks NOT fully run · $checks")
@@ -288,12 +297,17 @@ class JemmaProfileHydrator @Inject constructor(
      */
     private suspend fun batchCrossCheckDdi(
         meds: List<HydratedMedication>,
-    ): PillarCheck<DdiAlert> = withContext(Dispatchers.IO) {
-        if (meds.size < 2) return@withContext PillarCheck<DdiAlert>(emptyList(), KbCheckStatus.CHECKED)
+    ): CountedPillar<DdiAlert> = withContext(Dispatchers.IO) {
+        if (meds.size < 2) {
+            return@withContext CountedPillar(PillarCheck<DdiAlert>(emptyList(), KbCheckStatus.CHECKED))
+        }
         val db = kbManager.database()
-            ?: return@withContext PillarCheck<DdiAlert>(emptyList(), KbCheckStatus.KB_UNAVAILABLE)
+            ?: return@withContext CountedPillar(PillarCheck<DdiAlert>(emptyList(), KbCheckStatus.KB_UNAVAILABLE))
         // A medication without any ATC cannot be looked up : the check is then incomplete.
-        var unverified = 0
+        // Indices into [meds] of the medications that could not be verified.
+        var unverifiedMeds: Set<Int> = ProfileUnverifiedCount.indicesWithout(
+            meds.map { it.atcCode != null || it.allAtcCodes.isNotEmpty() },
+        )
 
         // Build a map ATC → list of medications carrying that ATC. A single
         // med can map to several ATCs (e.g. Ibuprofen has 8). We need to
@@ -305,13 +319,15 @@ class JemmaProfileHydrator @Inject constructor(
                 med.atcCode?.let { add(it.uppercase()) }
                 med.allAtcCodes.forEach { add(it.uppercase()) }
             }
-            if (atcs.isEmpty()) unverified++
             for (atc in atcs) {
                 atcToMeds.getOrPut(atc) { mutableListOf() }.add(med)
             }
         }
         if (atcToMeds.isEmpty()) {
-            return@withContext PillarCheck<DdiAlert>(emptyList(), KbCheckStatus.INCOMPLETE)
+            return@withContext CountedPillar(
+                PillarCheck<DdiAlert>(emptyList(), KbCheckStatus.INCOMPLETE, unverifiedMeds.size),
+                unverifiedMedications = unverifiedMeds,
+            )
         }
 
         val placeholders = atcToMeds.keys.joinToString(",") { "?" }
@@ -380,7 +396,7 @@ class JemmaProfileHydrator @Inject constructor(
             )
             // The query did not complete : whatever was read is kept, but the
             // pillar is not verified.
-            unverified = meds.size
+            unverifiedMeds = meds.indices.toSet()
         }
 
         // Dedupe alerts by (medA, medB) pair (independent of order) — a
@@ -397,7 +413,14 @@ class JemmaProfileHydrator @Inject constructor(
             }
             .sortedBy { KbSafety.ddiSeverityRank(it.severity) }
 
-        PillarCheck(deduped, KbSafety.pillarStatus(true, meds.size, unverified))
+        CountedPillar(
+            PillarCheck(
+                deduped,
+                KbSafety.pillarStatus(true, meds.size, unverifiedMeds.size),
+                unverifiedItems = unverifiedMeds.size,
+            ),
+            unverifiedMedications = unverifiedMeds,
+        )
     }
 
     /**
@@ -551,35 +574,41 @@ class JemmaProfileHydrator @Inject constructor(
     private suspend fun crossCheckDrugDisease(
         meds: List<HydratedMedication>,
         conditions: List<HydratedGenericEntry>,
-    ): PillarCheck<DrugDiseaseAlert> = withContext(Dispatchers.IO) {
+    ): CountedPillar<DrugDiseaseAlert> = withContext(Dispatchers.IO) {
         if (meds.isEmpty() || conditions.isEmpty()) {
-            return@withContext PillarCheck<DrugDiseaseAlert>(emptyList(), KbCheckStatus.CHECKED)
+            return@withContext CountedPillar(PillarCheck<DrugDiseaseAlert>(emptyList(), KbCheckStatus.CHECKED))
         }
         kbManager.database()
-            ?: return@withContext PillarCheck<DrugDiseaseAlert>(emptyList(), KbCheckStatus.KB_UNAVAILABLE)
+            ?: return@withContext CountedPillar(
+                PillarCheck<DrugDiseaseAlert>(emptyList(), KbCheckStatus.KB_UNAVAILABLE),
+            )
 
-        var unverified = 0
+        // Indices into [meds] / [conditions] of the entries that could not be verified :
+        // a medication without ATC, a condition without a usable name, or a condition
+        // whose KB query failed for at least one medication.
+        val unverifiedMeds = LinkedHashSet<Int>()
+        val unverifiedConditions = LinkedHashSet<Int>()
         val out = mutableListOf<DrugDiseaseAlert>()
         // For each med × condition pair, ask the KB.
         // Only a small product (typically ≤ 30 pairs), so even individual
         // queries stay under 50ms total. If profiles grow we'll batch.
-        for (med in meds) {
+        for ((medIndex, med) in meds.withIndex()) {
             val atc = med.atcCode
             if (atc == null) {
-                unverified++
+                unverifiedMeds.add(medIndex)
                 continue
             }
-            for (cond in conditions) {
+            for ((condIndex, cond) in conditions.withIndex()) {
                 // English first (stored SNOMED display, KB primary display), UI label last.
                 val terms = DrugDiseaseTerms.candidates(
                     cond.raw.displayLabel, cond.resolvedConcept?.primaryDisplay, cond.displayLocalized,
                 )
                 if (terms.isEmpty()) {
-                    unverified++
+                    unverifiedConditions.add(condIndex)
                     continue
                 }
                 val r = kb.queryDrugDiseaseTerms(atc, terms)
-                if (r is DrugDiseaseResult.Error) unverified++
+                if (r is DrugDiseaseResult.Error) unverifiedConditions.add(condIndex)
                 if (r is DrugDiseaseResult.Found) {
                     out.add(
                         DrugDiseaseAlert(
@@ -594,9 +623,15 @@ class JemmaProfileHydrator @Inject constructor(
                 }
             }
         }
-        PillarCheck(
-            out.sortedBy { KbSafety.ddiSeverityRank(it.severity) },
-            KbSafety.pillarStatus(true, meds.size * conditions.size, unverified),
+        val unverified = unverifiedMeds.size + unverifiedConditions.size
+        CountedPillar(
+            PillarCheck(
+                out.sortedBy { KbSafety.ddiSeverityRank(it.severity) },
+                KbSafety.pillarStatus(true, meds.size * conditions.size, unverified),
+                unverifiedItems = unverified,
+            ),
+            unverifiedMedications = unverifiedMeds,
+            unverifiedConditions = unverifiedConditions,
         )
     }
 
@@ -826,6 +861,37 @@ private fun android.database.Cursor.getStringOrNull(idx: Int): String? =
  * Profile + KB-resolved enrichments. The card renderer iterates these
  * pre-localized lists and pre-computed alerts without any further DB hits.
  */
+/**
+ * UC-SAFE-UI-3x — a pillar result together with WHICH profile entries it could not verify
+ * (indices into the lists the pillar was given), so that entries seen by several pillars
+ * are counted once in [KbCheckReport.unverifiedItems].
+ */
+internal data class CountedPillar<T>(
+    val check: PillarCheck<T>,
+    val unverifiedMedications: Set<Int> = emptySet(),
+    val unverifiedConditions: Set<Int> = emptySet(),
+)
+
+/** UC-SAFE-UI-3x — counting of unverifiable profile entries. Pure Kotlin, unit-testable on the JVM. */
+internal object ProfileUnverifiedCount {
+
+    /** Indices of the entries whose flag is false (e.g. medications without any ATC code). */
+    fun indicesWithout(hasIt: List<Boolean>): Set<Int> =
+        hasIt.indices.filterTo(LinkedHashSet<Int>()) { !hasIt[it] }
+
+    /**
+     * Number of distinct profile entries left unverified by the cross-checks. The DDI and
+     * drug×disease pillars index the same medication list : their sets are merged, not summed.
+     * Conditions and allergies are different entries and add up.
+     */
+    fun distinct(
+        ddiMedications: Set<Int>,
+        diseaseMedications: Set<Int>,
+        diseaseConditions: Set<Int>,
+        allergies: Set<Int> = emptySet(),
+    ): Int = (ddiMedications + diseaseMedications).size + diseaseConditions.size + allergies.size
+}
+
 data class HydratedProfile(
     val raw: JemmaProfileJ,
     val uiLang: String,

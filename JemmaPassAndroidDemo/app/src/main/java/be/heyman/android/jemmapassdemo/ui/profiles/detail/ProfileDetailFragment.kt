@@ -273,13 +273,11 @@ class ProfileDetailFragment : Fragment() {
         binding.profileDetailMeta.isVisible = headerLine.isNotEmpty()
 
         // ── Alert banner (red if any Major DDI / allergy) ──
+        // UC-SAFE-UI-10.. — the unverified count comes from the checks themselves.
         val safety = SafetyBannerDecision.decide(
-            overall = h.checks.overall,
+            checks = h.checks,
             totalAlerts = h.ddiAlerts.size + h.allergyAlerts.size + h.drugDiseaseAlerts.size,
             majorAlerts = h.totalMajorAlerts,
-            unverifiedItems = SafetyBannerDecision.countUnverified(
-                h.medications.map { it.atcCode != null || it.allAtcCodes.isNotEmpty() },
-            ),
         )
         when (safety.alert) {
             SafetyAlertBanner.MAJOR -> binding.profileDetailAlertBanner.text = ctx.getString(
