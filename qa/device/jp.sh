@@ -19,14 +19,15 @@ ADB=(adb)
 [ -n "${ADB_SERIAL:-}" ] && ADB=(adb -s "$ADB_SERIAL")
 
 latest_out() { ls -dt "$ROOT"/qa/device/out/*/ 2>/dev/null | head -1 | sed 's:/$::'; }
-OUT="${OUT:-$(latest_out)}"
+export OUT="${OUT:-$(latest_out)}"
 
 act() {
   local a="$1"; shift
   case "$a" in
     mailbox-pull)   git -C "$MB" pull --rebase origin agent-mailbox && ls "$MB/to-antigravity" ;;
     mailbox-push)   git -C "$MB" add -A && git -C "$MB" commit -m "$*" && git -C "$MB" pull --rebase origin agent-mailbox && git -C "$MB" push origin agent-mailbox ;;
-    checkout)       git -C "$ROOT" fetch origin && git -C "$ROOT" checkout "$1" && git -C "$ROOT" rev-parse --short HEAD ;;
+    mailbox-rm)     rm -f "$MB/to-antigravity/$1" ;;
+    checkout)       git -C "$ROOT" fetch origin && git -C "$ROOT" checkout "${@}" && git -C "$ROOT" rev-parse --short HEAD ;;
     qa-run)         "$ROOT/qa/device/run_device_qa.sh"; OUT="$(latest_out)"; echo "OUT=$OUT" ;;
     out)            echo "OUT=$OUT"; ls "$OUT" ;;
     ui)             python3 "$ROOT/qa/device/ui.py" "$@" ;;
@@ -45,6 +46,8 @@ act() {
     kb-pull)        "${ADB[@]}" pull "$KB_REMOTE" "$KB_LOCAL" && ls -lh "$KB_LOCAL" ;;
     kb-sql)         mkdir -p "$OUT/kb" && sqlite3 -header -column "$KB_LOCAL" < "$DIR/$1" | tee "$OUT/kb/$2" ;;
     kb-rm)          rm -f "$KB_LOCAL" && echo "kb copy removed" ;;
+    pdf-pull)       "${ADB[@]}" exec-out run-as "$PKG" cat "cache/jemma_pocket_pass_$1.pdf" > "$OUT/$1.pdf" && ls -lh "$OUT/$1.pdf" ;;
+    pdf-render)     qlmanage -t -s 1400 -o "$OUT/screenshots" "$OUT/$1.pdf" && mv -f "$OUT/screenshots/$1.pdf.png" "$OUT/screenshots/$2" && ls -lh "$OUT/screenshots/$2" ;;
     measure)        git -C "$DR" ls-tree -r -l HEAD | awk '{s+=$4} END {print NR" files", s" bytes"}' ;;
     count-png)      find "$DR/$SLUG" -name '*.png' | wc -l ;;
     prune)          "$ROOT/qa/device/prune_run.sh" "$DR/$SLUG"/* ;;
@@ -58,6 +61,9 @@ act() {
                       && git -C "$DR" rev-parse --short HEAD ;;
     reports-commit) git -C "$DR" add -A && git -C "$DR" commit -m "$*" && git -C "$DR" push origin device-reports && git -C "$DR" rev-parse --short HEAD ;;
     status)         git -C "$ROOT" status -s | head -5; git -C "$ROOT" rev-parse --short HEAD; "${ADB[@]}" get-state ;;
+    gradle-test)    (cd "$ROOT/JemmaPassAndroidDemo" && ./gradlew :app:testDebugUnitTest "$@") ;;
+    branch-commit)  git -C "$ROOT" add -A && git -C "$ROOT" commit -m "$*" ;;
+    branch-push)    git -C "$ROOT" push origin "$1" ;;
     *)              echo "unknown action: $a"; return 64 ;;
   esac
 }
@@ -71,7 +77,7 @@ while IFS= read -r line || [ -n "$line" ]; do
   args=()
   while IFS= read -r -d '' x; do args+=("$x"); done < <(python3 -c 'import shlex,sys; sys.stdout.write("".join(a+"\0" for a in shlex.split(sys.argv[1])))' "$line")
   [ "${#args[@]}" -eq 0 ] && continue
-  act "${args[@]}" > "$DIR/step.txt" 2>&1
+  act "${args[@]}" < /dev/null > "$DIR/step.txt" 2>&1
   rc=$?
   tee -a "$LOG" < "$DIR/step.txt"
   echo "◀ rc=$rc" | tee -a "$LOG"
