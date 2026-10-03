@@ -18,27 +18,17 @@ final class ContactsVectorsTests: XCTestCase {
     }
 
     private func findVectorsDirectory() throws -> URL {
-        let thisFile = URL(fileURLWithPath: #filePath)
-        let rootRepo = thisFile
-            .deletingLastPathComponent() // Tests/JemmaCoreTests
-            .deletingLastPathComponent() // Tests
-            .deletingLastPathComponent() // JemmaCore
-            .deletingLastPathComponent() // JemmaPassIOS
-
-        let candidates = [
-            rootRepo.appendingPathComponent("qa/vectors/contacts"),
-            URL(fileURLWithPath: "/Users/kurodohenroonsen/Documents/jemmapass-contacts/qa/vectors/contacts"),
-            URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("qa/vectors/contacts")
-        ]
-
-        for candidate in candidates {
+        var current = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+        while current.path != "/" {
+            let candidate = current.appendingPathComponent("qa/vectors/contacts")
             var isDir: ObjCBool = false
             if FileManager.default.fileExists(atPath: candidate.path, isDirectory: &isDir), isDir.boolValue {
                 return candidate
             }
+            current = current.deletingLastPathComponent()
         }
 
-        XCTFail("Could not locate qa/vectors/contacts directory in any of: \(candidates.map { $0.path })")
+        XCTFail("Could not locate qa/vectors/contacts directory by ascending from: \(#filePath)")
         throw NSError(domain: "VectorsNotFound", code: 404)
     }
 
