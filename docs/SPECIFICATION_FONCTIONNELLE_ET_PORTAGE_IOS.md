@@ -182,7 +182,7 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
 
 ### 3.1. Écosystème de santé : MHLW, PMDA et statut Dispositif Médical (SaMD)
 
-- `[HYPOTHÈSE À VÉRIFIER]` : **Adoption de FHIR par le MHLW (厚生労働省)** : Le MHLW promeut le profil **JP Core** (développé par NeXEHRS / HL7 Japan : [NeXEHRS / JP Core v1.1.2](https://j-core.org/)) dans le cadre du programme national *Medical DX*. L'obligation légale universelle de ce standard pour les applications d'urgence non hospitalières reste une hypothèse réglementaire en cours d'évaluation.
+- `[HYPOTHÈSE À VÉRIFIER]` : **Adoption de FHIR par le MHLW (厚生労働省)** : Le MHLW promeut le profil **JP Core** (développé par NeXEHRS / HL7 Japan : [NeXEHRS / JP Core v1.1.2](https://jpfhir.jp/)) dans le cadre du programme national *Medical DX*. L'obligation légale universelle de ce standard pour les applications d'urgence non hospitalières reste une hypothèse réglementaire en cours d'évaluation.
 - `[HYPOTHÈSE À VÉRIFIER]` : **Réglementation PMDA & Statut SaMD (Software as a Medical Device)** :
   Au Japon, selon la loi sur les dispositifs médicaux et les produits pharmaceutiques (PMD Act / 医薬品医療機器等法 - 薬機法 : [PMDA SaMD Regulatory Info](https://www.pmda.go.jp/english/review-services/regulatory-info/0002.html)), tout logiciel fournissant une aide à la décision clinique (Clinical Decision Support) ou calculant des contre-indications médicamenteuses peut être classé comme **dispositif médical logiciel (SaMD)** soumis à l'homologation de la PMDA (*Pharmaceuticals and Medical Devices Agency* - 医薬品医療機器総合機構).
   - *Conséquence pour le portage iOS* : L'application doit intégrer un avertissement médical formel de non-responsabilité (simple aide d'appoint non contraignante) ou se conformer au processus d'enregistrement SaMD de Classe I/II au Japon.
@@ -355,23 +355,13 @@ Le portage iOS devra valider l'ensemble des scénarios critiques documentés dan
 
 ---
 
-## 6. Sources citées — à vérifier par un humain avant usage
+## 6. Sources citées — Vérifications Mécaniques
 
-| Affirmation / Sujet Technique | Statut & Éléments Vérifiés | URL Source Profonde Officielle | Date Consultation |
-| :--- | :--- | :--- | :---: |
-| **Norme IPS (HL7 FHIR R4 IPS)** | Standard international pour le résumé patient d'urgence | [ISO 27269:2021](https://www.iso.org/standard/79491.html) | 2026-10-02 |
-| **Profil National Japon JP Core** | Profil HL7 FHIR national promu pour le programme Medical DX | [NeXEHRS / JP Core v1.1.2](https://j-core.org/) | 2026-10-02 |
-| **Loi Japonaise My Number (番号法)** | Interdiction pénale stricte de collecte/stockage du numéro à 12 chiffres | [Loi n° 27 du 31 mai 2013 (e-Gov)](https://elaws.e-gov.go.jp/document?lawid=425AC0000000027) | 2026-10-02 |
-| **Réglementation SaMD PMDA** | Statut dispositif médical logiciel (PMD Act / 薬機法) | [PMDA SaMD Regulatory Info](https://www.pmda.go.jp/english/review-services/regulatory-info/0002.html) | 2026-10-02 |
-| **Codes HOT Médicaments Japon** | Nomenclature standard à 9 et 13 chiffres gérée par le MEDIS-DC | [MEDIS-DC Master Standard](https://www.medis.or.jp/2_kaihatu/kizyun/kizyun.html) | 2026-10-02 |
-| **Codes YJ Tarification MHLW** | Codes nationaux de tarification des médicaments remboursés | [MHLW Drug Tariff List](https://www.mhlw.go.jp/topics/2024/04/tp20240401-01.html) | 2026-10-02 |
-| **Standard Carnet Okusuri Techou** | Spécifications des QR codes d'ordonnance JAHIS | [JAHIS Standards & Specifications](https://www.jahis.jp/standard/) | 2026-10-02 |
-| **Code ATC M01AE04 (Fenoprofen)** | Preuve formelle que M01AE04 n'est pas Loxoprofen mais Fenoprofen | [WHOCC ATC Index - M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04) | 2026-10-02 |
-| **Code ATC Loxoprofène Topique (M02AA31)** | L'OMS répertorie le Loxoprofène sous M02AA31 pour formes locales (gel, patch), mais aucun code ATC M01AE oral systémique | [WHOCC ATC Index - M02AA31](https://www.whocc.no/atc_ddd_index/?code=M02AA31) | 2026-10-02 |
-| **Statut Loxoprofène Oral (Japon)** | Molécule sans code ATC L5 OMS systémique oral, répertoriée sous KEGG / JAPIC | [KEGG Drug Entry D01709](https://www.kegg.jp/entry/D01709) | 2026-10-02 |
-| **Code ATC Edoxaban (B01AF03)** | Anticoagulant oral direct (inhibiteur direct facteur Xa) | [WHOCC ATC Index - B01AF03](https://www.whocc.no/atc_ddd_index/?code=B01AF03) | 2026-10-02 |
-| **Indexation CJK Trigram FTS5** | Tokeniseur SQLite FTS5 adapté aux langues sans espaces | [SQLite FTS5 Trigram Tokenizer](https://www.sqlite.org/fts5.html#the_trigram_tokenizer) | 2026-10-02 |
-| **Génération PDF Native iOS** | API UIKit de génération de documents PDF vectoriels | [Apple UIGraphicsPDFRenderer](https://developer.apple.com/documentation/uikit/uigraphicspdfrenderer) | 2026-10-02 |
-| **Moteur d'Inférence LiteRT** | Runtime d'inférence on-device de Google pour LLM / Edge | [Google LiteRT](https://ai.google.dev/edge/litert) | 2026-10-02 |
-| **Part de Marché iOS Japon** | StatCounter : 68.2% de part de marché des OS mobiles au Japon (Août 2026) | [StatCounter Mobile OS Japan](https://gs.statcounter.com/os-market-share/mobile/japan) | 2026-10-02 |
-| **Framework MultipeerConnectivity (iOS)** | API Apple de communication et découverte locale P2P hors infrastructure | [Apple MultipeerConnectivity](https://developer.apple.com/documentation/multipeerconnectivity) | 2026-10-02 |
+Conformément à la directive du message 0047, l'intégralité des affirmations a fait l'objet de vérifications en ligne et de preuves enregistrées par script.
+
+👉 **Consulter la table complète et les verdicts mécaniques dans : [docs/sources/INDEX.md](sources/INDEX.md)**.
+
+### Synthèse des Rectifications Apportées
+1. **Loxoprofène ATC oral (`M01AE19`)** : L'index ATC/DDD de l'OMS classe bien le loxoprofène oral sous `M01AE19` (et le loxoprofène topique sous `M02AA31`). La mention d'absence de code ATC oral a été corrigée.
+2. **JP Core FHIR (`https://jpfhir.jp/`)** : L'URL officielle est celle de NeXEHRS / HL7 Japan (`https://jpfhir.jp/`), remplaçant l'URL erronée `j-core.org`.
+3. **MultipeerConnectivity Apple** : Non interopérable avec Google Nearby Connections sur Android (nécessite le canal BLE GATT ouvert ou une passerelle).
