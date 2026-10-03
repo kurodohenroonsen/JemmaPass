@@ -13,7 +13,7 @@
 > **Personas de référence autorisés** :  
 > - 🚶‍♂️ `demo_kurodo` (Kurodo) : Pèlerin étranger, allergie létale à la pénicilline (`SNOMED 91936005`).  
 > - 👵 `demo_haru` (Haru) : Citoyenne japonaise de 80 ans, sous anticoagulant oral direct Edoxaban (`ATC B01AF03`).  
-> - 🎒 `demo_kamekichi` (Kamekichi) : Secouriste bénévole / équipier DMAT.  
+> - 🎒 `demo_kamekichi` (Kamekichi) : Citoyen et patient japonais né en 2000, groupe sanguin B+, polymédiqué sous anticoagulant (warfarine) et bêta-bloquant (bisoprolol), antécédents d'arythmie cardiaque et d'angine de poitrine (`JemmaPersonasSeeder.kt:216-233, 298-401`). Les lecteurs du passeport (secouristes de terrain, équipiers DMAT, médecins urgentistes) sont quant à eux décrits de manière anonyme.  
 
 ---
 
@@ -109,8 +109,12 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 
 #### Constats détaillés
 1. `[MESURÉ]` **Cible tactile insuffisante sur le bouton d'ajout de profil** : Dans `fragment_home.xml:61-62`, l'élément `#home_btn_add_profile` est dimensionné à `40dp × 40dp`. Il est inférieur au seuil minimal recommandé de **48 × 48 dp** fixé par Google Android Accessibility Guidelines.
-2. `[MESURÉ]` **Taille de texte réduite sur le sélecteur de profil** : Dans `fragment_home.xml:48`, le label `#home_active_profile` est typographié en `12sp` avec la couleur `@color/jemma_text_muted` (`#94A3B8`). Bien que son ratio de contraste de **6.96:1** sur `@color/jemma_bg` (`#0F172A`) passe le critère WCAG AA, la petite taille (12sp) rend le profil actif difficile à identifier d'un coup d'œil par un utilisateur malvoyant ou âgé tel que `demo_haru`.
-3. `[MESURÉ]` **Contraste du bouton flottant d'urgence SOS** : Dans `fragment_home.xml:86-97`, `#home_fab_sos` utilise `app:backgroundTint="@color/jemma_danger"` (`#DC2626`) et `android:textColor="@android:color/white"`. Le ratio de contraste mesuré du blanc sur `#DC2626` est de **5.00:1**, satisfaisant le critère WCAG AA (seuil 4.5:1), mais échouant au critère AAA (seuil 7.0:1).
+2. `[MESURÉ]` **Taille de texte réduite sur le sélecteur de profil** : Dans `fragment_home.xml:48`, le label `#home_active_profile` est typographié en `12sp` avec la couleur `@color/jemma_text_muted` (`#94A3B8`, luminance relative $L_1 = 0.3595$) sur fond `@color/jemma_bg` (`#0F172A`, luminance relative $L_2 = 0.0088$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.3595 + 0.05}{0.0088 + 0.05} = \frac{0.4095}{0.0588} = \mathbf{6.96:1}$.  
+   Bien que ce ratio passe le critère WCAG AA (seuil minimal 4.5:1), la petite taille (12sp) rend le profil actif difficile à identifier d'un coup d'œil par un utilisateur malvoyant ou âgé tel que `demo_haru`.
+3. `[MESURÉ]` **Contraste du bouton flottant d'urgence SOS** : Dans `fragment_home.xml:86-97`, `#home_fab_sos` utilise `app:backgroundTint="@color/jemma_danger"` (`#DC2626`, luminance relative $L_2 = 0.1674$) et `android:textColor="@android:color/white"` (`#FFFFFF`, luminance relative $L_1 = 1.0000$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{1.0000 + 0.05}{0.1674 + 0.05} = \frac{1.0500}{0.2174} = \mathbf{4.83:1}$.  
+   Ce ratio satisfait le critère WCAG 2.1 AA pour le texte normal ($\ge 4.5:1$), mais échoue au critère AAA ($\ge 7.0:1$).
 4. `[MESURÉ]` **Dépendance à la couleur sur le statut de danger** : Le FAB SOS repose sur un fond rouge vif (`#DC2626`). L'icône `@android:drawable/ic_dialog_alert` et le texte explicite `@string/home_sos_cta` (« SOS ») compensent heureusement la dépendance à la couleur pour les usagers daltoniens (protanopie/deutéranopie).
 
 ---
@@ -131,8 +135,9 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 - **Captures d'écran citées** : `c10-haru-allergies.png` (commit `08947ec`), `c10-kurodo-allergies.png` (commit `08947ec`), `234-e5-allergy-date-future-disabled.png` (commit `8a675b3`).
 
 #### Constats détaillés
-1. `[MESURÉ]` **Défaut de contraste critique sur les notes d'allergie (#64748B)** : Dans `item_allergy_row.xml:61-68`, le texte des notes (`#allergy_row_notes`) utilise `android:textColor="#64748B"` et `android:textSize="12sp"` sur un fond de carte `app:cardBackgroundColor="#1E293B"`. Le ratio de contraste mesuré est de **3.31:1**.  
-   *Verdict normatif* : **ÉCHEC CRITIQUE WCAG 2.1 AA** (SC 1.4.3 impose $\ge 4.5:1$ pour le texte normal). Les notes cliniques décrivant l'anaphylaxie d'`demo_kurodo` sont sous le seuil d'accessibilité.
+1. `[MESURÉ]` **Défaut de contraste critique sur les notes d'allergie (#64748B sur #1E293B)** : Dans `item_allergy_row.xml:61-68`, le texte des notes (`#allergy_row_notes`) utilise `android:textColor="#64748B"` ($L_1 = 0.1706$) et `android:textSize="12sp"` sur un fond de carte `app:cardBackgroundColor="#1E293B"` ($L_2 = 0.0218$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.1706 + 0.05}{0.0218 + 0.05} = \frac{0.2206}{0.0718} = \mathbf{3.07:1}$.  
+   *Verdict normatif* : **ÉCHEC CRITIQUE WCAG 2.1 AA** (SC 1.4.3 impose $\ge 4.5:1$ pour le texte normal). Les notes cliniques décrivant l'anaphylaxie de `demo_kurodo` sont sous le seuil légal d'accessibilité.
 2. `[MESURÉ]` **Troncature silencieuse des manifestations allergiques d'urgence** : Dans `item_allergy_row.xml:63-64`, `#allergy_row_notes` est bridé par `android:maxLines="2"` et `android:ellipsize="end"`. Si la description clinique dépasse deux lignes (ex: « urticaire généralisée, bronchospasme, œdème de Quincke, injection épinéphrine requise »), les mentions vitales sont masquées par des points de suspension (« … ») sans possibilité d'expansion directe sur la fiche.
 3. `[MESURÉ]` **Exposition transitoire de codes numériques SNOMED bruts** : Dans `AllergiesAdapter.kt:66-70`, si le libellé textuel n'est pas encore résolu en mémoire, le code SNOMED numérique brut (`a.c`, ex: `91936005`) est injecté directement dans le TextView `#allergy_row_substance` avant la complétion de la coroutine de traduction. L'utilisateur peut voir furtivement un code chiffré incompréhensible.
 4. `[MESURÉ]` **Pollution vocale par le chevron de navigation « › »** : Dans `item_allergy_row.xml:71-76`, le chevron visuel est encodé par un `TextView` contenant `android:text="›"` sans `importantForAccessibility="no"`. TalkBack verbalise « guillemet fermant simple » à la fin de la lecture de chaque ligne d'allergie.
@@ -145,7 +150,9 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 - **Captures d'écran citées** : `80-haru-meds.png` (commit `1c1b7e5`), `235-e7-medication-5-routes.png` (commit `8a675b3`), `263-drug-picker-ibu.png` (commit `4006cc6`).
 
 #### Constats détaillés
-1. `[MESURÉ]` **Défaut de contraste sur la ligne de motif de prise (#64748B)** : Dans `item_medication_row.xml:61-68`, `#medication_row_reason` est stylisé en `#64748B` sur fond `#1E293B`, générant un ratio de **3.31:1** (inférieur à 4.5:1). **ÉCHEC WCAG 2.1 AA**.
+1. `[MESURÉ]` **Défaut de contraste sur la ligne de motif de prise (#64748B sur #1E293B)** : Dans `item_medication_row.xml:61-68`, `#medication_row_reason` est stylisé avec la couleur `#64748B` ($L_1 = 0.1706$) sur fond de carte `#1E293B` ($L_2 = 0.0218$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.1706 + 0.05}{0.0218 + 0.05} = \frac{0.2206}{0.0718} = \mathbf{3.07:1}$.  
+   Ce ratio est nettement inférieur au seuil normatif minimal de **4.5:1** pour le texte normal : **ÉCHEC WCAG 2.1 AA**.
 2. `[MESURÉ]` **Affichage d'un code SNOMED/Coded Reason brut au lieu d'un libellé** : Dans `MedicationsAdapter.kt:133-134`, le code stipule :
    ```kotlin
    val reason = m.rs?.takeIf { it.isNotBlank() } ?: m.rc?.takeIf { it.isNotBlank() }
@@ -177,7 +184,8 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 - **Captures d'écran citées** : `161-past-problems-list.png` (commit `ed20225`), `162-form-rougeole.png` (commit `ed20225`), `169-past-problems-list-ja.png` (commit `8851a03`).
 
 #### Constats détaillés
-1. `[MESURÉ]` **Contraste insuffisant sur la date de résolution (#64748B)** : Dans `item_past_problem_row.xml:61-68`, la date et les notes d'antécédents utilisent `#64748B` sur fond `#1E293B` (**3.31:1**, échec WCAG AA).
+1. `[MESURÉ]` **Contraste insuffisant sur la date de résolution (#64748B sur #1E293B)** : Dans `item_past_problem_row.xml:61-68`, la date et les notes d'antécédents utilisent la couleur `#64748B` ($L_1 = 0.1706$) sur fond de carte `#1E293B` ($L_2 = 0.0218$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.1706 + 0.05}{0.0218 + 0.05} = \frac{0.2206}{0.0718} = \mathbf{3.07:1}$ (seuil minimal requis $\ge 4.5:1$, **ÉCHEC WCAG 2.1 AA**).
 2. `[MESURÉ]` **Troncature sur les antécédents chirurgicaux ou chroniques** : Dans `item_past_problem_row.xml:64-65`, `android:maxLines="2"` tronque les diagnostics secondaires ou les descriptions anatomiques étendues.
 3. `[MESURÉ]` **Absence d'attributs TalkBack sur les sélecteurs du BottomSheet** : Dans `bottom_sheet_past_problem_form.xml:135-180`, les rangées `#past_problem_form_onset_row`, `#past_problem_form_abatement_row` et `#past_problem_form_severity_row` sont des `LinearLayout` cliquables ne disposant d'aucun `contentDescription` ni d'annonce de rôle de bouton.
 
@@ -189,7 +197,8 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 
 #### Constats détaillés
 1. `[MESURÉ]` **Exposition des identifiants UDI et codes SNOMED bruts** : Dans `item_device_row.xml`, un dispositif sans dénomination commerciale affiche son identifiant UDI-DI (ex: code barre GS1/GTIN à 14 chiffres) ou son code concept SNOMED (`72506001` pour un stimulateur cardiaque), difficilement déchiffrable par le patient ou un aidant non-médecin.
-2. `[MESURÉ]` **Défaut de contraste récurrent sur les notes (#64748B)** : Ratio de **3.31:1** mesuré sur `#device_row_notes` (`item_device_row.xml:61-68`).
+2. `[MESURÉ]` **Défaut de contraste récurrent sur les notes (#64748B sur #1E293B)** : Sur `#device_row_notes` (`item_device_row.xml:61-68`), la couleur de texte est `#64748B` ($L_1 = 0.1706$) sur fond de carte `#1E293B` ($L_2 = 0.0218$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.1706 + 0.05}{0.0218 + 0.05} = \frac{0.2206}{0.0718} = \mathbf{3.07:1}$ (seuil minimal requis $\ge 4.5:1$, **ÉCHEC WCAG 2.1 AA**).
 3. `[MESURÉ]` **Absence d'annonce d'erreur vocale sur l'UDI invalide** : Sur la capture `126-device-udi-invalid.png`, l'erreur de saisie de l'identifiant UDI est affichée visuellement sous le champ, mais aucun événement `AccessibilityEvent.TYPE_ANNOUNCEMENT` n'est déclenché pour avertir un utilisateur non-voyant.
 
 ---
@@ -199,7 +208,8 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 - **Captures d'écran citées** : `12-immunizations-list.png` (commit `f7c500e`), `20-form-empty.png` (commit `f7c500e`), `c9-haru-vaccins.png` (commit `6342bc6`).
 
 #### Constats détaillés
-1. `[MESURÉ]` **Contraste de la date et du statut vaccinal** : Dans `item_immunization_row.xml:61-68`, la mention de date et de numéro de lot est en `#64748B` sur fond sombre (**3.31:1**, échec WCAG AA).
+1. `[MESURÉ]` **Contraste de la date et du statut vaccinal (#64748B sur #1E293B)** : Dans `item_immunization_row.xml:61-68`, la mention de date et de numéro de lot est en `#64748B` ($L_1 = 0.1706$) sur fond de carte `#1E293B` ($L_2 = 0.0218$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.1706 + 0.05}{0.0218 + 0.05} = \frac{0.2206}{0.0718} = \mathbf{3.07:1}$ (seuil minimal requis $\ge 4.5:1$, **ÉCHEC WCAG 2.1 AA**).
 2. `[MESURÉ]` **Sélecteur de date sans annonce accessible** : Dans `bottom_sheet_immunization_form.xml:135-150`, `#immunization_form_date_row` est un `LinearLayout` cliquable sans libellé d'action pour lecteur d'écran.
 3. `[MESURÉ]` **Affichage des numéros de lot sans libellé contextuel** : Dans la liste des vaccins, le lot vaccinal est affiché de façon brute (ex: `ABX-2024`), sans préfixe textuel « Lot : » explicite sur petit écran.
 
@@ -211,7 +221,8 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 
 #### Constats détaillés
 1. `[MESURÉ]` **Exposition de codes opératoires SNOMED** : Dans `ProceduresAdapter.kt:67`, en l'absence de libellé résolu, le code technique de l'intervention (ex: `80146002` pour une appendicectomie) apparaît à l'écran.
-2. `[MESURÉ]` **Contraste sous-standard des détails d'intervention** : Dans `item_procedure_row.xml:61-68`, le site anatomique et l'opérateur sont affichés en `#64748B` (**3.31:1**).
+2. `[MESURÉ]` **Contraste sous-standard des détails d'intervention (#64748B sur #1E293B)** : Dans `item_procedure_row.xml:61-68`, le site anatomique et l'opérateur sont affichés en `#64748B` ($L_1 = 0.1706$) sur fond de carte `#1E293B` ($L_2 = 0.0218$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.1706 + 0.05}{0.0218 + 0.05} = \frac{0.2206}{0.0718} = \mathbf{3.07:1}$ (seuil minimal requis $\ge 4.5:1$, **ÉCHEC WCAG 2.1 AA**).
 3. `[MESURÉ]` **Troncature des notes opératoires à 2 lignes** : Dans `item_procedure_row.xml:64-65`, `maxLines="2"` risque de masquer les complications post-opératoires déclarées par le patient.
 
 ---
@@ -222,7 +233,8 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 
 #### Constats détaillés
 1. `[MESURÉ]` **Affichage de codes LOINC obscurs pour le patient** : Dans `item_result_row.xml`, lorsqu'une analyse de laboratoire est importée d'un système hospitalier sans libellé traduit, le code LOINC (ex: `14749-6` pour la glycémie ou `2823-3` pour le potassium) est présenté tel quel.
-2. `[MESURÉ]` **Contraste insuffisant de l'intervalle de référence** : Dans `item_result_row.xml:61-68`, les valeurs normales et unités (`#result_row_details`) utilisent la couleur `#64748B` (**3.31:1**).
+2. `[MESURÉ]` **Contraste insuffisant de l'intervalle de référence (#64748B sur #1E293B)** : Dans `item_result_row.xml:61-68`, les valeurs normales et unités (`#result_row_details`) utilisent la couleur `#64748B` ($L_1 = 0.1706$) sur fond de carte `#1E293B` ($L_2 = 0.0218$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.1706 + 0.05}{0.0218 + 0.05} = \frac{0.2206}{0.0718} = \mathbf{3.07:1}$ (seuil minimal requis $\ge 4.5:1$, **ÉCHEC WCAG 2.1 AA**).
 3. `[MESURÉ]` **Confusion potentielle entre séparateurs décimaux (virgule vs point)** : Comme illustré par la capture `155-results-list-potassium-comma.png`, la gestion des valeurs numériques avec virgule française (`4,2 mmol/L`) et point international (`4.2`) n'affiche pas d'avertissement de format en cas de saisie ambiguë.
 
 ---
@@ -273,7 +285,9 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
    }
    ```
    Pour tout ValueSet sans emoji configuré (ex: V3-RoleCode pour les contacts, LOINC pour les résultats, SNOMED pour les dispositifs et procédures), l'utilisateur est confronté à des codes ésotériques en tête de ligne (ex: « `DOMPART  ·  Partenaire de vie` », « `80146002  ·  Appendicectomie` »).
-3. `[MESURÉ]` **Contraste du texte de décompte des éléments (#94A3B8)** : Dans `dialog_ips_code_picker.xml:135`, `#picker_count` est en `12sp` avec la couleur `#94A3B8`.
+3. `[MESURÉ]` **Contraste du texte de décompte des éléments (#94A3B8 sur #1E293B)** : Dans `dialog_ips_code_picker.xml:135`, `#picker_count` est typographié en `12sp` avec la couleur `#94A3B8` ($L_1 = 0.3595$) sur un fond de dialogue `@color/jemma_surface` (`#1E293B`, $L_2 = 0.0218$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.3595 + 0.05}{0.0218 + 0.05} = \frac{0.4095}{0.0718} = \mathbf{5.71:1}$.  
+   Bien que ce ratio satisfasse le critère WCAG AA (seuil minimal 4.5:1), la combinaison d'une taille réduite de `12sp` et d'une luminance intermédiaire crée une fatigue visuelle évitable lors d'une recherche prolongée.
 
 ---
 
@@ -334,8 +348,12 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 - **Captures d'écran citées** : `230-e1-alert-kamekichi.png` (commit `8a675b3`).
 
 #### Constats détaillés
-1. `[MESURÉ]` **Invisibilité du badge DCD (Décédé) sur thème sombre** : Dans `colors.xml:47`, la couleur `@color/salt_dcd` est définie comme `#000000` (noir pur). Sur une surface d'arrière-plan `@color/jemma_surface` (`#1E293B`) ou `@color/jemma_bg` (`#0F172A`), le ratio de contraste mesuré est de **1.18:1** à **1.44:1**.  
-   *Verdict normatif* : **ÉCHEC TOTAL WCAG (Invisibilité graphique)**. Un badge ou texte noir sur fond bleu-noir sombre `#1E293B` est pratiquement invisible à l'œil nu.
+1. `[MESURÉ]` **Invisibilité du badge DCD (Décédé) sur thème sombre (#000000 sur #1E293B et #0F172A)** : Dans `colors.xml:47`, la couleur `@color/salt_dcd` est définie comme `#000000` (noir pur, luminance relative $L_2 = 0.0000$).  
+   - *Sur surface de carte `@color/jemma_surface` (`#1E293B`, $L_1 = 0.0218$)* :  
+     $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.0218 + 0.05}{0.0000 + 0.05} = \frac{0.0718}{0.0500} = \mathbf{1.44:1}$.  
+   - *Sur arrière-plan d'écran `@color/jemma_bg` (`#0F172A`, $L_1 = 0.0088$)* :  
+     $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.0088 + 0.05}{0.0000 + 0.05} = \frac{0.0588}{0.0500} = \mathbf{1.18:1}$.  
+   *Verdict normatif* : **ÉCHEC TOTAL WCAG (Invisibilité graphique)**. Un badge ou texte noir sur fond bleu-noir sombre `#1E293B` ou `#0F172A` est pratiquement invisible à l'œil nu (seuil requis $\ge 4.5:1$).
 2. `[MESURÉ]` **Acronymes non traduits dans item_victim_card.xml** : Mêmes constats que sur l'écran 17 : les boutons de tri utilisent des `contentDescription` en dur (`WAIT`, `EVAL`, `STAB`, `HELP`, `EVAC`, `DCD`).
 
 ---
@@ -349,7 +367,9 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
    - `android:text="No profile active"`  
    Sur l'écran d'accueil ou de verrouillage d'un utilisateur français ou japonais, le widget affiche un message d'absence de profil en anglais.
 2. `[MESURÉ]` **Cible tactile du bouton SOS sur widget inférieure aux normes** : Dans `jemma_emergency_widget.xml:27-43`, `#btn_sos` est un conteneur avec padding de 8dp autour d'un texte 14sp. Sa hauteur physique totale est d'environ **32 dp**, largement inférieure aux 48 dp réglementaires.
-3. `[MESURÉ]` **Contraste faible sur le message d'état vide (#888888 sur #202020)** : Dans `jemma_emergency_widget.xml:59`, le texte `#888888` sur fond `#202020` offre un ratio de **4.67:1**, tout juste à la limite du seuil AA (4.5:1), mais avec une taille de `12sp`, ce qui est inadapté à un widget d'urgence.
+3. `[MESURÉ]` **Contraste limite sur le message d'état vide (#888888 sur #202020)** : Dans `jemma_emergency_widget.xml:59`, le texte utilise la couleur `#888888` ($L_1 = 0.2462$) sur fond `#202020` ($L_2 = 0.0144$).  
+   *Calcul du ratio de contraste* : $\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.2462 + 0.05}{0.0144 + 0.05} = \frac{0.2962}{0.0644} = \mathbf{4.60:1}$.  
+   Bien que ce ratio atteigne de justesse le seuil AA ($\ge 4.5:1$), son association avec une taille réduite de `12sp` sur un composant d'urgence pour écran de verrouillage est inadaptée aux conditions de lecture en situation de détresse.
 
 ---
 
@@ -362,8 +382,9 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
    ```xml
    android:textColor="@color/jemma_danger"
    ```
-   Sur les cartes et boîtes de dialogue Material ayant pour fond `@color/jemma_surface` (`#1E293B`), le ratio de contraste mesuré entre `#DC2626` et `#1E293B` est de **3.03:1**.  
-   *Verdict normatif* : **ÉCHEC CRITIQUE WCAG 2.1 AA** (SC 1.4.3 requiert 4.5:1 pour le texte normal). Un texte d'alerte médicale ou de suppression de données vitales rouge sombre sur gris-bleu foncé est sous les seuils légaux d'accessibilité.
+   Sur les cartes et boîtes de dialogue Material ayant pour fond `@color/jemma_surface` (`#1E293B`, $L_2 = 0.0218$), le texte d'alerte `@color/jemma_danger` (`#DC2626`, $L_1 = 0.1674$) génère le calcul de ratio suivant :  
+   $$\frac{L_1 + 0.05}{L_2 + 0.05} = \frac{0.1674 + 0.05}{0.0218 + 0.05} = \frac{0.2174}{0.0718} = \mathbf{3.03:1}$$  
+   *Verdict normatif* : **ÉCHEC CRITIQUE WCAG 2.1 AA** (SC 1.4.3 requiert un ratio minimal de **4.5:1** pour le texte normal). Un texte d'alerte médicale ou de suppression de données vitales rouge sombre sur gris-bleu foncé est sous les seuils légaux d'accessibilité.
 2. `[MESURÉ]` **Libellés en dur en anglais dans le menu contextuel de profil** : Dans `item_profile_summary.xml:34,45`, les boutons d'action utilisent :
    - `contentDescription="Set as current profile"`
    - `contentDescription="Delete profile"`  
@@ -376,25 +397,25 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 
 | Écran / Composant | Contraste WCAG AA | Cibles Tactiles ($\ge$ 48dp) | Taille Texte ($\ge$ 12sp) | Ordre Lecture / Semantics | Libellés TalkBack FR/JA | Indépendance Couleur | Troncature Texte FR/JA | Codes Techniques Masqués |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1. Accueil** (`fragment_home`) | ⚠️ Partiel (SOS 5.0) | ❌ ÉCHEC (40dp) | ⚠️ 12sp profil | ✅ Conforme | ✅ Conforme | ✅ Conforme | ✅ Conforme | ✅ Conforme |
+| **1. Accueil** (`fragment_home`) | ⚠️ Partiel (SOS 4.83:1) | ❌ ÉCHEC (40dp) | ⚠️ 12sp profil | ✅ Conforme | ✅ Conforme | ✅ Conforme | ✅ Conforme | ✅ Conforme |
 | **2. Fiche Détail** (`fragment_profile_detail`) | ✅ Conforme | ❌ ÉCHEC (44dp) | ✅ Conforme | ❌ ÉCHEC (▾ lu) | ✅ Conforme | ✅ Conforme | ✅ Conforme | ❌ ÉCHEC (`_j 1.2`, SNOMED) |
-| **3. Allergies** (`item_allergy_row`) | ❌ ÉCHEC (3.31:1) | ✅ Conforme | ⚠️ 12sp notes | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ⚠️ Emoji seul | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (code SNOMED brut) |
-| **4. Médicaments** (`item_medication_row`) | ❌ ÉCHEC (3.31:1) | ✅ Conforme | ⚠️ 12sp raison | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ⚠️ Emoji seul | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (code `rc` brut) |
+| **3. Allergies** (`item_allergy_row`) | ❌ ÉCHEC (3.07:1) | ✅ Conforme | ⚠️ 12sp notes | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ⚠️ Emoji seul | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (code SNOMED brut) |
+| **4. Médicaments** (`item_medication_row`) | ❌ ÉCHEC (3.07:1) | ✅ Conforme | ⚠️ 12sp raison | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ⚠️ Emoji seul | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (code `rc` brut) |
 | **5. Contacts ICE** (`bottom_sheet_contact`) | ✅ Conforme | ✅ Conforme | ✅ Conforme | ✅ Conforme | ❌ ÉCHEC (helper en FR dur) | ✅ Conforme | ✅ Conforme | ❌ ÉCHEC (RoleCode V3 brut) |
-| **6. Antécédents** (`item_past_problem_row`) | ❌ ÉCHEC (3.31:1) | ✅ Conforme | ⚠️ 12sp notes | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ✅ Conforme | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (code SNOMED) |
-| **7. Dispositifs** (`item_device_row`) | ❌ ÉCHEC (3.31:1) | ✅ Conforme | ⚠️ 12sp notes | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (erreur UDI) | ✅ Conforme | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (UDI / SNOMED brut) |
-| **8. Vaccins** (`item_immunization_row`) | ❌ ÉCHEC (3.31:1) | ✅ Conforme | ⚠️ 12sp lot | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ✅ Conforme | ❌ ÉCHEC (`maxLines=2`) | ⚠️ Lot non explicité |
-| **9. Interventions** (`item_procedure_row`) | ❌ ÉCHEC (3.31:1) | ✅ Conforme | ⚠️ 12sp détails | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ✅ Conforme | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (code SNOMED brut) |
-| **10. Résultats** (`item_result_row`) | ❌ ÉCHEC (3.31:1) | ✅ Conforme | ⚠️ 12sp unité | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ✅ Conforme | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (code LOINC brut) |
+| **6. Antécédents** (`item_past_problem_row`) | ❌ ÉCHEC (3.07:1) | ✅ Conforme | ⚠️ 12sp notes | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ✅ Conforme | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (code SNOMED) |
+| **7. Dispositifs** (`item_device_row`) | ❌ ÉCHEC (3.07:1) | ✅ Conforme | ⚠️ 12sp notes | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (erreur UDI) | ✅ Conforme | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (UDI / SNOMED brut) |
+| **8. Vaccins** (`item_immunization_row`) | ❌ ÉCHEC (3.07:1) | ✅ Conforme | ⚠️ 12sp lot | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ✅ Conforme | ❌ ÉCHEC (`maxLines=2`) | ⚠️ Lot non explicité |
+| **9. Interventions** (`item_procedure_row`) | ❌ ÉCHEC (3.07:1) | ✅ Conforme | ⚠️ 12sp détails | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ✅ Conforme | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (code SNOMED brut) |
+| **10. Résultats** (`item_result_row`) | ❌ ÉCHEC (3.07:1) | ✅ Conforme | ⚠️ 12sp unité | ❌ ÉCHEC (› lu) | ❌ ÉCHEC (pas de helper) | ✅ Conforme | ❌ ÉCHEC (`maxLines=2`) | ❌ ÉCHEC (code LOINC brut) |
 | **11. Grossesse** (`fragment_pregnancy_edit`) | ✅ Conforme | ✅ Conforme | ✅ Conforme | ❌ ÉCHEC (4× › lus) | ❌ ÉCHEC (lignes muettes) | ✅ Conforme | ✅ Conforme | ✅ Conforme |
 | **12. Perso / Identité** (`fragment_perso_edit`) | ✅ Conforme | ✅ Conforme | ✅ Conforme | ❌ ÉCHEC (emojis lus) | ❌ ÉCHEC (lignes muettes) | ✅ Conforme | ✅ Conforme | ❌ ÉCHEC (URI OID brutes) |
-| **13. Picker IPS** (`dialog_ips_code_picker`) | ⚠️ 12sp count | ❌ ÉCHEC (36dp) | ⚠️ 12sp count | ✅ Conforme | ✅ Conforme | ⚠️ Emoji seul | ✅ Conforme | ❌ ÉCHEC (prefix code brut) |
+| **13. Picker IPS** (`dialog_ips_code_picker`) | ⚠️ 12sp count (5.71:1) | ❌ ÉCHEC (36dp) | ⚠️ 12sp count | ✅ Conforme | ✅ Conforme | ⚠️ Emoji seul | ✅ Conforme | ❌ ÉCHEC (prefix code brut) |
 | **14. Picker KB** (`dialog_kb_drug_picker`) | ✅ Conforme | ⚠️ 40-42dp list | ✅ Conforme | ✅ Conforme | ❌ ÉCHEC (vide silencieux) | ✅ Conforme | ✅ Conforme | ✅ Conforme |
 | **15. QR Viewer** (`fragment_qr_viewer`) | ✅ Conforme | ❌ ÉCHEC (44dp) | ❌ ÉCHEC (11sp) | ⚠️ Slideshow loop | ✅ Conforme | ✅ Conforme | ✅ Conforme | ❌ ÉCHEC (dump JSON/Base64) |
 | **16. Hub Radar** (`fragment_radar`) | ✅ Conforme | ⚠️ Non borné | ✅ Conforme | ✅ Conforme | ⚠️ Acronymes SALT | ❌ ÉCHEC (SALT daltonisme) | ✅ Conforme | ✅ Conforme |
 | **17. Fiche Victime** (`fragment_patient_detail`) | ✅ Conforme | ❌ ÉCHEC (40dp) | ❌ ÉCHEC (9sp !) | ❌ ÉCHEC (♀/♂ lu) | ❌ ÉCHEC (WAIT/STAB EN) | ❌ ÉCHEC (SALT daltonisme) | ❌ ÉCHEC (nom maxLines 1) | ✅ Conforme |
-| **18. Cartes SALT** (`item_victim_card`) | ❌ ÉCHEC (DCD 1.18) | ✅ Conforme | ✅ Conforme | ✅ Conforme | ❌ ÉCHEC (WAIT/DCD EN) | ❌ ÉCHEC (DCD invisible) | ❌ ÉCHEC (`maxLines=2`) | ⚠️ Acronymes SALT |
-| **19. Widget SOS** (`jemma_emergency_widget`) | ⚠️ 4.67:1 sur 12sp | ❌ ÉCHEC (32dp) | ⚠️ 12sp vide | ✅ Conforme | ❌ ÉCHEC (Hardcoded EN) | ⚠️ SOS rouge seul | ✅ Conforme | ❌ ÉCHEC ("JEMMA ID") |
+| **18. Cartes SALT** (`item_victim_card`) | ❌ ÉCHEC (DCD 1.18:1 / 1.44:1) | ✅ Conforme | ✅ Conforme | ✅ Conforme | ❌ ÉCHEC (WAIT/DCD EN) | ❌ ÉCHEC (DCD invisible) | ❌ ÉCHEC (`maxLines=2`) | ⚠️ Acronymes SALT |
+| **19. Widget SOS** (`jemma_emergency_widget`) | ⚠️ 4.60:1 sur 12sp | ❌ ÉCHEC (32dp) | ⚠️ 12sp vide | ✅ Conforme | ❌ ÉCHEC (Hardcoded EN) | ⚠️ SOS rouge seul | ✅ Conforme | ❌ ÉCHEC ("JEMMA ID") |
 | **20. Dialogues Alerte** (`dialog_allergy_edit`) | ❌ ÉCHEC (3.03:1) | ✅ Conforme | ⚠️ 12sp alertes | ✅ Conforme | ❌ ÉCHEC (`cd_navigate` EN) | ❌ ÉCHEC (Danger 3.03:1) | ✅ Conforme | ✅ Conforme |
 
 ---
@@ -422,13 +443,13 @@ $$L = 0.2126 \cdot R_{\text{lin}} + 0.7152 \cdot G_{\text{lin}} + 0.0722 \cdot B
 Les 8 arbitrages ci-dessous engagent la sécurité des patients, l'expérience utilisateur et les choix éthiques ou cliniques de JemmaPass. Ils sont formellement soumis à la décision exclusive de Kudoro :
 
 ### DEC-UX-01 : Palette Rouge d'Alerte Médicale & Thème Sombre
-- **Problème** : `@color/jemma_danger` (`#DC2626`) sur le fond des cartes et dialogues `#1E293B` affiche un ratio de contraste de **3.03:1**, en infraction caractérisée du critère WCAG 2.1 AA ($\ge 4.5:1$). Les alertes critiques (anaphylaxie, interactions létales) sont difficilement lisibles.
-- **Option A (Recommandée)** : Adopter pour le texte d'alerte et les bordures un rouge éclairci haute visibilité (ex: `#EF4444` ou `#F87171`, ratio > 5.5:1 sur fond sombre), en réservant `#DC2626` uniquement aux fonds pleins avec texte blanc (ratio 5.00:1).
+- **Problème** : `@color/jemma_danger` (`#DC2626`, $L=0.1674$) sur le fond des cartes et dialogues `#1E293B` ($L=0.0218$) affiche un ratio de contraste calculé de $\frac{0.1674+0.05}{0.0218+0.05} = \mathbf{3.03:1}$, en infraction caractérisée du critère WCAG 2.1 AA ($\ge 4.5:1$). Les alertes critiques (anaphylaxie, interactions létales) sont difficilement lisibles.
+- **Option A (Recommandée)** : Adopter pour le texte d'alerte et les bordures un rouge éclairci haute visibilité (ex: `#F87171`, $L=0.3296$, ratio $\frac{0.3296+0.05}{0.0218+0.05} = \mathbf{5.29:1}$ sur fond sombre), en réservant `#DC2626` uniquement aux fonds pleins avec texte blanc (ratio $\frac{1.0000+0.05}{0.1674+0.05} = \mathbf{4.83:1}$).
 - **Option B** : Utiliser un bandeau de fond coloré contrasté (Surface Container) avec texte contrasté, plutôt que du texte rouge sur fond gris-bleu.
 - **Impact médical** : Réduction immédiate du risque de non-lecture d'une alerte clinique par un soignant ou un aidant en basse luminosité.
 
 ### DEC-UX-02 : Politique d'Affichage du Statut Décédé (SALT DCD)
-- **Problème** : `@color/salt_dcd` est actuellement `#000000` (`colors.xml:47`), créant un contraste nul (1.18:1 à 1.44:1) sur fond sombre.
+- **Problème** : `@color/salt_dcd` est actuellement `#000000` ($L=0.0000$, `colors.xml:47`), créant un contraste insuffisant de **1.44:1** sur fond de carte `#1E293B` et **1.18:1** sur fond d'écran `#0F172A`.
 - **Option A (Recommandée)** : Remplacer le fond noir par un gris ardoise neutre bordé (`#334155` avec bordure blanche ou dorée et glyphe colombe `🕊️` blanc).
 - **Option B** : Maintenir un badge contrasté inversé (fond blanc, texte noir `DCD`).
 - **Impact médical** : Identification visuelle sans ambiguïté des personnes décédées lors d'un triage de masse sur écran de smartphone.
