@@ -105,7 +105,7 @@ object PillarRegistry {
             descRes = R.string.pillar_contacts_desc,
             ipsTypeRes = R.string.pillar_contacts_ips_type,
             codeSystems = listOf("HL7 v3 RoleCode"),
-            isActive = false,
+            isActive = true,
             fields = listOf(
                 PillarField("contact_name",  R.string.pillar_field_contact_name,  R.string.pillar_field_contact_name_desc,  "1..1", "HumanName"),
                 PillarField("relationship",  R.string.pillar_field_relationship,  R.string.pillar_field_relationship_desc,  "0..1", "CodeableConcept"),

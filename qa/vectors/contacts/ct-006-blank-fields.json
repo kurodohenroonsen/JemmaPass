@@ -1,0 +1,46 @@
+{
+  "id": "ct-006-blank-fields",
+  "title": "Blank fields produce no empty FHIR value; an entirely blank contact is ignored",
+  "ui_lang": "en",
+  "input_j": {
+    "_j": "1.2",
+    "sid": "vec_ct_006",
+    "p": {
+      "gn": "Kurodo",
+      "ct": [
+        {
+          "n": "  ",
+          "r": " ",
+          "p": "",
+          "e": "",
+          "adr": " "
+        },
+        {
+          "n": "Kamekichi",
+          "r": " ",
+          "p": "",
+          "e": "kamekichi@example.org",
+          "adr": ""
+        }
+      ]
+    }
+  },
+  "expect": {
+    "patient_contact": [
+      {
+        "name": {
+          "text": "Kamekichi"
+        },
+        "telecom": [
+          {
+            "system": "email",
+            "value": "kamekichi@example.org"
+          }
+        ]
+      }
+    ],
+    "text_qr_contains": [
+      "Kamekichi kamekichi@example.org"
+    ]
+  }
+}

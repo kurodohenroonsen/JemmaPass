@@ -25,7 +25,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import be.heyman.android.jemmapassdemo.databinding.ItemContactRowBinding
-import be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog
+import be.heyman.android.jemmapassdemo.pillars.ContactFormLogic
+import be.heyman.android.jemmapassdemo.qr.CodeLabelResolver
 import be.heyman.android.jemmapassdemo.qr.JContact
 
 class ContactsAdapter(
@@ -65,12 +66,8 @@ class ContactsAdapter(
         // Display name — fallback to "—" if blank (shouldn't happen post-save validation)
         b.contactRowName.text = c.n?.takeIf { it.isNotBlank() } ?: "—"
 
-        // Relation : resolve code → localized display
-        val relationDisplay = if (!c.r.isNullOrBlank()) {
-            IpsRelationshipCatalog.getDisplay(c.r, lang)
-        } else {
-            "—"
-        }
+        // Relation : resolve code → localized display via ContactFormLogic
+        val relationDisplay = ContactFormLogic.relationDisplay(c.r, CodeLabelResolver.NONE, lang) ?: "—"
 
         // Phone + relation in subtitle row
         val subtitleParts = mutableListOf<String>()

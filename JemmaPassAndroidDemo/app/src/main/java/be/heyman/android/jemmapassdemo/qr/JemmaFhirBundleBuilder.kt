@@ -151,7 +151,7 @@ object JemmaFhirBundleBuilder {
             }
             
             (p?.ct ?: emptyList()).forEach { c ->
-                if (!c.n.isNullOrBlank() || !c.p.isNullOrBlank() || !c.e.isNullOrBlank()) {
+                if (!c.n.isNullOrBlank() || !c.p.isNullOrBlank() || !c.e.isNullOrBlank() || !c.adr.isNullOrBlank()) {
                     contact.add(Patient.Contact.Builder().apply {
                         if (!c.n.isNullOrBlank()) {
                             name = HumanName.Builder().apply {
@@ -163,7 +163,6 @@ object JemmaFhirBundleBuilder {
                             telecom.add(ContactPoint.Builder().apply {
                                 system = Enumeration.of(ContactPoint.ContactPointSystem.Phone, null)
                                 value = String.Builder().apply { value = it }
-                                use = Enumeration.of(ContactPoint.ContactPointUse.Mobile, null)
                             })
                         }
                         c.e?.takeIf { it.isNotBlank() }?.let {
@@ -171,6 +170,11 @@ object JemmaFhirBundleBuilder {
                                 system = Enumeration.of(ContactPoint.ContactPointSystem.Email, null)
                                 value = String.Builder().apply { value = it }
                             })
+                        }
+                        c.adr?.takeIf { it.isNotBlank() }?.let {
+                            address = dev.ohs.fhir.model.r4.Address.Builder().apply {
+                                text = String.Builder().apply { value = it }
+                            }
                         }
                         c.r?.takeIf { it.isNotBlank() }?.let { rawRel ->
                             val entry = be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog.ALL.firstOrNull {
