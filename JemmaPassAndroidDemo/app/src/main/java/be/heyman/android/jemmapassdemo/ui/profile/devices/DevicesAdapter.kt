@@ -62,8 +62,14 @@ class DevicesAdapter(
             else -> IpsDeviceCatalog.byCode(dv.code)?.emoji ?: "📟"
         }
 
-        // Label: curated catalog → stored display / free text → async KB (SNOMED) fallback
-        val curated = IpsDeviceCatalog.getDisplay(dv.code, lang)
+        // Label: string resource → curated catalog → stored display / free text → async KB (SNOMED) fallback
+        val resId = dv.code?.let { code ->
+            val system = dv.system ?: KnowledgeBaseService.SYSTEM_SNOMED
+            be.heyman.android.jemmapassdemo.qr.codeLabelResourceName(system, code)
+                ?.let { name -> ctx.resources.getIdentifier(name, "string", ctx.packageName) }
+        } ?: 0
+        val resLabel = if (resId != 0) ctx.getString(resId) else null
+        val curated = resLabel ?: IpsDeviceCatalog.getDisplay(dv.code, lang)
         val initial = curated ?: dv.label().takeIf { it.isNotBlank() } ?: "—"
         b.deviceRowName.text = IpsTranslationsRepository.cleanBilingual(initial, lang)
         val code = dv.code

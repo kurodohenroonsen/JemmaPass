@@ -171,7 +171,14 @@ class DevicesEditFragment : Fragment() {
     }
 
     private fun confirmDelete(dv: IpsDevice, position: Int) {
-        val label = IpsDeviceCatalog.getDisplay(dv.code, currentLang)
+        val resId = dv.code?.let { code ->
+            val system = dv.system ?: be.heyman.android.jemmapassdemo.kb.KnowledgeBaseService.SYSTEM_SNOMED
+            be.heyman.android.jemmapassdemo.qr.codeLabelResourceName(system, code)
+                ?.let { name -> resources.getIdentifier(name, "string", requireContext().packageName) }
+        } ?: 0
+        val resLabel = if (resId != 0) getString(resId) else null
+        val label = resLabel
+            ?: IpsDeviceCatalog.getDisplay(dv.code, currentLang)
             ?: dv.label().takeIf { it.isNotBlank() }
             ?: getString(R.string.devices_unnamed)
         MaterialAlertDialogBuilder(requireContext())

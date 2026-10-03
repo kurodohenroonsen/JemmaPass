@@ -102,13 +102,13 @@ class JemmaEmergencyWidget : AppWidgetProvider() {
                 if (isEmergencyActive) {
                     // 1. Device Language chunks
                     val hydratedDevice = hydrator.hydrate(profile, deviceLang.isoCode)
-                    val payloadDevice = JemmaTextPayloadBuilder.build(hydratedDevice, deviceLang)
+                    val payloadDevice = JemmaTextPayloadBuilder.build(hydratedDevice, deviceLang, labels = be.heyman.android.jemmapassdemo.qr.AndroidCodeLabels(context))
                     chunks.addAll(payloadDevice.split("\r\n\r\n").filter { it.isNotBlank() })
 
                     // 2. English chunks (fallback)
                     if (deviceLang != JemmaTextPayloadBuilder.Lang.EN) {
                         val hydratedEn = hydrator.hydrate(profile, JemmaTextPayloadBuilder.Lang.EN.isoCode)
-                        val payloadEn = JemmaTextPayloadBuilder.build(hydratedEn, JemmaTextPayloadBuilder.Lang.EN)
+                        val payloadEn = JemmaTextPayloadBuilder.build(hydratedEn, JemmaTextPayloadBuilder.Lang.EN, labels = be.heyman.android.jemmapassdemo.qr.AndroidCodeLabels(context))
                         chunks.addAll(payloadEn.split("\r\n\r\n").filter { it.isNotBlank() })
                     }
                 } else {

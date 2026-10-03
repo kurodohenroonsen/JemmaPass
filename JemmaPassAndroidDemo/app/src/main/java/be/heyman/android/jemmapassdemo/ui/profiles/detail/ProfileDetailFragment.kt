@@ -748,7 +748,14 @@ class ProfileDetailFragment : Fragment() {
                 .thenByDescending { it.date ?: "" }
         )
         for (dv in sorted) {
-            val label = be.heyman.android.jemmapassdemo.pillars.IpsDeviceCatalog.getDisplay(dv.c, lang)
+            val resId = dv.c?.let { c ->
+                val system = dv.codeSystem ?: be.heyman.android.jemmapassdemo.pillars.IpsDeviceCatalog.CODE_SYSTEM
+                be.heyman.android.jemmapassdemo.qr.codeLabelResourceName(system, c)
+                    ?.let { name -> resources.getIdentifier(name, "string", requireContext().packageName) }
+            } ?: 0
+            val resLabel = if (resId != 0) getString(resId) else null
+            val label = resLabel
+                ?: be.heyman.android.jemmapassdemo.pillars.IpsDeviceCatalog.getDisplay(dv.c, lang)
                 ?: dv.displayLabel?.takeIf { it.isNotBlank() }
                 ?: dv.c.orEmpty()
             val since = dv.date?.takeIf { it.isNotBlank() }?.let { " — $it" } ?: ""

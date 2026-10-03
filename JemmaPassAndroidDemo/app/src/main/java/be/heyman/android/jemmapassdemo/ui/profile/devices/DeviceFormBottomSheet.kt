@@ -175,7 +175,14 @@ class DeviceFormBottomSheet : BottomSheetDialogFragment() {
         }
         binding.deviceFormCodeClear.visibility = View.VISIBLE
         binding.deviceFormTextLayout.visibility = View.GONE
-        val label = IpsDeviceCatalog.getDisplay(code, lang)
+        val resId = code.let { c ->
+            val system = pickedCodeSystem ?: IpsDeviceCatalog.CODE_SYSTEM
+            be.heyman.android.jemmapassdemo.qr.codeLabelResourceName(system, c)
+                ?.let { name -> resources.getIdentifier(name, "string", requireContext().packageName) }
+        } ?: 0
+        val resLabel = if (resId != 0) getString(resId) else null
+        val label = resLabel
+            ?: IpsDeviceCatalog.getDisplay(code, lang)
             ?: pickedDisplay?.let { IpsTranslationsRepository.cleanBilingual(it, lang) }
             ?: code
         binding.deviceFormCodeDisplay.text = label
