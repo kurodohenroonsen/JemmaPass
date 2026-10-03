@@ -144,6 +144,11 @@ object IpsRelationshipCatalog {
      * Rule: HL7 v3 RoleCode and FHIR codes are ASCII uppercase mnemonics (2+ chars,
      * A-Z, 0-9, underscore) without spaces. Free text in French, English, Japanese
      * contains lowercase letters, spaces, accents, or CJK characters.
+     *
+     * Known boundary / limitation (0081):
+     * A free-text relationship typed in all-uppercase ASCII (e.g. "MAMAN", "FILLE", "ICE")
+     * matches this pattern and will be treated as an unmapped role code (omitted from the
+     * text QR). Name and phone are preserved so the responder can always call.
      */
     fun isRoleCode(raw: String?): Boolean {
         if (raw.isNullOrBlank()) return false

@@ -151,7 +151,7 @@ object JemmaFhirBundleBuilder {
             }
             
             (p?.ct ?: emptyList()).forEach { c ->
-                if (!c.n.isNullOrBlank() || !c.p.isNullOrBlank() || !c.e.isNullOrBlank() || !c.adr.isNullOrBlank() || !c.r.isNullOrBlank()) {
+                if (!c.n.isNullOrBlank() || !c.p.isNullOrBlank() || !c.e.isNullOrBlank() || !c.adr.isNullOrBlank()) {
                     contact.add(Patient.Contact.Builder().apply {
                         if (!c.n.isNullOrBlank()) {
                             name = HumanName.Builder().apply {
