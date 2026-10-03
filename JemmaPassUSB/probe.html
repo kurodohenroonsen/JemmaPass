@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>JemmaPass USB — Sonde d'environnement file://</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --ok: #22c55e;
+      --error: #ef4444;
+      --warn: #f59e0b;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 1.6rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .summary-card {
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    th {
+      background: #0f172a;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    tr:last-child td { border-bottom: none; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .badge-ok { background: rgba(34, 197, 94, 0.2); color: var(--ok); border: 1px solid var(--ok); }
+    .badge-no { background: rgba(239, 68, 68, 0.2); color: var(--error); border: 1px solid var(--error); }
+    .badge-warn { background: rgba(245, 158, 11, 0.2); color: var(--warn); border: 1px solid var(--warn); }
+    pre {
+      background: #020617;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.8rem;
+      color: #38bdf8;
+      border: 1px solid var(--border);
+      max-height: 400px;
+    }
+    .details {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      word-break: break-all;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+    button:hover { background: #1d4ed8; }
+  </style>
+</head>
+<body>
+
+  <h1>🔬 JemmaPass USB — Sonde des capacités de l'hôte sous <code>file://</code></h1>
+  
+  <div class="summary-card">
+    <div id="env-info">Initialisation de la sonde...</div>
+    <div style="margin-top: 12px;">
+      <button id="btn-copy" onclick="copyJson()">📋 Copier JSON</button>
+      <button id="btn-dl" onclick="downloadJson()">📥 Télécharger JSON</button>
+    </div>
+  </div>
+
+  <table id="probe-table">
+    <thead>
+      <tr>
+        <th style="width: 22%;">Capacité / API</th>
+        <th style="width: 12%;">Mesuré</th>
+        <th style="width: 40%;">Détail / Sortie brute / Erreur exacte</th>
+        <th style="width: 26%;">Impact Architecture JemmaPass USB</th>
+      </tr>
+    </thead>
+    <tbody id="probe-tbody"></tbody>
+  </table>
+
+  <h2>Sortie brute JSON</h2>
+  <pre id="probe-results-json">{}</pre>
+
+  <script>
+    const results = {};
+    const tbody = document.getElementById('probe-tbody');
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function addRow(name, status, badgeClass, detail, impact) {
+      results[name] = { status, detail, impact };
+      const tr = document.createElement('tr');
+      tr.id = 'row-' + name.replace(/[^a-zA-Z0-9]/g, '_');
+      tr.innerHTML = `
+        <td><strong>${escapeHtml(name)}</strong></td>
+        <td><span class="badge ${badgeClass}">${escapeHtml(status)}</span></td>
+        <td class="details">${escapeHtml(String(detail))}</td>
+        <td>${escapeHtml(impact)}</td>
+      `;
+      tbody.appendChild(tr);
+      window.probeResults = results;
+      document.getElementById('probe-results-json').textContent = JSON.stringify(results, null, 2);
+    }
+
+    // Metadata
+    const userAgent = navigator.userAgent;
+    const origin = window.location.origin;
+    const protocol = window.location.protocol;
+    const isSecure = window.isSecureContext;
+
+    document.getElementById('env-info').innerHTML = `
+      <strong>User Agent :</strong> ${escapeHtml(userAgent)}<br>
+      <strong>Protocole :</strong> <code>${protocol}</code> | <strong>Origin :</strong> <code>${origin}</code> | <strong>isSecureContext :</strong> <code>${isSecure}</code>
+    `;
+    results._env = { userAgent, origin, protocol, isSecureContext: isSecure };
+
+    // Sondes synchrones immédiates
+    // 4. localStorage
+    try {
+      if (!('localStorage' in window)) {
+        addRow("localStorage", "NON", "badge-no", "window.localStorage inexistant", "Stockage volatile mémoire");
+      } else {
+        localStorage.setItem('__jemma_probe__', 'probe_val');
+        const val = localStorage.getItem('__jemma_probe__');
+        localStorage.removeItem('__jemma_probe__');
+        if (val === 'probe_val') {
+          addRow("localStorage", "OUI", "badge-ok", "Stockage et lecture réussis", "Stocké dans le profil de l'ordinateur hôte");
+        } else {
+          addRow("localStorage", "NON", "badge-no", "Valeur relue incorrecte", "Inexploitable");
+        }
+      }
+    } catch (err) {
+      addRow("localStorage", "NON", "badge-no", `${err.name}: ${err.message}`, "Interdit ou SecurityError sous file://");
+    }
+
+    // 4b. sessionStorage
+    try {
+      sessionStorage.setItem('__jemma_session__', 'sess_val');
+      const sVal = sessionStorage.getItem('__jemma_session__');
+      sessionStorage.removeItem('__jemma_session__');
+      if (sVal === 'sess_val') {
+        addRow("sessionStorage", "OUI", "badge-ok", "Stockage session onglet OK", "Espace de travail volatile idéal");
+      } else {
+        addRow("sessionStorage", "NON", "badge-no", "Valeur relue incorrecte", "Non utilisable");
+      }
+    } catch (err) {
+      addRow("sessionStorage", "NON", "badge-no", `${err.name}: ${err.message}`, "Non accessible");
+    }
+
+    // 2b. XHR synchrone fichier voisin
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', './probe-data.json', false);
+      xhr.send(null);
+      if (xhr.status === 200 || (xhr.status === 0 && xhr.responseText.length > 0)) {
+        addRow("XHR synchrone fichier voisin", "OUI", "badge-ok", `Response text length: ${xhr.responseText.length}`, "XHR local autorisé");
+      } else {
+        addRow("XHR synchrone fichier voisin", "NON", "badge-no", `Status: ${xhr.status}`, "XHR local bloqué");
+      }
+    } catch (err) {
+      addRow("XHR synchrone fichier voisin", "NON", "badge-no", `${err.name}: ${err.message}`, "XHR local rejeté");
+    }
+
+    // 6. File System Access API
+    const hasOpenFilePicker = typeof window.showOpenFilePicker === 'function';
+    const hasSaveFilePicker = typeof window.showSaveFilePicker === 'function';
+    const hasDirectoryPicker = typeof window.showDirectoryPicker === 'function';
+    if (hasOpenFilePicker && hasSaveFilePicker) {
+      addRow("File System Access API (showOpenFilePicker/Save)", "OUI", "badge-ok", `showOpenFilePicker: true, showSaveFilePicker: true, showDirectoryPicker: ${hasDirectoryPicker}`, "Enregistrement direct sur la clé USB sans passer par Téléchargements");
+    } else {
+      addRow("File System Access API (showOpenFilePicker/Save)", "NON", "badge-warn", `showOpenFilePicker: ${hasOpenFilePicker}, showSaveFilePicker: ${hasSaveFilePicker}`, "Dégradation nécessaire vers <input file> et <a download>");
+    }
+
+    // 7. Sélection et téléchargement de fichier
+    const hasFileInput = typeof HTMLInputElement !== 'undefined';
+    const hasBlobUrl = typeof URL.createObjectURL === 'function';
+    const hasDownloadAttr = 'download' in document.createElement('a');
+    if (hasFileInput && hasBlobUrl && hasDownloadAttr) {
+      addRow("Sélection & Téléchargement fichier (HTML5 Blob/Download)", "OUI", "badge-ok", "input[file], Blob URL, a[download] disponibles", "Mécanisme universel de chargement et sauvegarde de fichiers sur la clé");
+    } else {
+      addRow("Sélection & Téléchargement fichier (HTML5 Blob/Download)", "NON", "badge-no", `fileInput: ${hasFileInput}, blobUrl: ${hasBlobUrl}, download: ${hasDownloadAttr}`, "Blocage critique");
+    }
+
+    // 8. Drag and Drop API
+    const hasDnd = 'ondragover' in window && 'ondrop' in window && typeof DataTransfer !== 'undefined';
+    addRow("Glisser-déposer (Drag & Drop)", hasDnd ? "OUI" : "NON", hasDnd ? "badge-ok" : "badge-warn", `Drag and drop events & DataTransfer: ${hasDnd}`, hasDnd ? "Glisser-déposer du fichier passeport directement dans la fenêtre" : "Sélecteur de fichier classique uniquement");
+
+    // 10. Impression
+    const hasPrint = typeof window.print === 'function';
+    addRow("Impression (window.print)", hasPrint ? "OUI" : "NON", hasPrint ? "badge-ok" : "badge-no", `window.print: ${hasPrint}`, "Fiche d'urgence imprimable prête à l'emploi");
+
+    // 11. Presse-papiers
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      addRow("Presse-papiers (navigator.clipboard)", "PRÉSENT", "badge-ok", "navigator.clipboard.writeText disponible", "Copier/coller rapide du JSON et du texte QR");
+    } else {
+      addRow("Presse-papiers (navigator.clipboard)", "NON", "badge-warn", "navigator.clipboard indisponible", "Fallback textarea");
+    }
+
+    // 12. Web Share
+    const hasShare = typeof navigator.share === 'function';
+    addRow("Web Share (navigator.share)", hasShare ? "OUI" : "NON", hasShare ? "badge-ok" : "badge-warn", `navigator.share: ${hasShare}`, hasShare ? "Partage natif OS" : "Non supporté sous file://");
+
+    // 13. Matériel Web
+    const hasNfc = 'NDEFReader' in window || 'nfc' in navigator;
+    const hasBt = 'bluetooth' in navigator;
+    const hasUsb = 'usb' in navigator;
+    addRow("Web NFC / Bluetooth / USB", (hasNfc || hasBt || hasUsb) ? "PARTIEL" : "NON", "badge-warn", `NFC: ${hasNfc}, Bluetooth: ${hasBt}, USB: ${hasUsb}`, "Non garanti sous file://");
+
+    // 14. Service Worker
+    if (!('serviceWorker' in navigator)) {
+      addRow("Service Worker", "NON", "badge-no", "'serviceWorker' not in navigator", "Pas de Service Worker");
+    } else {
+      navigator.serviceWorker.register('./probe-sw.js').then(() => {
+        addRow("Service Worker", "OUI", "badge-ok", "Enregistrement réussi", "Mise en cache SW");
+      }).catch(swErr => {
+        addRow("Service Worker", "NON", "badge-no", `${swErr.name}: ${swErr.message}`, "Service Worker interdit sous file://");
+      });
+    }
+
+    // Caméra
+    if (navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === 'function') {
+      addRow("Caméra (navigator.mediaDevices.getUserMedia)", "PRÉSENT (SOUMIS PERMISSION)", "badge-warn", "API présente sur navigator.mediaDevices", "Scan QR webcam possible si autorisé");
+    } else {
+      addRow("Caméra (navigator.mediaDevices.getUserMedia)", "NON", "badge-no", "navigator.mediaDevices?.getUserMedia undefined", "Scan webcam indisponible");
+    }
+
+    // Sondes asynchrones indépendantes
+    // 1. Dynamic import
+    (async () => {
+      try {
+        const mod = await import('./probe-module.js');
+        if (mod && mod.probeModuleLoaded) {
+          addRow("ES Modules (import dynamic)", "OUI", "badge-ok", "import('./probe-module.js') réussi", "Architecture modulaire par import dynamique");
+        } else {
+          addRow("ES Modules (import dynamic)", "NON", "badge-no", "import retour inattendu", "Scripts classiques requis");
+        }
+      } catch (err) {
+        addRow("ES Modules (import dynamic)", "NON", "badge-no", `${err.name}: ${err.message}`, "Bloqué par CORS file://");
+      }
+    })();
+
+    // 1b. Module script tag
+    (() => {
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = './probe-module.js';
+      let modTagHandled = false;
+      script.onload = () => {
+        if (modTagHandled) return;
+        modTagHandled = true;
+        addRow("ES Modules (<script type='module'>)", "OUI", "badge-ok", "Balise script module chargée avec succès", "Support standard");
+      };
+      script.onerror = (e) => {
+        if (modTagHandled) return;
+        modTagHandled = true;
+        addRow("ES Modules (<script type='module'>)", "NON", "badge-no", "Bloqué par CORS / Same-Origin file://", "Ne pas utiliser <script type='module'>");
+      };
+      document.head.appendChild(script);
+      setTimeout(() => {
+        if (!modTagHandled) {
+          modTagHandled = true;
+          addRow("ES Modules (<script type='module'>)", "NON / TIMEOUT", "badge-no", "Timeout 100ms: module bloqué silencieusement", "Bloqué");
+        }
+      }, 100);
+    })();
+
+    // 2. Fetch
+    (async () => {
+      try {
+        const resp = await fetch('./probe-data.json');
+        if (resp.ok) {
+          const data = await resp.json();
+          addRow("Fetch fichier voisin (probe-data.json)", "OUI", "badge-ok", `Status ${resp.status}`, "Fetch local permis");
+        } else {
+          addRow("Fetch fichier voisin (probe-data.json)", "NON", "badge-no", `HTTP status ${resp.status}`, "Fetch local rejeté");
+        }
+      } catch (err) {
+        addRow("Fetch fichier voisin (probe-data.json)", "NON", "badge-no", `${err.name}: ${err.message}`, "Fetch interdit sous file://");
+      }
+    })();
+
+    // 3. IndexedDB
+    (() => {
+      if (!('indexedDB' in window)) {
+        addRow("IndexedDB (disponibilité)", "NON", "badge-no", "window.indexedDB undefined", "Stockage mémoire");
+      } else {
+        try {
+          const req = indexedDB.open('jemma_probe_db', 1);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            db.createObjectStore('test_store', { keyPath: 'key' });
+          };
+          req.onsuccess = (e) => {
+            const db = e.target.result;
+            const tx = db.transaction('test_store', 'readwrite');
+            const store = tx.objectStore('test_store');
+            store.put({ key: 'probe_item', val: 'usb_test_ok', date: new Date().toISOString() });
+            tx.oncomplete = () => {
+              const readTx = db.transaction('test_store', 'readonly');
+              const readReq = readTx.objectStore('test_store').get('probe_item');
+              readReq.onsuccess = () => {
+                addRow("IndexedDB (CRUD local)", "OUI", "badge-ok", `Lecture réussie: ${JSON.stringify(readReq.result)}`, "IndexedDB opérationnel comme espace de travail");
+                db.close();
+              };
+              readReq.onerror = () => {
+                addRow("IndexedDB (CRUD local)", "NON", "badge-no", `Erreur lecture: ${readReq.error}`, "Erreur");
+                db.close();
+              };
+            };
+            tx.onerror = () => {
+              addRow("IndexedDB (CRUD local)", "NON", "badge-no", `Erreur transaction: ${tx.error}`, "Erreur");
+              db.close();
+            };
+          };
+          req.onerror = () => {
+            addRow("IndexedDB (CRUD local)", "NON", "badge-no", `Erreur open: ${req.error?.name}`, "IndexedDB interdit");
+          };
+        } catch (ex) {
+          addRow("IndexedDB (CRUD local)", "NON", "badge-no", `Exception: ${ex.name}: ${ex.message}`, "Exception");
+        }
+      }
+    })();
+
+    // 5. Web Crypto
+    (async () => {
+      if (!window.crypto || !window.crypto.subtle) {
+        addRow("Web Crypto (crypto.subtle)", "NON", "badge-no", "crypto.subtle undefined", "Pas de Web Crypto");
+      } else {
+        try {
+          const rawData = new TextEncoder().encode("JemmaPass Test String 12345");
+          const hashBuffer = await crypto.subtle.digest('SHA-256', rawData);
+          const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+          const aesKey = await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt", "decrypt"]);
+          const iv = crypto.getRandomValues(new Uint8Array(12));
+          const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, aesKey, rawData);
+          const decrypted = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, aesKey, encrypted);
+          const decStr = new TextDecoder().decode(decrypted);
+
+          const keyMaterial = await crypto.subtle.importKey("raw", new TextEncoder().encode("motdepasse123"), "PBKDF2", false, ["deriveKey"]);
+          const derivedKey = await crypto.subtle.deriveKey(
+            { name: "PBKDF2", salt: new Uint8Array(16), iterations: 100000, hash: "SHA-256" },
+            keyMaterial,
+            { name: "AES-GCM", length: 256 },
+            false,
+            ["encrypt", "decrypt"]
+          );
+
+          if (decStr === "JemmaPass Test String 12345" && derivedKey) {
+            addRow("Web Crypto (crypto.subtle)", "OUI", "badge-ok", `SHA-256: ${hashHex.substring(0, 16)}..., AES-GCM 256 + PBKDF2 100k ok`, "Chiffrement passeport par mot de passe 100% possible");
+          } else {
+            addRow("Web Crypto (crypto.subtle)", "PARTIEL", "badge-warn", "Échec vérification", "Vérifier");
+          }
+        } catch (cryptoErr) {
+          addRow("Web Crypto (crypto.subtle)", "NON", "badge-no", `${cryptoErr.name}: ${cryptoErr.message}`, "Opérations rejetées");
+        }
+      }
+    })();
+
+    // 6b. OPFS
+    (async () => {
+      try {
+        if (navigator.storage && typeof navigator.storage.getDirectory === 'function') {
+          const rootDir = await navigator.storage.getDirectory();
+          addRow("OPFS (navigator.storage.getDirectory)", "OUI", "badge-ok", "Racine OPFS obtenue", "Espace privé");
+        } else {
+          addRow("OPFS (navigator.storage.getDirectory)", "NON", "badge-warn", "getDirectory inexistant", "Non utilisable");
+        }
+      } catch (opfsErr) {
+        addRow("OPFS (navigator.storage.getDirectory)", "NON", "badge-no", `${opfsErr.name}: ${opfsErr.message}`, "OPFS rejeté sous file://");
+      }
+    })();
+
+    // 9b. BarcodeDetector
+    (async () => {
+      if (typeof window.BarcodeDetector === 'function') {
+        try {
+          const formats = await window.BarcodeDetector.getSupportedFormats();
+          const qrOk = formats.includes('qr_code');
+          addRow("BarcodeDetector (Scan QR matériel)", qrOk ? "OUI" : "PARTIEL", qrOk ? "badge-ok" : "badge-warn", `Formats: ${formats.join(', ')}`, "Décodage QR natif");
+        } catch (bdErr) {
+          addRow("BarcodeDetector (Scan QR matériel)", "NON", "badge-no", `${bdErr.name}: ${bdErr.message}`, "Fallback requis");
+        }
+      } else {
+        addRow("BarcodeDetector (Scan QR matériel)", "NON", "badge-warn", "window.BarcodeDetector undefined", "Décodeur QR JS pur requis");
+      }
+    })();
+
+    function copyJson() {
+      navigator.clipboard.writeText(JSON.stringify(results, null, 2)).then(() => alert("Copié !")).catch(e => alert("Erreur copie: " + e));
+    }
+    function downloadJson() {
+      const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `probe_results_${location.protocol.replace(':','')}.json`;
+      a.click();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "browser": "Google Chrome 154",
+  "dir_a_write": {
+    "status": "success",
+    "written_by": "dir_a",
+    "origin": "file://",
+    "href": "file:///Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/JemmaPassUSB/dir_a/idb_write.html"
+  },
+  "dir_b_read": {
+    "status": "success",
+    "read_from": "dir_b",
+    "found_data": {
+      "id": "isolation_key",
+      "author": "dir_a",
+      "timestamp": 1791066952461
+    },
+    "is_shared": true,
+    "origin": "file://",
+    "href": "file:///Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/JemmaPassUSB/dir_b/idb_read.html"
+  },
+  "isolated": false
+}

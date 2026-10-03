@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>IDB Isolation Probe - Dir A</title>
+</head>
+<body>
+  <h1>IDB Isolation Probe - Dir A</h1>
+  <pre id="output">Running...</pre>
+  <script>
+    (async () => {
+      const output = document.getElementById('output');
+      try {
+        const req = indexedDB.open('jemma_isolation_test_db', 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('isolation_store')) {
+            db.createObjectStore('isolation_store', { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          const tx = db.transaction('isolation_store', 'readwrite');
+          const store = tx.objectStore('isolation_store');
+          store.put({ id: 'isolation_key', author: 'dir_a', timestamp: Date.now() });
+          tx.oncomplete = () => {
+            const res = { status: 'success', written_by: 'dir_a', origin: window.location.origin, href: window.location.href };
+            window.probeResult = res;
+            output.textContent = JSON.stringify(res, null, 2);
+          };
+          tx.onerror = (err) => {
+            const res = { status: 'error', error: String(err) };
+            window.probeResult = res;
+            output.textContent = JSON.stringify(res, null, 2);
+          };
+        };
+        req.onerror = (err) => {
+          const res = { status: 'error', error: String(req.error || err) };
+          window.probeResult = res;
+          output.textContent = JSON.stringify(res, null, 2);
+        };
+      } catch (ex) {
+        const res = { status: 'exception', error: ex.message, name: ex.name };
+        window.probeResult = res;
+        output.textContent = JSON.stringify(res, null, 2);
+      }
+    })();
+  </script>
+</body>
+</html>
