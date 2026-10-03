@@ -12,23 +12,23 @@ Le test `UC-KB-014` interdit la présence de libellés traduits (champs `display
 
 Voici l'inventaire exact des 14 fichiers impactés, le nombre de lignes touchées (284 au total), le nombre de concepts/codes et les fonctions actuelles :
 
-| # | Fichier | Lignes touchées | Codes / Concepts | Langues en dur | Fonctions d'accès actuelles |
-|---|---|:---:|:---:|:---:|---|
-| 1 | `IpsRouteCatalog.kt` | **7** | 5 voies d'administration | EN, FR, JA | `getDisplay(shortCode, lang)`, `byShortCode(shortCode)` |
-| 2 | `IpsAllergyTypeCatalog.kt` | **4** | 2 types (Allergy, Intolerance) | EN, FR, JA | `getDisplay(code, lang)`, `byCode(code)` |
-| 3 | `IpsContactPointCatalog.kt` | **16** | 15 codes (Address use: 5, Telecom system: 5, Telecom use: 5) | EN, FR, JA | `IpsAddressUseCatalog.getDisplay(code, lang)`, `IpsTelecomSystemCatalog.getDisplay`, `IpsTelecomUseCatalog.getDisplay` |
-| 4 | `IpsDeviceCatalog.kt` | **13** | 6 dispositifs médicaux + 3 statuts | EN, FR, JA | `IpsDeviceCatalog.getDisplay(code, lang)`, `IpsDeviceStatusCatalog.getDisplay` |
-| 5 | `IpsEnumCatalogs.kt` | **19** | 3 criticalités + 4 statuts cliniques + 4 catégories d'allergie | EN, FR, JA | `IpsCriticalityCatalog.getDisplay(code, lang)`, `IpsClinicalStatusCatalog.getDisplay`, `IpsAllergyCategoryCatalog.getDisplay` |
-| 6 | `IpsIdentifierSystemCatalog.kt` | **14** | 5 systèmes d'identification (BE, FR, JP, US, Passeport) | EN, FR, JA | `IpsIdentifierSystemCatalog.getDisplay(short, lang)` |
-| 7 | `IpsLanguageCatalog.kt` | **17** | 14 langues d'usage | EN, FR, JA | `IpsLanguageCatalog.getDisplay(tag, lang)` |
-| 8 | `IpsMedicationStatusCatalog.kt` | **10** | 4 statuts de traitement | EN, FR, JA | `IpsMedicationStatusCatalog.getDisplay(code, lang)` |
-| 9 | `IpsPregnancyCatalog.kt` | **29** | 13 concepts LOINC + 3 réponses LOINC de statut | EN, FR, JA, DE, NL, ZH (6 langues) | `label(code, lang)`, `answer(code, lang)`, `format(obs, lang)` |
-| 10 | `IpsProcedureCatalog.kt` | **22** | 12 procédures chirurgicales + 3 statuts | EN, FR, JA | `IpsProcedureCatalog.getDisplay(code, lang)`, `IpsProcedureStatusCatalog.getDisplay` |
-| 11 | `IpsReactionSeverityCatalog.kt` | **5** | 3 sévérités de réaction | EN, FR, JA | `IpsReactionSeverityCatalog.getDisplay(code, lang)` |
-| 12 | `IpsRelationshipCatalog.kt` | **41** | 39 rôles HL7 v3-RoleCode (personal-relationship) | EN, FR, JA | `getDisplay(code, lang)`, `sortedByDisplay(lang)`, `compactLabel(lang)` |
-| 13 | `IpsResultCatalog.kt` | **49** | 31 analyses labo + 7 statuts + 8 interprétations + 3 catégories | EN, FR, JA | `IpsResultCatalog.getDisplay(code, lang)`, `IpsResultStatusCatalog.getDisplay`, `IpsResultInterpretationCatalog.getDisplay`, `IpsResultCategoryCatalog.getDisplay` |
-| 14 | `IpsVaccineCatalog.kt` | **38** | 31 vaccins + 3 statuts de vaccination | EN, FR, JA | `IpsVaccineCatalog.getDisplay(code, lang)`, `IpsImmunizationStatusCatalog.getDisplay` |
-| **Total** | **14 fichiers** | **284** | **149 concepts médicaux** | — | — |
+| # | Fichier | Lignes touchées | Concepts curés | Libellés FR | Libellés JA | Total FR/JA | Fonctions d'accès actuelles |
+|---|---|:---:|:---:|:---:|:---:|:---:|---|
+| 1 | `IpsRouteCatalog.kt` | 7 | 5 | 5 | 5 | **10** | `getDisplay(shortCode, lang)`, `byShortCode(shortCode)` |
+| 2 | `IpsAllergyTypeCatalog.kt` | 4 | 2 | 2 | 2 | **4** | `getDisplay(code, lang)`, `byCode(code)` |
+| 3 | `IpsContactPointCatalog.kt` | 16 | 15 | 15 | 15 | **30** | `IpsAddressUseCatalog.getDisplay`, `IpsTelecomSystemCatalog.getDisplay`, `IpsTelecomUseCatalog.getDisplay` |
+| 4 | `IpsDeviceCatalog.kt` | 13 | 9 | 9 | 9 | **18** | `IpsDeviceCatalog.getDisplay(code, lang)`, `IpsDeviceStatusCatalog.getDisplay` |
+| 5 | `IpsEnumCatalogs.kt` | 19 | 11 | 11 | 11 | **22** | `IpsCriticalityCatalog.getDisplay`, `IpsClinicalStatusCatalog.getDisplay`, `IpsAllergyCategoryCatalog.getDisplay` |
+| 6 | `IpsIdentifierSystemCatalog.kt` | 14 | 5 | 5 | 5 | **10** | `IpsIdentifierSystemCatalog.getDisplay(short, lang)` |
+| 7 | `IpsLanguageCatalog.kt` | 17 | 14 | 14 | 14 | **28** | `IpsLanguageCatalog.getDisplay(tag, lang)` |
+| 8 | `IpsMedicationStatusCatalog.kt` | 10 | 4 | 4 | 4 | **8** | `IpsMedicationStatusCatalog.getDisplay(code, lang)` |
+| 9 | `IpsPregnancyCatalog.kt` | 29 | 16 | 16 | 16 | **32** | `label(code, lang)`, `answer(code, lang)`, `format(obs, lang)` |
+| 10 | `IpsProcedureCatalog.kt` | 22 | 15 | 15 | 15 | **30** | `IpsProcedureCatalog.getDisplay(code, lang)`, `IpsProcedureStatusCatalog.getDisplay` |
+| 11 | `IpsReactionSeverityCatalog.kt` | 5 | 3 | 3 | 3 | **6** | `IpsReactionSeverityCatalog.getDisplay(code, lang)` |
+| 12 | `IpsRelationshipCatalog.kt` | 41 | 39 | 39 | 39 | **78** | `getDisplay(code, lang)`, `sortedByDisplay(lang)`, `compactLabel(lang)` |
+| 13 | `IpsResultCatalog.kt` | 49 | 49 | 49 | 49 | **98** | `IpsResultCatalog.getDisplay`, `IpsResultStatusCatalog.getDisplay`, `IpsResultInterpretationCatalog.getDisplay`, `IpsResultCategoryCatalog.getDisplay` |
+| 14 | `IpsVaccineCatalog.kt` | 38 | 34 | 34 | 34 | **68** | `IpsVaccineCatalog.getDisplay(code, lang)`, `IpsImmunizationStatusCatalog.getDisplay` |
+| **Total** | **14 fichiers** | **284** | **221** | **221** | **221** | **442** | — |
 
 ---
 
@@ -199,5 +199,23 @@ Dans `IpsRouteCatalog.kt`, les champs `displayFr` et `displayJa` sont retirés d
 
 ---
 
-## 6. Prochaine étape
-Nous attendons la validation de cette analyse et le choix entre la **Stratégie A** (recommandée, transparente) et la **Stratégie B** par Claude / Kudoro avant de commit l'implémentation des voies d'administration.
+## 6. Décision produit et technique (Message 0065)
+
+La **Stratégie B (Explicite)** est retenue par Claude et le Product Owner :
+```kotlin
+fun interface CodeLabelResolver {
+    /** Interface text of a code in a language, or null when the app curates none. */
+    fun getLabel(system: String, code: String, lang: String): String?
+    
+    companion object {
+        val NONE = CodeLabelResolver { _, _, _ -> null }
+    }
+}
+```
+
+- **Signature du builder** : `JemmaTextPayloadBuilder.build(hydrated, lang, maxBytes, labels: CodeLabelResolver = CodeLabelResolver.NONE)`. Par défaut `NONE` renvoie `null` $\rightarrow$ libellé anglais de la KB / du profil.
+- **Sur Android** : `AndroidCodeLabels(context)` avec cache de `Resources` par langue et nommage §9.1.
+- **Sur JVM (Tests unitaires)** : Claude écrit `testsupport/ResXmlCodeLabels` qui parse directement `strings.xml`. Aucun libellé codé en dur dans les tests.
+- **Portage iOS** : Cette approche sans singleton global s'adapte directement à Swift/iOS (`Bundle.main.localizedString(forKey:value:table:)`).
+- **Périmètre immédiat** : Uniquement les voies d'administration (`IpsRouteCatalog`). Les autres catalogues conservent temporairement `getDisplay` jusqu'à leur tour.
+- **Attente active** : L'implémentation commencera dès que Claude aura poussé les tests de comportement sur `tests/kb-only`.
