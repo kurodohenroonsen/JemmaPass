@@ -1,0 +1,25 @@
+# CI · tests/sd27-contact-form · fb3130e · run #79
+
+- Gradle outcome: **cancelled**
+- Unit tests: **0** run · 0 failed · 0 errors · 0 skipped
+- Debug APK: ❌ not produced
+- Kotlin compile errors: 0
+
+## Log tail
+```
+Downloading https://services.gradle.org/distributions/gradle-8.14-bin.zip
+.............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%..............100%
+
+Welcome to Gradle 8.14!
+
+Here are the highlights of this release:
+ - Java 24 support
+ - GraalVM Native Image toolchain selection
+ - Enhancements to test reporting
+ - Build Authoring improvements
+
+For more details see https://docs.gradle.org/8.14/release-notes.html
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.14/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+```
