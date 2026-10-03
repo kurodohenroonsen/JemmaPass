@@ -44,6 +44,27 @@ guard_run() {
       fi
     fi
   fi
+  # GUARD-09: check that every logcat file has the scrub_logcat end line
+  local lf
+  while IFS= read -r lf; do
+    [ -z "$lf" ] && continue
+    if ! grep -q '^--------- scrub_logcat:' "$lf"; then
+      echo "guard_run: rejected: unscrubbed logcat without end line: $lf" >&2
+      return 1
+    fi
+  done < <(find "$run_dir" -type f -name '*logcat*.txt' 2>/dev/null)
+  # GUARD-10: check for non-demo profile id (p-xxxxxxxx) in published text files
+  if grep -r -E -I -q '(^|[^a-zA-Z0-9_-])p-[0-9a-f]{8}' "$run_dir" 2>/dev/null; then
+    echo "guard_run: rejected: non-demo profile id found in $run_dir" >&2
+    return 1
+  fi
+  # GUARD-11: check for non-demo profile id in report file
+  if [ -n "$report_file" ] && [ -f "$report_file" ]; then
+    if grep -E -q '(^|[^a-zA-Z0-9_-])p-[0-9a-f]{8}' "$report_file" 2>/dev/null; then
+      echo "guard_run: rejected: non-demo profile id found in $report_file" >&2
+      return 1
+    fi
+  fi
   return 0
 }
 
