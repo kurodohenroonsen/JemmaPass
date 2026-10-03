@@ -28,6 +28,7 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [31-delete-dialog.png](../feat-ips-18-pillars-cleanup/1c1b7e5-20260930-1849/screenshots/31-delete-dialog.png) | `1c1b7e5` | 1c1b7e5-20260930-1849 |
 | [32-delete-dialog.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/32-delete-dialog.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [33-longpress-dialog.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/33-longpress-dialog.png) | `f7c500e` | f7c500e-20260930-2015 |
+| [contacts-delete-dialog.png](../feat-ips-18-pillars-cleanup/c5d6fd2-20261003-2218/screenshots/contacts-delete-dialog.png) | `c5d6fd2` | c5d6fd2-20261003-2218 |
 
 ## antecedents
 
@@ -88,6 +89,9 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [c5-3a.png](../feat-ips-18-pillars-cleanup/a80552e-20260930-2245/screenshots/c5-3a.png) | `a80552e` | a80552e-20260930-2245 |
 | [c5-3b.png](../feat-ips-18-pillars-cleanup/a80552e-20260930-2245/screenshots/c5-3b.png) | `a80552e` | a80552e-20260930-2245 |
 | [c5-4-localized.png](../feat-ips-18-pillars-cleanup/a80552e-20260930-2245/screenshots/c5-4-localized.png) | `a80552e` | a80552e-20260930-2245 |
+| [contacts-list-2-contacts.png](../feat-ips-18-pillars-cleanup/c5d6fd2-20261003-2218/screenshots/contacts-list-2-contacts.png) | `c5d6fd2` | c5d6fd2-20261003-2218 |
+| [contacts-list-initial.png](../feat-ips-18-pillars-cleanup/c5d6fd2-20261003-2218/screenshots/contacts-list-initial.png) | `c5d6fd2` | c5d6fd2-20261003-2218 |
+| [contacts-list-restored.png](../feat-ips-18-pillars-cleanup/c5d6fd2-20261003-2218/screenshots/contacts-list-restored.png) | `c5d6fd2` | c5d6fd2-20261003-2218 |
 
 ## fiche
 
@@ -108,6 +112,7 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [c7-haru-profile.png](../feat-ips-18-pillars-cleanup/9feaa6c-20261001-0335/screenshots/c7-haru-profile.png) | `9feaa6c` | 9feaa6c-20261001-0335 |
 | [c8-haru-profile.png](../feat-ips-18-pillars-cleanup/b066a35-20261001-0502/screenshots/c8-haru-profile.png) | `b066a35` | b066a35-20261001-0502 |
 | [c9-haru-profile.png](../feat-ips-18-pillars-cleanup/6342bc6-20261001-0532/screenshots/c9-haru-profile.png) | `6342bc6` | 6342bc6-20261001-0532 |
+| [haru-detail-contacts-tile.png](../feat-ips-18-pillars-cleanup/c5d6fd2-20261003-2218/screenshots/haru-detail-contacts-tile.png) | `c5d6fd2` | c5d6fd2-20261003-2218 |
 
 ## grossesses
 
@@ -177,6 +182,9 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [51-qr-text-fr.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/51-qr-text-fr.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [52-qr-text-ja.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/52-qr-text-ja.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [60-qr-fhir.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/60-qr-fhir.png) | `f7c500e` | f7c500e-20260930-2015 |
+| [haru-text-qr-after-medprovr.png](../feat-ips-18-pillars-cleanup/c5d6fd2-20261003-2218/screenshots/haru-text-qr-after-medprovr.png) | `c5d6fd2` | c5d6fd2-20261003-2218 |
+| [haru-text-qr-fr.png](../feat-ips-18-pillars-cleanup/c5d6fd2-20261003-2218/screenshots/haru-text-qr-fr.png) | `c5d6fd2` | c5d6fd2-20261003-2218 |
+| [haru-text-qr-ja.png](../feat-ips-18-pillars-cleanup/c5d6fd2-20261003-2218/screenshots/haru-text-qr-ja.png) | `c5d6fd2` | c5d6fd2-20261003-2218 |
 
 ## resultats
 
@@ -245,3 +253,5 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [c5-7-search-stent.png](../feat-ips-18-pillars-cleanup/a80552e-20260930-2245/screenshots/c5-7-search-stent.png) | `a80552e` | a80552e-20260930-2245 |
 | [c5-8-medication-picker.png](../feat-ips-18-pillars-cleanup/a80552e-20260930-2245/screenshots/c5-8-medication-picker.png) | `a80552e` | a80552e-20260930-2245 |
 | [c9-haru-vaccins.png](../feat-ips-18-pillars-cleanup/6342bc6-20261001-0532/screenshots/c9-haru-vaccins.png) | `6342bc6` | 6342bc6-20261001-0532 |
+| [contact-form-empty.png](../feat-ips-18-pillars-cleanup/c5d6fd2-20261003-2218/screenshots/contact-form-empty.png) | `c5d6fd2` | c5d6fd2-20261003-2218 |
+| [contact-form-filled-medprovr.png](../feat-ips-18-pillars-cleanup/c5d6fd2-20261003-2218/screenshots/contact-form-filled-medprovr.png) | `c5d6fd2` | c5d6fd2-20261003-2218 |

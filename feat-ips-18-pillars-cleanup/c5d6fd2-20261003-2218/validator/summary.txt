@@ -1,0 +1,9 @@
+errors:
+/Users/kurodohenroonsen/Documents/jemmapass-contacts/qa/device/out/c5d6fd2-20261003-2218/validator/demo_haru.txt:0
+/Users/kurodohenroonsen/Documents/jemmapass-contacts/qa/device/out/c5d6fd2-20261003-2218/validator/demo_kamekichi.txt:0
+/Users/kurodohenroonsen/Documents/jemmapass-contacts/qa/device/out/c5d6fd2-20261003-2218/validator/demo_kurodo.txt:0
+warnings:
+/Users/kurodohenroonsen/Documents/jemmapass-contacts/qa/device/out/c5d6fd2-20261003-2218/validator/demo_haru.txt:51
+/Users/kurodohenroonsen/Documents/jemmapass-contacts/qa/device/out/c5d6fd2-20261003-2218/validator/demo_kamekichi.txt:31
+/Users/kurodohenroonsen/Documents/jemmapass-contacts/qa/device/out/c5d6fd2-20261003-2218/validator/demo_kurodo.txt:28
+/Users/kurodohenroonsen/Documents/jemmapass-contacts/qa/device/out/c5d6fd2-20261003-2218/validator/summary.txt:0

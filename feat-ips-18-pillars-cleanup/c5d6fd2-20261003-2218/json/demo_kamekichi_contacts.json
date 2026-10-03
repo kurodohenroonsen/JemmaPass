@@ -1,0 +1,28 @@
+[
+  {
+    "relationship": [
+      {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+            "code": "FRND",
+            "display": "unrelated friend"
+          }
+        ],
+        "text": "unrelated friend"
+      }
+    ],
+    "name": {
+      "text": "Kurodo Henro"
+    },
+    "telecom": [
+      {
+        "system": "phone",
+        "value": "+32 2 000 00 02"
+      }
+    ],
+    "address": {
+      "text": "Rue de la Paix 12, 5660 Couvin"
+    }
+  }
+]
