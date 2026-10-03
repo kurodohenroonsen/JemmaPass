@@ -1,0 +1,49 @@
+{
+  "id": "ct-001-nominal",
+  "title": "One contact with name, coded relationship and phone",
+  "ui_lang": "en",
+  "input_j": {
+    "_j": "1.2",
+    "sid": "vec_ct_001",
+    "p": {
+      "gn": "Haru",
+      "ct": [
+        {
+          "n": "Sakura Demo",
+          "r": "DAUC",
+          "p": "+81 90 0000 0001"
+        }
+      ]
+    }
+  },
+  "expect": {
+    "patient_contact": [
+      {
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "DAUC",
+                "display": "daughter"
+              }
+            ],
+            "text": "daughter"
+          }
+        ],
+        "name": {
+          "text": "Sakura Demo"
+        },
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+81 90 0000 0001"
+          }
+        ]
+      }
+    ],
+    "text_qr_contains": [
+      "Sakura Demo (daughter) +81 90 0000 0001"
+    ]
+  }
+}
