@@ -5,5 +5,7 @@
 - **Couloir ANALYSE** :
   - Tâche 0052 : Complément « KB seulement » livré sur `ag/0048-analyse` @ `92224a7` (10 sorties SQL brutes dans `kb-only-evidence/`, `coverage.tsv` 191 littéraux).
   - Tâche 0051 : Sources web refaites sur `ag/0047-sources` @ `f0091a9` (`FETCH.log`, vraies pages curl, grep -n, check_citations.py retiré).
-- **Couloir DOCS** : `ag/0031-docs-uml-ios` fusionné dans feat (0073). Nouvelle branche `ag/0073-docs` @ `81b0736` livrée (lien atcddd, en-têtes d'état de code, synthèse révisée 0074 intégrée, 0 décalé, 0 inventé).
-- **Messages en attente traités** : 0049, 0051, 0052, 0053, 0073, 0074.
+- **Couloir UI-LABELS** (Antigravity-1) :
+  - Tâche 0070 : Libellés d'interface (voies 5 + dispositifs 6) migrés vers ressources XML (`strings.xml`, `values-fr`, `values-ja`) et `CodeLabelResolver` livrés sur `ag/0060-ui-labels` @ `b1695bb` (445 tests run · 4 failed, UC-KB-021/022/023/025/011 résolus, UC-KB-026 verrouillé vert).
+- **Messages en attente traités** : 0049, 0051, 0052, 0053, 0060, 0067, 0069, 0070, 0073, 0074.
+
