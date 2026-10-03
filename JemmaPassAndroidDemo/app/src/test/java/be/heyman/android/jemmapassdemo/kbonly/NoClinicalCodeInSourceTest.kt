@@ -38,6 +38,9 @@ class NoClinicalCodeInSourceTest {
     private val SNOMED = Regex("\"[0-9]{6,18}\"")
     private val LOINC = Regex("\"(LA)?[0-9]{3,5}-[0-9]\"")
 
+    /** Digit strings that are not concepts : the digit alphabet of sos/JemmaDeviceId.kt. */
+    private val NOT_A_CODE = setOf("\"0123456789\"")
+
     private data class Hit(val file: String, val line: Int, val kind: String, val literal: String)
 
     private fun scan(): List<Hit> {
@@ -51,7 +54,7 @@ class NoClinicalCodeInSourceTest {
                 if (line.trimStart().startsWith("*") || line.trimStart().startsWith("/*")) return@forEachIndexed
                 ATC.findAll(line).forEach { hits += Hit(rel, i + 1, "ATC", it.value) }
                 ATC_CLASS.findAll(line).forEach { hits += Hit(rel, i + 1, "ATC class", it.value) }
-                SNOMED.findAll(line).forEach { hits += Hit(rel, i + 1, "SNOMED CT", it.value) }
+                SNOMED.findAll(line).filter { it.value !in NOT_A_CODE }.forEach { hits += Hit(rel, i + 1, "SNOMED CT", it.value) }
                 LOINC.findAll(line).forEach { hits += Hit(rel, i + 1, "LOINC", it.value) }
             }
         }
