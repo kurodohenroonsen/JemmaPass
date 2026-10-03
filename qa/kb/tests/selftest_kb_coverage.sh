@@ -19,9 +19,9 @@ INSERT INTO ips_valuesets VALUES('routes', '26643006', 'http://snomed.info/sct',
 """
 def make(name, extra):
     db = sqlite3.connect(T + "/" + name); db.executescript(SCHEMA + extra); db.commit(); db.close()
-make("old.db", "INSERT INTO build_metadata VALUES('version','1.1');")
+make("old.db", "INSERT INTO build_metadata VALUES('build_version','2.0-omnis'); INSERT INTO build_metadata VALUES('build_timestamp','2026-05-13 01:20:52');")
 GOOD = """
-INSERT INTO build_metadata VALUES('version','1.2');
+INSERT INTO build_metadata VALUES('build_version','2.1-omnis'); INSERT INTO build_metadata VALUES('build_timestamp','2026-10-04 10:00:00');
 INSERT INTO ips_valuesets VALUES('results', '2823-3', 'http://loinc.org', 'Potassium [Moles/volume] in Serum or Plasma', 0);
 INSERT INTO ips_valuesets_translations VALUES('results', '2823-3', 'http://loinc.org', 'fr', 'Potassium [Moles/Volume] Sérum/Plasma');
 INSERT INTO ddinter_drugs VALUES('D1', 'Salbutamol', 'R03AC02', 'R03AC02');
@@ -34,6 +34,7 @@ INSERT INTO kb_provenance VALUES('terminology_codes', 'X1', 'RxNorm', '2026-09',
 make("good.db", GOOD)
 make("copied.db", GOOD + "INSERT INTO ips_valuesets_translations VALUES('results', '2823-3', 'http://loinc.org', 'ja', 'Potassium [Moles/volume] in Serum or Plasma'); INSERT INTO kb_provenance VALUES('ips_valuesets_translations', 'results|2823-3|http://loinc.org|ja', 'x', '1', '2026-10-03');")
 make("noprov.db", GOOD + "DELETE FROM kb_provenance WHERE table_name='terminology_codes';")
+make("sameversion.db", GOOD.replace("2.1-omnis", "2.0-omnis"))
 make("removed.db", GOOD + "DELETE FROM atc_hierarchy; INSERT INTO atc_hierarchy(atc_code, level, name_en) VALUES('M01AE02', 7, 'naproxen');")
 PY
 pass=0; fail=0
@@ -46,4 +47,5 @@ t "SELF-02 a complete additive base with provenance is accepted"  0 good.db    -
 t "SELF-03 an English label copied as Japanese is refused"        1 copied.db  KBC-05
 t "SELF-04 an added row without provenance is refused"            1 noprov.db  KBC-04
 t "SELF-05 a base that lost rows of the previous one is refused"  1 removed.db KBC-03
+t "SELF-06 a base that keeps the previous build_version is refused" 1 sameversion.db KBC-02
 echo "---"; echo "$pass passed, $fail failed"; [ "$fail" -eq 0 ]

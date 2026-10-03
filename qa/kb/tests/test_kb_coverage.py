@@ -4,7 +4,7 @@
 Usage:  KB=/path/knowledge_full.db KB_OLD=/path/knowledge_full_1.1.db python3 qa/kb/tests/test_kb_coverage.py
         COV=docs/analysis/kb-only-evidence/coverage.tsv (default)
 
-Expected: red on 1.1, green on 1.2. Exit code 0 only when every check passes.
+Expected: red on the current base (build_version 2.0-omnis), green on the next build. Exit code 0 only when every check passes.
 Read-only: both databases are opened with mode=ro.
 """
 import csv, os, sqlite3, sys
@@ -55,9 +55,22 @@ for code, system in lits:
 check("KBC-01", "every clinical code of coverage.tsv is in the KB (%d distinct codes)" % len(lits),
       not missing, "%d missing: %s" % (len(missing), ", ".join(missing[:40])))
 
-# KBC-02 the build declares itself and its sources
-meta = " ".join(str(c) for r in db.execute("SELECT * FROM build_metadata") for c in r) if "build_metadata" in tables(db) else ""
-check("KBC-02", "build_metadata declares version 1.2", "1.2" in meta, "build_metadata does not contain '1.2'")
+# KBC-02 the build declares itself: a new build_version and a later build_timestamp than the previous KB
+def meta(path):
+    d = ro(path)
+    try:
+        return dict(d.execute("SELECT key, value FROM build_metadata").fetchall())
+    except sqlite3.Error:
+        return {}
+m_new, m_old = meta(KB), (meta(OLD) if OLD and os.path.isfile(OLD) else None)
+if m_old is None:
+    check("KBC-02", "build_metadata declares a new version", False, "KB_OLD is required")
+else:
+    v_new, v_old = m_new.get("build_version"), m_old.get("build_version")
+    t_new, t_old = m_new.get("build_timestamp") or "", m_old.get("build_timestamp") or ""
+    check("KBC-02", "build_metadata declares a new build_version and a later build_timestamp",
+          bool(v_new) and v_new != v_old and t_new > t_old,
+          "build_version %r -> %r ; build_timestamp %r -> %r" % (v_old, v_new, t_old, t_new))
 
 # KBC-03 / KBC-04 need the previous database
 if not OLD or not os.path.isfile(OLD):
