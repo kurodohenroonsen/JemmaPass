@@ -4,6 +4,7 @@
 > **Auteur** : Équipe d'Ingénierie JemmaPass & Sub-Agent Documentation Architecture  
 > **Version** : 1.0.14-UML (aligné sur l'application Android v1.0.14, `app/build.gradle.kts:38`)  
 > **Statut** : Document de Travail & Spécification d'Architecture Révisée (En cours de révision technique — non approuvé comme norme unique)  
+> **État du code décrit** : commit 0c31acf du 3 octobre 2026 (fusionné dans feat/ips-18-pillars-cleanup @ b53d539).  
 > **Périmètre** : Spécification Fonctionnelle, Modèles de Domaine, Diagrammes d'États et de Séquence vérifiés sur pièces contre le code source de JemmaPass. Toute classe, méthode ou propriété figurant dans les sections 1 à 7 est sourcée avec son chemin et sa ligne exacte (`fichier:ligne`). Les évolutions futures et propositions non encore implémentées sont regroupées dans la [Section 8 (Proposé — n'existe pas encore)](#8-proposé--nexiste-pas-encore-cibles-dévolution--portages).
 
 ---

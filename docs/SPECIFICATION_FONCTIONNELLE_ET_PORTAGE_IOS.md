@@ -5,6 +5,7 @@
 > **Version** : 1.0.14-SPEC (aligné sur l'application Android v1.0.14, `app/build.gradle.kts:38`)  
 > **Statut** : Document de Travail & Spécification de Portage iOS (En cours de révision technique — non approuvé comme norme unique)  
 > **Périmètre** : Spécification Fonctionnelle (18 Piliers IPS, Moteur Clinique, AI Edge, Transfert Hors-Ligne) & Blueprint d'Ingénierie pour le Portage iOS ciblant le Japon.  
+> **État du code décrit** : commit 0c31acf du 3 octobre 2026 (fusionné dans feat/ips-18-pillars-cleanup @ b53d539).  
 > **Conventions de classification** :  
 > Chaque exigence ou composant technique est rigoureusement classé sous l'une des 3 catégories suivantes :  
 > - `[EXISTE SUR ANDROID (fichier:ligne)]` : Fonctionnalité ou classe existante, vérifiée sur pièces dans le code source.  
@@ -61,7 +62,7 @@
 
 Le système a été conçu autour de 4 personas :
 - 🚶‍♂️ **Kurodo** : Pèlerin étranger (Belge). Allergie létale à la pénicilline (`SNOMED 91936005`). Risque vital immédiat si administration d'Augmentin (`ATC J01CR02`).
-- 👵 **Haru** : Citoyenne japonaise (80 ans). Sous anticoagulant oral direct Edoxaban (`ATC B01AF03` [WHOCC](https://www.whocc.no/atc_ddd_index/?code=B01AF03) / Lixiana).
+- 👵 **Haru** : Citoyenne japonaise (80 ans). Sous anticoagulant oral direct Edoxaban (`ATC B01AF03` [ATC/DDD B01AF03](https://atcddd.fhi.no/atc_ddd_index/?code=B01AF03) / Lixiana).
   > `[EXISTE SUR ANDROID (kb/KbCrossCheck.kt:131)]` : Si l'association d'Edoxaban (`B01AF03`) avec un antiagrégant (ex: Aspirine `B01AC06`) ou un AINS est présente dans la vue locale `v_ddi_emergency` / `ddi_facts` (à vérifier par `kb-sql` sur `knowledge_full.db`), elle produit impérativement le verdict `ALERT` (totalHits > 0). En cas de présence dans la base, l'anticoagulant oral direct combiné à l'aspirine ne peut jamais afficher un écran vert `CLEAN`.
 - 🎒 **Kamekichi** : Secouriste bénévole / DMAT. Scanne les médicaments et pass via la caméra hors-ligne et coordonne le tri de catastrophe.
 - ✨ **Gemma / Jemma** : Agent IA local exploitant LiteRT-LM, pilotant 21 outils `@Tool` et vulgarisant les alertes dans la langue de l'intervenant.
