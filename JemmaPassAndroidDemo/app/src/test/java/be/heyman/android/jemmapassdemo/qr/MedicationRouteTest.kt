@@ -67,14 +67,18 @@ class MedicationRouteTest {
     fun `UC-MED-ROUTE-02 the catalog offers inhaled as a distinct value and I stays injection`() {
         val inhaled = IpsRouteCatalog.byShortCode("H")!!
         assertEquals("447694001", inhaled.snomedCode)
-        assertEquals("Inhaled", inhaled.pick("en"))
-        assertEquals("Inhalée", inhaled.pick("fr"))
-        assertEquals("吸入", inhaled.pick("ja"))
+        assertEquals("Inhaled", inhaled.displayEn)
+        // PROTOCOL 9.1 : the French and Japanese labels are interface texts, read from the string resources.
+        val labels = be.heyman.android.jemmapassdemo.testsupport.ResXmlCodeLabels(
+            be.heyman.android.jemmapassdemo.testsupport.ResXmlCodeLabels.locate()!!,
+        )
+        assertEquals("Inhalée", labels.getLabel(IpsRouteCatalog.CODE_SYSTEM, inhaled.snomedCode, "fr"))
+        assertEquals("吸入", labels.getLabel(IpsRouteCatalog.CODE_SYSTEM, inhaled.snomedCode, "ja"))
         assertEquals("Inhaled", IpsRouteCatalog.getDisplay("h", "en-GB"))
 
         // No silent migration: a stored "I" still reads as an injection.
         val injection = IpsRouteCatalog.byShortCode("I")!!
-        assertEquals("Injection", injection.pick("en"))
+        assertEquals("Injection", injection.displayEn)
         assertNotEquals(inhaled.snomedCode, injection.snomedCode)
         assertNotEquals(inhaled.emoji, injection.emoji)
 

@@ -32,10 +32,16 @@ class IpsProcedureDeviceCatalogTest {
         val codes = IpsDeviceCatalog.ALL.map { it.code }
         assertEquals(codes.size, codes.toSet().size)
         assertTrue(codes.all { it.matches(Regex("^\\d{6,18}$")) })
+        // PROTOCOL 9.1 : the French and Japanese labels are interface texts, read from the string resources.
+        val labels = be.heyman.android.jemmapassdemo.testsupport.ResXmlCodeLabels(
+            be.heyman.android.jemmapassdemo.testsupport.ResXmlCodeLabels.locate()!!,
+        )
         IpsDeviceCatalog.ALL.forEach { d ->
-            assertTrue(d.code, d.displayEn.isNotBlank() && d.displayFr.isNotBlank() && d.displayJa.isNotBlank())
+            assertTrue(d.code, d.displayEn.isNotBlank())
+            assertTrue("${d.code} fr", !labels.getLabel(IpsDeviceCatalog.CODE_SYSTEM, d.code, "fr").isNullOrBlank())
+            assertTrue("${d.code} ja", !labels.getLabel(IpsDeviceCatalog.CODE_SYSTEM, d.code, "ja").isNullOrBlank())
         }
-        assertEquals("Stimulateur cardiaque (pacemaker)", IpsDeviceCatalog.getDisplay("14106009", "fr"))
+        assertEquals("Stimulateur cardiaque (pacemaker)", labels.getLabel(IpsDeviceCatalog.CODE_SYSTEM, "14106009", "fr"))
     }
 
     @Test
