@@ -1,0 +1,14 @@
+query_code  description  in_ips_valuesets
+----------  -----------  ----------------
+260548002   Oral route   0               
+code       snomed_code  primary_display                      
+---------  -----------  -------------------------------------
+C1556154   78421000     Intramuscular Route of Administration
+C1522726   47625008     Intravenous Route of Administration  
+C1527415   26643006     Oral Route of Administration         
+447694001  447694001    Respiratory tract route              
+C3164742   447694001    Respiratory tract route              
+C1522438   34206005     Subcutaneous Route of Administration 
+C0001565   37839007     Sublingual Route of Administration   
+C1522168   6064005      Topical Route of Administration      
+6064005    6064005      Topical route                        

@@ -1,0 +1,192 @@
+fichier_kotlin	code	système	présent_KB(0/1)	table	libellé_en	fr(0/1)	ja(0/1)
+ui/assistant/AssistantMultiPreviewFragment.kt:720	C03CA01	http://www.whocc.no/atc	1	atc_hierarchy	furosemide	0	0
+ui/assistant/AssistantMultiPreviewFragment.kt:734	A12AA04	http://www.whocc.no/atc	1	atc_hierarchy	calcium carbonate	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:50	11778-8	http://loinc.org	1	ips_valuesets (edd-method-uv-ips)	Delivery date Estimated	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:54	11640-0	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births total	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:55	11636-8	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.live	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:56	11639-2	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.term	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:57	11637-6	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.preterm	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:58	11638-4	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.still living	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:59	11612-9	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Abortions	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:60	11614-5	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Abortions.spontaneous	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:61	11613-7	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Abortions.induced	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:62	33065-4	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Ectopic pregnancy	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:73	11779-6	http://loinc.org	1	ips_valuesets (edd-method-uv-ips)	Delivery date Estimated from last menstrual period	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:74	11780-4	http://loinc.org	1	ips_valuesets (edd-method-uv-ips)	Delivery date Estimated from ovulation date	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:243	11636-8	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.live	0	0
+ui/profile/pregnancy/PregnancyEditFragment.kt:243	11640-0	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births total	0	0
+ips/IpsBloodGroup.kt:23	882-1	http://loinc.org	0	-	-	0	0
+ips/IpsBloodGroup.kt:29	278147001	http://snomed.info/sct	1	ips_valuesets (problems-snomed-ct-ips-free-set)	Blood group O Rh(D) positive	0	0
+ips/IpsBloodGroup.kt:30	278148006	http://snomed.info/sct	1	ips_valuesets (problems-snomed-ct-ips-free-set)	Blood group O Rh(D) negative	0	0
+ips/IpsBloodGroup.kt:31	278149003	http://snomed.info/sct	1	ips_valuesets (problems-snomed-ct-ips-free-set)	Blood group A Rh(D) positive	0	0
+ips/IpsBloodGroup.kt:32	278152006	http://snomed.info/sct	1	ips_valuesets (problems-snomed-ct-ips-free-set)	Blood group A Rh(D) negative	0	0
+ips/IpsBloodGroup.kt:33	278150003	http://snomed.info/sct	1	ips_valuesets (problems-snomed-ct-ips-free-set)	Blood group B Rh(D) positive	0	0
+ips/IpsBloodGroup.kt:34	278153001	http://snomed.info/sct	1	ips_valuesets (problems-snomed-ct-ips-free-set)	Blood group B Rh(D) negative	0	0
+ips/IpsBloodGroup.kt:35	278151004	http://snomed.info/sct	1	ips_valuesets (problems-snomed-ct-ips-free-set)	Blood group AB Rh(D) positive	0	0
+ips/IpsBloodGroup.kt:36	278154007	http://snomed.info/sct	1	ips_valuesets (problems-snomed-ct-ips-free-set)	Blood group AB Rh(D) negative	0	0
+ips/IpsOfficialDisplays.kt:18	882-1	http://loinc.org	0	-	-	0	0
+ips/IpsOfficialDisplays.kt:19	718-7	http://loinc.org	0	-	-	0	0
+ips/IpsOfficialDisplays.kt:20	2089-1	http://loinc.org	0	-	-	0	0
+ips/IpsOfficialDisplays.kt:21	2160-0	http://loinc.org	0	-	-	0	0
+ips/IpsOfficialDisplays.kt:22	2823-3	http://loinc.org	0	-	-	0	0
+ips/IpsOfficialDisplays.kt:23	4548-4	http://loinc.org	0	-	-	0	0
+ips/IpsOfficialDisplays.kt:24	33914-3	http://loinc.org	0	-	-	0	0
+ips/IpsOfficialDisplays.kt:27	836378001	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Japanese encephalitis virus antigen-containing vaccine product	0	0
+ips/IpsOfficialDisplays.kt:28	871803007	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Hepatitis A and Hepatitis B virus antigens only vaccine product	0	0
+ips/IpsOfficialDisplays.kt:29	871876003	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Acellular Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae antigens only vaccine product	0	0
+ips/IpsOfficialDisplays.kt:30	1181000221105	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Influenza virus antigen only vaccine product	0	0
+ips/IpsOfficialDisplays.kt:31	1801000221105	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Streptococcus pneumoniae capsular polysaccharide antigen conjugated only vaccine product	0	0
+ips/IpsPastProblem.kt:39	LA6752-5	http://loinc.org	1	ips_valuesets (condition-severity-uv-ips)	Mild	0	0
+ips/IpsPastProblem.kt:40	LA6751-7	http://loinc.org	1	ips_valuesets (condition-severity-uv-ips)	Moderate	0	0
+ips/IpsPastProblem.kt:41	LA6750-9	http://loinc.org	1	ips_valuesets (condition-severity-uv-ips)	Severe	0	0
+ips/IpsPregnancy.kt:21	82810-3	http://loinc.org	0	-	-	0	0
+ips/IpsPregnancy.kt:24	LA15173-0	http://loinc.org	1	ips_valuesets (pregnancy-status-uv-ips)	Pregnant	0	0
+ips/IpsPregnancy.kt:25	LA26683-5	http://loinc.org	1	ips_valuesets (pregnancy-status-uv-ips)	Not pregnant	0	0
+ips/IpsPregnancy.kt:26	LA4489-6	http://loinc.org	1	ips_valuesets (pregnancy-status-uv-ips)	Unknown	0	0
+ips/IpsPregnancy.kt:35	11778-8	http://loinc.org	1	ips_valuesets (edd-method-uv-ips)	Delivery date Estimated	0	0
+ips/IpsPregnancy.kt:36	11779-6	http://loinc.org	1	ips_valuesets (edd-method-uv-ips)	Delivery date Estimated from last menstrual period	0	0
+ips/IpsPregnancy.kt:37	11780-4	http://loinc.org	1	ips_valuesets (edd-method-uv-ips)	Delivery date Estimated from ovulation date	0	0
+ips/IpsPregnancy.kt:42	11640-0	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births total	0	0
+ips/IpsPregnancy.kt:43	11636-8	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.live	0	0
+ips/IpsPregnancy.kt:44	11639-2	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.term	0	0
+ips/IpsPregnancy.kt:45	11637-6	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.preterm	0	0
+ips/IpsPregnancy.kt:46	11638-4	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.still living	0	0
+ips/IpsPregnancy.kt:47	11612-9	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Abortions	0	0
+ips/IpsPregnancy.kt:48	11614-5	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Abortions.spontaneous	0	0
+ips/IpsPregnancy.kt:49	11613-7	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Abortions.induced	0	0
+ips/IpsPregnancy.kt:50	33065-4	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Ectopic pregnancy	0	0
+kb/AllergyKeywords.kt:34	J01CA01	http://www.whocc.no/atc	1	atc_hierarchy	ampicillin	0	0
+kb/AllergyKeywords.kt:37	J01DB01	http://www.whocc.no/atc	1	atc_hierarchy	cefalexin	0	0
+kb/AllergyKeywords.kt:40	J01DH02	http://www.whocc.no/atc	1	atc_hierarchy	meropenem	0	0
+kb/AllergyKeywords.kt:45	J01EE01	http://www.whocc.no/atc	1	atc_hierarchy	sulfamethoxazole and trimethoprim	0	0
+kb/AllergyKeywords.kt:49	J01FA01	http://www.whocc.no/atc	1	atc_hierarchy	erythromycin	0	0
+kb/AllergyKeywords.kt:53	J01AA02	http://www.whocc.no/atc	1	atc_hierarchy	doxycycline	0	0
+kb/AllergyKeywords.kt:57	J01MA02	http://www.whocc.no/atc	1	atc_hierarchy	ciprofloxacin	0	0
+kb/AllergyKeywords.kt:61	J01GB03	http://www.whocc.no/atc	1	atc_hierarchy	gentamicin	0	0
+kb/AllergyKeywords.kt:67	M01AE01	http://www.whocc.no/atc	1	atc_hierarchy	ibuprofen	0	0
+kb/AllergyKeywords.kt:72	N02BA01	http://www.whocc.no/atc	1	atc_hierarchy	acetylsalicylic acid	0	0
+kb/AllergyKeywords.kt:76	N02AA01	http://www.whocc.no/atc	1	atc_hierarchy	morphine	0	0
+kb/AllergyKeywords.kt:82	V08AB02	http://www.whocc.no/atc	1	atc_hierarchy	iohexol	0	0
+kb/AllergyKeywords.kt:88	C10AA01	http://www.whocc.no/atc	1	atc_hierarchy	simvastatin	0	0
+kb/JemmaProfileHydrator.kt:803	J01CA01	http://www.whocc.no/atc	1	atc_hierarchy	ampicillin	0	0
+kb/JemmaProfileHydrator.kt:807	J01DB01	http://www.whocc.no/atc	1	atc_hierarchy	cefalexin	0	0
+kb/JemmaProfileHydrator.kt:811	J01DH02	http://www.whocc.no/atc	1	atc_hierarchy	meropenem	0	0
+kb/JemmaProfileHydrator.kt:815	J01EE01	http://www.whocc.no/atc	1	atc_hierarchy	sulfamethoxazole and trimethoprim	0	0
+kb/JemmaProfileHydrator.kt:819	J01FA01	http://www.whocc.no/atc	1	atc_hierarchy	erythromycin	0	0
+kb/JemmaProfileHydrator.kt:822	J01AA02	http://www.whocc.no/atc	1	atc_hierarchy	doxycycline	0	0
+kb/JemmaProfileHydrator.kt:825	J01MA02	http://www.whocc.no/atc	1	atc_hierarchy	ciprofloxacin	0	0
+kb/JemmaProfileHydrator.kt:828	J01GB03	http://www.whocc.no/atc	1	atc_hierarchy	gentamicin	0	0
+kb/JemmaProfileHydrator.kt:834	M01AE01	http://www.whocc.no/atc	1	atc_hierarchy	ibuprofen	0	0
+kb/JemmaProfileHydrator.kt:837	N02BA01	http://www.whocc.no/atc	1	atc_hierarchy	acetylsalicylic acid	0	0
+kb/JemmaProfileHydrator.kt:841	N02AA01	http://www.whocc.no/atc	1	atc_hierarchy	morphine	0	0
+kb/JemmaProfileHydrator.kt:844	V08AB02	http://www.whocc.no/atc	1	atc_hierarchy	iohexol	0	0
+kb/JemmaProfileHydrator.kt:847	C10AA01	http://www.whocc.no/atc	1	atc_hierarchy	simvastatin	0	0
+qr/JemmaFhirBundleBuilder.kt:434	48765-2	http://loinc.org	0	-	-	0	0
+qr/JemmaFhirBundleBuilder.kt:435	10160-0	http://loinc.org	0	-	-	0	0
+qr/JemmaFhirBundleBuilder.kt:451	60591-5	http://loinc.org	0	-	-	0	0
+qr/JemmaFhirBundleBuilder.kt:545	26643006	http://snomed.info/sct	1	terminology_codes	Oral Route of Administration	0	0
+qr/JemmaFhirBundleBuilder.kt:546	6064005	http://snomed.info/sct	1	terminology_codes	Topical route	0	0
+qr/JemmaFhirBundleBuilder.kt:547	34206005	http://snomed.info/sct	1	terminology_codes	Subcutaneous Route of Administration	0	0
+qr/JemmaFhirBundleBuilder.kt:548	447694001	http://snomed.info/sct	1	terminology_codes	Respiratory tract route	0	0
+pillars/IpsDeviceCatalog.kt:44	14106009	http://snomed.info/sct	1	terminology_codes	Cardiac pacemaker, device	0	0
+pillars/IpsDeviceCatalog.kt:45	72506001	http://snomed.info/sct	1	ips_valuesets (medical-devices-snomed-ct-ips-free-set)	Implantable defibrillator	1	1
+pillars/IpsDeviceCatalog.kt:46	102303004	http://snomed.info/sct	1	ips_valuesets (medical-devices-snomed-ct-ips-free-set)	Vascular prosthesis	1	1
+pillars/IpsDeviceCatalog.kt:47	304120007	http://snomed.info/sct	1	ips_valuesets (medical-devices-snomed-ct-ips-free-set)	Total hip replacement prosthesis	0	0
+pillars/IpsDeviceCatalog.kt:48	69805005	http://snomed.info/sct	1	terminology_codes	Insulin pump	0	0
+pillars/IpsDeviceCatalog.kt:49	6012004	http://snomed.info/sct	1	terminology_codes	Hearing aid, device	0	0
+pillars/IpsPregnancyCatalog.kt:38	82810-3	http://loinc.org	0	-	-	0	0
+pillars/IpsPregnancyCatalog.kt:40	11778-8	http://loinc.org	1	ips_valuesets (edd-method-uv-ips)	Delivery date Estimated	0	0
+pillars/IpsPregnancyCatalog.kt:42	11779-6	http://loinc.org	1	ips_valuesets (edd-method-uv-ips)	Delivery date Estimated from last menstrual period	0	0
+pillars/IpsPregnancyCatalog.kt:44	11780-4	http://loinc.org	1	ips_valuesets (edd-method-uv-ips)	Delivery date Estimated from ovulation date	0	0
+pillars/IpsPregnancyCatalog.kt:46	11640-0	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births total	0	0
+pillars/IpsPregnancyCatalog.kt:48	11636-8	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.live	0	0
+pillars/IpsPregnancyCatalog.kt:50	11639-2	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.term	0	0
+pillars/IpsPregnancyCatalog.kt:52	11637-6	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.preterm	0	0
+pillars/IpsPregnancyCatalog.kt:54	11638-4	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Births.still living	0	0
+pillars/IpsPregnancyCatalog.kt:56	11612-9	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Abortions	0	0
+pillars/IpsPregnancyCatalog.kt:58	11614-5	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Abortions.spontaneous	0	0
+pillars/IpsPregnancyCatalog.kt:60	11613-7	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Abortions.induced	0	0
+pillars/IpsPregnancyCatalog.kt:62	33065-4	http://loinc.org	1	ips_valuesets (pregnancies-summary-uv-ips)	[#] Ectopic pregnancy	0	0
+pillars/IpsPregnancyCatalog.kt:68	LA15173-0	http://loinc.org	1	ips_valuesets (pregnancy-status-uv-ips)	Pregnant	0	0
+pillars/IpsPregnancyCatalog.kt:69	LA26683-5	http://loinc.org	1	ips_valuesets (pregnancy-status-uv-ips)	Not pregnant	0	0
+pillars/IpsPregnancyCatalog.kt:70	LA4489-6	http://loinc.org	1	ips_valuesets (pregnancy-status-uv-ips)	Unknown	0	0
+pillars/IpsProcedureCatalog.kt:45	80146002	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Appendectomy	1	1
+pillars/IpsProcedureCatalog.kt:46	38102005	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Cholecystectomy	1	1
+pillars/IpsProcedureCatalog.kt:47	73761001	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Colonoscopy	1	1
+pillars/IpsProcedureCatalog.kt:48	232717009	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Coronary artery bypass graft	0	0
+pillars/IpsProcedureCatalog.kt:49	34068001	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Heart valve replacement	1	1
+pillars/IpsProcedureCatalog.kt:50	52734007	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Total replacement of hip	1	1
+pillars/IpsProcedureCatalog.kt:51	609588000	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Total knee replacement	1	1
+pillars/IpsProcedureCatalog.kt:52	11466000	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Cesarean section	1	1
+pillars/IpsProcedureCatalog.kt:53	236886002	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Hysterectomy	1	1
+pillars/IpsProcedureCatalog.kt:54	367336001	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Chemotherapy	1	1
+pillars/IpsProcedureCatalog.kt:55	108290001	http://snomed.info/sct	0	-	-	0	0
+pillars/IpsProcedureCatalog.kt:56	387713003	http://snomed.info/sct	1	ips_valuesets (procedures-snomed-ct-ips-free-set)	Surgical procedure	1	1
+pillars/IpsResultCatalog.kt:58	2345-7	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:59	14749-6	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:60	4548-4	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:62	2160-0	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:63	14682-9	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:64	33914-3	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:65	3094-0	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:66	3084-1	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:68	2951-2	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:69	2823-3	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:71	718-7	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:72	4544-3	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:73	6690-2	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:74	777-3	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:76	2093-3	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:77	14647-2	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:78	2085-9	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:79	2089-1	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:80	2571-8	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:82	1742-6	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:83	1920-8	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:84	2324-2	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:85	1975-2	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:86	1751-7	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:88	1988-5	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:89	2276-4	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:90	3016-3	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:91	1989-3	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:92	2857-1	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:94	6301-6	http://loinc.org	0	-	-	0	0
+pillars/IpsResultCatalog.kt:96	882-1	http://loinc.org	0	-	-	0	0
+pillars/IpsRouteCatalog.kt:55	26643006	http://snomed.info/sct	1	terminology_codes	Oral Route of Administration	0	0
+pillars/IpsRouteCatalog.kt:60	47625008	http://snomed.info/sct	1	terminology_codes	Intravenous Route of Administration	0	0
+pillars/IpsRouteCatalog.kt:65	6064005	http://snomed.info/sct	1	terminology_codes	Topical route	0	0
+pillars/IpsRouteCatalog.kt:70	34206005	http://snomed.info/sct	1	terminology_codes	Subcutaneous Route of Administration	0	0
+pillars/IpsRouteCatalog.kt:75	447694001	http://snomed.info/sct	1	terminology_codes	Respiratory tract route	0	0
+pillars/IpsVaccineCatalog.kt:51	1119349007	http://snomed.info/sct	1	terminology_codes	Vaccine product containing only severe acute respiratory syndrome coronavirus 2 messenger ribonucleic acid	0	0
+pillars/IpsVaccineCatalog.kt:52	1181000221105	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Influenza virus antigen only vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:53	871826000	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Clostridium tetani and Corynebacterium diphtheriae antigens only vaccine product	1	1
+pillars/IpsVaccineCatalog.kt:54	871876003	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Acellular Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae antigens only vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:55	871878002	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae and Human poliovirus antigens only vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:56	871895005	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Bordetella pertussis and Clostridium tetani and Corynebacterium diphtheriae and Haemophilus influenzae type b and Hepatitis B virus and Human poliovirus antigens only vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:57	863911006	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Clostridium tetani antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:58	1031000221108	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Human poliovirus antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:59	836374004	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Hepatitis B virus antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:60	836375003	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Hepatitis A virus antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:61	871803007	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Hepatitis A and Hepatitis B virus antigens only vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:62	871831003	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Measles morbillivirus and Mumps orthorubulavirus and Rubella virus antigens only vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:63	871765008	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Measles morbillivirus antigen only vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:64	836388000	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Rubella virus antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:65	836495005	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Human alphaherpesvirus 3 antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:66	836379009	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Human papillomavirus antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:67	836380007	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Haemophilus influenzae type b antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:68	836398006	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Streptococcus pneumoniae antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:69	1801000221105	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Streptococcus pneumoniae capsular polysaccharide antigen conjugated only vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:70	836401009	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Neisseria meningitidis antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:71	871873006	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Neisseria meningitidis serogroup A, C, W135 and Y only vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:72	1981000221108	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Neisseria meningitidis serogroup B antigen only vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:73	836387005	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Rotavirus antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:74	836402002	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Bacillus Calmette-Guerin antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:75	836378001	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Japanese encephalitis virus antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:76	836403007	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Tick-borne encephalitis virus antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:77	836393002	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Rabies lyssavirus antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:78	836385002	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Yellow fever virus antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:79	836390004	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Salmonella enterica subspecies enterica serovar Typhi antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:80	836383009	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Vibrio cholerae antigen-containing vaccine product	0	0
+pillars/IpsVaccineCatalog.kt:81	787859002	http://snomed.info/sct	1	ips_valuesets (allergy-intolerance-snomed-ct-ips-free-set)	Vaccine product	1	1
+sos/JemmaDeviceId.kt:86	0123456789	http://snomed.info/sct	0	-	-	0	0
