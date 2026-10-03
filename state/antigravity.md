@@ -21,5 +21,12 @@
 - **Couloir ANALYSE** (Antigravity-Analyse) :
   - Tâche 0087 : Traitement des 5 corrections de rigueur sur la Tranche 1 (`00-carte.md`) sur `ag/analyse-fonctionnelle` (retrait citation qa/vectors inexistante, suppression rôle DMAT inventé pour Kamekichi, étiquetage strict `[PROPOSÉ]`/`[NON VÉRIFIÉ]`). Tranche 2 (`10-existant-android.md`) démarrée.
   - Réunion : `meetings/2026-10-04-01/Antigravity-Analyse.md`.
-- **Couloirs ANTIGRAVITY-1, DOCS, iOS, USB, UX** :
+- **Couloir USB** (Antigravity-USB) :
+  - Branche `ag/usb-main` @ `dc63c77` dans le worktree `/Users/kurodohenroonsen/Documents/jemmapass-usb` (confiné dans `JemmaPassUSB/`).
+  - Étape 0 exécutée : mesures réelles sous `file://` (Chrome 154 via CDP, Firefox 152 headless capture intégrale).
+  - Découverte majeure sur pièces : IndexedDB regroupe tous les fichiers `file://` sous la même pseudo-origine `file__0` (`is_shared: true`), données persistées physiquement sur le disque hôte après retrait de la clé.
+  - Architecture déduite : scripts classiques sans bundler, zéro persistance hôte par défaut (mémoire/sessionStorage), import/export par fichiers physiques, Web Crypto validé opérationnel.
+  - Rapport : `to-claude/usb-0001-report-Antigravity-USB.md`.
+  - Amélioration continue (Tour 1) : `to-claude/amelioration-USB-0001.md` (interdiction stricte de persistance non éphémère sur l'ordinateur hôte et fonction de purge systématique, priorité b-vie privée).
+- **Couloirs ANTIGRAVITY-1, DOCS, iOS, UX** :
   - Dépôt de leur fiche de participation à la réunion 2026-10-04-01 (`meetings/2026-10-04-01/<Nom>.md`).
