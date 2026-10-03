@@ -39,6 +39,7 @@ Daemon will be stopped at the end of the build
 
 > Task :app:processDebugManifest
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebugUnitTest
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
@@ -46,15 +47,14 @@ Daemon will be stopped at the end of the build
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
-> Task :app:processDebugManifestForPackage
 > Task :app:compressDebugAssets
 > Task :app:processDebugResources
 > Task :app:checkDebugDuplicateClasses
 > Task :app:desugarDebugFileDependencies
 > Task :app:kspDebugKotlin
 > Task :app:mergeExtDexDebug
-> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeLibDexDebug
+> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -784,6 +784,18 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 
 > Task :app:testDebugUnitTest
 
+CodeLabelResolverTest > UC-KB-021 the text QR asks for the label in the language of the QR, not of the phone FAILED
+    java.lang.AssertionError at CodeLabelResolverTest.kt:49
+
+CodeLabelResolverTest > UC-KB-022 the label given by the resolver is the one printed FAILED
+    java.lang.AssertionError at CodeLabelResolverTest.kt:62
+
+CodeLabelResolverTest > UC-KB-025 the resources hold the route and device labels in French and Japanese FAILED
+    java.lang.AssertionError at CodeLabelResolverTest.kt:83
+
+CodeLabelResolverTest > UC-KB-023 without a resolver the stored English label is printed, never a label kept in the code FAILED
+    java.lang.AssertionError at CodeLabelResolverTest.kt:68
+
 NoClinicalCodeInSourceTest > UC-KB-003 no LOINC code is written in the source outside the document structure FAILED
     java.lang.AssertionError at NoClinicalCodeInSourceTest.kt:96
 
@@ -799,10 +811,10 @@ UiLabelsInResourcesTest > UC-KB-014 no catalogue of the source carries a French 
 UiLabelsInResourcesTest > UC-KB-011 each route has its interface label in the default, French and Japanese resources FAILED
     java.lang.AssertionError at UiLabelsInResourcesTest.kt:56
 
-438 tests completed, 5 failed
+445 tests completed, 9 failed
 
 > Task :app:testDebugUnitTest FAILED
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1791009230295.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1791014971718.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
 
@@ -976,5 +988,5 @@ Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 
 
-BUILD FAILED in 8m 38s
+BUILD FAILED in 9m 7s
 55 actionable tasks: 55 executed
