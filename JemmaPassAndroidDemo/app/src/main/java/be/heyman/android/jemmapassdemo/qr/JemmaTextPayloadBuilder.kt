@@ -202,7 +202,7 @@ object JemmaTextPayloadBuilder {
                     compareByDescending<JEntryGeneric> { it.status.isNullOrBlank() || it.status == "active" }
                         .thenByDescending { it.date ?: "" }
                 ),
-            ) { dv -> formatDevice(dv, lang) },
+            ) { dv -> formatDevice(dv, lang, labels) },
             part("🧪", "results_title", RANK_RESULTS, hydrated.raw.rs.sortedWith(byDateDesc)) { rs ->
                 formatResult(rs, lang)
             },
@@ -336,11 +336,15 @@ object JemmaTextPayloadBuilder {
     }
 
     /** "Cardiac pacemaker — 2021-03-15 · Medtronic" from the `_j.dv` projection (status appended when not active). */
-    private fun formatDevice(dv: be.heyman.android.jemmapassdemo.qr.JEntryGeneric, lang: Lang): String {
+    private fun formatDevice(
+        dv: be.heyman.android.jemmapassdemo.qr.JEntryGeneric,
+        lang: Lang,
+        labels: CodeLabelResolver = CodeLabelResolver.NONE,
+    ): String {
         val langCode = lang.isoCode
-        val label = be.heyman.android.jemmapassdemo.pillars.IpsDeviceCatalog.getDisplay(dv.c, langCode)
+        val label = (dv.c?.let { labels.getLabel("http://snomed.info/sct", it, langCode) })
             ?: dv.displayLabel?.takeIf { it.isNotBlank() }
-            ?: dv.c.orEmpty()
+            ?: ""
         val sb = StringBuilder(label)
         dv.date?.takeIf { it.isNotBlank() }?.let { sb.append(" — ").append(it) }
         dv.status?.takeIf { it.isNotBlank() && it != "active" }?.let { sb.append(" (").append(it).append(")") }

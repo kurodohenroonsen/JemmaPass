@@ -122,9 +122,13 @@ class MedicationsAdapter(
             val unit = m.u?.takeIf { it.isNotBlank() } ?: ""
             parts.add(if (unit.isBlank()) m.v else "${m.v} $unit")
         }
-        m.t?.takeIf { it.isNotBlank() }?.let { parts.add(it) }
-        routeEntry?.let { parts.add("${it.emoji} ${it.pick(lang)}") }
-        b.medicationRowSubtitle.text = parts.joinToString(" · ").ifBlank { "—" }
+        routeEntry?.let {
+            val ctx = b.root.context
+            val resName = be.heyman.android.jemmapassdemo.qr.codeLabelResourceName(IpsRouteCatalog.CODE_SYSTEM, it.snomedCode)
+            val resId = resName?.let { name -> ctx.resources.getIdentifier(name, "string", ctx.packageName) } ?: 0
+            val routeLabel = if (resId != 0) ctx.getString(resId) else it.pick(lang)
+            parts.add("${it.emoji} $routeLabel")
+        }
 
         // ─── Reason line (rs/rc) ────────────────────────────────
         val reason = m.rs?.takeIf { it.isNotBlank() }
