@@ -223,7 +223,7 @@ flowchart TD
 ### 3.1. Structure des 18 Piliers IPS & Dualité FHIR R4 vs Projection `_j 1.2`
 
 Sur Android, la persistance locale maintient deux fichiers par profil (`profiles/ProfilesRepository.kt:23-28`) :
-- `<sid>.fhir.json` : Le Bundle FHIR R4 (source de vérité pour les piliers FHIR-natifs, généré via `qr/JemmaFhirBundleBuilder.kt:55,81`, méthode `JemmaFhirBundleBuilder.build`, et décodé via `ips/IpsFhirCodec.kt:43`, `IpsFhirCodec`).
+- `<sid>.fhir.json` : Le Bundle FHIR R4 (source de vérité pour les piliers FHIR-natifs, généré via `JemmaFhirBundleBuilder` (`qr/JemmaFhirBundleBuilder.kt:56`) et sa méthode `build` (`qr/JemmaFhirBundleBuilder.kt:82`), et décodé via `IpsFhirCodec` (`ips/IpsFhirCodec.kt:43`)).
 - `<sid>.json` : La projection compacte `JemmaProfileJ` (`qr/JemmaProfileJ.kt:43-103`).
 
 ```mermaid
@@ -761,7 +761,7 @@ sequenceDiagram
 
 ### 5.4. Découverte, Alerte et Propagation Maillée P2P SALT (Zone Sinistrée)
 
-Implémenté dans `mesh/codec/EventChunk.kt:8` (`E|<source>|<victim>|<status>|<rescuer>|<ts>|<ttl>|<seq>`), `mesh/relay/RelayManager.kt:12`, `sos/JemmaNearbyEndpointCodec.kt:51` (`MAX_ENDPOINT_NAME_LEN = 131`) et `triage/StatusResolver.kt:68, 108` :
+Implémenté dans `EventChunk` (`mesh/codec/EventChunk.kt:36`), `RelayManager` (`mesh/relay/RelayManager.kt:41`), `MAX_ENDPOINT_NAME_LEN` (`sos/JemmaNearbyEndpointCodec.kt:51`), et `StatusResolver` (`triage/StatusResolver.kt:46`) :
 
 ```mermaid
 sequenceDiagram

@@ -1,4 +1,0 @@
-ENTRY       D09567                      Drug
-NAME        Edoxaban tosilate hydrate (JAN);
-            Lixiana (TN)
-REMARK      ATC code: B01AF03

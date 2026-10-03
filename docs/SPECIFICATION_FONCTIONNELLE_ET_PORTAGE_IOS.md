@@ -199,14 +199,13 @@ L'architecture s'aligne sur le standard HL7 FHIR R4 IPS ([ISO 27269:2021](https:
   7. `クラビット` / `レボフロキサシン` ➔ `"Levofloxacin"`
   8. `アドレナリン` / `エピネフリン` ➔ `"Epinephrine"`
   9. `ボルタレン` ➔ `"Diclofenac"`
-- `[EXISTE SUR ANDROID (kb/KnowledgeBaseService.kt:158, kb/AllergyKeywords.kt:63-68)]` (`Loxoprofen`, `NSAID`) vs `[HYPOTHÈSE À VÉRIFIER]` :
-  - Dans le code Android, `KnowledgeBaseService.kt:158` normalise `ロキソニン` / `ロキソプロフェン` en `"Loxoprofen"`. Dans `kb/AllergyKeywords.kt:63-68`, le bloc de reconnaissance des AINS associe les mots-clés (`ains`, `ibuprofène`, `naproxène`, `diclofénac`, `kétoprofène`) au code ATC `M01AE01` (Ibuprofène).
-  - **Correction nomenclature OMS & Statut Loxoprofène** :
-    - Dans l'index officiel de l'OMS ([WHOCC ATC M01AE04](https://www.whocc.no/atc_ddd_index/?code=M01AE04)), le code `M01AE04` correspond à **Fenoprofen**, et **non à Loxoprofen**.
-    - L'OMS répertorie le Loxoprofène sous le code ATC topique **`M02AA31`** pour les formes locales (gel, patch, cataplasmes : [WHOCC ATC M02AA31](https://www.whocc.no/atc_ddd_index/?code=M02AA31)).
-    - En revanche, il n'existe **aucun code ATC de niveau 5 officiel de l'OMS pour la forme systémique orale dans la classe `M01AE`** (molécule orale largement prescrite au Japon et en Asie de l'Est, enregistrée sous [KEGG Drug Entry D01709](https://www.kegg.jp/entry/D01709) / JAPIC).
-  - `[HYPOTHÈSE À VÉRIFIER]` : Pour le portage iOS ciblant le Japon, le Loxoprofène oral doit être rattaché soit à la classe ATC parent `M01AE` (dérivés de l'acide propionique), soit directement aux tables nationales japonaises de codes **HOT** ([MEDIS-DC Master Standard](https://www.medis.or.jp/2_kaihatu/kizyun/kizyun.html)) et **YJ** ([MHLW Drug Tariff List](https://www.mhlw.go.jp/topics/2024/04/tp20240401-01.html)).
-- `[PROPOSITION IOS]` : Pour le portage iOS, intégrer les tables officielles des codes **HOT** (9/13 chiffres, MEDIS-DC) et **YJ** (tarification nationale MHLW) pour une couverture exhaustive des prescriptions japonaises.
+- `[EXISTE SUR ANDROID]` : `Loxoprofen` (`kb/KnowledgeBaseService.kt:158`) et détection `nsaid` (`kb/AllergyKeywords.kt:65`) :
+  - Dans le code Android, la normalisation (`kb/KnowledgeBaseService.kt:158`) traduit `ロキソニン` / `ロキソプロフェン` en "Loxoprofen". Dans `AllergyKeywords` (`kb/AllergyKeywords.kt:15`), la règle `hasExactWord` (`kb/AllergyKeywords.kt:65`) associe les termes AINS au code ATC `M01AE01` (Ibuprofène).
+  - **Nomenclature officielle OMS du Loxoprofène** :
+    - L'index officiel ATC/DDD de l'OMS classe le loxoprofène oral sous le code ATC **`M01AE19`** ([ATC/DDD M01AE19](https://atcddd.fhi.no/atc_ddd_index/?code=M01AE19)).
+    - L'OMS répertorie également le loxoprofène sous le code ATC topique **`M02AA31`** pour les formes locales (gel, patch, cataplasmes : [ATC/DDD M02AA31](https://atcddd.fhi.no/atc_ddd_index/?code=M02AA31)).
+    - Le code `M01AE04` correspond à **Fenoprofen**, et non à Loxoprofen ([ATC/DDD M01AE04](https://atcddd.fhi.no/atc_ddd_index/?code=M01AE04)).
+- `[PROPOSITION IOS]` : Pour le portage iOS, intégrer les tables officielles des codes **HOT** (9/13 chiffres, MEDIS-DC [MEDIS-DC Master Standard](https://www.medis.or.jp/2_kaihatu/kizyun/kizyun.html)) et **YJ** (tarification nationale MHLW [MHLW Drug Tariff List](https://www.mhlw.go.jp/topics/2024/04/tp20240401-01.html)) pour une couverture exhaustive des prescriptions japonaises.
 
 ### 3.3. Carnet de santé (*Okusuri Techou*) et Restrictions Légales du My Number
 
@@ -359,7 +358,7 @@ Le portage iOS devra valider l'ensemble des scénarios critiques documentés dan
 
 Conformément à la directive du message 0047, l'intégralité des affirmations a fait l'objet de vérifications en ligne et de preuves enregistrées par script.
 
-👉 **Consulter la table complète et les verdicts mécaniques dans : [docs/sources/INDEX.md](sources/INDEX.md)**.
+👉 **Consulter la table complète et les verdicts mécaniques sur la branche dédiée : `ag/0047-sources` (`docs/sources/INDEX.md`)**.
 
 ### Synthèse des Rectifications Apportées
 1. **Loxoprofène ATC oral (`M01AE19`)** : L'index ATC/DDD de l'OMS classe bien le loxoprofène oral sous `M01AE19` (et le loxoprofène topique sous `M02AA31`). La mention d'absence de code ATC oral a été corrigée.

@@ -48,13 +48,16 @@ KNOWN_EXTERNAL_SYMBOLS = {
     "CBCharacteristic", "CBAdvertisementData", "MCPeerID", "MCSession", "MCNearbyServiceAdvertiser", "MCNearbyServiceBrowser",
     "HKHealthStore", "HKClinicalRecord", "HKQuantityType", "HKUnit", "LiveActivity", "ActivityKit",
     "NLTokenizer", "VNRecognizeTextRequest", "CIQRCodeGenerator", "AVCaptureMetadataOutput", "URLSessionDownloadTask",
+    "Data", "Date", "Error", "UserDefaults", "FileManager", "JSONDecoder", "JSONEncoder", "xcframework",
+    "JemmaCore", "pkpass", "EXC_RESOURCE",
 
-    # FHIR / Standards / Formats / SQL / AI
+    # FHIR / Standards / Formats / SQL / AI / Project tokens
     "FHIR", "HL7", "IPS", "LOINC", "SNOMED", "ATC", "ICD10", "DCI", "INN", "JSON", "XML", "CBOR", "UUID", "URI", "URL",
     "LiteRT", "TensorFlow", "MediaPipe", "FTS5", "SQLite", "trigram", "fts5", "unicode61", "ascii",
     "BLE", "NFC", "WiFi", "GATT", "ATT", "P2P", "DMAT", "START", "PAT", "PMDA", "MEDIS", "JAHIS", "MyNumber",
     "GET", "POST", "PUT", "DELETE", "HTTP", "HTTPS", "OK", "ERROR", "ALERT", "WARN", "INFO",
-    "Tool", "Composable", "OptIn", "Serializable", "Parcelize", "Worker", "Service"
+    "Tool", "Composable", "OptIn", "Serializable", "Parcelize", "Worker", "Service",
+    "ANDROID", "IOS", "PROPOSITION", "HYPOTHÈSE", "CONFIRMÉ"
 }
 
 def index_codebase(root_dir="."):
@@ -88,14 +91,25 @@ def parse_line_citations(line_text):
         lines_str = m.group(2)
         before = line_text[:m.start()]
         # Get immediate preceding backtick identifier if close to citation
-        bt_matches = list(re.finditer(r'`([a-zA-Z_][a-zA-Z0-9_]*)`', before))
+        bt_matches = list(re.finditer(r'`([^`]+)`', before))
+        valid_bts = [b for b in bt_matches if not re.search(r'\.kt\b', b.group(1))]
         symbol = None
-        if bt_matches:
-            last_bt = bt_matches[-1]
+        all_cited_in_bt = []
+        if valid_bts:
+            last_bt = valid_bts[-1]
             intervening = before[last_bt.end():]
             # Check if intervening text is just punctuation, parentheses, quotes or short words
             if len(intervening) < 35 and not any(k in intervening for k in ['.kt:', 'http', 'https']):
-                symbol = last_bt.group(1)
+                raw_bt = last_bt.group(1).strip()
+                idents = re.findall(r'\b[a-zA-Z_][a-zA-Z0-9_]*\b', raw_bt)
+                all_cited_in_bt = idents
+                clean_bt = re.sub(r'\(.*?\)', '', raw_bt).strip()
+                if '.' in clean_bt:
+                    symbol = clean_bt.split('.')[-1].strip()
+                elif idents:
+                    symbol = idents[0]
+                else:
+                    symbol = raw_bt
 
         for chunk in lines_str.split(','):
             chunk = chunk.strip()
@@ -104,9 +118,9 @@ def parse_line_citations(line_text):
             if '-' in chunk:
                 parts = chunk.split('-')
                 if len(parts) == 2 and parts[0].isdigit() and parts[1].isdigit():
-                    citations.append((symbol, kt_path, int(parts[0]), int(parts[1])))
+                    citations.append((symbol, all_cited_in_bt, kt_path, int(parts[0]), int(parts[1])))
             elif chunk.isdigit():
-                citations.append((symbol, kt_path, int(chunk), int(chunk)))
+                citations.append((symbol, all_cited_in_bt, kt_path, int(chunk), int(chunk)))
     return citations
 
 def main():
@@ -144,10 +158,12 @@ def main():
             # 1. Check citations on this line
             citations = parse_line_citations(line)
             cited_symbols = set()
-            for symbol, kt_path, start_line, end_line in citations:
+            for symbol, idents, kt_path, start_line, end_line in citations:
                 total_citations += 1
                 if symbol:
                     cited_symbols.add(symbol)
+                for idn in idents:
+                    cited_symbols.add(idn)
                 kt_base = os.path.basename(kt_path)
 
                 target_file = kt_index.get(kt_path) or kt_index.get(kt_base)
@@ -187,7 +203,11 @@ def main():
             all_backticks = re.findall(r'`([^`]+)`', line)
             for bt in all_backticks:
                 bt_clean = bt.strip()
-                if " " in bt_clean or "/" in bt_clean or "." in bt_clean or ":" in bt_clean:
+                # Skip doc badges like `[PROPOSITION IOS]` or `[EXISTE SUR ANDROID]`
+                if bt_clean.startswith("[") and bt_clean.endswith("]"):
+                    continue
+                # Skip file paths, URLs, markdown/regex markers, or obvious non-code tokens
+                if "/" in bt_clean or "http" in bt_clean or any(bt_clean.endswith(ext) for ext in [".md", ".json", ".tsv", ".xml", ".gradle", ".txt", ".sh"]):
                     continue
                 # Skip clinical / ATC codes (e.g. M01AE19, B01AF03, N02BE01, M01A)
                 if re.match(r'^[A-Z][0-9]{2}[A-Z]{1,2}[0-9]{0,2}$', bt_clean):
@@ -195,23 +215,29 @@ def main():
                 # Skip numeric constants, hex constants (e.g. 0xFFB91C1C)
                 if re.match(r'^(?:0x[0-9A-Fa-f]+|[0-9]+[A-Za-z0-9_-]*)$', bt_clean):
                     continue
-                if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', bt_clean):
-                    continue
-                if bt_clean in KNOWN_EXTERNAL_SYMBOLS:
-                    continue
-                if bt_clean.isupper() and len(bt_clean) <= 6:
-                    continue
-                if bt_clean in cited_symbols:
-                    continue
+                
+                # Extract identifiers from backtick
+                idents = re.findall(r'\b[a-zA-Z_][a-zA-Z0-9_]*\b', bt_clean)
+                for ident in idents:
+                    if re.match(r'^[A-Z][0-9]{2}[A-Z]{1,2}[0-9]{0,2}$', ident):
+                        continue
+                    if re.match(r'^(?:0x[0-9A-Fa-f]+|[0-9]+[A-Za-z0-9_-]*)$', ident):
+                        continue
+                    if ident in KNOWN_EXTERNAL_SYMBOLS:
+                        continue
+                    if ident.isupper() and len(ident) <= 6:
+                        continue
+                    if ident in cited_symbols:
+                        continue
 
-                # Check if this symbol exists in code
-                if bt_clean not in code_words:
-                    invented_symbols.append({
-                        "doc": doc_path,
-                        "line": doc_lno,
-                        "symbol": bt_clean,
-                        "text": line_str[:80]
-                    })
+                    # Check if this symbol exists in code
+                    if ident not in code_words:
+                        invented_symbols.append({
+                            "doc": doc_path,
+                            "line": doc_lno,
+                            "symbol": ident,
+                            "text": line_str[:80]
+                        })
 
     print(f"=== Rapport de Vérification des Citations de Code ===")
     print(f"Total citations analysées : {total_citations}")

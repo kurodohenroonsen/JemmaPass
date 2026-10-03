@@ -1,4 +1,0 @@
-ENTRY       D01709                      Drug
-NAME        Loxoprofen sodium (JP18);
-            Loxonin (TN)
-REMARK      ATC code: M01AE19 M02AA31
