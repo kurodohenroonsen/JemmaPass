@@ -137,3 +137,10 @@ Quand la KB n'a pas l'information : l'application dit « non vérifié », elle 
 Conséquence pour les deux agents : on ne corrige plus un manque de la KB par une table dans le code.
 On le signale, et la correction se fait dans la KB (source officielle + numéro de version).
 Test : `kbonly/NoClinicalCodeInSourceTest` (branche `tests/kb-only`).
+
+### 9.1 Libellés d'interface (décision de Kudoro, 2026-10-03)
+- Le **code** médical et son appartenance à un jeu de valeurs viennent de la KB.
+- Le **libellé court** affiché pour un code que l'app met en avant (voie, groupe sanguin, relation, dispositif courant…) est un **texte d'interface** : il vit dans les ressources Android (`strings.xml`), traduit comme le reste de l'app. Jamais dans un catalogue Kotlin.
+- Nom de ressource : `code_label_<sct|loinc|v3>_<code>` (tout caractère non alphanumérique du code devient `_`).
+- Un code sans ressource s'affiche avec le libellé anglais de la KB, marqué « non traduit ». Aucun libellé inventé à l'exécution.
+- La règle « aucune traduction par une IA » reste entière **pour la KB**. Les textes d'interface sont relus par Kudoro comme les autres chaînes.
