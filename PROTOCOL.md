@@ -150,3 +150,43 @@ Test : `kbonly/NoClinicalCodeInSourceTest` (branche `tests/kb-only`).
 - La première installation reste un téléchargement complet, vérifié par empreinte (fin de la règle des 95 %, SD-25).
 - Un correctif est additif (KBC-03), appliqué en une transaction : la base est soit dans l'ancienne version, soit dans la nouvelle, jamais entre les deux. En cas d'échec, l'ancienne base continue de servir.
 - Tant que la conception n'est pas validée par Kudoro, rien n'est publié sur le site ni poussé sur le téléphone.
+
+## 10. L'équipe (décision de Kudoro, 2026-10-04)
+
+Neuf orchestrateurs travaillent en même temps sur le même dépôt. Chacun a un nom, une branche, un dossier. Personne n'écrit hors de son dossier ni sur la branche d'un autre.
+
+| Nom (champ `orchestrator:`) | Mission | Branche | Dossier où il écrit |
+|---|---|---|---|
+| Antigravity-1 | Android : libellés d'interface, cycles appareil | `ag/<id>-…` | `JemmaPassAndroidDemo/` |
+| Antigravity-Contacts | Android : pilier contacts, garde de publication | `ag/0061-contacts` | `JemmaPassAndroidDemo/`, `qa/device/` |
+| Antigravity-KB | Base de connaissances : construction, intégrité, mises à jour | `ag/<id>-kb-…`, `ag/0082-sd26` | `docs/analysis/`, code KB Android |
+| Antigravity-Docs | Documentation, sources vérifiées | `ag/<id>-docs`, `ag/0047-sources` | `docs/` (hors `functional/` et `ux/`) |
+| Antigravity-iOS | Application iOS en Swift | `ag/ios-main` | `JemmaPassIOS/` |
+| Antigravity-Chrome | Extension Chrome | `ag/chrome-main` | `JemmaPassChrome/` |
+| Antigravity-USB | Version clé USB, HTML/CSS/JS pur | `ag/usb-main` | `JemmaPassUSB/` |
+| Antigravity-Analyse | Analyse fonctionnelle complète | `ag/analyse-fonctionnelle` | `docs/functional/` |
+| Antigravity-UX | Responsable de l'interface pour tous (handicap, convictions, profils santé) | `ag/ux-main` | `docs/ux/` |
+
+- **Claude** : écrit les tests et les vecteurs (`tests/…`, `qa/vectors/`), valide sur pièces, fusionne dans `feat/ips-18-pillars-cleanup`, anime les réunions.
+- **Kudoro** : décide. Lui seul autorise : une publication, un push forcé, l'usage du téléphone, une nouvelle permission, une nouvelle dépendance, un changement de périmètre. Sur ces points on s'arrête et on lui pose la question. Les autorisations demandées sur son Mac ne se contournent pas ; pour les limiter, chacun s'en tient à la commande fixe de son couloir (§7).
+- Un seul téléphone : verrou `to-claude/DEVICE-LOCK-<id>.md` avant tout cycle appareil. iOS, Chrome, USB, Analyse et UX n'y touchent jamais.
+- `qa/vectors/` est le contrat commun aux plateformes (aujourd'hui : `qa/vectors/contacts/` sur la branche `tests/pillar-contacts`, pas encore sur feat). `docs/functional/` dit quoi, `docs/ux/` dit comment ça se présente ; les plateformes les lisent avant de coder un écran.
+- Un défaut vu chez un autre couloir se signale par écrit (§11), on ne le corrige pas à sa place.
+
+## 11. Réunions et conseils (dans la boîte, par écrit)
+
+- **Réunion** : Claude ouvre `meetings/<AAAA-MM-JJ>-<n>/ORDRE-DU-JOUR.md`. À son prochain passage, chaque orchestrateur dépose son fichier `meetings/<…>/<Nom>.md` (jamais celui d'un autre), 30 lignes au plus : fait depuis la dernière fois (commit, pièce), en cours, bloqué par qui, ce que j'ai appris d'utile aux autres, question à un autre couloir. Claude écrit `SYNTHESE.md` : conflits entre couloirs, arbitrages, décisions qui remontent à Kudoro (`DECISIONS-KUDORO.md`).
+- **Conseil** : `meetings/conseils/<de>-a-<à>-<sujet>.md` (question précise, pièce citée). Réponse dans un nouveau fichier `…-reponse.md`. Un conseil n'est ni un ordre ni une source : seul le code, une pièce publiée ou une décision de Kudoro fait foi.
+- Toujours un nouveau fichier, jamais de réécriture, `pull --rebase` avant de pousser, jamais de `reset --hard` dans la boîte.
+
+## 12. Cycle d'amélioration continue (décision de Kudoro, 2026-10-04)
+
+Un tour = cinq étapes, dans cet ordre ; un tour fini, on en commence un autre.
+1. **Observer**, dans son couloir : le défaut le plus grave qu'on peut prouver (fichier et ligne, sortie brute, capture). Pas de pièce, pas de constat.
+2. **Proposer** : `to-claude/amelioration-<Nom>-<numéro>.md` — constat et pièce, ce que ça coûte à une vraie personne, correction proposée, ce qu'elle risque de casser, comment on saura que c'est corrigé. Une amélioration par fichier, faisable en un tour.
+3. **Tester d'abord** : Claude accepte ou refuse, et écrit le test ou le vecteur qui échoue. Rien n'est implémenté avant ce test ; un test ne se modifie jamais.
+4. **Corriger** : sur sa branche `ag/…`, la plus petite modification qui fait passer le test, tout le reste vert.
+5. **Valider et apprendre** : Claude vérifie sur pièces et fusionne, ou renvoie. Le rapport porte une ligne « leçon » : ce qui a permis au défaut d'exister et quel garde l'empêcherait de revenir. Claude en fait un test de garde ou une règle.
+
+Priorité : a) sécurité des personnes ; b) vie privée ; c) conformité (FHIR, IPS, « KB seulement ») ; d) accessibilité et clarté ; e) propreté. Tant qu'un point a) ou b) est ouvert dans un couloir, on n'y travaille pas d) ni e).
+Un tour sans rien trouver se dit « tour à vide », avec ce qui a été vérifié ; on n'invente pas un défaut. Trois tours à vide de suite : on s'arrête et on le signale. Les décisions réservées à Kudoro (§10) restent à Kudoro.
