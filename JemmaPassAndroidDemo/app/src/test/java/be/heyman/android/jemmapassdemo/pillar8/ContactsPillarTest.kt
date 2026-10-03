@@ -491,6 +491,25 @@ class ContactsPillarTest {
         assertTrue("a profile whose only contact is blank exports no contact", fhirContacts(profile(JContact(n = " ", p = ""))).isEmpty())
     }
 
+    @Test
+    fun `UC-CT-026 a contact made of a relationship alone is not exported`() {
+        // FHIR invariant pat-1 : a Patient.contact SHALL carry a name, a telecom, an address or an organization.
+        // A relationship alone ("a friend", nobody to call) would make the whole document invalid.
+        val p = profile(JContact(r = "FRND"), JContact(n = "Kamekichi", r = "FRND", p = "+32 2 000 00 01"))
+        val contacts = fhirContacts(p)
+        assertEquals("only the contact that can be reached or named is exported", 1, contacts.size)
+        assertEquals("Kamekichi", contacts.single().getJSONObject("name").getString("text"))
+        assertTrue("a relationship alone exports no contact at all", fhirContacts(profile(JContact(r = "friend"))).isEmpty())
+        assertEquals("the text QR does not print a relationship without a person", 1, contactLines(textQr(p)).size)
+    }
+
+    @Test
+    fun `UC-CT-027 a contact known by an address alone is exported`() {
+        val contacts = fhirContacts(profile(JContact(adr = "Rue de la Demo 1, 1000 Bruxelles")))
+        assertEquals(1, contacts.size)
+        assertEquals("Rue de la Demo 1, 1000 Bruxelles", contacts.single().getJSONObject("address").getString("text"))
+    }
+
     // ─── demo data and input rules ────────────────────────────────────────
 
     @Test
