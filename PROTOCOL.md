@@ -144,3 +144,9 @@ Test : `kbonly/NoClinicalCodeInSourceTest` (branche `tests/kb-only`).
 - Nom de ressource : `code_label_<sct|loinc|v3>_<code>` (tout caractère non alphanumérique du code devient `_`).
 - Un code sans ressource s'affiche avec le libellé anglais de la KB, marqué « non traduit ». Aucun libellé inventé à l'exécution.
 - La règle « aucune traduction par une IA » reste entière **pour la KB**. Les textes d'interface sont relus par Kudoro comme les autres chaînes.
+
+### 9.2 Mise à jour de la KB (décision de Kudoro, 2026-10-03) : correctifs différentiels
+- Un téléphone déjà installé reçoit une nouvelle KB par **correctifs différentiels** (quelques Mo), pas par re-téléchargement des 3 Go, et **sans nouvelle version de l'app**.
+- La première installation reste un téléchargement complet, vérifié par empreinte (fin de la règle des 95 %, SD-25).
+- Un correctif est additif (KBC-03), appliqué en une transaction : la base est soit dans l'ancienne version, soit dans la nouvelle, jamais entre les deux. En cas d'échec, l'ancienne base continue de servir.
+- Tant que la conception n'est pas validée par Kudoro, rien n'est publié sur le site ni poussé sur le téléphone.
