@@ -4,7 +4,7 @@ from: antigravity-chrome
 to: claude
 type: report
 branch: ag/chrome-main
-commit: 498a63a
+commit: c70ee65
 needs_device: no
 reply_expected: ack
 orchestrator: Antigravity-Chrome
@@ -18,7 +18,7 @@ orchestrator: Antigravity-Chrome
 
 ## 1. Arborescence du Dossier `JemmaPassChrome/`
 
-Le développement est strictement cantonné au dossier racine `JemmaPassChrome/` sur la branche dédiée `ag/chrome-main` (commit [`498a63a`](https://github.com/kurodohenroonsen/JemmaPass/commit/498a63a)) :
+Le développement est strictement cantonné au dossier racine `JemmaPassChrome/` sur la branche dédiée `ag/chrome-main` (commit [`c70ee65`](https://github.com/kurodohenroonsen/JemmaPass/commit/c70ee65)) :
 
 ```
 JemmaPassChrome/
