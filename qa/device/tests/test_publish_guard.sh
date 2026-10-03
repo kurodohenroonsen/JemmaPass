@@ -70,5 +70,34 @@ git -C "$T/root" checkout -q -b ag/9999-probe
 run_jp 'branch-push ag/9999-probe'; rc=$?
 [ "$rc" -eq 0 ] && git -C "$T/code.git" rev-parse -q --verify ag/9999-probe >/dev/null && ok "GUARD-08 branch-push accepts an ag/ branch" || ko "GUARD-08 branch-push accepts an ag/ branch (rc=$rc)"
 
+git -C "$T/root" checkout -q feat/ips-18-pillars-cleanup 2>/dev/null
+git -C "$T/dr" reset -q --hard origin/device-reports; git -C "$T/dr" clean -qfd
+SCRUB_MARK='--------- scrub_logcat: 3 line(s) removed (non-JemmaPass tags or non-demo profile data)'
+DEMO_LINE='10-03 22:23:03.384 27712 27712 D JEMMA-PROFILES: [Adapter] bind pos=2 · id=demo_kurodo · name=Kurodo Henro'
+REAL_LINE='10-03 22:23:03.388 27712 27712 D JEMMA-PROFILES: [Adapter] bind pos=3 · id=p-0a1b2c3d-0000-4000-8000-000000000000 · name=Someone Real'
+
+new_run r9-raw-logcat
+printf '%s\n' "$DEMO_LINE" > "$OUT/logs/logcat-ui.txt"
+before=$(remote_head); run_jp 'publish 09-fffffff "logcat that never went through scrub_logcat"'; rc=$?
+[ "$rc" -ne 0 ] && [ "$(remote_head)" = "$before" ] && ok "GUARD-09 a logcat file without the scrub_logcat end line blocks the publication" || ko "GUARD-09 a logcat file without the scrub_logcat end line blocks the publication (rc=$rc)"
+git -C "$T/dr" reset -q --hard origin/device-reports; git -C "$T/dr" clean -qfd
+
+new_run r10-real-profile
+printf '%s\n%s\n%s\n' "$DEMO_LINE" "$REAL_LINE" "$SCRUB_MARK" > "$OUT/logs/logcat-seed.txt"
+before=$(remote_head); run_jp 'publish 10-0000000 "non-demo profile id in a published file"'; rc=$?
+[ "$rc" -ne 0 ] && [ "$(remote_head)" = "$before" ] && ok "GUARD-10 a non-demo profile id (p-xxxxxxxx) in any published text file blocks the publication, even with the end line" || ko "GUARD-10 a non-demo profile id (p-xxxxxxxx) in any published text file blocks the publication, even with the end line (rc=$rc)"
+git -C "$T/dr" reset -q --hard origin/device-reports; git -C "$T/dr" clean -qfd
+
+new_run r11-real-profile-in-report
+echo "bind pos=3 id=p-0a1b2c3d-0000-4000-8000-000000000000" >> "$OUT/report.md"
+before=$(remote_head); run_jp 'publish 11-1111111 "non-demo profile id quoted in the report"'; rc=$?
+[ "$rc" -ne 0 ] && [ "$(remote_head)" = "$before" ] && ok "GUARD-11 a non-demo profile id quoted in report.md blocks the publication" || ko "GUARD-11 a non-demo profile id quoted in report.md blocks the publication (rc=$rc)"
+git -C "$T/dr" reset -q --hard origin/device-reports; git -C "$T/dr" clean -qfd
+
+new_run r12-scrubbed
+printf '%s\n%s\n' "$DEMO_LINE" "$SCRUB_MARK" > "$OUT/logs/logcat-ui.txt"
+before=$(remote_head); run_jp 'publish 12-2222222 "scrubbed logcat"'; rc=$?
+[ "$rc" -eq 0 ] && [ "$(remote_head)" != "$before" ] && ok "GUARD-12 a scrubbed logcat with demo personas only is published" || ko "GUARD-12 a scrubbed logcat with demo personas only is published (rc=$rc)"
+
 echo "---"; echo "$pass passed, $fail failed"
 [ "$fail" -eq 0 ]
