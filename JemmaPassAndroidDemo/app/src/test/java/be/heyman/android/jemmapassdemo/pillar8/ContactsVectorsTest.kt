@@ -66,14 +66,14 @@ class ContactsVectorsTest {
     private fun diff(path: String, expected: Any?, actual: Any?, out: MutableList<String>) {
         when {
             expected is JSONObject && actual is JSONObject -> {
-                for (key in expected.keySet().sorted()) {
+                for (key in expected.keys().asSequence().toList().sorted()) {
                     if (!actual.has(key)) {
                         out += "$path.$key is missing (expected ${expected.get(key)})"
                     } else {
                         diff("$path.$key", expected.get(key), actual.get(key), out)
                     }
                 }
-                for (key in actual.keySet().sorted()) {
+                for (key in actual.keys().asSequence().toList().sorted()) {
                     if (!expected.has(key)) {
                         out += "$path.$key is not expected (found ${actual.get(key)})"
                     }

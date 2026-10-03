@@ -86,7 +86,7 @@ class ContactsPillarTest {
                 if (node.length() == 0) {
                     out += "$path is an empty object"
                 }
-                for (key in node.keySet()) {
+                for (key in node.keys().asSequence().toList()) {
                     emptyNodes("$path.$key", node.get(key), out)
                 }
             }
