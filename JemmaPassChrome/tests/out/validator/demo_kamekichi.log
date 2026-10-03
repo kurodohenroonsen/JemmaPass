@@ -27,3 +27,18 @@ Latest version of package hl7.fhir.uv.extensions found locally is 5.3.0 - using 
   Load hl7.fhir.uv.extensions.r5#5.2.0 - 759 resources (00:08.708)
   Load hl7.terminology.r5#7.1.0 - 4072 resources (00:08.570)
   Load hl7.fhir.uv.extensions#5.3.0 - 856 resources (00:00.044)
+  Load hl7.terminology.r4#5.0.0 - 4175 resources (00:15.392)
+  Load fhir.dicom#2022.4.20221006 - 1319 resources (00:00.158)
+  Load hl7.fhir.uv.ips#1.1.0 - 104 resources (00:00.017)
+  Package Summary: [hl7.fhir.r4.core#4.0.1, hl7.fhir.xver-extensions#0.1.0, hl7.terminology.r4#6.2.0, hl7.fhir.uv.extensions.r4#5.2.0, hl7.terminology#7.4.0, hl7.fhir.uv.extensions.r5#5.2.0, hl7.terminology.r5#7.1.0, hl7.fhir.uv.extensions#5.3.0, hl7.terminology.r4#5.0.0, fhir.dicom#2022.4.20221006, hl7.fhir.uv.ips#1.1.0]
+  Terminology Cache at /var/folders/fc/5y9pkhbx2fd64dkgd_f6ybnr0000gp/T/default-tx-cache
+  Get set... 
+  ...go! (00:15.041)
+Cached new session. Cache size = 1
+Sources to validate: JemmaPassChrome/tests/out/files/demo_kamekichi.fhir.json
+Validating
+  Validate JemmaPassChrome/tests/out/files/demo_kamekichi.fhir.json
+ 00:02.500
+Done. Times: Loading: 02:21.168, validation: 00:02.501. Memory = 515Mb
+
+Done. Times: Loading: 02:21.168, validation: 00:02.501. Max Memory = 8Gb
