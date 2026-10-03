@@ -5,5 +5,5 @@
 - **Couloir ANALYSE** :
   - Tâche 0052 : Complément « KB seulement » livré sur `ag/0048-analyse` @ `92224a7` (10 sorties SQL brutes dans `kb-only-evidence/`, `coverage.tsv` 191 littéraux).
   - Tâche 0051 : Sources web refaites sur `ag/0047-sources` @ `f0091a9` (`FETCH.log`, vraies pages curl, grep -n, check_citations.py retiré).
-- **Couloir DOCS** : `ag/0031-docs-uml-ios` @ `960befc` prêt pour fusion (test_check_citations.sh 6/6 pass, 0 décalé, 0 inventé).
-- **Messages en attente traités** : 0049, 0051, 0052.
+- **Couloir DOCS** : `ag/0031-docs-uml-ios` @ `0c31acf` prêt pour fusion (`test_check_citations.sh` 12/12 pass, 298 citations exactes, 0 décalé, 0 fichier manquant, 0 symbole inventé, contradiction Loxoprofène résolue avec M01AE19/M02AA31, `docs/sources/` retiré).
+- **Messages en attente traités** : 0049, 0051, 0052, 0053.
