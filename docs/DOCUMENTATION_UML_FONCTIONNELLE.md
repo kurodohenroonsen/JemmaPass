@@ -551,7 +551,7 @@ stateDiagram-v2
 > 1. **En saisie formulaire manuelle (`ResultFormBottomSheet.kt:539,566-582`)** : Avant toute écriture, `ResultBloodGroupGuard.check()` détecte si le résultat 882-1 contredit `p.bt`. L'enregistrement est **bloqué sans rien persister** et une boîte de dialogue modale (`MaterialAlertDialogBuilder`) propose à l'utilisateur :
 >    - *« Annuler »* : retour au formulaire de résultat, aucune donnée sauvegardée.
 >    - *« Modifier dans l'identité »* : bascule vers l'écran d'identité du profil pour modifier `p.bt`.
-> 2. **À l'import / écriture du repository (`profiles/ProfilesRepository.kt:447-476`)** : Lors de la persistance sous `writeMutex`, il n'y a **aucune étape de validation bloquante** susceptible de rejeter le profil. `IpsBloodGroup.reconcile(nativeIn.results, id, profile.p?.bt)` (`:451`) remplace le résultat contradictoire par le groupe officiel du profil (`p.bt` fait autorité). L'événement de conflit est émis via `_bloodGroupConflictFlow.value = conflict` (`:459`), permettant à l'UI (`ResultsEditFragment.kt:108-144`) d'afficher une notification explicite du remplacement opéré sans corrompre le profil. Le profil projeté `projected` est construit sans filtre bloquant (`:462-472`) et sérialisé directement via `profileAdapter.toJson(projected)` (`:475`). Même en cas d'exception lors de la construction du bundle FHIR (`:478-480`), l'écriture du profil JSON n'échoue pas.
+> 2. **À l'import / écriture du repository (`profiles/ProfilesRepository.kt:447-476`)** : Lors de la persistance sous `writeMutex`, il n'y a **aucune étape de validation bloquante** susceptible de rejeter le profil. `IpsBloodGroup.reconcile(nativeIn.results, id, profile.p?.bt)` (`:451`) remplace le résultat contradictoire par le groupe officiel du profil (`p.bt` fait autorité). L'événement de conflit est émis via `_bloodGroupConflictFlow.value = conflict` (`:459`), permettant à l'UI (`observeBloodGroupConflicts`, `ResultsEditFragment.kt:108-144`) d'afficher une notification explicite du remplacement opéré sans corrompre le profil. Le profil projeté `projected` est construit sans filtre bloquant (`:462-472`) et sérialisé directement via `profileAdapter.toJson(projected)` (`:475`). Même en cas d'exception lors de la construction du bundle FHIR (`:478-480`), l'écriture du profil JSON n'échoue pas.
 
 ### 4.2. Matrice Inviolable du Verdict de Sécurité Clinique (`KbSafetyVerdict`)
 
@@ -726,7 +726,7 @@ sequenceDiagram
     UI->>Secouriste: 🟢 ÉCRAN VERT ("Rien à signaler — Médicament vérifié compatible")
 ```
 
-> **Note sur Edoxaban × Aspirine** : Le résultat de l'interaction Edoxaban × Aspirine dépend de la présence de la paire dans la base locale (`v_ddi_emergency` / `ddi_facts`), à vérifier par `kb-sql`. Si la paire est présente, elle donne `ALERT` (`kb/KbCrossCheck.kt:131`).
+> **Note sur Edoxaban × Aspirine** : Le résultat de l'interaction Edoxaban × Aspirine dépend de la présence de la paire dans la base locale (`v_ddi_emergency` / `ddi_facts`), à vérifier par `kb-sql`. Si la paire est présente, elle donne le verdict `ALERT` (`kb/KbCrossCheck.kt:131`).
 
 ### 5.3. Génération du QR Texte 25 Langues avec Budget d'Éviction Strict (1800 octets UTF-8)
 
