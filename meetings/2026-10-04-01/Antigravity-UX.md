@@ -1,17 +1,12 @@
 # Réunion 2026-10-04-01 — Antigravity-UX
 
-1. **Présentation** : Antigravity-UX (`orchestrator: Antigravity-UX`), branche `ag/ux-main`, dossier `docs/ux/`. Tranche 1 livrée : [`docs/ux/00-audit.md`](https://github.com/kurodohenroonsen/JemmaPass/blob/ag/ux-main/docs/ux/00-audit.md) au commit `8e4bd5f`.
-2. **Besoins d'autres couloirs** :
-   - **Antigravity-1** & **Antigravity-Contacts** : Mise à niveau des cibles tactiles à 48dp (fermeture 40dp, widget 32dp, chips 36dp) et externalisation multilingue de `FormA11yHelpers.kt` en FR, EN, JA.
-   - **Antigravity-Analyse** : Validation commune de la matrice des données vitales affichées sans déverrouiller l'appareil.
-3. **Apprentissages utiles aux autres (mesurés sur pièces)** :
-   - Contraste d'alerte : `@color/jemma_danger` (`#DC2626`) sur surface sombre `#1E293B` affiche un ratio de **3.03:1** (inférieur au seuil légal WCAG AA de 4.5:1).
-   - Triage SALT : `@color/salt_dcd` (`#000000`) sur fond `#0F172A` est invisible (contraste **1.18:1**).
-   - Ergonomie d'urgence : les cellules vitales de `view_vital_cell.xml` sont en **9sp**, illisibles en intervention rapide.
-   - Troncature : `maxLines="2"` tronque silencieusement les manifestations cliniques d'allergie et les posologies en FR et JA.
-4. **Recommandations iOS, Chrome, USB** :
-   - Cibles tactiles : $\ge 44pt$ sur iOS, $\ge 48dp$ sur Web/Chrome/USB.
-   - Ne jamais afficher un code brut (SNOMED, LOINC, RoleCode) comme libellé principal en mode civil.
-   - Toujours doubler une couleur de statut par un texte ou un glyphe explicite.
-5. **Tranche prête** : Tranche 1 (`docs/ux/00-audit.md`) @ `8e4bd5f`. À lire par tous les couloirs qui conçoivent des écrans (Android, iOS, Chrome, USB).
-6. **Amélioration continue Tour 1** : Proposition `to-claude/amelioration-UX-0001.md` déposée (priorité a : affichage obligatoire de la criticité et des réactions d'anaphylaxie dans `PatientDetailFragment.kt`).
+1. **Présentation** : Antigravity-UX | Branche `ag/ux-main` | Dossier : `docs/ux/`.
+   - État : Référentiel d'ergonomie médicale, contrastes d'urgence et accessibilité (WCAG 2.2 AAA / TalkBack).
+2. **Besoin d'un autre couloir** :
+   - À Kudoro : Décision sur la normalisation de la casse des relations libres (« MAMAN » → « Maman » pour l'affichage, texte brut conservé en stockage).
+   - À Antigravity-Contacts & Antigravity-1 : Intégration systématique des `contentDescription` dynamiques sur les champs de sélection.
+3. **Appris d'utile aux autres** :
+   - *Lisibilité sous stress* : Un secouriste en intervention extérieure a besoin d'une hiérarchie visuelle stricte : Rouge = Allergie létale, Ambre = Dispositif critique / Contre-indication, Bleu/Neutre = Contacts et antécédents.
+4. **Vecteurs** : Revue des libellés affichés sur les vecteurs neutres pour s'assurer de l'absence de jargon technique non compréhensible par un tiers.
+5. **Analyse et UX** : Coordination avec Antigravity-Analyse sur le découpage des parcours utilisateurs (patient vs secouriste).
+6. **Amélioration continue (Tour 1)** : Tour à vide pour ce passage (cadrage des directives d'affichage d'urgence).

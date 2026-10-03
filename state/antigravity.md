@@ -1,22 +1,25 @@
 # État — Antigravity
 
 - **Version** : Antigravity 2.0 (Google DeepMind)
-- **Couloir KB** (Antigravity-KB) :
-  - Tâches 0055/0058/0068/0071/0072/0076 : Plan de construction KB 2.1-omnis et conception des mises à jour différentielles (Option 3 de Kudoro, PROTOCOL §9.2) livrés sur `ag/0055-kb-build` @ `cccf80e` (`docs/analysis/kb-next-plan.md`, `docs/analysis/kb-next-evidence/`).
-  - Tâche 0078/0079 : Implémentation complète de `DownloadIntegrity.kt` et `PatchChainResolver.kt` livrée sur `ag/0076-kb-integrity` @ `6b10723`. Les 22 tests d'intégrité (UC-UPD-001..010 et UC-UPD-020..031) et les 432 tests de base sont 100% verts (454 run · 0 failed). Rapport `to-claude/0078-report-kb-integrity-green-Antigravity-KB.md`.
 - **Couloir CONTACTS** (Antigravity-Contacts) :
-  - Tâches 0061/0066/0081/0084 : Pilier contacts d'urgence (`Patient.contact`, 6 vecteurs neutres `qa/vectors/contacts/`) livré sur `ag/0061-contacts`. Squelette pur `ContactFormLogic` poussé au commit `06e7709` (SD-27 résolu et analysé sur pièces).
-  - Tâche 0084 : Purge formelle de la fuite personnelle sur `device-reports` effectuée au commit `0d75a19` avec l'accord écrit de Kudoro (`git push --force-with-lease origin device-reports`, 0 fuite résiduelle).
-  - Tâche 0085 : Garde de publication livrée sur `ag/0085-publish-guard` @ `9a4a2ad` (`test_publish_guard.sh` : 12 passed · 0 failed, GUARD-01..12).
-- **Couloir DEVICE** :
-  - Cycle 26 validé sur Pixel 9 Pro XL (`ag/0045-sd24` @ `3ee9a8d`), commit `3a15032` sur `device-reports`.
-  - Cycle 27 assaini et purgé sur `device-reports` @ `0d75a19`. Aucun cycle en cours.
-- **Couloir ANALYSE** :
-  - Tâche 0052 : Complément « KB seulement » livré sur `ag/0048-analyse` @ `92224a7` (10 sorties SQL brutes dans `kb-only-evidence/`, `coverage.tsv` 191 littéraux).
-  - Tâche 0051 : Sources web refaites sur `ag/0047-sources` @ `f0091a9` (`FETCH.log`, vraies pages curl, grep -n, check_citations.py retiré).
-- **Couloir UI-LABELS** (Antigravity-1) :
-  - Tâche 0070 : Libellés d'interface (voies 5 + dispositifs 6) migrés vers ressources XML (`strings.xml`, `values-fr`, `values-ja`) et `CodeLabelResolver` livrés sur `ag/0060-ui-labels` @ `b1695bb` (445 tests run · 4 failed, UC-KB-021/022/023/025/011 résolus, UC-KB-026 verrouillé vert). Fusionné dans feat @ `2b971ac`.
+  - Tâche 0086 / SD-27 : Résolu au commit `81294df` sur `ag/0061-contacts` (poussé sur `origin/ag/0061-contacts`).
+  - `ContactFormLogic.kt` pur Kotlin sans dépendance Android : `suggestedRelation` renvoie `null` (suppression totale de `MEDPROVR`), codes de rôle techniques inconnus renvoient `null` (masqués de l'écran), texte libre conservé mot pour mot.
+  - Tests JVM : 488 tests exécutés, 0 échec (BUILD SUCCESSFUL).
+  - Garde de publication : 12/12 passés (`qa/device/tests/test_publish_guard.sh` : 12 passed, 0 failed).
+  - `device-reports` : Clone local réinitialisé sur la tête propre `de1162c` (parent `3a15032`, 0 occurrence de fuite dans l'historique public). Prêt pour le cycle appareil 28 avec pose de `DEVICE-LOCK-0028` dès accord de Claude.
+  - Rapport : `to-claude/0086-report-sd27-Antigravity-Contacts.md`.
+  - Amélioration continue (Tour 1) : `to-claude/amelioration-Contacts-0001.md` (sécurisation atomique de la capture logcat mktemp+trap, priorité b-vie privée).
+  - Réunion : `meetings/2026-10-04-01/Antigravity-Contacts.md`.
 - **Couloir CHROME** (Antigravity-Chrome) :
-  - Socle pur TypeScript `core/` (modèles, constructeur/décodeur FHIR, QR texte ≤ 1800B, piliers IPS, validateur HL7 1.1.0) sur `ag/chrome-main`.
-  - Tour 1 d'amélioration continue : proposition `to-claude/amelioration-Chrome-0001.md` déposée (préservation de la date d'implantation et des alertes de sécurité des dispositifs médicaux lors de l'import FHIR, priorité a-safety). En attente du test de Claude (étape 3).
-- **Messages en attente traités** : 0049, 0051, 0052, 0053, 0055, 0058, 0060, 0061, 0062, 0063, 0066, 0067, 0068, 0069, 0070, 0071, 0072, 0073, 0074, 0076, 0078, 0081, 0084, 0085, amelioration-Chrome-0001.
+  - Socle pur TypeScript `core/` sur `ag/chrome-main` (13/13 tests Node 22, validateur HL7 IPS 0 erreur).
+  - Amélioration continue (Tour 1) : `to-claude/amelioration-Chrome-0001.md` (préservation de `timingDateTime`, alertes IRM `note` et `bodySite` lors de l'import de `DeviceUseStatement` FHIR, priorité a-sécurité).
+  - Réunion : `meetings/2026-10-04-01/Antigravity-Chrome.md`.
+- **Couloir KB** (Antigravity-KB) :
+  - Tâche 0090 : Prise en charge prioritaire de l'inventaire des licences de redistribution des bases sources (Kudoro : distribution P2P) sur `ag/0090-kb-licences` (`docs/analysis/kb-sources-licences.md`).
+  - Tâche 0082 / SD-26 : Préparation de l'audit des 16 blocs `catch` silencieux sur `ag/0082-sd26`.
+  - Réunion : `meetings/2026-10-04-01/Antigravity-KB.md`.
+- **Couloir ANALYSE** (Antigravity-Analyse) :
+  - Tâche 0087 : Traitement des 5 corrections de rigueur sur la Tranche 1 (`00-carte.md`) sur `ag/analyse-fonctionnelle` (retrait citation qa/vectors inexistante, suppression rôle DMAT inventé pour Kamekichi, étiquetage strict `[PROPOSÉ]`/`[NON VÉRIFIÉ]`). Tranche 2 (`10-existant-android.md`) démarrée.
+  - Réunion : `meetings/2026-10-04-01/Antigravity-Analyse.md`.
+- **Couloirs ANTIGRAVITY-1, DOCS, iOS, USB, UX** :
+  - Dépôt de leur fiche de participation à la réunion 2026-10-04-01 (`meetings/2026-10-04-01/<Nom>.md`).
