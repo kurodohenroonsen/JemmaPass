@@ -39,5 +39,23 @@ rc=$(run); [ "$rc" -ne 0 ] && ok "CIT-05 a citation of a missing file is refused
 mk; printf '## 8. Proposé — n'"'"'existe pas encore\nInterface cible `TransferHub` et `QrBudgetManager`.\n' > "$T/docs/DOCUMENTATION_UML_FONCTIONNELLE.md"
 rc=$(run); [ "$rc" -eq 0 ] && ok "CIT-06 symbols under a heading that says 'Proposé' are not required to exist" || ko "CIT-06 symbols under a heading that says 'Proposé' are not required to exist (rc=$rc)"; rm -rf "$T"
 
+mk; echo 'Le résolveur appelle `resolveAll()` à chaque trame.' > "$T/docs/DOCUMENTATION_UML_FONCTIONNELLE.md"
+rc=$(run); [ "$rc" -ne 0 ] && ok "CIT-07 an invented method written as a call, with parentheses, is refused" || ko "CIT-07 an invented method written as a call, with parentheses, is refused (rc=$rc)"; rm -rf "$T"
+
+mk; echo 'Le résolveur passe par `StatusResolver.resolveAll` à chaque trame.' > "$T/docs/DOCUMENTATION_UML_FONCTIONNELLE.md"
+rc=$(run); [ "$rc" -ne 0 ] && ok "CIT-08 an invented member written as Class.member is refused" || ko "CIT-08 an invented member written as Class.member is refused (rc=$rc)"; rm -rf "$T"
+
+mk; echo 'Le résolveur passe par `StatusResolver.resolveAll` (`triage/StatusResolver.kt:63`).' > "$T/docs/DOCUMENTATION_UML_FONCTIONNELLE.md"
+rc=$(run); [ "$rc" -ne 0 ] && ok "CIT-09 an invented Class.member followed by a citation is refused" || ko "CIT-09 an invented Class.member followed by a citation is refused (rc=$rc)"; rm -rf "$T"
+
+mk; echo 'Signature : `resolveAll(events: List<Int>): Int`.' > "$T/docs/DOCUMENTATION_UML_FONCTIONNELLE.md"
+rc=$(run); [ "$rc" -ne 0 ] && ok "CIT-10 an invented function written as a full signature is refused" || ko "CIT-10 an invented function written as a full signature is refused (rc=$rc)"; rm -rf "$T"
+
+mk; echo 'La règle est `StatusResolver.shouldOverwrite(a, b)` (`triage/StatusResolver.kt:63`), puis `apply()` (`triage/StatusResolver.kt:124`).' > "$T/docs/DOCUMENTATION_UML_FONCTIONNELLE.md"
+rc=$(run); [ "$rc" -eq 0 ] && ok "CIT-11 real members written as Class.member(args) and as a call are accepted" || ko "CIT-11 real members written as Class.member(args) and as a call are accepted (rc=$rc)"; rm -rf "$T"
+
+mk; echo 'La règle est `StatusResolver.shouldOverwrite(a, b)` (`triage/StatusResolver.kt:124`).' > "$T/docs/DOCUMENTATION_UML_FONCTIONNELLE.md"
+rc=$(run); [ "$rc" -ne 0 ] && ok "CIT-12 a real Class.member(args) cited 61 lines away is refused" || ko "CIT-12 a real Class.member(args) cited 61 lines away is refused (rc=$rc)"; rm -rf "$T"
+
 echo "---"; echo "$pass passed, $fail failed"
 [ "$fail" -eq 0 ]
