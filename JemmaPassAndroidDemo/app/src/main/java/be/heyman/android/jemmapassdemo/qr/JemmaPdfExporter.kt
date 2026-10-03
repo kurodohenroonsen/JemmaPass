@@ -73,7 +73,7 @@ object JemmaPdfExporter {
 
             // 1. Local Language Text Payload & QR Code bitmap (400x400 px for the booklet quadrant)
             val textLocal = withContext(Dispatchers.Default) {
-                JemmaTextPayloadBuilder.build(hydratedLocal, currentLang)
+                JemmaTextPayloadBuilder.build(hydratedLocal, currentLang, labels = AndroidCodeLabels(context))
             }
             val qrTextLocalBmp = withContext(Dispatchers.Default) {
                 JemmaQrBitmapEncoder.encode(textLocal, sizePx = 400, errorCorrection = ErrorCorrectionLevel.Q)
@@ -81,7 +81,7 @@ object JemmaPdfExporter {
 
             // 2. English Language Text Payload & QR Code bitmap
             val textEn = withContext(Dispatchers.Default) {
-                JemmaTextPayloadBuilder.build(hydratedEn, JemmaTextPayloadBuilder.Lang.EN)
+                JemmaTextPayloadBuilder.build(hydratedEn, JemmaTextPayloadBuilder.Lang.EN, labels = AndroidCodeLabels(context))
             }
             val qrTextEnBmp = withContext(Dispatchers.Default) {
                 JemmaQrBitmapEncoder.encode(textEn, sizePx = 400, errorCorrection = ErrorCorrectionLevel.Q)

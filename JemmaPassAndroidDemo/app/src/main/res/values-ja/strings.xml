@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Curated code labels (PROTOCOL §9.1) -->
+  <!-- Administration routes (SNOMED CT) -->
+  <string name="code_label_sct_26643006">経口</string>
+  <string name="code_label_sct_47625008">注射</string>
+  <string name="code_label_sct_6064005">外用</string>
+  <string name="code_label_sct_34206005">皮下</string>
+  <string name="code_label_sct_447694001">吸入</string>
+
+  <!-- Medical devices (SNOMED CT) -->
+  <string name="code_label_sct_14106009">心臓ペースメーカー</string>
+  <string name="code_label_sct_72506001">植込み型除細動器</string>
+  <string name="code_label_sct_102303004">冠動脈ステント</string>
+  <string name="code_label_sct_304120007">人工股関節</string>
+  <string name="code_label_sct_69805005">インスリンポンプ</string>
+  <string name="code_label_sct_6012004">補聴器</string>
+</resources>

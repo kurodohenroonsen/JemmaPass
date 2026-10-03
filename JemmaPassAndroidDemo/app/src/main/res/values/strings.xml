@@ -14,4 +14,20 @@
   <string name="notification_title_success" translatable="false">Model download succeeded</string>
   <string name="ok" translatable="false">OK</string>
   <string name="cd_navigate_back_icon">Go back</string>
+
+  <!-- Curated code labels (PROTOCOL §9.1) -->
+  <!-- Administration routes (SNOMED CT) -->
+  <string name="code_label_sct_26643006">Oral</string>
+  <string name="code_label_sct_47625008">Injection</string>
+  <string name="code_label_sct_6064005">Topical</string>
+  <string name="code_label_sct_34206005">Subcutaneous</string>
+  <string name="code_label_sct_447694001">Inhaled</string>
+
+  <!-- Medical devices (SNOMED CT) -->
+  <string name="code_label_sct_14106009">Cardiac pacemaker</string>
+  <string name="code_label_sct_72506001">Implantable cardioverter-defibrillator</string>
+  <string name="code_label_sct_102303004">Coronary artery stent</string>
+  <string name="code_label_sct_304120007">Total hip replacement prosthesis</string>
+  <string name="code_label_sct_69805005">Insulin pump</string>
+  <string name="code_label_sct_6012004">Hearing aid</string>
 </resources>
