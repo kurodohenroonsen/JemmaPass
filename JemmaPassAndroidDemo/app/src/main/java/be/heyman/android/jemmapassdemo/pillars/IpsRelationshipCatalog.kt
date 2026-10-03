@@ -136,4 +136,17 @@ object IpsRelationshipCatalog {
         if (code.isNullOrBlank()) return false
         return byCode.containsKey(code.trim().uppercase())
     }
+
+    /**
+     * Checks if a string looks like a technical role code (e.g. "FRND", "MEDPROVR")
+     * rather than free-text (e.g. "friend", "voisine du 3e étage", "幼なじみ").
+     *
+     * Rule: HL7 v3 RoleCode and FHIR codes are ASCII uppercase mnemonics (2+ chars,
+     * A-Z, 0-9, underscore) without spaces. Free text in French, English, Japanese
+     * contains lowercase letters, spaces, accents, or CJK characters.
+     */
+    fun isRoleCode(raw: String?): Boolean {
+        if (raw.isNullOrBlank()) return false
+        return raw.trim().matches(Regex("^[A-Z0-9_]{2,}$"))
+    }
 }
