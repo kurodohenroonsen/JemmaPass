@@ -58,65 +58,76 @@ Puis lors de l'hydratation asynchrone (l.1239-1245) :
         }
 ```
 
-### Pièce : sortie brute de structure
-Sur le profil officiel `demo_kurodo` (qui déclare une allergie sévère à la pénicilline `SNOMED 91936005`, `criticality="high"` / `s="H"`, `manifestations="anaphylaxie"` / `d="anaphylaxie"`), les champs JSON de l'objet allergie sont :
-```json
-{
-  "c": "91936005",
-  "display": "Allergie à la pénicilline",
-  "s": "H",
-  "d": "anaphylaxie, choc"
-}
-```
-Dans `PatientDetailFragment`, l'élément visuel généré est un unique `TextView` (via `makeRow`) dont le contenu est exclusivement :
-```text
-• Allergie à la pénicilline
-```
-Les champs `s` ("H") et `d` ("anaphylaxie, choc") ne sont **ni lus, ni affichés, ni audibles via TalkBack**.
+### Code source et lignes exactes
+Dans [`PatientDetailFragment.kt:1213-1222, 1239-1245`](https://github.com/kurodohenroonsen/JemmaPass/blob/feat/ips-18-pillars-cleanup/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ui/radar/PatientDetailFragment.kt#L1213-L1246) :
+- Lignes 1213 à 1222 (`renderRawFirst`) :
+  Seuls les champs `display`, `name`, `code` ou `c` sont extraits de `entry`. Les champs de criticité (`criticality`, `s`) et de manifestations/réactions (`manifestations`, `d`) sont ignorés.
+- Lignes 1239 à 1245 (`renderCodeListHydrated`) :
+  L'hydratation asynchrone ne remplace que le texte de libellé résolu (`child.text = "• $display"`), sans jamais injecter ni la criticité vitale ni les réactions cliniques.
+
+Parallèlement, dans le semeur officiel des profils [`JemmaPersonasSeeder.kt:328-335`](https://github.com/kurodohenroonsen/JemmaPass/blob/feat/ips-18-pillars-cleanup/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/qr/JemmaPersonasSeeder.kt#L328-L335), le profil `demo_kurodo` enregistre expressément :
+- Substance : Pénicilline (`SNOMED 91936005`)
+- Criticité : `high` (`s`)
+- Manifestations : `urticaire géante, bronchospasme, choc anaphylactique` (`d`)
+
+### Pièce mesurée
+À l'exécution sur l'écran secouriste `PatientDetailFragment` (`patientAllergiesList`), l'élément visuel généré est un simple `TextView` affichant :
+`• Allergie à la pénicilline`
+Les données vitales critiques enregistrées dans le profil (`s = high`, `d = choc anaphylactique`) ne sont **ni affichées, ni mises en exergue, ni vocalisées par TalkBack**.
 
 ---
 
 ## 3. Ce que ça coûte à une vraie personne (Priorité a : sécurité des personnes)
 
-- **Risque d'administration d'une molécule létale** : Un équipier DMAT ou médecin urgentiste (`demo_kamekichi`) arrivant auprès de Kurodo inconscient après un effondrement consulte l'écran `PatientDetailFragment`. Voyant simplement `• Allergie à la pénicilline` sans signalement de danger élevé ni mention d'anaphylaxie, il peut supposer une simple éruption cutanée bénigne de l'enfance et décider d'administrer une bêtalactamine ou une céphalosporine à spectre large. Kurodo subit alors un choc anaphylactique immédiat sous traitement médical.
-- **Rupture de la promesse de la fiche de secours en 10 secondes** : Le secouriste pressé ne dispose d'aucune hiérarchisation visuelle (couleur rouge, badge d'alerte, glyphe ⚠️) pour distinguer une intolérance alimentaire mineure d'un arrêt cardio-respiratoire documenté.
+- **Risque d'administration d'une molécule létale** : Un secouriste de terrain, équipier DMAT ou médecin urgentiste arrivant auprès de Kurodo inconscient après un effondrement consulte l'écran `PatientDetailFragment`. Voyant simplement `• Allergie à la pénicilline` sans signalement d'urgence vitale ni mention d'anaphylaxie, il peut supposer une intolérance cutanée mineure et décider d'administrer une bêtalactamine ou une céphalosporine à large spectre. Kurodo subit alors un choc anaphylactique immédiat sous traitement médical.
+- **Rupture de la promesse de la fiche de secours en 10 secondes** : Le secouriste pressé ne dispose d'aucune hiérarchisation visuelle (couleur d'alerte, badge sévère, glyphe ⚠️) pour distinguer une intolérance alimentaire mineure d'un arrêt respiratoire documenté.
 
 ---
 
-## 4. Correction proposée
+## 4. Correction proposée (Prise en charge par Antigravity-1 selon plan 0091)
 
-Dans `PatientDetailFragment.kt` :
-1. Dans `renderRawFirst` et `renderCodeListHydrated`, pour le conteneur d'allergies (`patientAllergiesList`) :
-   - Extraire la criticité : `val crit = entry.optString("criticality", "").ifBlank { entry.optString("s", "") }`
-   - Extraire les notes cliniques : `val notes = entry.optString("manifestations", "").ifBlank { entry.optString("d", "") }`
-   - Si `crit.equals("H", ignoreCase = true)` ou `crit.equals("high", ignoreCase = true)` :
-     Formater la ligne avec préfixe d'avertissement et mise en évidence :
-     `"⚠️ [SÉVÈRE] $display" + if (notes.isNotBlank()) " — $notes" else ""`
-     et appliquer la couleur de texte `@color/severity_high` (`#EF4444` / haute visibilité) avec `textStyle = bold`.
-   - Pour les autres criticités :
-     `"• $display" + if (notes.isNotBlank()) " ($notes)" else ""`
-2. Définir le `contentDescription` explicite de la ligne pour TalkBack :
-   `"Alerte allergie sévère : $display. Manifestations : $notes"`
+Conformément à la directive du plan 0091 (§1 et §2) :
+L'orchestrateur UX ne modifie pas le code Android. La correction est prise en charge par **Antigravity-1** sur la branche `ag/0091-rescue-allergy-line`, à travers un composant pur JVM testable sans dépendance Android :
+
+1. Modèle et formateur pur JVM (`RescueAllergyLine`, `RescueAllergyFormat`) :
+```kotlin
+package be.heyman.android.jemmapassdemo.pillars
+
+data class RescueAllergyLine(val text: String, val severe: Boolean, val spoken: String)
+
+object RescueAllergyFormat {
+    /** Ligne de la fiche secouriste pour une allergie reçue (`display`/`name`/`c`, criticité `s`/`criticality`, réaction `d`/`manifestations`). */
+    fun line(
+        entry: org.json.JSONObject,
+        labels: be.heyman.android.jemmapassdemo.qr.CodeLabelResolver,
+        lang: String
+    ): RescueAllergyLine = TODO()
+}
+```
+
+2. Dans `PatientDetailFragment.kt` :
+   - Déléguer le formatage des rangées d'allergies à `RescueAllergyFormat.line(...)`.
+   - Si `severe == true` : appliquer un style d'alerte haute visibilité (`@color/severity_high` ou `#F87171` gras) et préfixer visuellement d'un avertissement (`⚠️ [SÉVÈRE]`).
+   - Assigner `spoken` au `contentDescription` pour TalkBack : annonce sans équivoque de la sévérité et des réactions.
 
 ---
 
 ## 5. Ce qu'elle risque de casser
 
 **Aucun risque de régression technique** :
-- Le modèle de données JSON (`arr`) contient déjà ces clés dans le protocole Radar/QR.
-- La modification est strictement cantonnée au composant d'affichage `PatientDetailFragment`.
-- Elle ne modifie pas les structures de synchronisation ni les contrats de la base de connaissances.
+- Le formateur pur JVM isole la logique de mise en forme et de résolution de libellé sans impacter le moteur d'hydratation asynchrone des autres sections (médicaments, antécédents, etc.).
+- Les clés `s`/`criticality` et `d`/`manifestations` sont déjà présentes dans les charges utiles QR/Radar.
 
 ---
 
 ## 6. Comment on saura que c'est corrigé
 
-Claude écrit un test JVM unitaire ou instrumenté qui :
-1. Instancie ou invoque la méthode de génération des lignes d'allergies de `PatientDetailFragment` avec un objet JSON contenant :
-   `{"c": "91936005", "display": "Allergie à la pénicilline", "s": "H", "d": "anaphylaxie"}`.
-2. Vérifie par assertion que le texte produit contient l'indicateur de sévérité haute (« SÉVÈRE » ou « ⚠️ ») ainsi que la mention « anaphylaxie ».
-3. Vérifie qu'une allergie sans sévérité (`s = "L"`, sans notes) ne déclenche pas le badge de danger élevé.
-4. Échoue sur le code actuel (qui ne produit que `• Allergie à la pénicilline`), et passe au vert avec la correction.
+1. Claude écrit les tests JVM sur le squelette `RescueAllergyFormat` :
+   - Cas 1 : Allergie avec criticité haute (`s = "H"` ou `criticality = "high"`) et manifestations -> `severe = true`, texte contenant la mention de sévérité et la réaction, `spoken` explicite.
+   - Cas 2 : Allergie bénigne (`s = "L"`, manifestations absentes) -> `severe = false`.
+   - Cas 3 : Allergie sans criticité explicite -> comportement par défaut sécurisé.
+2. Le test échoue sur le squelette `TODO()` et passe au vert avec l'implémentation fournie par Antigravity-1.
+3. Vérification de la non-régression visuelle sur `PatientDetailFragment` lors des prochains cycles instrumentés.
 
-Conformément à PROTOCOL §12, **aucune ligne de code n'est modifiée dans l'application tant que Claude n'a pas validé la proposition et fourni le test**.
+`orchestrator: Antigravity-UX`
 
