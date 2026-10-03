@@ -149,7 +149,12 @@ object JemmaTextPayloadBuilder {
      * Pas suspending parce que toute la résolution KB est faite en
      * amont par [JemmaProfileHydrator]. Pure CPU string assembly.
      */
-    fun build(hydrated: HydratedProfile, lang: Lang, maxBytes: Int = MAX_BYTES): String {
+    fun build(
+        hydrated: HydratedProfile,
+        lang: Lang,
+        maxBytes: Int = MAX_BYTES,
+        labels: CodeLabelResolver = CodeLabelResolver.NONE,
+    ): String {
         val t0 = System.currentTimeMillis()
         fun label(key: String): String = JemmaTranslations.getLabel(lang, key)
 
