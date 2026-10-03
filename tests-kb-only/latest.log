@@ -21,15 +21,15 @@ Daemon will be stopped at the end of the build
 > Task :app:debugOssLicensesTask
 > Task :app:generateDebugResValues
 > Task :app:generateDebugResources
+> Task :app:mergeDebugResources
 > Task :app:packageDebugResources
 > Task :app:processDebugNavigationResources
-> Task :app:mergeDebugResources
 > Task :app:generateDebugBuildConfig
 > Task :app:parseDebugLocalResources
 > Task :app:checkDebugAarMetadata
 > Task :app:dataBindingGenBaseClassesDebug
-> Task :app:compileDebugNavigationResources
 > Task :app:mapDebugSourceSetPaths
+> Task :app:compileDebugNavigationResources
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
 
@@ -38,23 +38,23 @@ Daemon will be stopped at the end of the build
 	provider#com.google.firebase.provider.FirebaseInitProvider was tagged at AndroidManifest.xml:165 to remove other declarations but no other declaration present
 
 > Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:javaPreCompileDebug
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
 > Task :app:javaPreCompileDebugUnitTest
-> Task :app:javaPreCompileDebug
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
-> Task :app:processDebugManifestForPackage
 > Task :app:compressDebugAssets
 > Task :app:processDebugResources
 > Task :app:checkDebugDuplicateClasses
 > Task :app:desugarDebugFileDependencies
 > Task :app:kspDebugKotlin
 > Task :app:mergeExtDexDebug
-> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeLibDexDebug
+> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -785,18 +785,18 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 > Task :app:testDebugUnitTest
 
 NoClinicalCodeInSourceTest > UC-KB-003 no LOINC code is written in the source outside the document structure FAILED
-    java.lang.AssertionError at NoClinicalCodeInSourceTest.kt:93
+    java.lang.AssertionError at NoClinicalCodeInSourceTest.kt:96
 
 NoClinicalCodeInSourceTest > UC-KB-001 no ATC code or ATC class is written in the source FAILED
-    java.lang.AssertionError at NoClinicalCodeInSourceTest.kt:71
+    java.lang.AssertionError at NoClinicalCodeInSourceTest.kt:74
 
 NoClinicalCodeInSourceTest > UC-KB-002 no SNOMED CT concept is written in the source FAILED
-    java.lang.AssertionError at NoClinicalCodeInSourceTest.kt:82
+    java.lang.AssertionError at NoClinicalCodeInSourceTest.kt:85
 
 433 tests completed, 3 failed
 
 > Task :app:testDebugUnitTest FAILED
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1790966961508.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1791003466065.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
 
@@ -970,5 +970,5 @@ Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 
 
-BUILD FAILED in 8m 17s
+BUILD FAILED in 9m 9s
 55 actionable tasks: 55 executed
