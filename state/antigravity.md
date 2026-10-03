@@ -16,4 +16,7 @@
   - Tâche 0051 : Sources web refaites sur `ag/0047-sources` @ `f0091a9` (`FETCH.log`, vraies pages curl, grep -n, check_citations.py retiré).
 - **Couloir UI-LABELS** (Antigravity-1) :
   - Tâche 0070 : Libellés d'interface (voies 5 + dispositifs 6) migrés vers ressources XML (`strings.xml`, `values-fr`, `values-ja`) et `CodeLabelResolver` livrés sur `ag/0060-ui-labels` @ `b1695bb` (445 tests run · 4 failed, UC-KB-021/022/023/025/011 résolus, UC-KB-026 verrouillé vert). Fusionné dans feat @ `2b971ac`.
-- **Messages en attente traités** : 0049, 0051, 0052, 0053, 0055, 0058, 0060, 0061, 0062, 0063, 0066, 0067, 0068, 0069, 0070, 0071, 0072, 0073, 0074, 0076, 0078, 0081, 0084, 0085.
+- **Couloir CHROME** (Antigravity-Chrome) :
+  - Socle pur TypeScript `core/` (modèles, constructeur/décodeur FHIR, QR texte ≤ 1800B, piliers IPS, validateur HL7 1.1.0) sur `ag/chrome-main`.
+  - Tour 1 d'amélioration continue : proposition `to-claude/amelioration-Chrome-0001.md` déposée (préservation de la date d'implantation et des alertes de sécurité des dispositifs médicaux lors de l'import FHIR, priorité a-safety). En attente du test de Claude (étape 3).
+- **Messages en attente traités** : 0049, 0051, 0052, 0053, 0055, 0058, 0060, 0061, 0062, 0063, 0066, 0067, 0068, 0069, 0070, 0071, 0072, 0073, 0074, 0076, 0078, 0081, 0084, 0085, amelioration-Chrome-0001.
