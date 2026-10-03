@@ -1,0 +1,57 @@
+CREATE TABLE atc_hierarchy (
+        atc_code     TEXT PRIMARY KEY,
+        parent_atc   TEXT,
+        level        INTEGER NOT NULL,
+        name_en      TEXT NOT NULL,
+        name_fr      TEXT,
+        name_jp      TEXT,
+        description  TEXT
+    ) WITHOUT ROWID
+    ;
+CREATE INDEX idx_atc_parent ON atc_hierarchy(parent_atc);
+CREATE INDEX idx_atc_level  ON atc_hierarchy(level);
+CREATE TABLE ips_valuesets (
+        vs_id          TEXT NOT NULL,
+        code           TEXT NOT NULL,
+        code_system    TEXT NOT NULL,
+        display_en     TEXT NOT NULL,
+        ips_required   INTEGER DEFAULT 0,
+        PRIMARY KEY (vs_id, code, code_system)
+    ) WITHOUT ROWID
+    ;
+CREATE INDEX idx_ivs_vs   ON ips_valuesets(vs_id);
+CREATE INDEX idx_ivs_code ON ips_valuesets(code);
+CREATE TABLE ips_valuesets_translations (
+        vs_id        TEXT NOT NULL,
+        code         TEXT NOT NULL,
+        code_system  TEXT NOT NULL,
+        lang         TEXT NOT NULL,
+        display      TEXT NOT NULL,
+        PRIMARY KEY (vs_id, code, code_system, lang),
+        FOREIGN KEY (vs_id, code, code_system)
+            REFERENCES ips_valuesets(vs_id, code, code_system)
+    ) WITHOUT ROWID
+    ;
+CREATE INDEX idx_ivst_lang ON ips_valuesets_translations(lang);
+CREATE INDEX idx_ivst_code ON ips_valuesets_translations(code, lang);
+CREATE TABLE terminology_codes (
+        code             TEXT    PRIMARY KEY,
+        atc_code         TEXT,
+        atc_source       TEXT,                  -- ✨ NEW: 'umls_direct'|'ingredient'|'tradename'|'isa'|'form'
+        rxnorm_cui       TEXT,
+        snomed_code      TEXT,
+        ips_validated    INTEGER NOT NULL DEFAULT 0,
+        primary_display  TEXT,
+        system           TEXT,
+        category         TEXT
+    , is_combo INTEGER DEFAULT 0) WITHOUT ROWID
+    ;
+CREATE INDEX idx_tc_atc      ON terminology_codes(atc_code)        WHERE atc_code IS NOT NULL;
+CREATE INDEX idx_tc_atc_src  ON terminology_codes(atc_source)      WHERE atc_source IS NOT NULL;
+CREATE INDEX idx_tc_rxnorm   ON terminology_codes(rxnorm_cui)      WHERE rxnorm_cui IS NOT NULL;
+CREATE INDEX idx_tc_snomed   ON terminology_codes(snomed_code)     WHERE snomed_code IS NOT NULL;
+CREATE INDEX idx_tc_ips      ON terminology_codes(ips_validated)   WHERE ips_validated = 1;
+CREATE INDEX idx_tc_category ON terminology_codes(category)        WHERE category IS NOT NULL;
+CREATE INDEX idx_tc_atc_source  ON terminology_codes(atc_code, atc_source) WHERE atc_code IS NOT NULL;
+CREATE INDEX idx_tc_rxnorm_atc  ON terminology_codes(rxnorm_cui, atc_code) WHERE rxnorm_cui IS NOT NULL AND atc_code IS NOT NULL;
+CREATE INDEX idx_tc_combo ON terminology_codes(is_combo) WHERE is_combo=1;

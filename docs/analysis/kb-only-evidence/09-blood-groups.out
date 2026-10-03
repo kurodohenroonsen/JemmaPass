@@ -1,0 +1,36 @@
+code       display_en                     vs_id                                     
+---------  -----------------------------  ------------------------------------------
+278147001  Blood group O Rh(D) positive   problems-snomed-ct-ips-free-set           
+278147001  Blood group O Rh(D) positive   results-blood-group-snomed-ct-ips-free-set
+278148006  Blood group O Rh(D) negative   problems-snomed-ct-ips-free-set           
+278148006  Blood group O Rh(D) negative   results-blood-group-snomed-ct-ips-free-set
+278149003  Blood group A Rh(D) positive   problems-snomed-ct-ips-free-set           
+278149003  Blood group A Rh(D) positive   results-blood-group-snomed-ct-ips-free-set
+278150003  Blood group B Rh(D) positive   problems-snomed-ct-ips-free-set           
+278150003  Blood group B Rh(D) positive   results-blood-group-snomed-ct-ips-free-set
+278151004  Blood group AB Rh(D) positive  problems-snomed-ct-ips-free-set           
+278151004  Blood group AB Rh(D) positive  results-blood-group-snomed-ct-ips-free-set
+278152006  Blood group A Rh(D) negative   problems-snomed-ct-ips-free-set           
+278152006  Blood group A Rh(D) negative   results-blood-group-snomed-ct-ips-free-set
+278153001  Blood group B Rh(D) negative   problems-snomed-ct-ips-free-set           
+278153001  Blood group B Rh(D) negative   results-blood-group-snomed-ct-ips-free-set
+278154007  Blood group AB Rh(D) negative  problems-snomed-ct-ips-free-set           
+278154007  Blood group AB Rh(D) negative  results-blood-group-snomed-ct-ips-free-set
+code       snomed_code  primary_display              
+---------  -----------  -----------------------------
+278147001  278147001    Blood group O Rh(D) positive 
+C0457311   278147001    Blood group O Rh(D) positive 
+278148006  278148006    Blood group O Rh(D) negative 
+C0457312   278148006    Blood group O Rh(D) negative 
+278149003  278149003    Blood group A Rh(D) positive 
+C0457313   278149003    Blood group A Rh(D) positive 
+278150003  278150003    Blood group B Rh(D) positive 
+C0457314   278150003    Blood group B Rh(D) positive 
+278151004  278151004    Blood group AB Rh(D) positive
+C0457315   278151004    Blood group AB Rh(D) positive
+278152006  278152006    Blood group A Rh(D) negative 
+C0457316   278152006    Blood group A Rh(D) negative 
+278153001  278153001    Blood group B Rh(D) negative 
+C0457317   278153001    Blood group B Rh(D) negative 
+278154007  278154007    Blood group AB Rh(D) negative
+C0457318   278154007    Blood group AB Rh(D) negative

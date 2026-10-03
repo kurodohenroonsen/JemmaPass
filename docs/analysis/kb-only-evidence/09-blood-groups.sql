@@ -1,0 +1,2 @@
+SELECT code, display_en, vs_id FROM ips_valuesets WHERE code IN ('278147001','278148006','278149003','278150003','278151004','278152006','278153001','278154007');
+SELECT code, snomed_code, primary_display FROM terminology_codes WHERE snomed_code IN ('278147001','278148006','278149003','278150003','278151004','278152006','278153001','278154007');
