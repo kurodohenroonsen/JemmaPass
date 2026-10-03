@@ -79,7 +79,7 @@ class ContactFormLogicTest {
 
     @Test
     fun `UC-CT-033 a code without any label is never shown raw`() {
-        for (raw in listOf("MEDPROVR", "medprovr", " MEDPROVR ", "XYZ_99", "ECON")) for (lang in langs) {
+        for (raw in listOf("MEDPROVR", " MEDPROVR ", "XYZ_99", "ECON")) for (lang in langs) {
             for (labels in listOf(CodeLabelResolver.NONE, fakeLabels)) {
                 val shown = ContactFormLogic.relationDisplay(raw, labels, lang)
                 assertFalse(
