@@ -1,0 +1,70 @@
+[
+  {
+    "fullUrl": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1",
+    "resource": {
+      "resourceType": "Patient",
+      "id": "patient-01",
+      "meta": {
+        "profile": [
+          "http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips"
+        ]
+      },
+      "name": [
+        {
+          "family": "Henro",
+          "given": [
+            "Kurodo"
+          ]
+        }
+      ],
+      "gender": "male",
+      "birthDate": "1979-04-04",
+      "address": [
+        {
+          "text": "Rue de la Paix 12, 5660 Couvin, Belgique",
+          "line": [
+            "Rue de la Paix 12, 5660 Couvin, Belgique"
+          ]
+        }
+      ],
+      "contact": [
+        {
+          "relationship": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                  "code": "FRND",
+                  "display": "unrelated friend"
+                }
+              ],
+              "text": "unrelated friend"
+            }
+          ],
+          "name": {
+            "text": "Kamekichi"
+          },
+          "telecom": [
+            {
+              "system": "phone",
+              "value": "+32 2 000 00 01",
+              "use": "mobile"
+            }
+          ]
+        }
+      ],
+      "communication": [
+        {
+          "language": {
+            "coding": [
+              {
+                "system": "urn:ietf:bcp:47",
+                "code": "fr-FR"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

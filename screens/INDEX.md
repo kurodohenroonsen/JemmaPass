@@ -24,6 +24,7 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [231-e6-incomplete-dialog.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/231-e6-incomplete-dialog.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [236-e8-blood-group-conflict-dialog.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/236-e8-blood-group-conflict-dialog.png) | `8a675b3` | 8a675b3-20261002-0515 |
 | [260-freetext-dialog.png](../feat-ips-18-pillars-cleanup/4006cc6-20261002-1759/screenshots/260-freetext-dialog.png) | `4006cc6` | 4006cc6-20261002-1759 |
+| [263-result-edit-dialog.png](../feat-ips-18-pillars-cleanup/3ee9a8d-20261003-0337/screenshots/263-result-edit-dialog.png) | `3ee9a8d` | 3ee9a8d-20261003-0337 |
 | [31-delete-dialog.png](../feat-ips-18-pillars-cleanup/1c1b7e5-20260930-1849/screenshots/31-delete-dialog.png) | `1c1b7e5` | 1c1b7e5-20260930-1849 |
 | [32-delete-dialog.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/32-delete-dialog.png) | `f7c500e` | f7c500e-20260930-2015 |
 | [33-longpress-dialog.png](../feat-ips-18-pillars-cleanup/f7c500e-20260930-2015/screenshots/33-longpress-dialog.png) | `f7c500e` | f7c500e-20260930-2015 |
@@ -196,6 +197,10 @@ Index par pilier vers les captures conservées dans les dossiers de run (aucune 
 | [155-results-list-potassium-comma.png](../feat-ips-18-pillars-cleanup/d1a6c4b-20261001-0825/screenshots/155-results-list-potassium-comma.png) | `d1a6c4b` | d1a6c4b-20261001-0825 |
 | [156-results-back-to-4.png](../feat-ips-18-pillars-cleanup/d1a6c4b-20261001-0825/screenshots/156-results-back-to-4.png) | `d1a6c4b` | d1a6c4b-20261001-0825 |
 | [232-e2-drug-picker-no-result.png](../feat-ips-18-pillars-cleanup/8a675b3-20261002-0515/screenshots/232-e2-drug-picker-no-result.png) | `8a675b3` | 8a675b3-20261002-0515 |
+| [260-results-before.png](../feat-ips-18-pillars-cleanup/3ee9a8d-20261003-0337/screenshots/260-results-before.png) | `3ee9a8d` | 3ee9a8d-20261003-0337 |
+| [261-result-form-filled.png](../feat-ips-18-pillars-cleanup/3ee9a8d-20261003-0337/screenshots/261-result-form-filled.png) | `3ee9a8d` | 3ee9a8d-20261003-0337 |
+| [262-results-with-string.png](../feat-ips-18-pillars-cleanup/3ee9a8d-20261003-0337/screenshots/262-results-with-string.png) | `3ee9a8d` | 3ee9a8d-20261003-0337 |
+| [264-results-restored.png](../feat-ips-18-pillars-cleanup/3ee9a8d-20261003-0337/screenshots/264-results-restored.png) | `3ee9a8d` | 3ee9a8d-20261003-0337 |
 
 ## vaccins
 
