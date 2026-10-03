@@ -1,0 +1,29 @@
+FHIR Validation tool Version 6.10.4 (Git# 1b90fb13f77b). Built 2026-09-04T05:45:41.468Z (29 days old)
+  Java:   25.0.2 from /Applications/Android Studio.app/Contents/jbr/Contents/Home on x86_64 (64bit). 8192MB available
+  Paths:  Current = /Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL, Package Cache = /Users/kurodohenroonsen/.fhir/packages
+  Params: JemmaPassChrome/tests/out/files/demo_haru.fhir.json -version 4.0.1 -ig hl7.fhir.uv.ips#1.1.0 -locale en -tx n/a -output JemmaPassChrome/tests/out/validator/demo_haru.txt
+  Locale: /
+  Jurisdiction: None specified (locale = )
+  Note that exceptions and validation failures may happen in the absence of a locale
+Loading
+  Loading FHIR v4.0.1 from hl7.fhir.r4.core#4.0.1
+  Load hl7.terminology.r4#6.2.0 - 4288 resources (00:58.405)
+  Load hl7.fhir.uv.extensions.r4#5.2.0 - 759 resources (00:07.510)
+  Loaded FHIR - 8268 resources (00:00.001)
+  Terminology server null - Version n/a: No Terminology Server (00:00.001)
+Error fetching https://packages2.fhir.org/packages/hl7.terminology: packages2.fhir.org
+Failed to determine latest version of package hl7.terminology from server: https://packages2.fhir.org/packages
+Error fetching https://packages.fhir.org/hl7.terminology: packages.fhir.org
+Failed to determine latest version of package hl7.terminology from server: https://packages.fhir.org
+Failed to determine latest version of package hl7.terminology from server: build.fhir.org
+Latest version of package hl7.terminology found locally is 7.4.0 - using that
+  Load hl7.terminology#7.4.0 - 4181 resources (00:28.668)
+Error fetching https://packages2.fhir.org/packages/hl7.fhir.uv.extensions: packages2.fhir.org
+Failed to determine latest version of package hl7.fhir.uv.extensions from server: https://packages2.fhir.org/packages
+Error fetching https://packages.fhir.org/hl7.fhir.uv.extensions: packages.fhir.org
+Failed to determine latest version of package hl7.fhir.uv.extensions from server: https://packages.fhir.org
+Failed to determine latest version of package hl7.fhir.uv.extensions from server: build.fhir.org
+Latest version of package hl7.fhir.uv.extensions found locally is 5.3.0 - using that
+  Load hl7.fhir.uv.extensions.r5#5.2.0 - 759 resources (00:09.247)
+  Load hl7.terminology.r5#7.1.0 - 4072 resources (00:08.989)
+  Load hl7.fhir.uv.extensions#5.3.0 - 856 resources (00:00.048)

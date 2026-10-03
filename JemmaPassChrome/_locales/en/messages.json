@@ -1,0 +1,242 @@
+{
+  "ext_name": {
+    "message": "JemmaPass IPS"
+  },
+  "ext_description": {
+    "message": "Offline HL7 FHIR R4 International Patient Summary (IPS) passport reader and editor"
+  },
+  "pillar_patient": {
+    "message": "Patient"
+  },
+  "pillar_allergies": {
+    "message": "Allergies and Intolerances"
+  },
+  "pillar_medications": {
+    "message": "Medication Summary"
+  },
+  "pillar_conditions": {
+    "message": "Problem List"
+  },
+  "pillar_past_problems": {
+    "message": "History of Past Illness"
+  },
+  "pillar_immunizations": {
+    "message": "Immunizations"
+  },
+  "pillar_procedures": {
+    "message": "History of Procedures"
+  },
+  "pillar_devices": {
+    "message": "Medical Devices"
+  },
+  "pillar_results": {
+    "message": "Diagnostic Results"
+  },
+  "pillar_pregnancy": {
+    "message": "History of Pregnancy"
+  },
+  "pillar_functional": {
+    "message": "Functional Status"
+  },
+  "pillar_advance_directives": {
+    "message": "Advance Directives"
+  },
+  "pillar_consents": {
+    "message": "Consents & Authorizations"
+  },
+  "pillar_care_goals": {
+    "message": "Care Goals"
+  },
+  "pillar_encounters": {
+    "message": "Encounters"
+  },
+  "pillar_occupations": {
+    "message": "Occupational Data"
+  },
+  "pillar_healthcare_providers": {
+    "message": "Healthcare Providers"
+  },
+  "pillar_provenance": {
+    "message": "Provenance & History"
+  },
+  "action_import": {
+    "message": "Import"
+  },
+  "action_export": {
+    "message": "Export"
+  },
+  "action_clear_all": {
+    "message": "Clear all data"
+  },
+  "action_edit": {
+    "message": "Edit"
+  },
+  "action_save": {
+    "message": "Save"
+  },
+  "action_cancel": {
+    "message": "Cancel"
+  },
+  "status_unverified": {
+    "message": "Unverified (offline without KB)"
+  },
+  "text_qr_title": {
+    "message": "Text QR (1800 bytes)"
+  },
+  "fhir_bundle_title": {
+    "message": "FHIR R4 Bundle"
+  },
+  "confirm_clear_all": {
+    "message": "Are you sure you want to clear all local passport data?"
+  },
+  "code_label_v3_AUNT": {
+    "message": "aunt"
+  },
+  "code_label_v3_CHILD": {
+    "message": "child"
+  },
+  "code_label_v3_CHLDADOPT": {
+    "message": "adopted child"
+  },
+  "code_label_v3_CHLDFOST": {
+    "message": "foster child"
+  },
+  "code_label_v3_CHLDINLAW": {
+    "message": "child in-law"
+  },
+  "code_label_v3_COUSN": {
+    "message": "cousin"
+  },
+  "code_label_v3_DAU": {
+    "message": "natural daughter"
+  },
+  "code_label_v3_DAUADOPT": {
+    "message": "adopted daughter"
+  },
+  "code_label_v3_DAUC": {
+    "message": "daughter"
+  },
+  "code_label_v3_DAUFOST": {
+    "message": "foster daughter"
+  },
+  "code_label_v3_DAUINLAW": {
+    "message": "daughter in-law"
+  },
+  "code_label_v3_DOMPART": {
+    "message": "domestic partner"
+  },
+  "code_label_v3_FAMMEMB": {
+    "message": "family member"
+  },
+  "code_label_v3_FRND": {
+    "message": "unrelated friend"
+  },
+  "code_label_v3_FTH": {
+    "message": "father"
+  },
+  "code_label_v3_FTHINLAW": {
+    "message": "father-in-law"
+  },
+  "code_label_v3_GGRPRN": {
+    "message": "great grandparent"
+  },
+  "code_label_v3_GRNDCHILD": {
+    "message": "grandchild"
+  },
+  "code_label_v3_GRPRN": {
+    "message": "grandparent"
+  },
+  "code_label_v3_MTH": {
+    "message": "mother"
+  },
+  "code_label_v3_MTHINLAW": {
+    "message": "mother-in-law"
+  },
+  "code_label_v3_NBOR": {
+    "message": "neighbor"
+  },
+  "code_label_v3_NCHILD": {
+    "message": "natural child"
+  },
+  "code_label_v3_NIENEPH": {
+    "message": "niece/nephew"
+  },
+  "code_label_v3_PRN": {
+    "message": "parent"
+  },
+  "code_label_v3_PRNINLAW": {
+    "message": "parent in-law"
+  },
+  "code_label_v3_ROOM": {
+    "message": "roomate"
+  },
+  "code_label_v3_SIB": {
+    "message": "sibling"
+  },
+  "code_label_v3_SIGOTHR": {
+    "message": "significant other"
+  },
+  "code_label_v3_SON": {
+    "message": "natural son"
+  },
+  "code_label_v3_SONADOPT": {
+    "message": "adopted son"
+  },
+  "code_label_v3_SONC": {
+    "message": "son"
+  },
+  "code_label_v3_SONFOST": {
+    "message": "foster son"
+  },
+  "code_label_v3_SONINLAW": {
+    "message": "son in-law"
+  },
+  "code_label_v3_SPS": {
+    "message": "spouse"
+  },
+  "code_label_v3_STPCHLD": {
+    "message": "step child"
+  },
+  "code_label_v3_STPDAU": {
+    "message": "stepdaughter"
+  },
+  "code_label_v3_STPSON": {
+    "message": "stepson"
+  },
+  "code_label_v3_UNCLE": {
+    "message": "uncle"
+  },
+  "code_label_sct_26643006": {
+    "message": "Oral"
+  },
+  "code_label_sct_47625008": {
+    "message": "Injection"
+  },
+  "code_label_sct_6064005": {
+    "message": "Topical"
+  },
+  "code_label_sct_34206005": {
+    "message": "Subcutaneous"
+  },
+  "code_label_sct_447694001": {
+    "message": "Inhaled"
+  },
+  "code_label_sct_14106009": {
+    "message": "Cardiac pacemaker"
+  },
+  "code_label_sct_72506001": {
+    "message": "Implantable cardioverter-defibrillator"
+  },
+  "code_label_sct_102303004": {
+    "message": "Coronary artery stent"
+  },
+  "code_label_sct_304120007": {
+    "message": "Total hip replacement prosthesis"
+  },
+  "code_label_sct_69805005": {
+    "message": "Insulin pump"
+  },
+  "code_label_sct_6012004": {
+    "message": "Hearing aid"
+  }
+}

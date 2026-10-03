@@ -1,0 +1,870 @@
+{
+  "resourceType": "Bundle",
+  "identifier": {
+    "system": "urn:ietf:rfc:3986",
+    "value": "urn:uuid:01abb322-d1da-37aa-a447-16732b94e776"
+  },
+  "type": "document",
+  "timestamp": "2026-10-03T20:23:01.996Z",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:87752277-1319-36dc-89bc-84401f621cde",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "composition-01",
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "60591-5",
+              "display": "Patient summary Document"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "date": "2026-10-03T20:23:01.996Z",
+        "author": [
+          {
+            "display": "JEMMA Pass on-device"
+          }
+        ],
+        "title": "International Patient Summary",
+        "confidentiality": "N",
+        "section": [
+          {
+            "title": "Allergies",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48765-2"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:7aa6d0b0-0f52-30aa-a629-6f4e6458f5c7"
+              },
+              {
+                "reference": "urn:uuid:50affadc-b3b3-343a-92a8-08787a10c6c2"
+              },
+              {
+                "reference": "urn:uuid:022f7ed5-e2b8-34d3-b410-43637b00d2b7"
+              }
+            ]
+          },
+          {
+            "title": "Problems",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11450-4"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:8d924c68-bdf3-3ad7-a130-2c7feef3df0f"
+              }
+            ]
+          },
+          {
+            "title": "History of Past Illness",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11348-0"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:259f1fd8-cef7-3dde-973a-0668213aad11"
+              },
+              {
+                "reference": "urn:uuid:f664693c-91a9-373c-9f4f-b4b6b8664dc7"
+              }
+            ]
+          },
+          {
+            "title": "Immunizations",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11369-6"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:d8122b0e-3334-387d-ac67-b69d1e2883ea"
+              },
+              {
+                "reference": "urn:uuid:cd6d190a-a411-3bb6-b27c-327c0a74456d"
+              },
+              {
+                "reference": "urn:uuid:939f7883-61c8-3716-a64d-58d2941e9b5e"
+              },
+              {
+                "reference": "urn:uuid:55cf3678-e6ff-3b2f-843e-38e93ad81843"
+              }
+            ]
+          },
+          {
+            "title": "History of Procedures",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "47519-4"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:6c12e0a1-964b-329c-88e7-93795ef539d2"
+              },
+              {
+                "reference": "urn:uuid:528beaa0-088e-3bdb-9a4a-ed90778fe133"
+              }
+            ]
+          },
+          {
+            "title": "Results",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "30954-2"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:102dfa24-9a7c-38b2-b888-c586b99490a3"
+              },
+              {
+                "reference": "urn:uuid:f1b34f59-f968-3e22-bbf7-5a04d5c07bea"
+              },
+              {
+                "reference": "urn:uuid:ca2934ba-a9ad-3c6c-bb6d-fdff59884f49"
+              },
+              {
+                "reference": "urn:uuid:20f0dd8a-b587-36ae-ac85-87bd85260134"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "patient-01",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Patient-uv-ips"
+          ]
+        },
+        "name": [
+          {
+            "given": [
+              "Kurodo"
+            ],
+            "family": "Henro"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1979-04-04",
+        "address": [
+          {
+            "text": "Rue de la Paix 12, 5660 Couvin, Belgique",
+            "line": [
+              "Rue de la Paix 12, 5660 Couvin, Belgique"
+            ]
+          }
+        ],
+        "communication": [
+          {
+            "language": {
+              "coding": [
+                {
+                  "system": "urn:ietf:bcp:47",
+                  "code": "fr-FR"
+                }
+              ]
+            }
+          }
+        ],
+        "contact": [
+          {
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                    "code": "FRND",
+                    "display": "unrelated friend"
+                  }
+                ],
+                "text": "Ami(e)"
+              }
+            ],
+            "name": {
+              "text": "Kamekichi"
+            },
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "+32 2 000 00 01"
+              }
+            ],
+            "address": {
+              "text": "75 Avenue Louise, Bruxelles"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7aa6d0b0-0f52-30aa-a629-6f4e6458f5c7",
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "type": "allergy",
+        "criticality": "high",
+        "patient": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "91936005",
+              "display": "ペニシリンアレルギー · Allergie à la pénicilline"
+            }
+          ],
+          "text": "ペニシリンアレルギー · Allergie à la pénicilline"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:50affadc-b3b3-343a-92a8-08787a10c6c2",
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "type": "allergy",
+        "criticality": "high",
+        "patient": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "417532002",
+              "display": "魚アレルギー · Allergie au poisson"
+            }
+          ],
+          "text": "魚アレルギー · Allergie au poisson"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:022f7ed5-e2b8-34d3-b410-43637b00d2b7",
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "type": "allergy",
+        "criticality": "low",
+        "patient": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "419263009",
+              "display": "花粉症 · Pollinose"
+            }
+          ],
+          "text": "花粉症 · Pollinose"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8d924c68-bdf3-3ad7-a130-2c7feef3df0f",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "condition-prob-0",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Condition-uv-ips"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "problem-list-item",
+                "display": "Problem List Item"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "13644009",
+              "display": "Hypercholesterolemia"
+            }
+          ],
+          "text": "Hypercholesterolemia"
+        },
+        "subject": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "onsetDateTime": "2026-01",
+        "note": [
+          {
+            "text": "LDL 131 mg/dL — lifestyle first"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:259f1fd8-cef7-3dde-973a-0668213aad11",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "condition-past-0",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Condition-uv-ips"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "74400008",
+              "display": "Appendicitis"
+            }
+          ],
+          "text": "Appendicitis"
+        },
+        "subject": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "onsetDateTime": "1995-07-10",
+        "abatementDateTime": "1995-07-12",
+        "note": [
+          {
+            "text": "Treated by appendectomy"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f664693c-91a9-373c-9f4f-b4b6b8664dc7",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "condition-past-1",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Condition-uv-ips"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "233604007",
+              "display": "Pneumonia"
+            }
+          ],
+          "text": "Pneumonia"
+        },
+        "subject": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "onsetDateTime": "2018-02",
+        "abatementDateTime": "2018-03"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d8122b0e-3334-387d-ac67-b69d1e2883ea",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "immunization-0",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Immunization-uv-ips"
+          ]
+        },
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "871876003",
+              "display": "Tetanus-diphtheria-pertussis (Tdap)"
+            }
+          ],
+          "text": "Tetanus-diphtheria-pertussis (Tdap)"
+        },
+        "patient": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "occurrenceDateTime": "2022-05-17"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cd6d190a-a411-3bb6-b27c-327c0a74456d",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "immunization-1",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Immunization-uv-ips"
+          ]
+        },
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "871803007",
+              "display": "Hepatitis A + B vaccine"
+            }
+          ],
+          "text": "Hepatitis A + B vaccine"
+        },
+        "patient": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "occurrenceDateTime": "2016-03-02",
+        "protocolApplied": [
+          {
+            "doseNumberPositiveInt": 3
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:939f7883-61c8-3716-a64d-58d2941e9b5e",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "immunization-2",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Immunization-uv-ips"
+          ]
+        },
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "836378001",
+              "display": "Japanese encephalitis vaccine"
+            }
+          ],
+          "text": "Japanese encephalitis vaccine"
+        },
+        "patient": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "occurrenceDateTime": "2023-01-20",
+        "protocolApplied": [
+          {
+            "doseNumberPositiveInt": 2
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:55cf3678-e6ff-3b2f-843e-38e93ad81843",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "immunization-3",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Immunization-uv-ips"
+          ]
+        },
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "1119349007",
+              "display": "COVID-19 mRNA vaccine"
+            }
+          ],
+          "text": "COVID-19 mRNA vaccine"
+        },
+        "patient": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "occurrenceDateTime": "2021-06-11",
+        "protocolApplied": [
+          {
+            "doseNumberPositiveInt": 2
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6c12e0a1-964b-329c-88e7-93795ef539d2",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "procedure-0",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Procedure-uv-ips"
+          ]
+        },
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "80146002",
+              "display": "Appendectomy"
+            }
+          ],
+          "text": "Appendectomy"
+        },
+        "subject": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "performedDateTime": "1995-07-12"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:528beaa0-088e-3bdb-9a4a-ed90778fe133",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "procedure-1",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Procedure-uv-ips"
+          ]
+        },
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "73761001",
+              "display": "Colonoscopy"
+            }
+          ],
+          "text": "Colonoscopy"
+        },
+        "subject": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "performedDateTime": "2024-02-19"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:102dfa24-9a7c-38b2-b888-c586b99490a3",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "rs-blood-group-0",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-results-uv-ips"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "882-1",
+              "display": "ABO and Rh blood group"
+            }
+          ],
+          "text": "ABO and Rh blood group"
+        },
+        "subject": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "278149003",
+              "display": "Blood group A Rh(D) positive"
+            }
+          ],
+          "text": "Blood group A Rh(D) positive"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f1b34f59-f968-3e22-bbf7-5a04d5c07bea",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "observation-result-1",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-results-uv-ips"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "4548-4",
+              "display": "Hemoglobin A1c"
+            }
+          ],
+          "text": "Hemoglobin A1c"
+        },
+        "subject": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "effectiveDateTime": "2026-01-15",
+        "valueQuantity": {
+          "value": 5.6,
+          "unit": "%",
+          "system": "http://unitsofmeasure.org",
+          "code": "%"
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "N"
+              }
+            ]
+          }
+        ],
+        "referenceRange": [
+          {
+            "text": "4-6"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ca2934ba-a9ad-3c6c-bb6d-fdff59884f49",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "observation-result-2",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-results-uv-ips"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2089-1",
+              "display": "LDL cholesterol"
+            }
+          ],
+          "text": "LDL cholesterol"
+        },
+        "subject": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "effectiveDateTime": "2026-01-15",
+        "valueQuantity": {
+          "value": 131,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "H"
+              }
+            ]
+          }
+        ],
+        "referenceRange": [
+          {
+            "text": "≤100"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:20f0dd8a-b587-36ae-ac85-87bd85260134",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "observation-result-3",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-results-uv-ips"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2160-0",
+              "display": "Creatinine (serum/plasma)"
+            }
+          ],
+          "text": "Creatinine (serum/plasma)"
+        },
+        "subject": {
+          "reference": "urn:uuid:2efe4dbf-51f2-36a9-8054-5ddd93b3b1f1"
+        },
+        "effectiveDateTime": "2026-01-15",
+        "valueQuantity": {
+          "value": 0.9,
+          "unit": "mg/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/dL"
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "N"
+              }
+            ]
+          }
+        ],
+        "referenceRange": [
+          {
+            "text": "0.7-1.2"
+          }
+        ]
+      }
+    }
+  ]
+}
