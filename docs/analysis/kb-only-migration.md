@@ -96,9 +96,8 @@ Les requêtes SQL directes sur la KB locale (sorties brutes vérifiables dans `k
 
 ## 5. Provenance et Pipeline de Construction de la KB
 
-- **Localisation** : Le pipeline de construction de `knowledge_full.db` (ingestion UMLS, SNOMED CT, LOINC, WHO-ATC, DDInter 2.0) **n'est pas présent dans ce dépôt Git**.
-- La base SQLite est distribuée précompilée à l'URL `https://jemmapass.net/kb/1.1/knowledge_full.db`.
-- **Question pour Kudoro** : Où se trouve le dépôt source du pipeline de build de la KB afin d'y intégrer les Value Sets LOINC manquants et les traductions complètes FR/JA ?
+- **Distribution & URL réelle** : La base SQLite est distribuée précompilée à l'URL non versionnée `https://jemmapass.net/models/knowledge_full.db` (`JemmaModelCatalog.kt:33,87`). La version `"1.1"` est une constante applicative (`JemmaModelCatalog.kt:86`) définissant le chemin de stockage `{externalFilesDir}/knowledge_full_db/1.1/knowledge_full.db`. Taille serveur et applicative attendue : **3 360 727 040 octets** (`JemmaModelCatalog.kt:89`).
+- **Pipeline de référence validé** : Le pipeline source de build se trouve sur la machine de Kudoro sous `JEMMA_DB_DATA/forge_cryptonite/` (`turbo_forge_jemma_db.py`).
 
 ---
 
