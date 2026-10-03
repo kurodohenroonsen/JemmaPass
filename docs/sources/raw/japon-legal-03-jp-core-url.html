@@ -1,0 +1,324 @@
+<html><head><title>J-core Open Processor</title>
+
+		<!-- body style="background: url(background.png) repeat;" -->
+		<table border=0 cellpadding=0 cellspacing=10>
+
+			<tr><td valign=top>
+					<table border=1 cellpadding=2 cellspacing=2>
+						<tr><td>
+								  <h1>J-Core<br>
+									    Open<br>
+									      Processor</h1>
+
+								    <b>What is it?</b>
+								      <ul>
+									          <li><a href="/index.html">About</a></li>
+										      <li><a href="/news.html">News</a></li>
+										          <li><a href="/roadmap.html">Roadmap</a></li>
+											      <li><a href="/talks/">Talks</a></li>
+											        </ul>
+												  <b>Files</b>
+												    <ul>
+													        <li><a href="/downloads">Downloads</a></li>
+														    <li><a href="/bitcomp.html">Bitstream Compiler</a></li>
+														      </ul>
+														        <b>Participate</b>
+															  <ul>
+																      <li><a href="http://lists.j-core.org/mailman/listinfo/j-core">Mailing List</a></li>
+																          <li>Twitter <a href="http://twitter.com/jcoreeng">@jcoreeng</a></li>
+																	      <li>IRC channel #jcore on libera.chat</li>
+																	        </ul>
+							</td>
+				</td></tr>
+					</table>
+
+					<td valign=top>
+	</head>
+
+
+
+
+<p><a href="#intro">Intro</a> <a href="#what">What is it</a>
+<a href="#quick">Quick start</a>,
+
+<a name=intro />
+<h2>J2 open processor</h2>
+
+<p>J-core is a clean-room open source processor and SOC design using the
+<a href="http://www.shared-ptr.com/sh_insns.html">SuperH instruction set</a>,
+implemented in VHDL and available royalty and patent free under a <a href="jcore-license.txt">BSD license</a>.</p>
+
+<p>The rest of this page explains how to compile and install a "bitstream" file
+to implement this processor in a cheap (about $50)
+<a href=https://en.wikipedia.org/wiki/Field-programmable_gate_array>FPGA</a>
+board, then how to build Linux for that board and boot it to a shell prompt.</p>
+
+<p>The steps are (roughly):</p>
+
+<ul>
+<li><a href="#get_hardware">Get an FPGA board</a> (the cheapest option
+we've written a build target for is the Numato Mimas v2).</li>
+<li><a href="#download_bitstream">Download a bitstream</a> (or build one
+yourself from our VHDL source code).</li>
+<li><a href="#flash_bitstream">Flash the bitstream to onboard SPI flash</a>
+(via USB).</li>
+<li><a href="#vmlinux">Download vmlinux</a> (or build Linux yourself from
+source) and copy it to an sdcard.</li>
+<li><a href="#serial">Boot the board</a> connected to a serial terminal
+(also via USB) to a Linux shell prompt.</li>
+</ul>
+
+<a name=what />
+<h3>What is this processor?</h3>
+
+<p>The <a href=https://en.wikipedia.org/wiki/SuperH>SuperH processor</a>
+is a Japanese design developed by Hitachi in the late 1990's. As a second
+generation hybrid RISC design it was easier for compilers to generate good
+code for than earlier RISC chips, and it recaptured much of the code density
+of earlier CISC designs by using fixed length 16 bit instructions (with
+32 bit register size and address space), using microcoding to allow
+some instructions to perform multiple clock cycles of work. (Earlier pure
+risc designs used one instruction per clock cycle even when that served
+no purpose but to make the code bigger and exhaust the encoding space.)</p>
+
+<p>Hitachi developed 4 generations of SuperH.
+SH2 made it to the United states in the Sega Saturn game console, and
+SH4 powered the Sega Dreamcast. They were also widely used in areas outside
+the US cosumer market, such as the japanese automative industry.</p>
+
+<p>But during the height of SuperH's development, the
+<a href=https://en.wikipedia.org/wiki/1997_Asian_financial_crisis>1997 asian economic crisis</a> caused Hitachi to tighten its belt, eventually
+partnering with Mitsubishi to spin off its microprocessor division
+into <a href=http://www.hitachi.us/press/archive/10032002>a new company</a>
+called "Renesas". This new company did not inherit the Hitachi
+engineers who had designed SuperH, and Renesas' own
+<a href=https://en.wikipedia.org/wiki/SuperH#SH-5>attempts at further
+development on SuperH</a> didn't even interest enough customers for the result
+to go ito production. Eventually Renesas moved on to new designs it had
+developed entirely in-house, and SuperH receded in importance to them...
+until the patents expired.</p>
+
+<p>Then Jeff Dionne (a hardware engineer who wandered into Linux long enough
+to create the <a href=http://www.uclinux.org/>uClinux</a> project back in
+the 1990's, handing it off when he moved to Japan and went back to
+hardware in 2003) created a new processor design compatible with the
+SuperH instruction set, publicly releasing the first version under a BSD
+liense in 2015. This new design is called j-core instead of superh because the
+trademarks haven't expired.</p>
+
+<p>The first j-core generation, j2, is compatible with the
+<a href="https://en.wikipedia.org/wiki/SuperH#SH-2">sh2</a> instruction set,
+which means Linux and gcc and such required only minor tweaking to support
+this processor. Current linux, gcc, binutils, and
+musl-libc versions support j-core out of the box. (QEMU supports sh4,
+which is backwards compatible with sh2 userspace but requires its own
+kernel.)</p>
+
+<p>J2 adds two backported sh3 barrel shift instructions (SHAD and SHLD)
+to improve compiler efficiency, and a new cmpxchg
+(mnemonic CAS.L Rm, Rn, @R0 opcode 0010-nnnn-mmmm-0011,
+based on the IBM 360 instruction) for futexs and SMP. Support for these
+is already upstream in vanilla Linux and gcc/binutils (linux
+"make ARCH=sh j2_defconfig" and gcc "./configure
+--target=sh2eb-linux-muslfdpic --with-cpu=mj2").</p>
+
+<p>In 2015 the j-core developers gave an <a href="https://j-core.org/talks/japan-2015.pdf">introductory presentation</a> about it at Linuxcon Japan, which was
+<a href="https://lwn.net/Articles/647636/">covered by Linux Weekly News</a>.
+In 2016 the developers gave a j-core design walkthrough presentation at ELC
+(<a href="talks/ELC-2016.pdf">slides</a>, <a href=https://youtu.be/GHORpXNRJiE>video</a>).</p>
+
+<p>J2 is a nommu processor because sh2 (the processor in the Sega Saturn
+game console) was, and the last sh2 patent expired in October 2014.
+The sh4 processor (dreamcast) has an mmu, but the last sh4 patents don't
+exire until 2016. (Update: we're probably implementing a
+<href=http://lists.j-core.org/pipermail/j-core/2017-March/000558.html>simpler MMU design</a>
+which will run the same userspace software but require kernel and QEMU
+updates, which we'll submit upstream when ready.)</p>
+
+<p>J-core's design is small and simple. As open source hardware it can be
+manufactured cheaply (about 3 cents per processor) and audited for NSA
+backdoors or
+<a href="http://www.theregister.co.uk/2015/08/12/lenovo_firmware_nasty/">vendor
+backdoors</a> or
+<a href="http://hothardware.com/news/researchers-discover-rootkit-exploit-in-intel-processors-that-dates-back-to-1997">exploitable firmware bugs</a>,
+and allows systems built without hidden extra processors in things like
+<a href="http://s3.eurecom.fr/~zaddach/docs/Recon14_HDD.pdf">storage devices</a>
+and <a href="http://arstechnica.com/security/2014/07/this-thumbdrive-hacks-computers-badusb-exploit-makes-devices-turn-evil/">USB controllers</a>
+easily repurposed into spyware.</p>
+
+<p>The <a href="http://lists.j-core.org">j-core mailing
+list</a> is the best place for further information or to ask questions.</p>
+
+<a name=quick />
+<h3>Quick start on hardware</h3>
+
+<p>The theory is you flash a "bitstream" file into an FPGA board's onboard
+SPI flash to configure the FPGA to act like a j2 processor. This
+bitstream includes a small bootloader that attempts to load a file called
+"vmlinux" from an sd card, providing a linux kernel with root filesystem
+in initramfs using a serial console.</p>
+
+<p>To do this, you need an FPGA board, microsd card, bitstream, vmlinux
+file with bundled initramfs, an sdcard writer, and a computer with a
+USB connection (to write the SPI flash and connect to the serial console;
+we used a Linux laptop but macs work too).</p>
+
+<h4 id="get_hardware">1) Get some hardware.</h4>
+<ul>
+<li><p><strong>Numato</strong>:
+The cheapest usable FPGA development board ($50 US) the j2 build system
+currently targets is the
+<a href="http://numato.com/fpga-boards/xilinx/spartan6/mimas-v2-spartan-6-fpga-development-board-with-ddr-sdram.html">Numato Mimas v2</a>
+(also available <a href="http://www.amazon.com/Numato-Mimas-Spartan-Development-Board/dp/B00RL7FCQW">on amazon</a>).
+It contains a Xlinux "Spartan 6" LX9 FPGA that can run a J2 at 50mhz,
+64 megs of SDRAM, USB2 mini-B, and a micro-sd card slot.</p>
+
+<p>You will probably also need a USB mini-B cable (the kind playstation
+controllers use, not the kind android phones use), a
+<a href="http://www.amazon.com/s/?keywords=usb+sd+card+adapter">USB microsd
+card adapter</a>, and a blank microsd card. The Numato has a builtin USB serial
+converer, so its "serial port" is already USB. (This USB port can also power
+the board, and Numato provides a python script that writes
+bitstreams to the onboard SPI flash through it. Alas it's also hardwired
+to operate at 19200 bps (there's a
+<a href=http://langster1980.blogspot.com/2016/06/linux-on-mimas-v2.html>firmware
+update to 115200</a> but numato
+<a href=https://community.numato.com/threads/how-download-a-firmware-from-linux.130/>only provides a windows tool</a> to update it.)</p>
+</li>
+</ul>
+
+<p>The main downsides of the Numato board (other than the slow serial port)
+are that it doesn't have ethernet, and it can't do SMP. (A single instance
+of the processor with the cache disabled takes up about 60% of an LX9's
+capacity.) So as an upgrade we're working on the
+<a href="/turtle">Turtle Board</a>.</p>
+
+<p>(J-core's early development was done on an
+<a href=https://www.avnet.com/shop/us/p/kits-and-tools/development-kits/avnet-engineering-services-ade--1/aes-s6mb-lx9-g-3074457345628965461>avnet
+microboard</a> but that's more expensive and doesn't have a built-in sdcard
+reader, so needs an add-on board to boot Linux. You can find
+<a href="https://tingcao.wordpress.com/category/lx9-microboard/">more
+about that board here</a>. If you want to port j-core
+to other FPGA boards, ask on the mailing list and we'll describe how or
+write up more docs.)</p>
+
+<p>The rest of this page describes using the Numato board.</p>
+
+<h4 id="download_bitstream">2) Get/install a bitstream.</h4>
+
+<p>The point of open hardware is that you can build a bitstream from
+the VHDL source code, but for your initial smoketesting you probably
+want to grab <a href="downloads/binaries/mimas_v2.bin">a known working
+binary</a> and install that first.</p>
+
+<p>To build your own bitstream from VHDL source:</p>
+
+<ul>
+<li><a href="bitcomp.html">Install the Xilinx
+bitstream compiler</a></li>
+<li><a href="http://landley.net/aboriginal/bin/cross-compiler-sh2elf.tar.gz">Install the sh2 bare metal compiler</a> (to build the ROM bootloader).
+It doesn't require a specific install location, you can extract it into
+your home directory if you like.</li>
+<li>Download
+the <a href="downloads/source/jcore-source-latest.tar.gz">latest
+bitstream source</a></li>
+<li>Enter xilinx context and add the cross-compiler-sh2elf/bin directory to
+your $PATH so sh2elf-cc and friends are available, and cd into the bitstream
+source directory.</li>
+<li>Fix the toolchain prefix with: <code>sed -i 's/sh2-elf-/sh2elf-/g' $(grep -rl sh2-elf- .)</code>
+[TODO: check this in]</li>
+<li>Run <code>make mimas_v2</code>. (Other targets are available under targets/boards.)</li>
+<li>Your bitstream should wind up in <code>output/*/mimas_v2.bin</code>. [TODO: why the
+date directory? That's not how package builds work, have output, overwrite
+output when you rebuild. And make clean not deleting this? Really?]</li>
+</ul>
+
+<p>The reason the bare metal compiler is different from the
+<a href="http://landley.net/aboriginal/bin/cross-compiler-sh2eb.tar.gz">sh2
+Linux compiler</a> (other than not containing a C library) is different
+function prefixes. Since low level code like the ROM bootloader (which runs
+when the processor starts up and loads vmlinux off the sdcard) is written
+in assembly, it manually refers to prefixed function names. Although there
+is a command line option to change the prefixes, the compiler contains library
+code (such as libgcc.a) that has to match the calling conventions of the
+rest of the code.</p>
+
+<h4 id="flash_bitstream">3) Flash the bitstream to the board.</h4>
+
+<p>Numato
+<a href="https://github.com/numato/samplecode/raw/master/FPGA/MimasV2/tools/configuration/python/MimasV2Config.py">provides</a>
+a GPL-licensed python3 tool to flash bitstreams onto their board.
+[TODO: port to python 2]</p>
+
+<p>To use it:</p>
+<ul>
+<li>Nobody ever has python 3 installed, so:
+<code>apt-get install python3 python3-serial</code></li>
+<li>Flip the black switch on the board (between the VGA and USB ports)
+towards the USB side. This is the "flash" position.</li>
+<li>Connect the board to your Linux box with a USB mini-B cable. (The
+kind playstation controlers use, not the kind android phones use.)</li>
+<li><code>sudo python3 MimasV2Config.py /dev/ttyACM0 mimas_v2.bin</code></li>
+<li>Flip the switch back towards the VGA side. This is the "boot" position.</li>
+</ul>
+
+<p>The above assumes the Numato serial port shows up as <code>/dev/ttyACM0</code>,
+which is almost always the case.</p>
+
+<p>Note: <strong>Ubuntu 14.04</strong> decided that any serial device plugged into
+a post-2014 computer MUST be a modem (a type of hardware used with telephone
+land lines back in the 20th century), and have a hotplug daemon send
+random AT commands at any new serial device, which confuses the Numato
+firmware loader. If you are not particpating in the Great Modem Revival,
+you need to <code>sudo service modemmanager stop</code>.
+See <a href=http://community.numato.com/threads/solved-mimas-v2-programming-in-linux.15/page-2#post-186>here</a> for details.</p>
+
+<h4 id="serial">4) Hook up a serial console.</h4>
+
+<p>Nomato's serial port implementation only connected data send and receive
+lines, meaning it doesn't provide hardware flow control. This confuses terminal
+programs that expect RTS and CTS (let alone DTR or DSR). We can use the stty
+tool to tell Linux not to care, then use a simple terminal program that
+won't try to fiddle with this itself.</p>
+
+<p>Since the <code>/dev/ttyACM0</code> device goes away each time you unplug and
+replug the USB cable (which conveniently power cycles the board),
+we can combine these two commands into a single command line in the command
+history. (So after you power cycle the board, cursor up and hit enter to
+reconnect the serial terminal.)</p>
+
+<blockquote>
+<p><code>stty -F /dev/ttyACM0 -crtscts && ~/busybox-x86_64 microcom -s 115200 /dev/ttyACM0</code></p>
+</blockquote>
+
+<p>Even without a vmlinux image on the sdcard (or without an sdcard), a
+successfully flashed processor should run its bootloader out of the same
+flash, which says "CPU tests passed" and announces
+its revision and build date before complaining it can't load vmlinux from the
+sdcard. If it doesn't do this, you probably forgot to put the flash/run
+switch back in the right position. (You have to power cycle the board
+after doing that.)</p>
+
+<h4 id="vmlinux">5) Install vmlinux on the sdcard.</h4>
+
+<p>Again, you can build linux source but for our first go at it, grab
+a <a href="downloads/linux/vmlinux">vmlinux image</a>
+from <a href="http://landley.net/aboriginal/about.html">Aboriginal
+Linux</a>'s sh2eb target. (The "linux" file in the system-image
+tarballs is built for the numato board running j2.)</p>
+
+<p>Stick the sdcard in the board, reboot, reconnect the serial console,
+and login at the prompt (user root, password admin). Congratulations,
+you have a Linux shell prompt on j2.</p>
+
+<p>To build vmlinux from source:</p>
+
+<p>Download <a href="http://landley.net/aboriginal/about.html">Aboriginal Linux</a> and run <code>./build.sh sh2eb</code>.</p>
+
+<p>If you want to build this by hand, the vanilla 4.7 kernel should support
+this board, as should
+<a href=https://github.com/richfelker/musl-cross-make>Rich Felker's
+musl-libc toolchain</a>. You'll need to boot from an initramfs linked
+into the kernel image until we get the kernel sdcard driver updated.</p>
+
+<!--#include file="footer.html" -->
