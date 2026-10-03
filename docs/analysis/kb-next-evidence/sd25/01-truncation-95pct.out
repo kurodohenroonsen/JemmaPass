@@ -1,0 +1,16 @@
+=== SD-25 EXPERIMENT 1: TRUNCATION 95% (3,192,690,688 bytes) ===
+1. Connection opened: SUCCESS (mode=ro)
+2. PRAGMA quick_check FAILED: database disk image is malformed
+3. Table counts:
+   build_metadata: EXCEPTION -> database disk image is malformed
+   atc_hierarchy: EXCEPTION -> database disk image is malformed
+   ddinter_drugs: EXCEPTION -> database disk image is malformed
+   ddi_facts: EXCEPTION -> database disk image is malformed
+   ddi_atc_pairs: EXCEPTION -> database disk image is malformed
+   terminology_codes: EXCEPTION -> database disk image is malformed
+   ips_valuesets: EXCEPTION -> database disk image is malformed
+   allergy_cross_reactivity: EXCEPTION -> database disk image is malformed
+4. Clinical query: Edoxaban x Ibuprofen DDI:
+   EXCEPTION -> database disk image is malformed
+5. Clinical query: Penicillin cross-reactivity:
+   EXCEPTION -> database disk image is malformed

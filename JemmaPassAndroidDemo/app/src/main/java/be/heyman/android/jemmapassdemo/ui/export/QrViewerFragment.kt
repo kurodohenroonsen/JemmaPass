@@ -60,6 +60,7 @@ import be.heyman.android.jemmapassdemo.databinding.FragmentQrViewerBinding
 import be.heyman.android.jemmapassdemo.kb.HydratedProfile
 import be.heyman.android.jemmapassdemo.kb.JemmaProfileHydrator
 import be.heyman.android.jemmapassdemo.profiles.ProfilesRepository
+import be.heyman.android.jemmapassdemo.qr.AndroidCodeLabels
 import be.heyman.android.jemmapassdemo.qr.JemmaFhirBundleBuilder
 import be.heyman.android.jemmapassdemo.qr.JemmaPayloadCodec
 import be.heyman.android.jemmapassdemo.qr.JemmaProfileJ
@@ -532,7 +533,7 @@ class QrViewerFragment : Fragment() {
 
     /** Build TEXT payload. Returns (payload?, chipText). */
     private fun buildText(hydrated: HydratedProfile, lang: JemmaTextPayloadBuilder.Lang): Pair<String?, String> {
-        val text = JemmaTextPayloadBuilder.build(hydrated, lang)
+        val text = JemmaTextPayloadBuilder.build(hydrated, lang, labels = AndroidCodeLabels(requireContext()))
         val bytes = text.toByteArray(Charsets.UTF_8).size
         byteSizeCurrent = bytes
         prunedFormatCurrent = null
