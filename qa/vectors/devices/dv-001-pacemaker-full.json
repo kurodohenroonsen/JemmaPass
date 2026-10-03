@@ -1,0 +1,126 @@
+{
+  "id": "dv-001-pacemaker-full",
+  "title": "An implanted device keeps its date, its MRI note, its body site and its identification through import and export",
+  "input_fhir": {
+    "device": {
+      "resourceType": "Device",
+      "meta": {
+        "profile": [
+          "http://hl7.org/fhir/uv/ips/StructureDefinition/Device-uv-ips"
+        ]
+      },
+      "udiCarrier": [
+        {
+          "deviceIdentifier": "(01)00643169007222(21)PJN1234567",
+          "carrierHRF": "(01)00643169007222(21)PJN1234567"
+        }
+      ],
+      "status": "active",
+      "manufacturer": "Medtronic",
+      "serialNumber": "PJN1234567",
+      "modelNumber": "Azure XT DR MRI SureScan",
+      "type": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "14106009",
+            "display": "Cardiac pacemaker"
+          }
+        ],
+        "text": "Cardiac pacemaker"
+      },
+      "patient": {
+        "reference": "@patient"
+      }
+    },
+    "device_use_statement": {
+      "resourceType": "DeviceUseStatement",
+      "meta": {
+        "profile": [
+          "http://hl7.org/fhir/uv/ips/StructureDefinition/DeviceUseStatement-uv-ips"
+        ]
+      },
+      "status": "active",
+      "subject": {
+        "reference": "@patient"
+      },
+      "device": {
+        "reference": "@device"
+      },
+      "bodySite": {
+        "text": "Left pectoral"
+      },
+      "note": [
+        {
+          "text": "MRI-conditional"
+        }
+      ],
+      "timingDateTime": "2021-03-15"
+    }
+  },
+  "expect": {
+    "reexported": {
+      "device": {
+        "resourceType": "Device",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Device-uv-ips"
+          ]
+        },
+        "udiCarrier": [
+          {
+            "deviceIdentifier": "(01)00643169007222(21)PJN1234567",
+            "carrierHRF": "(01)00643169007222(21)PJN1234567"
+          }
+        ],
+        "status": "active",
+        "manufacturer": "Medtronic",
+        "serialNumber": "PJN1234567",
+        "modelNumber": "Azure XT DR MRI SureScan",
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "14106009",
+              "display": "Cardiac pacemaker"
+            }
+          ],
+          "text": "Cardiac pacemaker"
+        },
+        "patient": {
+          "reference": "@patient"
+        }
+      },
+      "device_use_statement": {
+        "resourceType": "DeviceUseStatement",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/DeviceUseStatement-uv-ips"
+          ]
+        },
+        "status": "active",
+        "subject": {
+          "reference": "@patient"
+        },
+        "device": {
+          "reference": "@device"
+        },
+        "bodySite": {
+          "text": "Left pectoral"
+        },
+        "note": [
+          {
+            "text": "MRI-conditional"
+          }
+        ],
+        "timingDateTime": "2021-03-15"
+      }
+    },
+    "j_dv": {
+      "c": "14106009",
+      "d": "MRI-conditional",
+      "d_display": "Cardiac pacemaker",
+      "dt": "2021-03-15"
+    }
+  }
+}
