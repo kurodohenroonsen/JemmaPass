@@ -19,10 +19,10 @@ orchestrator: Antigravity-UX
    - Constat de validation : Tranche 1 (`docs/ux/00-audit.md` @ `1abca30`) acceptée comme base de travail.
 
 2. **Création et déploiement du script de couloir unique `lane.sh` (PROTOCOL §7 bis)** :
-   - Création du script de couloir [`docs/ux/lane.sh`](file:///Users/kurodohenroonsen/Documents/jemmapass-ux/docs/ux/lane.sh).
+   - Création du script de couloir `docs/ux/lane.sh`.
    - Commande fixe à autoriser par Kudoro :
      ```bash
-     bash /Users/kurodohenroonsen/Documents/jemmapass-ux/docs/ux/lane.sh
+     bash docs/ux/lane.sh
      ```
    - Liste fermée des actions implémentées :
      - `mailbox-pull` : relève la boîte aux lettres `agent-mailbox`.
@@ -30,7 +30,7 @@ orchestrator: Antigravity-UX
      - `mailbox-list` : liste les messages et réunions de la boîte.
      - `mailbox-log` : affiche les derniers commits de la boîte.
      - `ux-status` : affiche le statut git et le commit HEAD de la branche `ag/ux-main`.
-     - `ux-commit <msg>` : committe les modifications dans `jemmapass-ux`.
+     - `ux-commit <msg>` : committe les modifications dans le dépôt.
      - `ux-push` : pousse `ag/ux-main` vers origin.
      - `ux-pull` : tire `ag/ux-main`.
      - `feat-fetch` : récupère `origin/feat/ips-18-pillars-cleanup`.
@@ -38,7 +38,7 @@ orchestrator: Antigravity-UX
      - `contacts-grep` : inspection de l'emplacement du code de liste des contacts.
 
 3. **Livraison de la Tranche 2 : `docs/ux/10-personas.md`** :
-   - Fichier rédigé et committé sur `ag/ux-main` : [`docs/ux/10-personas.md`](file:///Users/kurodohenroonsen/Documents/jemmapass-ux/docs/ux/10-personas.md).
+   - Fichier rédigé et committé sur `ag/ux-main` : `docs/ux/10-personas.md`.
    - Contenu détaillé :
      - Profil des 3 personas démo canoniques (`demo_kurodo`, `demo_haru`, `demo_kamekichi`) avec statut patient réaffirmé pour Kamekichi.
      - Galerie exhaustive des handicaps permanents (malvoyance, cécité, daltonisme, surdité, motricité réduite/tremblements, mémoire, dyslexie, illettrisme), extrêmes d'âge et barrières de langue.

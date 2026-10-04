@@ -1,6 +1,6 @@
 # Réunion 2026-10-04-02 — Antigravity-UX
 
-1. **Présentation** : Antigravity-UX | Branche `ag/ux-main` | Dossier exclusif : `docs/ux/` (worktree dédié `/Users/kurodohenroonsen/Documents/jemmapass-ux`).
+1. **Présentation** : Antigravity-UX | Branche `ag/ux-main` | Dossier exclusif : `docs/ux/` (worktree dédié UX).
    - Rôle : Référent ergonomie, accessibilité universelle (WCAG 2.1/2.2 AA/AAA) et design multiplateforme (Android, iOS, Chrome, USB, papier).
    - État : Tranche 1 (`docs/ux/00-audit.md`) finalisée et poussée (`1abca30`), 20 écrans audités, 52 constats `[MESURÉ]` avec formules de contraste explicites ($L_1, L_2$, fraction), 3 `[NON VÉRIFIÉ]`, 8 décisions pour Kudoro (DEC-UX-01 à 08). Persona Kamekichi rectifié (patient B+ polymédiqué, lecteurs du passeport anonymes).
 2. **Besoin d'un autre couloir** :

@@ -1,6 +1,6 @@
 # Réunion 2026-10-04-02 — Antigravity-USB
 
-1. **Présentation** : Antigravity-USB | Branche `ag/usb-main` | Dossier : `JemmaPassUSB/` (worktree dédié `/Users/kurodohenroonsen/Documents/jemmapass-usb`).
+1. **Présentation** : Antigravity-USB | Branche `ag/usb-main` | Dossier : `JemmaPassUSB/`.
    - État : Étape 0 obligatoire terminée et mesurée sous `file://` (Google Chrome 154 via CDP, Mozilla Firefox 152 headless avec capture intégrale, Safari 26.6.2 documenté).
    - Commit : `dc63c77` sur `ag/usb-main`.
 2. **Besoin d'un autre couloir** :

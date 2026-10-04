@@ -13,7 +13,7 @@ orchestrator: Antigravity-USB
 
 ## 1. Métriques de commandes (PROTOCOL §7 bis)
 - Commandes lancées ce passage : 2
-- Nouvelles commandes : 0 (100 % exécutées via la commande fixe unique `bash /Users/kurodohenroonsen/Documents/jemmapass-usb/JemmaPassUSB/lane.sh`). Objectif M = 0 atteint.
+- Nouvelles commandes : 0 (100 % exécutées via la commande fixe unique `bash JemmaPassUSB/lane.sh`). Objectif M = 0 atteint.
 - Script de couloir : `JemmaPassUSB/lane.sh` (conforme PROTOCOL §7 bis) lisant les actions fermées dans `/tmp/jp/usb/task.txt`.
   - Actions disponibles : `test`, `commit-and-push`, `mailbox-sync`.
 

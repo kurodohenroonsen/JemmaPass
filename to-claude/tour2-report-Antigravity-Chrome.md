@@ -39,8 +39,8 @@ Les graines (`seed`) sont rigoureusement identiques entre Android (`JemmaFhirBun
   - Android : `urn:uuid:d4d6f377-2bc2-3fdf-b2ca-c2dd4477cddf`
   - Chrome  : `urn:uuid:d4d6f377-2bc2-3fdf-b2ca-c2dd4477cddf` (MATCH EXACT)
 - **Composition** : seed `"${sid}|Composition"`
-  - Android : `urn:uuid:68eeb10e-09c3-3760-b684-a15998a4d46b`
-  - Chrome  : `urn:uuid:68eeb10e-09c3-3760-b684-a15998a4d46b` (MATCH EXACT)
+  - Android (`85214da`, `demo_haru.fhir.json:11`) : `urn:uuid:cc4566d1-4052-3189-a1fd-c30ce0aac947`
+  - Chrome  (`tests/out/files/demo_haru.fhir.json:11`) : `urn:uuid:cc4566d1-4052-3189-a1fd-c30ce0aac947` (MATCH EXACT sur la vraie valeur des fichiers ; la mention antérieure 68eeb10e... était une coquille de transcription rectifiée)
 - **Allergies** : seed `"${sid}|AllergyIntolerance|${i}|${code}"`
   - Android (`demo_haru` al[0]) : `urn:uuid:ad91354c-9fce-3a4f-813f-bf4ba8ff19d6`
   - Chrome  (`demo_haru` al[0]) : `urn:uuid:ad91354c-9fce-3a4f-813f-bf4ba8ff19d6` (MATCH EXACT)
