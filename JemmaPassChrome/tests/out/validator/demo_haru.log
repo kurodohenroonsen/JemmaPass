@@ -1,8 +1,0 @@
-FHIR Validation tool Version 6.10.4 (Git# 1b90fb13f77b). Built 2026-09-04T05:45:41.468Z (29 days old)
-  Java:   25.0.2 from /Applications/Android Studio.app/Contents/jbr/Contents/Home on x86_64 (64bit). 8192MB available
-  Paths:  Current = /Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/JemmaPassChrome, Package Cache = /Users/kurodohenroonsen/.fhir/packages
-  Params: tests/out/files/demo_haru.fhir.json -version 4.0.1 -ig hl7.fhir.uv.ips#1.1.0 -tx n/a -output tests/out/validator/demo_haru.txt
-  Locale: Belgique/BE
-  Jurisdiction: Belgium
-Loading
-  Loading FHIR v4.0.1 from hl7.fhir.r4.core#4.0.1
