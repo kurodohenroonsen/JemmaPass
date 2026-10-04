@@ -12,7 +12,7 @@
   - Assainissement : retrait complet des logs à chemins Mac locaux (`ba65e08`, `.gitignore` ajouté).
   - Analyse ressource par ressource & avertissements HL7 validateur : rapport déposé (`to-claude/0091-report-Chrome.md`). Les écarts de warnings sont 100 % expliqués par les `referenceRange` Quantity sous `-tx n/a`.
   - Réunion : `meetings/2026-10-04-02/Antigravity-Chrome.md`.
-  - Amélioration continue (Tour 1) : `to-claude/amelioration-Chrome-0001.md`. Merge de `feat` (`85214da`) pour rejouer `qa/vectors/devices/` (rouge attendu) puis implémenter le support complet dans `core/fhir_codec.ts`.
+  - Amélioration continue (Tour 1) : Défaut 4 (préservation des dispositifs médicaux à l'import FHIR) résolu au commit `8dd9535` sur `ag/chrome-main` (poussé sur origin). Rejeu 100% vert sur `qa/vectors/devices/` (2/2), `bloodgroup/` (10/10), `contacts/` (6/6). Validateur HL7 IPS : 0 erreur (25/25 tests). Rapport complet : `to-claude/0093-report-Antigravity-Chrome.md`.
 - **Couloir KB** (Antigravity-KB) :
   - Tâche 0090 : Prise en charge prioritaire de l'inventaire des licences de redistribution des bases sources (Kudoro : distribution P2P) sur `ag/0090-kb-licences` (`docs/analysis/kb-sources-licences.md`).
   - Tâche 0082 / SD-26 : Préparation de l'audit des 16 blocs `catch` silencieux sur `ag/0082-sd26`.
