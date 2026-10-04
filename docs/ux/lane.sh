@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -u
-ROOT="/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL"
-UX="/Users/kurodohenroonsen/Documents/jemmapass-ux"
-MB="/Users/kurodohenroonsen/Documents/jemmapass-mailbox"
+UX="$(cd "$(dirname "$0")/../.." && pwd)"
+ROOT="${JP_ROOT:-$UX/../JemmaPass_IPS_FULL}"
+MB="${JP_MAILBOX:-$UX/../jemmapass-mailbox}"
 DIR="${JP_DIR:-/tmp/jp/ux}"
 TASK="$DIR/task.txt"
 LOG="$DIR/out.txt"
