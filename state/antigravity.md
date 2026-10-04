@@ -24,10 +24,13 @@
   - Tâche 0082 / SD-26 : Livrée sur `ag/0082-sd26` (@ `f04b806`). Audit exhaustif `docs/analysis/sd26-kb-errors.md` (200 lignes sans code) répertoriant les 16 `catch` de `KnowledgeBaseService` + `KnowledgeBaseManager`, `KbCrossCheck`, `JemmaProfileHydrator`. 4 failles faux-`CLEAN` démontrées (dont `getAtcAncestors` qui avale les erreurs en `emptyList()`), architecture `KbQueryResult<T>` proposée pour rendre la règle testable sans faux négatif, chiffrage des 3 pistes de contrôle post-installation (Piste 1 SHA-256 en ~4s sur Pixel recommandée). Rapport `to-claude/0082-report-sd26-Antigravity-KB.md` déposé.
   - Réunion : `meetings/2026-10-04-01/Antigravity-KB.md`.
 - **Couloir ANALYSE** (Antigravity-Analyse) :
-  - Tranche 1 (`00-carte.md`) révisée et poussée (@ `d5bed62`). Tranche 2 (`10-existant-android.md`) enrichie avec la Section 0 (cartographie trans-plateformes exhaustive) et l'origine exacte code (`fichier:ligne`) pour allergies, médicaments, problèmes, vaccins et dispositifs (directive message 0098).
-  - Tour 1 (Amélioration continue) : Proposition `amelioration-Analyse-0001.md` (tri des allergies QR texte, défaut n°1 de l'ordre de bataille) traitée et fusionnée dans `feat` (@ `f06dcd3`).
-  - Tour 2 — Tranche NFC (`35-nfc.md`) : Rédigée et livrée (660 lignes, mesures réelles des 3 Bundles < 5 Ko compressés, confrontation des cartes Type 4 32 Ko et Java Card 95 Ko, format composite F6 recommandé, analyse skimming et modèle hybride, restrictions iOS HCE, audit d'absence NFC dans le code Android, 12 micro-cas d'usage UC-NFC-001..012, 6 décisions Kudoro DEC-NFC-01..06).
-  - Tour 2 (Amélioration continue) : Proposition `to-claude/amelioration-Antigravity-Analyse-0002.md` déposée (priorité vitale de `RANK_DEVICES` dans la troncature QR texte).
+  - Tranche 1 (`00-carte.md`) révisée et poussée (@ `d5bed62`). Tranche 2 (`10-existant-android.md`) enrichie avec la Section 0 (cartographie trans-plateformes exhaustive) et l'origine exacte code (`fichier:ligne`).
+  - Tour 3 (Gouvernance & Nettoyage) : Commit de revert `09e5f4f` annulant `0e79464` (sans aucun push forcé), puis recommit `32efd39` du seul `docs/functional/10-existant-android.md` pour purger les fichiers parasites de build iOS/Chrome.
+  - Tour 3 — Tranche NFC (`35-nfc.md`) : Refonte intégrale livrée (@ `2ab8520`) avec sources officielles vérifiées (URL + citations verbatim pour NFC Forum, ISO 7816-4, Java Card, Android NDEF Dispatch, Apple Background Tag Reading, Web NFC, HCE), alignement sur la signature matérielle universelle **ECDSA P-256 (`secp256r1`) avec SHA-256** (Android Keystore / Apple Secure Enclave) rejetant Ed25519, et mesures certifiées sur pièces des profils réels (`measure_bundles.py`).
+  - Tour 2 (Amélioration continue) : Proposition `to-claude/amelioration-Antigravity-Analyse-0002.md` acceptée par Claude et Kudoro (priorité vitale a, tests `UC-QRT-030..` en cours d'écriture).
+  - Tour 3 (Amélioration continue) : Tour à vide argumenté (priorité absolue donnée à la résolution du défaut n°2 `RANK_DEVICES` en cours chez Claude et Antigravity-1).
+  - Rapport Tour 3 : `to-claude/tour3-report-Antigravity-Analyse.md` (`id: 0099`, commit `2ab8520`) déposé.
+  - Tranche 3 (`20-echanges.md`) en attente des directives du prochain tour.
   - Script de couloir : `docs/functional/lane.sh` créé conformément à PROTOCOL §7 bis.
   - Rapport Tour 2 : `to-claude/tour2-report-Antigravity-Analyse.md` déposé.
   - Réunion : `meetings/2026-10-04-02/Antigravity-Analyse.md` déposée.
