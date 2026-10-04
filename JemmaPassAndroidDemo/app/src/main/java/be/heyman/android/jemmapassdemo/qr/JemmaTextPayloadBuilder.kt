@@ -180,9 +180,11 @@ object JemmaTextPayloadBuilder {
 
         val byDateDesc = compareByDescending<JEntryGeneric> { it.date != null }.thenByDescending { it.date ?: "" }
 
-        // Display order (unchanged, contacts inserted right after the clinical core).
         val sections: List<Part> = listOf(
-            part("⚠️", "allergies_title", RANK_ALLERGIES, hydrated.allergies) { a -> formatAllergy(a) },
+            part(
+                "⚠️", "allergies_title", RANK_ALLERGIES,
+                be.heyman.android.jemmapassdemo.pdf.PdfPillarLayout.sortByCriticality(hydrated.allergies) { it.criticality.name },
+            ) { a -> formatAllergy(a) },
             part("💊", "medications_title", RANK_MEDICATIONS, hydrated.medications) { m -> formatMedication(m) },
             part("🩺", "conditions_title", RANK_CONDITIONS, hydrated.conditions) { c ->
                 c.displayLocalized.ifBlank { c.raw.c.orEmpty() }
@@ -279,10 +281,17 @@ object JemmaTextPayloadBuilder {
     /** "Misako Kudoro (Spouse) +32 478 45 45 45" — null when the contact is entirely blank. */
     private fun formatContact(c: JContact, lang: Lang): String? {
         val name = c.n?.trim().orEmpty()
-        val relation = be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog
-            .getDisplay(c.r, lang.isoCode).trim()
+        val rawRel = c.r?.trim().orEmpty()
+        val relation = when {
+            rawRel.isEmpty() -> ""
+            be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog.isValidCode(rawRel) ->
+                be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog.getDisplay(rawRel, lang.isoCode).trim()
+            be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog.isRoleCode(rawRel) -> ""
+            else -> rawRel
+        }
         // Phone printed as typed (NOT through safePhone): the responder must be able to dial it.
         val reach = c.p?.trim()?.takeIf { it.isNotEmpty() } ?: c.e?.trim().orEmpty()
+        if (name.isEmpty() && reach.isEmpty()) return null
         val line = listOfNotNull(
             name.takeIf { it.isNotEmpty() },
             relation.takeIf { it.isNotEmpty() }?.let { "($it)" },

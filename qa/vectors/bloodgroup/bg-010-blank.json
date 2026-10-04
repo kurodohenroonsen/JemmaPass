@@ -1,0 +1,15 @@
+{
+  "id": "bg-010-blank",
+  "title": "A blank blood group is treated as absent",
+  "input_j": {
+    "_j": "1.2",
+    "sid": "vec_bg_010",
+    "p": {
+      "gn": "Haru",
+      "bt": "  "
+    }
+  },
+  "expect": {
+    "blood_group_observations": []
+  }
+}

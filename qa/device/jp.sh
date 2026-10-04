@@ -85,7 +85,21 @@ act() {
     verify)         python3 "$ROOT/qa/device/verify_profiles.py" "$OUT/$1" "${@:2}" ;;
     validate)       "$ROOT/qa/device/validate_all.sh" "${1:-$OUT}" "${2:-}" ;;
     decode-qr)      mkdir -p "$OUT/qr" && python3 "$ROOT/qa/device/decode_qr.py" "$OUT/screenshots/$1" "$OUT/qr/$2" ;;
-    logcat)         mkdir -p "$OUT/logs" && "${ADB[@]}" logcat -d -s $TAGS > "$OUT/logs/logcat-ui.txt" && python3 "$ROOT/qa/device/scrub_logcat.py" "$OUT/logs/logcat-ui.txt" && wc -l "$OUT/logs/logcat-ui.txt" ;;
+    logcat)
+      local tmp_log; tmp_log="$(mktemp "${TMPDIR:-/tmp}/jp-logcat.XXXXXX")"
+      trap 'rm -f "'"$tmp_log"'"' EXIT INT TERM
+      if "${ADB[@]}" logcat -d -s $TAGS > "$tmp_log" && python3 "$ROOT/qa/device/scrub_logcat.py" "$tmp_log"; then
+        mkdir -p "$OUT/logs"
+        mv "$tmp_log" "$OUT/logs/logcat-ui.txt"
+        trap - EXIT INT TERM
+        wc -l "$OUT/logs/logcat-ui.txt"
+      else
+        local rc=$?
+        rm -f "$tmp_log"
+        trap - EXIT INT TERM
+        return $rc
+      fi
+      ;;
     logcat-clear)   "${ADB[@]}" logcat -c ;;
     grep-log)       grep -- "$*" "$OUT/logs/logcat-ui.txt" ;;
     json)           mkdir -p "$OUT/json" && python3 "$ROOT/qa/device/extract_json.py" "$OUT/$1" "$2" "$OUT/json/$3" ;;

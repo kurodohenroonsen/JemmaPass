@@ -1,0 +1,85 @@
+{
+  "id": "ct-002-two-contacts-order",
+  "title": "Two contacts keep the order of the list; the address is exported in the document, never on the text QR",
+  "ui_lang": "en",
+  "input_j": {
+    "_j": "1.2",
+    "sid": "vec_ct_002",
+    "p": {
+      "gn": "Kurodo",
+      "ct": [
+        {
+          "n": "Kamekichi",
+          "r": "FRND",
+          "p": "+32 2 000 00 01",
+          "adr": "Rue de la Demo 1, 1000 Bruxelles"
+        },
+        {
+          "n": "Tsuru",
+          "r": "NBOR",
+          "p": "+32 2 000 00 02"
+        }
+      ]
+    }
+  },
+  "expect": {
+    "patient_contact": [
+      {
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FRND",
+                "display": "unrelated friend"
+              }
+            ],
+            "text": "unrelated friend"
+          }
+        ],
+        "name": {
+          "text": "Kamekichi"
+        },
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+32 2 000 00 01"
+          }
+        ],
+        "address": {
+          "text": "Rue de la Demo 1, 1000 Bruxelles"
+        }
+      },
+      {
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "NBOR",
+                "display": "neighbor"
+              }
+            ],
+            "text": "neighbor"
+          }
+        ],
+        "name": {
+          "text": "Tsuru"
+        },
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+32 2 000 00 02"
+          }
+        ]
+      }
+    ],
+    "text_qr_contains": [
+      "Kamekichi (unrelated friend) +32 2 000 00 01",
+      "Tsuru (neighbor) +32 2 000 00 02"
+    ],
+    "text_qr_absent": [
+      "Rue de la Demo"
+    ]
+  }
+}

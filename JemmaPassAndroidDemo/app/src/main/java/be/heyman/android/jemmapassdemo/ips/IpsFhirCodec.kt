@@ -10,6 +10,7 @@
  */
 package be.heyman.android.jemmapassdemo.ips
 
+import be.heyman.android.jemmapassdemo.qr.JContact
 import dev.ohs.fhir.model.r4.Annotation
 import dev.ohs.fhir.model.r4.Bundle
 import dev.ohs.fhir.model.r4.Canonical
@@ -18,6 +19,7 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.Composition
 import dev.ohs.fhir.model.r4.Condition
+import dev.ohs.fhir.model.r4.ContactPoint
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.DeviceUseStatement
@@ -29,6 +31,7 @@ import dev.ohs.fhir.model.r4.Immunization
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Meta
 import dev.ohs.fhir.model.r4.Observation
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.PositiveInt
 import dev.ohs.fhir.model.r4.Procedure
 import dev.ohs.fhir.model.r4.Quantity
@@ -123,6 +126,34 @@ object IpsFhirCodec {
     }
 
     fun resourcesOf(bundle: Bundle): List<Resource> = bundle.entry.mapNotNull { it.resource }
+
+    fun contactsOf(bundle: Bundle): List<JContact> {
+        val patient = resourcesOf(bundle).filterIsInstance<Patient>().firstOrNull() ?: return emptyList()
+        return patient.contact.map { c ->
+            val name = c.name?.text?.value?.takeIf { it.isNotBlank() }
+            val phone = c.telecom.firstOrNull {
+                it.system?.value == ContactPoint.ContactPointSystem.Phone
+            }?.value?.value?.takeIf { it.isNotBlank() }
+            val email = c.telecom.firstOrNull {
+                it.system?.value == ContactPoint.ContactPointSystem.Email
+            }?.value?.value?.takeIf { it.isNotBlank() }
+            val address = c.address?.text?.value?.takeIf { it.isNotBlank() }
+                ?: c.address?.line?.firstOrNull()?.value?.takeIf { it.isNotBlank() }
+            val relationship = c.relationship.firstNotNullOfOrNull { rel ->
+                val codingCode = rel.coding.firstNotNullOfOrNull { cd ->
+                    cd.code?.value?.takeIf { it.isNotBlank() }
+                }
+                codingCode ?: rel.text?.value?.takeIf { it.isNotBlank() }
+            }
+            JContact(
+                n = name,
+                r = relationship,
+                p = phone,
+                e = email,
+                adr = address,
+            )
+        }
+    }
 
     fun immunizationsOf(bundle: Bundle): List<IpsImmunization> =
         resourcesOf(bundle).filterIsInstance<Immunization>().map { fromFhir(it) }

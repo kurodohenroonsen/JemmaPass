@@ -1,0 +1,49 @@
+{
+  "id": "ct-003-no-phone",
+  "title": "A contact without a phone is still exported; the e-mail is the way to reach it",
+  "ui_lang": "en",
+  "input_j": {
+    "_j": "1.2",
+    "sid": "vec_ct_003",
+    "p": {
+      "gn": "Kurodo",
+      "ct": [
+        {
+          "n": "Kamekichi",
+          "r": "FRND",
+          "e": "kamekichi@example.org"
+        }
+      ]
+    }
+  },
+  "expect": {
+    "patient_contact": [
+      {
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "FRND",
+                "display": "unrelated friend"
+              }
+            ],
+            "text": "unrelated friend"
+          }
+        ],
+        "name": {
+          "text": "Kamekichi"
+        },
+        "telecom": [
+          {
+            "system": "email",
+            "value": "kamekichi@example.org"
+          }
+        ]
+      }
+    ],
+    "text_qr_contains": [
+      "Kamekichi (unrelated friend) kamekichi@example.org"
+    ]
+  }
+}

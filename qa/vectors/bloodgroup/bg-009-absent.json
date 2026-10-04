@@ -1,0 +1,14 @@
+{
+  "id": "bg-009-absent",
+  "title": "No blood group in the patient pillar: the document holds no ABO/Rh result",
+  "input_j": {
+    "_j": "1.2",
+    "sid": "vec_bg_009",
+    "p": {
+      "gn": "Haru"
+    }
+  },
+  "expect": {
+    "blood_group_observations": []
+  }
+}
