@@ -3,8 +3,9 @@ set -eo pipefail
 
 TASK_FILE="/tmp/jp/usb/task.txt"
 OUT_FILE="/tmp/jp/usb/out.txt"
-USB_DIR="/Users/kurodohenroonsen/Documents/jemmapass-usb"
-MAILBOX_DIR="/Users/kurodohenroonsen/Documents/jemmapass-mailbox"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+USB_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+MAILBOX_DIR="${MAILBOX_DIR:-$(cd "$USB_DIR/../jemmapass-mailbox" && pwd)}"
 
 mkdir -p "/tmp/jp/usb"
 exec > >(tee "$OUT_FILE") 2>&1
