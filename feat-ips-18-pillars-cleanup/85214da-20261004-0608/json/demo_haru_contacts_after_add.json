@@ -1,0 +1,36 @@
+[
+  {
+    "relationship": [
+      {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+            "code": "DAUC",
+            "display": "daughter"
+          }
+        ],
+        "text": "daughter"
+      }
+    ],
+    "name": {
+      "text": "Sakura Tanaka"
+    },
+    "telecom": [
+      {
+        "system": "phone",
+        "value": "+81 90 0000 0001"
+      }
+    ],
+    "address": {
+      "text": "Aomori, Japan"
+    }
+  },
+  {
+    "name": {
+      "text": "Dr Smith"
+    },
+    "address": {
+      "text": "Aomori Station 1"
+    }
+  }
+]

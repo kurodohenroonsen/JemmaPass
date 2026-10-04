@@ -1,0 +1,28 @@
+[
+  {
+    "relationship": [
+      {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+            "code": "FRND",
+            "display": "unrelated friend"
+          }
+        ],
+        "text": "unrelated friend"
+      }
+    ],
+    "name": {
+      "text": "Kamekichi"
+    },
+    "telecom": [
+      {
+        "system": "phone",
+        "value": "+32 2 000 00 01"
+      }
+    ],
+    "address": {
+      "text": "75 Avenue Louise, Bruxelles"
+    }
+  }
+]

@@ -1,0 +1,117 @@
+--------- beginning of main
+10-04 06:12:39.137  7211  7254 D JEMMA-PROFILES: [t=1791087159137] 🔍 loadProfile(demo_kurodo) → not found
+10-04 06:12:39.219  7211  7211 D JEMMA-PROFILES: [t=1791087159219] 📋 onCreateView (v2.2.16.10)
+10-04 06:12:39.258  7211  7211 D JEMMA-PROFILES: [t=1791087159258] 📋 onViewCreated
+10-04 06:12:39.261  7211  7211 D JEMMA-PROFILES: [t=1791087159261] 📋 renderList · 0 profiles · current=demo_kurodo
+10-04 06:12:39.261  7211  7211 D JEMMA-PROFILES: [t=1791087159261] [Adapter] 📦 submit · 0 profiles · currentId=demo_kurodo
+10-04 06:12:39.569  7211  7254 I JEMMA-HYDRATOR: [t=1791087159569] ✅ hydrated · al=3 · md=0 · cn=1 · ddi=0 · al×md=0 · drug×disease=0 · in 71ms
+10-04 06:12:39.651  7211  7254 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 81ms : 18 entries
+10-04 06:12:39.652  7211  7254 I JEMMA-PROFILES: [t=1791087159652] 🏥 IPS FHIR profile saved for demo_kurodo (39272 bytes · 4 immunizations · 2 procedures · 0 devices · 4 results · 2 past problems · 1 problems · 0 pregnancy obs)
+10-04 06:12:39.652  7211  7254 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_kurodo
+10-04 06:12:40.666  7211  7320 I JEMMA-HYDRATOR: [t=1791087160666] 🩹 hydrator inferred ATC 'J01CA01' from allergy name 'allergy to penicillin' (KB had no SNOMED→ATC mapping)
+10-04 06:12:40.709  7211  7325 I JEMMA-HYDRATOR: [t=1791087160709] ✅ hydrated · al=3 · md=5 · cn=3 · ddi=5 · al×md=0 · drug×disease=2 · in 1053ms
+10-04 06:12:40.737  7211  7325 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 27ms : 19 entries
+10-04 06:12:40.738  7211  7325 I JEMMA-PROFILES: [t=1791087160738] 🏥 IPS FHIR profile saved for demo_kamekichi (30131 bytes · 0 immunizations · 0 procedures · 0 devices · 1 results · 0 past problems · 3 problems · 0 pregnancy obs)
+10-04 06:12:40.738  7211  7325 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_kamekichi
+10-04 06:12:40.998  7211  7322 I JEMMA-HYDRATOR: [t=1791087160998] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 255ms
+10-04 06:12:41.074  7211  7322 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 75ms : 32 entries
+10-04 06:12:41.076  7211  7322 I JEMMA-PROFILES: [t=1791087161076] 🏥 IPS FHIR profile saved for demo_haru (56680 bytes · 3 immunizations · 2 procedures · 2 devices · 5 results · 2 past problems · 2 problems · 3 pregnancy obs)
+10-04 06:12:41.076  7211  7322 D JEMMA-PROFILES: ⭐ Seeded demo profile files for demo_haru
+10-04 06:12:41.092  7211  7322 I JEMMA-PROFILES: [t=1791087161092] 📋 rescanFromDisk · 4 profiles · current=demo_kurodo in 16ms
+10-04 06:12:41.094  7211  7211 D JEMMA-PROFILES: [t=1791087161094] 📋 renderList · 4 profiles · current=demo_kurodo
+10-04 06:12:41.094  7211  7211 D JEMMA-PROFILES: [t=1791087161094] [Adapter] 📦 submit · 4 profiles · currentId=demo_kurodo
+10-04 06:12:41.111  7211  7211 D JEMMA-PROFILES: [t=1791087161111] [Adapter] 🏗 onCreateViewHolder
+10-04 06:12:41.112  7211  7211 D JEMMA-PROFILES: [t=1791087161112] [Adapter] 🔗 bind pos=0 · id=demo_haru · name=Haru Tanaka · isCurrent=false
+10-04 06:12:41.121  7211  7211 D JEMMA-PROFILES: [t=1791087161121] [Adapter] 🏗 onCreateViewHolder
+10-04 06:12:41.121  7211  7211 D JEMMA-PROFILES: [t=1791087161121] [Adapter] 🔗 bind pos=1 · id=demo_kamekichi · name=Kamekichi · isCurrent=false
+10-04 06:12:41.124  7211  7211 D JEMMA-PROFILES: [t=1791087161124] [Adapter] 🏗 onCreateViewHolder
+10-04 06:12:41.124  7211  7211 D JEMMA-PROFILES: [t=1791087161124] [Adapter] 🔗 bind pos=2 · id=demo_kurodo · name=Kurodo Henro · isCurrent=true
+10-04 06:12:41.127  7211  7211 D JEMMA-PROFILES: [t=1791087161127] [Adapter] 🏗 onCreateViewHolder
+10-04 06:25:03.486  7211  7211 I JEMMA-PROFILES: [t=1791087903486] [Adapter] 👆 card tap · id=demo_haru
+10-04 06:25:03.486  7211  7211 I JEMMA-PROFILES: [t=1791087903486] 👆 profile tap → detail · id=demo_haru · name=Haru Tanaka
+10-04 06:25:03.811  7211  7325 I JEMMA-HYDRATOR: [t=1791087903810] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 229ms
+10-04 06:29:27.868  7211  7323 I JEMMA-HYDRATOR: [t=1791088167868] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 165ms
+10-04 06:29:27.939  7211  7323 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 68ms : 32 entries
+10-04 06:29:27.940  7211  7323 I JEMMA-PROFILES: [t=1791088167940] 🏥 IPS FHIR profile saved for demo_haru (56954 bytes · 3 immunizations · 2 procedures · 2 devices · 5 results · 2 past problems · 2 problems · 3 pregnancy obs)
+10-04 06:29:27.940  7211  7323 I JEMMA-PROFILES: [t=1791088167940] 💾 saved id=demo_haru name='Haru Tanaka' format=MANUAL_EDIT alreadyExisted=true in 376ms
+10-04 06:29:27.951  7211  7323 I JEMMA-PROFILES: [t=1791088167951] 📋 rescanFromDisk · 4 profiles · current=demo_kurodo in 11ms
+10-04 06:31:40.149  7211  7320 I JEMMA-HYDRATOR: [t=1791088300149] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 208ms
+10-04 06:31:49.502  7211  7211 I JEMMA-QR: [t=1791088309502] 📤 onViewCreated · profileId=demo_haru · initialChannel=PRUNED
+10-04 06:31:49.555  7211  7211 I JEMMA-QR: [t=1791088309555] 📂 loadProfile(demo_haru) → ok in 25ms
+10-04 06:31:49.751  7211  7320 I JEMMA-HYDRATOR: [t=1791088309751] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 195ms
+10-04 06:31:49.752  7211  7211 I JEMMA-QR: [t=1791088309752] 🧪 hydrate ok in 196ms · al=1 md=3 cn=2
+10-04 06:31:49.771  7211  7320 I JEMMA-CODEC: [t=1791088309771] ✂️ prune ok in 7ms : raw=3176b → pruned=3132b (98%)
+10-04 06:31:49.771  7211  7320 I JEMMA-CODEC: [t=1791088309771] 📦 encode ok in 16ms : pruned=3132b → compressed=2048b (65%)
+10-04 06:31:49.778  7211  7320 I JEMMA-CODEC: [t=1791088309778] 🪟 multi-frame split: 2048 bytes → 2 frames (targetByteSize=1024 bytes, usable=1390 bytes, maxSingle=1800 bytes, frameChunk=1400 bytes)
+10-04 06:31:49.961  7211  7320 D JEMMA-CODEC: [t=1791088309961] 🖼️ qr encode ok in 180ms : len=1031b → raw 125×125 scaled to 750×750px · EC=M
+10-04 06:31:49.971  7211  7211 D JEMMA-QR: [t=1791088309971] 🖼️ rendered frame 1/2 (1031b)
+10-04 06:31:54.646  7211  7211 D JEMMA-QR: [t=1791088314646] 🔀 channel switch PRUNED → TEXT
+10-04 06:31:54.852  7211  7255 I JEMMA-HYDRATOR: [t=1791088314852] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 204ms
+10-04 06:31:54.856  7211  7255 I JEMMA-CODEC: [t=1791088314856] 📝 text build FR in 3ms : 1855 bytes → 1793 bytes (cap 1800, 2 lines dropped)
+10-04 06:31:54.857  7211  7255 D JEMMA-CODEC: [t=1791088314857] 🪟 single frame (1793 bytes ≤ 1800 bytes)
+10-04 06:31:54.903  7211  7255 D JEMMA-CODEC: [t=1791088314903] 🖼️ qr encode ok in 45ms : len=1578b → raw 161×161 scaled to 644×644px · EC=M
+10-04 06:31:54.920  7211  7211 D JEMMA-QR: [t=1791088314919] 🖼️ rendered frame 1/1 (1578b)
+10-04 06:38:23.051  8988  9003 D JEMMA-PROFILES: ⭐ Demo profile demo_kurodo already exists on disk. Skipping seeding to preserve user modifications.
+10-04 06:38:23.052  8988  9003 D JEMMA-PROFILES: ⭐ Demo profile demo_kamekichi already exists on disk. Skipping seeding to preserve user modifications.
+10-04 06:38:23.052  8988  9003 D JEMMA-PROFILES: ⭐ Demo profile demo_haru already exists on disk. Skipping seeding to preserve user modifications.
+10-04 06:38:23.102  8988  9003 I JEMMA-PROFILES: [t=1791088703102] 📋 rescanFromDisk · 4 profiles · current=demo_kurodo in 50ms
+10-04 06:38:23.149  8988  8988 D JEMMA-PROFILES: [t=1791088703149] 📋 onCreateView (v2.2.16.10)
+10-04 06:38:23.190  8988  8988 D JEMMA-PROFILES: [t=1791088703190] 📋 onViewCreated
+10-04 06:38:23.193  8988  8988 D JEMMA-PROFILES: [t=1791088703193] 📋 renderList · 4 profiles · current=demo_kurodo
+10-04 06:38:23.193  8988  8988 D JEMMA-PROFILES: [t=1791088703193] [Adapter] 📦 submit · 4 profiles · currentId=demo_kurodo
+10-04 06:38:23.204  8988  8988 D JEMMA-PROFILES: [t=1791088703204] [Adapter] 🏗 onCreateViewHolder
+10-04 06:38:23.204  8988  8988 D JEMMA-PROFILES: [t=1791088703204] [Adapter] 🔗 bind pos=0 · id=demo_haru · name=Haru Tanaka · isCurrent=false
+10-04 06:38:23.207  8988  8988 D JEMMA-PROFILES: [t=1791088703207] [Adapter] 🏗 onCreateViewHolder
+10-04 06:38:23.207  8988  8988 D JEMMA-PROFILES: [t=1791088703207] [Adapter] 🔗 bind pos=1 · id=demo_kamekichi · name=Kamekichi · isCurrent=false
+10-04 06:38:23.210  8988  8988 D JEMMA-PROFILES: [t=1791088703210] [Adapter] 🏗 onCreateViewHolder
+10-04 06:38:23.210  8988  8988 D JEMMA-PROFILES: [t=1791088703210] [Adapter] 🔗 bind pos=2 · id=demo_kurodo · name=Kurodo Henro · isCurrent=true
+10-04 06:38:23.212  8988  8988 D JEMMA-PROFILES: [t=1791088703212] [Adapter] 🏗 onCreateViewHolder
+10-04 06:38:27.282  8988  8988 I JEMMA-PROFILES: [t=1791088707282] [Adapter] 👆 card tap · id=demo_haru
+10-04 06:38:27.283  8988  8988 I JEMMA-PROFILES: [t=1791088707282] 👆 profile tap → detail · id=demo_haru · name=Haru Tanaka
+10-04 06:38:27.587  8988  9003 I JEMMA-HYDRATOR: [t=1791088707587] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 203ms
+10-04 06:38:42.477  8988  9101 I JEMMA-HYDRATOR: [t=1791088722477] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 199ms
+10-04 06:38:55.449  8988  8988 I JEMMA-QR: [t=1791088735449] 📤 onViewCreated · profileId=demo_haru · initialChannel=PRUNED
+10-04 06:38:55.499  8988  8988 I JEMMA-QR: [t=1791088735499] 📂 loadProfile(demo_haru) → ok in 27ms
+10-04 06:38:55.692  8988  9097 I JEMMA-HYDRATOR: [t=1791088735692] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 193ms
+10-04 06:38:55.693  8988  8988 I JEMMA-QR: [t=1791088735693] 🧪 hydrate ok in 194ms · al=1 md=3 cn=2
+10-04 06:38:55.710  8988  9097 I JEMMA-CODEC: [t=1791088735710] ✂️ prune ok in 6ms : raw=3176b → pruned=3132b (98%)
+10-04 06:38:55.710  8988  9097 I JEMMA-CODEC: [t=1791088735710] 📦 encode ok in 14ms : pruned=3132b → compressed=2048b (65%)
+10-04 06:38:55.716  8988  9097 I JEMMA-CODEC: [t=1791088735716] 🪟 multi-frame split: 2048 bytes → 2 frames (targetByteSize=1024 bytes, usable=1390 bytes, maxSingle=1800 bytes, frameChunk=1400 bytes)
+10-04 06:38:55.900  8988  9097 D JEMMA-CODEC: [t=1791088735900] 🖼️ qr encode ok in 180ms : len=1031b → raw 125×125 scaled to 750×750px · EC=M
+10-04 06:38:55.911  8988  8988 D JEMMA-QR: [t=1791088735911] 🖼️ rendered frame 1/2 (1031b)
+10-04 06:39:01.194  8988  8988 D JEMMA-QR: [t=1791088741194] 🔀 channel switch PRUNED → TEXT
+10-04 06:39:01.393  8988  9102 I JEMMA-HYDRATOR: [t=1791088741393] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 197ms
+10-04 06:39:01.398  8988  9102 I JEMMA-CODEC: [t=1791088741398] 📝 text build FR in 4ms : 1855 bytes → 1793 bytes (cap 1800, 2 lines dropped)
+10-04 06:39:01.398  8988  9102 D JEMMA-CODEC: [t=1791088741398] 🪟 single frame (1793 bytes ≤ 1800 bytes)
+10-04 06:39:01.447  8988  9102 D JEMMA-CODEC: [t=1791088741447] 🖼️ qr encode ok in 47ms : len=1578b → raw 161×161 scaled to 644×644px · EC=M
+10-04 06:39:01.461  8988  8988 D JEMMA-QR: [t=1791088741461] 🖼️ rendered frame 1/1 (1578b)
+10-04 06:39:19.357  8988  9099 I JEMMA-HYDRATOR: [t=1791088759357] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 186ms
+10-04 06:40:02.032  8988  9003 I JEMMA-HYDRATOR: [t=1791088802032] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 159ms
+10-04 06:40:02.075  8988  9003 I JEMMA-CODEC: 🏥 FHIR Bundle built using SDK in 42ms : 32 entries
+10-04 06:40:02.076  8988  9003 I JEMMA-PROFILES: [t=1791088802076] 🏥 IPS FHIR profile saved for demo_haru (56684 bytes · 3 immunizations · 2 procedures · 2 devices · 5 results · 2 past problems · 2 problems · 3 pregnancy obs)
+10-04 06:40:02.076  8988  9003 I JEMMA-PROFILES: [t=1791088802076] 💾 saved id=demo_haru name='Haru Tanaka' format=MANUAL_EDIT alreadyExisted=true in 580ms
+10-04 06:40:02.084  8988  9003 I JEMMA-PROFILES: [t=1791088802084] 📋 rescanFromDisk · 4 profiles · current=demo_kurodo in 8ms
+10-04 06:40:08.300  8988  9099 I JEMMA-HYDRATOR: [t=1791088808300] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 194ms
+10-04 06:40:21.112  8988  8988 I JEMMA-QR: [t=1791088821112] 📤 onViewCreated · profileId=demo_haru · initialChannel=PRUNED
+10-04 06:40:21.153  8988  8988 I JEMMA-QR: [t=1791088821153] 📂 loadProfile(demo_haru) → ok in 21ms
+10-04 06:40:21.358  8988  9099 I JEMMA-HYDRATOR: [t=1791088821358] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 204ms
+10-04 06:40:21.359  8988  8988 I JEMMA-QR: [t=1791088821359] 🧪 hydrate ok in 206ms · al=1 md=3 cn=2
+10-04 06:40:21.366  8988  9099 I JEMMA-CODEC: [t=1791088821366] ✂️ prune ok in 6ms : raw=3134b → pruned=3090b (98%)
+10-04 06:40:21.366  8988  9099 I JEMMA-CODEC: [t=1791088821366] 📦 encode ok in 6ms : pruned=3090b → compressed=2024b (65%)
+10-04 06:40:21.371  8988  9099 I JEMMA-CODEC: [t=1791088821371] 🪟 multi-frame split: 2024 bytes → 2 frames (targetByteSize=1012 bytes, usable=1390 bytes, maxSingle=1800 bytes, frameChunk=1400 bytes)
+10-04 06:40:21.395  8988  9099 D JEMMA-CODEC: [t=1791088821395] 🖼️ qr encode ok in 21ms : len=1019b → raw 125×125 scaled to 750×750px · EC=M
+10-04 06:40:21.402  8988  8988 D JEMMA-QR: [t=1791088821402] 🖼️ rendered frame 1/2 (1019b)
+10-04 06:40:26.707  8988  8988 D JEMMA-QR: [t=1791088826707] 🔀 channel switch PRUNED → TEXT
+10-04 06:40:26.903  8988  9003 I JEMMA-HYDRATOR: [t=1791088826903] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 193ms
+10-04 06:40:26.905  8988  9003 I JEMMA-CODEC: [t=1791088826905] 📝 text build FR in 2ms : 1836 bytes → 1774 bytes (cap 1800, 2 lines dropped)
+10-04 06:40:26.905  8988  9003 D JEMMA-CODEC: [t=1791088826905] 🪟 single frame (1774 bytes ≤ 1800 bytes)
+10-04 06:40:26.937  8988  9003 D JEMMA-CODEC: [t=1791088826937] 🖼️ qr encode ok in 30ms : len=1563b → raw 161×161 scaled to 644×644px · EC=M
+10-04 06:40:26.947  8988  8988 D JEMMA-QR: [t=1791088826947] 🖼️ rendered frame 1/1 (1563b)
+10-04 06:40:42.040  8988  8988 D JEMMA-QR: [t=1791088842040] 🌐 lang switch → JA
+10-04 06:40:42.243  8988  9102 I JEMMA-HYDRATOR: [t=1791088842242] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 201ms
+10-04 06:40:42.250  8988  9102 I JEMMA-CODEC: [t=1791088842249] 📝 text build JA in 4ms : 1859 bytes → 1781 bytes (cap 1800, 2 lines dropped)
+10-04 06:40:42.251  8988  9102 D JEMMA-CODEC: [t=1791088842251] 🪟 single frame (1781 bytes ≤ 1800 bytes)
+10-04 06:40:42.314  8988  9102 D JEMMA-CODEC: [t=1791088842314] 🖼️ qr encode ok in 61ms : len=1186b → raw 161×161 scaled to 644×644px · EC=M
+10-04 06:40:42.328  8988  8988 D JEMMA-QR: [t=1791088842328] 🖼️ rendered frame 1/1 (1186b)
+10-04 06:40:46.863  8988  9847 I JEMMA-HYDRATOR: [t=1791088846863] ✅ hydrated · al=1 · md=3 · cn=2 · ddi=0 · al×md=0 · drug×disease=2 · in 199ms
+--------- scrub_logcat: 2 line(s) removed (non-JemmaPass tags or non-demo profile data)

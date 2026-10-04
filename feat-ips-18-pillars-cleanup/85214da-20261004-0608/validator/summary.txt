@@ -1,0 +1,9 @@
+errors:
+qa/device/out/85214da-20261004-0608/validator/demo_haru.txt:0
+qa/device/out/85214da-20261004-0608/validator/demo_kamekichi.txt:0
+qa/device/out/85214da-20261004-0608/validator/demo_kurodo.txt:0
+warnings:
+qa/device/out/85214da-20261004-0608/validator/demo_haru.txt:51
+qa/device/out/85214da-20261004-0608/validator/demo_kamekichi.txt:31
+qa/device/out/85214da-20261004-0608/validator/demo_kurodo.txt:28
+qa/device/out/85214da-20261004-0608/validator/summary.txt:0
