@@ -7,6 +7,7 @@
   - Rapport : `to-claude/0094-report-Antigravity-Contacts.md`.
   - Réunion : `meetings/2026-10-04-02/Antigravity-Contacts.md`.
   - Cycle Appareil 28 EXÉCUTÉ avec SUCCÈS sur Pixel 9 Pro XL (PASS 113 checks seed, 0 erreur HL7 FHIR IPS, SD-27 respecté, verrou DEVICE-LOCK-0028 libéré, publié sur device-reports).
+  - Tour 2 : Analyse de qa/device/jp.sh pour l'automatisation intégrale du couloir appareil (action composite cycle-full et gestionnaires de verrou). Rapports `to-claude/tour2-report-Antigravity-Contacts.md` et `to-claude/amelioration-Antigravity-Contacts-0002.md` déposés.
 - **Couloir CHROME** (Antigravity-Chrome) :
   - Socle pur TypeScript `core/` sur `ag/chrome-main` (13/13 tests Node 22, validateur HL7 IPS 0 erreur).
   - Assainissement : retrait complet des logs à chemins Mac locaux (`ba65e08`, `.gitignore` ajouté).
@@ -36,10 +37,10 @@
   - Rapport : `to-claude/0093-report-Antigravity-USB.md`.
   - Réunion : `meetings/2026-10-04-02/Antigravity-USB.md`.
 - **Couloir ANTIGRAVITY-1** (Antigravity-1) :
-  - Tour 1 — Défaut 1 (Allergies sur QR Texte) : Résolu au commit `c6d0b36` sur `ag/0091-qr-allergy-order` (poussé sur `origin/ag/0091-qr-allergy-order`). 4/4 tests passés (`UC-QRT-020..023` verts sans toucher aux tests). Réutilisation de `PdfPillarLayout.sortByCriticality`.
-  - Tour 1 — Défaut 2 (Fiche Secouriste) : Squelette pur sans import Android `RescueAllergyFormat` poussé au commit `6e9c767` sur `ag/0091-rescue-allergy-line`.
-  - Rapport : `to-claude/0091-report-Antigravity-1.md`.
-  - Réunion : `meetings/2026-10-04-02/Antigravity-1.md`.
+  - Tour 1 — Défaut 1 (Allergies sur QR Texte) : Résolu au commit `c6d0b36` sur `ag/0091-qr-allergy-order` (fusionné dans `feat` @ `f06dcd3`).
+  - Tour 2 — Défaut 2 (Fiche Secouriste) : Résolu au commit `9238644` sur `ag/0091-rescue-allergy-line` (poussé sur `origin/ag/0091-rescue-allergy-line`). Tests `UC-RSQ-001..009` 100% verts (9/9). Suite complète JVM Android verte : **525 run · 0 failed · 0 ignored** (100% success). `RescueAllergyFormat.line` branché sur `PatientDetailFragment`.
+  - Tour 2 — Découplage du tri par criticité : Proposition d'architecture vers `pillars/AllergyCriticality.kt` formalisée (sans code).
+  - Rapports : `to-claude/tour2-report-Antigravity-1.md` et proposition `to-claude/amelioration-Antigravity-1-0002.md` déposés.
 - **Couloirs DOCS, iOS, UX** :
   - iOS : Résolution groupe sanguin (LOINC 882-1) sur `ag/ios-main` @ `d05ebd5`, 10/10 vecteurs passés. Rapport `to-claude/ios-0001-report-Antigravity-iOS.md` et réunion 02 déposés.
   - UX : Tranches 1 & 2 en cours, réunion 02 déposée.
