@@ -21,14 +21,14 @@ Daemon will be stopped at the end of the build
 > Task :app:debugOssLicensesTask
 > Task :app:generateDebugResValues
 > Task :app:generateDebugResources
-> Task :app:mergeDebugResources
 > Task :app:packageDebugResources
 > Task :app:processDebugNavigationResources
+> Task :app:mergeDebugResources
 > Task :app:generateDebugBuildConfig
 > Task :app:parseDebugLocalResources
 > Task :app:checkDebugAarMetadata
-> Task :app:compileDebugNavigationResources
 > Task :app:dataBindingGenBaseClassesDebug
+> Task :app:compileDebugNavigationResources
 > Task :app:mapDebugSourceSetPaths
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
@@ -40,7 +40,6 @@ Daemon will be stopped at the end of the build
 > Task :app:processDebugManifest
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
 > Task :app:javaPreCompileDebugUnitTest
-> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:mergeDebugShaders
@@ -48,12 +47,12 @@ Daemon will be stopped at the end of the build
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets
-> Task :app:processDebugResources
-> Task :app:checkDebugDuplicateClasses
 > Task :app:desugarDebugFileDependencies
-> Task :app:kspDebugKotlin
-> Task :app:mergeExtDexDebug
 > Task :app:mergeDebugJniLibFolders
+> Task :app:processDebugManifestForPackage
+> Task :app:checkDebugDuplicateClasses
+> Task :app:processDebugResources
+> Task :app:mergeExtDexDebug
 > Task :app:mergeLibDexDebug
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
@@ -63,6 +62,7 @@ Daemon will be stopped at the end of the build
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libLiteRt.so, libLiteRtClGlAccelerator.so, libandroidx.graphics.path.so, libbarhopper_v3.so, libimage_processing_util_jni.so, liblitertlm_jni.so, libsqlite3x.so, libsurface_util_jni.so, libtensorflowlite_jni_gms_client.so. Run with --info option to learn more.
 
+> Task :app:kspDebugKotlin
 > Task :app:compileDebugKotlin
 w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/main/java/be/heyman/android/jemmapassdemo/ai/assistant/VulgariseRepository.kt:20:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to property.
 - To opt in to applying to both value parameter and property, add '-Xannotation-default-target=param-property' to your compiler arguments.
@@ -790,9 +790,9 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 > Task :app:processDebugUnitTestJavaRes
 > Task :app:transformDebugUnitTestClassesWithAsm
 > Task :app:testDebugUnitTest
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1791068673687.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1791085734211.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
 
-BUILD SUCCESSFUL in 8m 59s
+BUILD SUCCESSFUL in 9m 2s
 55 actionable tasks: 55 executed
