@@ -133,11 +133,12 @@ object TextQrProbe {
     }
 
     /**
-     * Drop order (UC-QRT-009, decided 2026-10-02, mailbox message 0037 A) : most important
-     * first — allergies, medications, active problems, pregnancy, functional status,
-     * emergency contacts, devices, patient address / phone / e-mail / id, past illnesses,
-     * procedures, results, immunizations. A rescuer must know that a person cannot hear
-     * or walk before knowing her vaccines.
+     * Drop order (UC-QRT-009, decided 2026-10-02, mailbox message 0037 A ; devices moved up
+     * on 2026-10-04, improvement Analyse-0002, UC-QRT-030..034) : most important first —
+     * allergies, medications, active problems, pregnancy, devices, functional status,
+     * emergency contacts, patient address / phone / e-mail / id, past illnesses, procedures,
+     * results, immunizations. A rescuer must know about a pacemaker before knowing that a
+     * person walks with a cane, and about the cane before knowing her vaccines.
      * As long as a less important block still prints something, every more important
      * block is whole.
      */
@@ -145,8 +146,8 @@ object TextQrProbe {
         val found = sections(text)
         val counts = modelCounts(h)
         val order = listOf(
-            ALLERGIES, MEDICATIONS, CONDITIONS, PREGNANCY, FUNCTIONAL, CONTACTS,
-            DEVICES, PATIENT, PAST_PROBLEMS, PROCEDURES, RESULTS, IMMUNIZATIONS,
+            ALLERGIES, MEDICATIONS, CONDITIONS, PREGNANCY, DEVICES, FUNCTIONAL, CONTACTS,
+            PATIENT, PAST_PROBLEMS, PROCEDURES, RESULTS, IMMUNIZATIONS,
         )
         val expected = order.map { if (it == PATIENT) patientExtrasExpected(h) else counts.getValue(it) }
         val printed = order.map { if (it == PATIENT) patientExtrasPrinted(text) else (found[it]?.bullets ?: 0) }
