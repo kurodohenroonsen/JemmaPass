@@ -191,13 +191,9 @@ class PatientDetailFragment : Fragment() {
     private val uiLang: String by lazy {
         Locale.getDefault().language.take(2).ifBlank { "en" }
     }
-    private val allergyLabelResolver = CodeLabelResolver { _, code, lang ->
+    private val allergyLabelResolver = CodeLabelResolver { _, code, _ ->
         if (code.equals("high", ignoreCase = true)) {
-            when (lang.take(2).lowercase()) {
-                "fr" -> "GRAVE"
-                "ja" -> "重度"
-                else -> "SEVERE"
-            }
+            getString(R.string.rescue_allergy_severe)
         } else null
     }
 
@@ -1224,7 +1220,7 @@ class PatientDetailFragment : Fragment() {
             val allergyLine = RescueAllergyFormat.line(entry, allergyLabelResolver, uiLang)
             val row = makeRow(allergyLine.text, isPlaceholder = false, isBullet = !allergyLine.severe)
             if (allergyLine.severe) {
-                row.setTextColor(0xFFEF4444.toInt())
+                row.setTextColor(0xFFF87171.toInt())
             }
             row.contentDescription = allergyLine.spoken
             container.addView(row)
@@ -1256,7 +1252,7 @@ class PatientDetailFragment : Fragment() {
             val allergyLine = RescueAllergyFormat.line(entryWithDisplay, allergyLabelResolver, uiLang)
             child.text = if (allergyLine.severe) allergyLine.text else "• ${allergyLine.text}"
             if (allergyLine.severe) {
-                child.setTextColor(0xFFEF4444.toInt())
+                child.setTextColor(0xFFF87171.toInt())
             }
             child.contentDescription = allergyLine.spoken
         }
