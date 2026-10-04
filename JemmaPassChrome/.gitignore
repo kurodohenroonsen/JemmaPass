@@ -1,0 +1,3 @@
+# Local execution logs (may contain local developer paths)
+*.log
+tests/out/validator/*.log
