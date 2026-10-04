@@ -41,9 +41,10 @@
   - Rapports : `to-claude/tour3-report-Antigravity-USB.md` et tour à vide motivé `to-claude/amelioration-USB-0003.md` déposés.
 - **Couloir ANTIGRAVITY-1** (Antigravity-1) :
   - Tour 1 — Défaut 1 (Allergies sur QR Texte) : Résolu au commit `c6d0b36` sur `ag/0091-qr-allergy-order` (fusionné dans `feat` @ `f06dcd3`).
-  - Tour 2 — Défaut 2 (Fiche Secouriste) : Résolu au commit `9238644` sur `ag/0091-rescue-allergy-line` (poussé sur `origin/ag/0091-rescue-allergy-line`). Tests `UC-RSQ-001..009` 100% verts (9/9). Suite complète JVM Android verte : **525 run · 0 failed · 0 ignored** (100% success). `RescueAllergyFormat.line` branché sur `PatientDetailFragment`.
-  - Tour 2 — Découplage du tri par criticité : Proposition d'architecture vers `pillars/AllergyCriticality.kt` formalisée (sans code).
-  - Rapports : `to-claude/tour2-report-Antigravity-1.md` et proposition `to-claude/amelioration-Antigravity-1-0002.md` déposés.
+  - Tour 2 — Défaut 2 (Fiche Secouriste) : Résolu au commit `9238644` sur `ag/0091-rescue-allergy-line` (poussé sur `origin/ag/0091-rescue-allergy-line`). Tests `UC-RSQ-001..009` 100% verts (9/9).
+  - Tour 4 — Tâche 1 (Labels strings & Couleur Fiche Secouriste) : Résolu au commit `13aac2c` sur `ag/0091-rescue-allergy-line` (poussé sur origin). `rescue_allergy_severe` défini en 3 langues (`values`, `values-fr`, `values-ja`), résolveur branché dans `PatientDetailFragment`, couleur `#F87171` (UX tranche 3 §E). Tests `UC-RSQ-010..011` 100% verts. Suite complète : **527 run · 0 failed · 0 ignored** (100% succès).
+  - Tour 4 — Tâche 2 (Rang des dispositifs QR Texte) : Résolu au commit `8bab143` sur `ag/0100-qr-devices-rank` (poussé sur origin). `RANK_DEVICES = 5`, `RANK_FUNCTIONAL = 6`, `RANK_CONTACTS = 7` dans `JemmaTextPayloadBuilder.kt`. Tests `UC-QRT-030..034` 100% verts, verrou `UC-CT-020` préservé. Diagnostic documenté sur la sonde historique `TextQrProbe.assertPriority` de `RandomProfileInvariantsTest`.
+  - Rapport : `to-claude/tour4-report-Antigravity-1.md` déposé.
 - **Couloirs DOCS, iOS, UX** :
   - iOS : Résolution groupe sanguin (LOINC 882-1) sur `ag/ios-main` @ `d05ebd5`, 10/10 vecteurs passés. Rapport `to-claude/ios-0001-report-Antigravity-iOS.md` et réunion 02 déposés.
   - UX : Tranches 1 & 2 en cours, réunion 02 déposée.
