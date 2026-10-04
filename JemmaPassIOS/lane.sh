@@ -33,6 +33,37 @@ act() {
       echo "=== mailbox pull ==="
       git -C "$MB" pull --rebase origin agent-mailbox
       ;;
+    mailbox-status)
+      echo "=== mailbox status ==="
+      git -C "$MB" status -s
+      ;;
+    mailbox-log)
+      echo "=== mailbox log ==="
+      git -C "$MB" log --oneline -n 15
+      ;;
+    mailbox-ls)
+      echo "=== mailbox ls ==="
+      ls -la "$MB/to-antigravity" 2>/dev/null || true
+      ls -la "$MB/to-claude" 2>/dev/null || true
+      ls -la "$MB/meetings" 2>/dev/null || true
+      ;;
+    inspect-reports)
+      echo "=== inspect reports ==="
+      git -C "$ROOT" fetch origin device-reports:refs/remotes/origin/device-reports 2>/dev/null || true
+      git -C "$ROOT" ls-tree --name-only origin/device-reports:reports | head -30
+      ;;
+    show-report-file)
+      echo "=== show report file ==="
+      git -C "$ROOT" show "origin/device-reports:$1" | head -40
+      ;;
+    show-feat-file)
+      echo "=== show feat file ==="
+      git -C "$ROOT" show "origin/feat/ips-18-pillars-cleanup:$1" | head -50
+      ;;
+    find-feat)
+      echo "=== find in feat ==="
+      git -C "$ROOT" ls-tree -r --name-only origin/feat/ips-18-pillars-cleanup | grep -E "$1" | head -10
+      ;;
     mailbox-push)
       echo "=== mailbox push ==="
       git -C "$MB" add -A && git -C "$MB" commit -m "$*" && git -C "$MB" push origin agent-mailbox

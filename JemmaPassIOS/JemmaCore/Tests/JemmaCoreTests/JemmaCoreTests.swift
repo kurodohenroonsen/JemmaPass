@@ -16,5 +16,10 @@ final class JemmaCoreTests: XCTestCase {
         XCTAssertEqual(patientUrn, "urn:uuid:d4d6f377-2bc2-3fdf-b2ca-c2dd4477cddf")
         XCTAssertEqual(compositionUrn, "urn:uuid:cc4566d1-4052-3189-a1fd-c30ce0aac947")
         XCTAssertEqual(bundleUrn, "urn:uuid:243a6333-028d-3926-a461-0566a8eb442f")
+
+        let kurodoComp = IpsFhirCodec.stableUrn("demo_kurodo|Composition")
+        let kamekichiComp = IpsFhirCodec.stableUrn("demo_kamekichi|Composition")
+        print("kurodoComp: \(kurodoComp)")
+        print("kamekichiComp: \(kamekichiComp)")
     }
 }
