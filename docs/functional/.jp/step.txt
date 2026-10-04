@@ -1,2 +1,0 @@
-To https://github.com/kurodohenroonsen/JemmaPass.git
-   a7fd8d9..027ef19  ag/analyse-fonctionnelle -> ag/analyse-fonctionnelle
