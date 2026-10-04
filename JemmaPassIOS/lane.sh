@@ -41,6 +41,11 @@ act() {
       echo "=== mailbox log ==="
       git -C "$MB" log --oneline -n 15
       ;;
+    mailbox-file-log)
+      echo "=== mailbox file log ==="
+      git -C "$MB" log -n 3 --oneline -- "$MB/$1"
+      git -C "$MB" status -s "$MB/$1"
+      ;;
     mailbox-ls)
       echo "=== mailbox ls ==="
       ls -la "$MB/to-antigravity" 2>/dev/null || true
