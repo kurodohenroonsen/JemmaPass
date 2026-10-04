@@ -68,35 +68,37 @@ flowchart LR
 
 Les mesures ci-dessous proviennent des fichiers réels générés par le moteur du projet (sorties du cycle d'intégration et profils seedés de `JemmaPersonasSeeder.kt`).
 
-### 2.1 Sortie Brute des Tailles des Profils sur le Disque
-Fichiers mesurés dans le dossier d'export de l'application (`qa/device/out/` et profils de référence) :
+### 2.1 Sortie Brute Certifiée de la Mesure des Profils sur le Disque
+Fichiers sources mesurés par `docs/functional/measure_bundles.py` dans le dossier de référence `qa/device/out/3ee9a8d-20261003-0337/files/` :
 
 ```text
-- demo_haru.fhir.json       :  55 624 octets (unminified JSON, 1 461 lignes)
-- demo_kurodo.fhir.json     :  39 195 octets (unminified JSON, 1 032 lignes)
-- demo_kamekichi.fhir.json  :  30 055 octets (unminified JSON,   790 lignes)
-- demo_haru.json (_j 1.2)   :   4 646 octets (unminified JSON,   228 lignes)
-- demo_kurodo.json (_j 1.2) :   3 558 octets (unminified JSON,   173 lignes)
-- demo_kamekichi.json (_j)  :   3 407 octets (unminified JSON,   158 lignes)
+Source des profils réels mesurés : qa/device/out/3ee9a8d-20261003-0337/files
+
+- demo_haru.fhir.json       :  55 624 octets (formaté) -> 22 925 octets (minifié) -> 4 531 octets (DEFLATE zlib lvl 9)
+- demo_kurodo.fhir.json     :  39 195 octets (formaté) -> 15 880 octets (minifié) -> 3 221 octets (DEFLATE zlib lvl 9)
+- demo_kamekichi.fhir.json  :  30 055 octets (formaté) -> 11 757 octets (minifié) -> 2 417 octets (DEFLATE zlib lvl 9)
+- demo_haru.json (_j 1.2)   :   4 646 octets (formaté) ->  3 144 octets (minifié) -> 1 501 octets (DEFLATE zlib lvl 9)
+- demo_kurodo.json (_j 1.2) :   3 558 octets (formaté) ->  2 419 octets (minifié) -> 1 183 octets (DEFLATE zlib lvl 9)
+- demo_kamekichi.json (_j)  :   3 407 octets (formaté) ->  2 354 octets (minifié) -> 1 078 octets (DEFLATE zlib lvl 9)
 ```
 
 ### 2.2 Tableau Synthétique des Mesures
-Minification effectuée par élimination des blancs d'indentation (`json.dumps(obj, separators=(',', ':'))`). Compression DEFLATE standard (RFC 1951, niveau 9) :
+Minification effectuée par élimination des blancs d'indentation (`json.dumps(obj, separators=(',', ':'), ensure_ascii=False)`). Compression DEFLATE standard (RFC 1951, zlib niveau 9) :
 
-| Persona | Profil Médical | Bundle FHIR Formaté | Bundle FHIR Minifié | Bundle FHIR Minifié Compressé (DEFLATE) | Profil Compact `_j 1.2` Formaté | Profil Compact `_j 1.2` Minifié | Profil Compact `_j 1.2` Compressé (DEFLATE) |
+| Persona | Profil Médical | Bundle FHIR Formaté | Bundle FHIR Minifié | FHIR Minifié Compressé (DEFLATE) | Profil Compact `_j 1.2` Formaté | Profil Compact `_j 1.2` Minifié | Profil `_j 1.2` Compressé (DEFLATE) |
 |---|---|---|---|---|---|---|---|
-| 👵 **`demo_haru`** | 32 entrées (pacemaker, anticoagulant, 3 vaccins, 2 chirurgies, 2 problèmes, 5 résultats, 3 obs. grossesse, 2 statuts fonctionnels, contact) | **55 624 o** *(54,3 Ko)* | **23 211 o** *(22,7 Ko)* | **4 627 o** *(4,5 Ko)* | **4 646 o** *(4,5 Ko)* | **3 221 o** *(3,1 Ko)* | **1 535 o** *(1,5 Ko)* |
-| 🚶‍♂️ **`demo_kurodo`** | 18 entrées (3 allergies dont choc pénicilline, A+, 4 vaccins, 2 chirurgies, 1 problème, 2 antécédents, 4 résultats, contact) | **39 195 o** *(38,3 Ko)* | **15 914 o** *(15,5 Ko)* | **3 240 o** *(3,2 Ko)* | **3 558 o** *(3,5 Ko)* | **2 419 o** *(2,4 Ko)* | **1 183 o** *(1,2 Ko)* |
-| 🚶‍♂️ **`demo_kamekichi`** | 19 entrées (5 médicaments lourds, 3 cardiopathies, B+, 1 résultat biologique, contact) | **30 055 o** *(29,4 Ko)* | **11 794 o** *(11,5 Ko)* | **2 442 o** *(2,4 Ko)* | **3 407 o** *(3,3 Ko)* | **2 354 o** *(2,3 Ko)* | **1 078 o** *(1,1 Ko)* |
+| 👵 **`demo_haru`** | 32 ressources (pacemaker, anticoagulant, 3 vaccins, 2 chirurgies, 2 problèmes, 5 résultats, 3 obs. grossesse, 2 statuts fonctionnels, contact) | **55 624 o** *(54,3 Ko)* | **22 925 o** *(22,4 Ko)* | **4 531 o** *(4,4 Ko)* | **4 646 o** *(4,5 Ko)* | **3 144 o** *(3,1 Ko)* | **1 501 o** *(1,5 Ko)* |
+| 🚶‍♂️ **`demo_kurodo`** | 18 ressources (3 allergies dont choc pénicilline, A+, 4 vaccins, 2 chirurgies, 1 problème, 2 antécédents, 4 résultats, contact) | **39 195 o** *(38,3 Ko)* | **15 880 o** *(15,5 Ko)* | **3 221 o** *(3,1 Ko)* | **3 558 o** *(3,5 Ko)* | **2 419 o** *(2,4 Ko)* | **1 183 o** *(1,2 Ko)* |
+| 🚶‍♂️ **`demo_kamekichi`** | 19 ressources (5 médicaments lourds, 3 cardiopathies, B+, 1 résultat biologique, contact) | **30 055 o** *(29,4 Ko)* | **11 757 o** *(11,5 Ko)* | **2 417 o** *(2,4 Ko)* | **3 407 o** *(3,3 Ko)* | **2 354 o** *(2,3 Ko)* | **1 078 o** *(1,1 Ko)* |
 
 ### 2.3 Constat Fondamental sur l'Adéquation Capacitive
 - **Sur Carte NFC Type 4 standard (32 Ko de mémoire utilisable, soit 32 750 octets NDEF net)** :
-  - Le Bundle FHIR minifié brut de Haru (23 211 octets) **tient intégralement en mémoire sans même recourir à la compression** (taux de remplissage : 70,8 %).
-  - Le Bundle FHIR compressé de Haru (4 627 octets) n'occupe que **14,1 %** de la mémoire du transpondeur, laissant plus de **28 Ko de mémoire libre**.
-  - Pour Kurodo et Kamekichi, le FHIR compressé n'occupe respectivement que **9,9 %** et **7,5 %** de la capacité.
+  - Le Bundle FHIR minifié brut de Haru (22 925 octets) **tient intégralement en mémoire sans même recourir à la compression** (taux de remplissage : 70,0 %).
+  - Le Bundle FHIR compressé de Haru (4 531 octets) n'occupe que **13,8 %** de la mémoire du transpondeur, laissant plus de **28 Ko de mémoire libre**.
+  - Pour Kurodo et Kamekichi, le FHIR compressé n'occupe respectivement que **9,8 %** et **7,4 %** de la capacité.
 - **Sur Carte Java Card sans contact (95 Ko allouables)** :
-  - Le Bundle FHIR compressé de Haru occupe moins de **5 %** de la puce.
-  - L'espace résiduel (~90 Ko) autorise le stockage combiné du Bundle complet, des signatures matérielles, d'une copie de secours en texte clair multilingue et d'un mini visualiseur HTML autonome.
+  - Le Bundle FHIR compressé de Haru occupe moins de **4,8 %** de la puce.
+  - L'espace résiduel (~90 Ko) autorise le stockage combiné du Bundle complet, des signatures matérielles ECDSA P-256, d'une copie de secours en texte clair multilingue et d'un mini visualiseur HTML autonome.
 
 ---
 
