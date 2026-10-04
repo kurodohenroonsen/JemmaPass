@@ -71,6 +71,12 @@ act() {
     mailbox-status)
       git -C "$MB" status
       ;;
+    mailbox-files)
+      echo "=== to-antigravity ==="
+      find "$MB/to-antigravity" -type f 2>/dev/null
+      echo "=== to-claude (Chrome) ==="
+      find "$MB/to-claude" -type f -name "*Chrome*" 2>/dev/null
+      ;;
     diff)
       git -C "$ROOT" diff JemmaPassChrome/
       ;;
