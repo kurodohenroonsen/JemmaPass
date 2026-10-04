@@ -38,10 +38,10 @@ Daemon will be stopped at the end of the build
 	provider#com.google.firebase.provider.FirebaseInitProvider was tagged at AndroidManifest.xml:165 to remove other declarations but no other declaration present
 
 > Task :app:processDebugManifest
-> Task :app:preDebugUnitTestBuild UP-TO-DATE
 > Task :app:processDebugManifestForPackage
-> Task :app:javaPreCompileDebugUnitTest
 > Task :app:javaPreCompileDebug
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
@@ -53,8 +53,8 @@ Daemon will be stopped at the end of the build
 > Task :app:desugarDebugFileDependencies
 > Task :app:kspDebugKotlin
 > Task :app:mergeExtDexDebug
-> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugJniLibFolders
+> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -783,3 +783,16 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltAggregateDepsDebugUnitTest
+> Task :app:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:transformDebugUnitTestClassesWithAsm
+> Task :app:testDebugUnitTest
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1791090639911.json
+
+[Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 7m 52s
+55 actionable tasks: 55 executed
