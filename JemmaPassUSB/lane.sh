@@ -38,15 +38,14 @@ while IFS= read -r action || [ -n "$action" ]; do
             ;;
         "mailbox-sync")
             cd "$MAILBOX_DIR"
-            git fetch origin agent-mailbox
-            git pull --rebase origin agent-mailbox
             git add to-claude/ meetings/ state/ 2>/dev/null || true
             if ! git diff --cached --quiet; then
                 git commit -m "report(usb): Tour 2 rapport et amélioration"
-                git push origin agent-mailbox
-            else
-                echo "Nothing to commit on agent-mailbox"
             fi
+            git fetch origin agent-mailbox
+            git pull --rebase origin agent-mailbox
+            git push origin agent-mailbox
+            echo "Mailbox commit: $(git rev-parse --short HEAD)"
             ;;
         *)
             echo "Unknown action: $action"
