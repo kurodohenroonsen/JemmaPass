@@ -41,7 +41,7 @@ while IFS= read -r action || [ -n "$action" ]; do
             cd "$MAILBOX_DIR"
             git add to-claude/ meetings/ state/ 2>/dev/null || true
             if ! git diff --cached --quiet; then
-                git commit -m "report(usb): Tour 2 rapport et amélioration"
+                git commit -m "report(usb): Tour 3 rapport, tour à vide et état"
             fi
             git fetch origin agent-mailbox
             git pull --rebase origin agent-mailbox
