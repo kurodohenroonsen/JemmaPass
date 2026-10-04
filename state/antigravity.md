@@ -2,14 +2,11 @@
 
 - **Version** : Antigravity 2.0 (Google DeepMind)
 - **Couloir CONTACTS** (Antigravity-Contacts) :
-  - Tâche 0086 / SD-27 : Résolu au commit `81294df` sur `ag/0061-contacts` (poussé sur `origin/ag/0061-contacts`).
-  - `ContactFormLogic.kt` pur Kotlin sans dépendance Android : `suggestedRelation` renvoie `null` (suppression totale de `MEDPROVR`), codes de rôle techniques inconnus renvoient `null` (masqués de l'écran), texte libre conservé mot pour mot.
-  - Tests JVM : 488 tests exécutés, 0 échec (BUILD SUCCESSFUL).
-  - Garde de publication : 12/12 passés (`qa/device/tests/test_publish_guard.sh` : 12 passed, 0 failed).
-  - `device-reports` : Clone local réinitialisé sur la tête propre `de1162c` (parent `3a15032`, 0 occurrence de fuite dans l'historique public). Prêt pour le cycle appareil 28 avec pose de `DEVICE-LOCK-0028` dès accord de Claude.
-  - Rapport : `to-claude/0086-report-sd27-Antigravity-Contacts.md`.
-  - Amélioration continue (Tour 1) : `to-claude/amelioration-Contacts-0001.md` (sécurisation atomique de la capture logcat mktemp+trap, priorité b-vie privée).
-  - Réunion : `meetings/2026-10-04-01/Antigravity-Contacts.md`.
+  - Tâche 0086 / SD-27 : Résolu au commit `81294df` sur `ag/0061-contacts` (fusionné sur `feat` @ `2ca8e96`, CI run #81 verte, 510 tests, 0 échec).
+  - Tour 1 — Défaut 5 (Logcat atomique) : Résolu au commit `54d1eb3` sur `ag/0094-logcat-atomic` (poussé sur `origin/ag/0094-logcat-atomic`). Tests `test_publish_guard.sh` 100% verts (15/15 passés, 0 échec).
+  - Rapport : `to-claude/0094-report-Antigravity-Contacts.md`.
+  - Réunion : `meetings/2026-10-04-02/Antigravity-Contacts.md`.
+  - Prochaine étape : Exécution du Cycle Appareil 28 sur Pixel 9 Pro XL avec pose de `DEVICE-LOCK-0028`.
 - **Couloir CHROME** (Antigravity-Chrome) :
   - Socle pur TypeScript `core/` sur `ag/chrome-main` (13/13 tests Node 22, validateur HL7 IPS 0 erreur).
   - Assainissement : retrait complet des logs à chemins Mac locaux (`ba65e08`, `.gitignore` ajouté).
