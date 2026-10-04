@@ -30,5 +30,12 @@
   - Architecture déduite : scripts classiques sans bundler, zéro persistance hôte par défaut (mémoire/sessionStorage), import/export par fichiers physiques, Web Crypto validé opérationnel.
   - Rapport : `to-claude/usb-0001-report-Antigravity-USB.md`.
   - Amélioration continue (Tour 1) : `to-claude/amelioration-USB-0001.md` (interdiction stricte de persistance non éphémère sur l'ordinateur hôte et fonction de purge systématique, priorité b-vie privée).
-- **Couloirs ANTIGRAVITY-1, DOCS, iOS, UX** :
-  - Dépôt de leur fiche de participation à la réunion 2026-10-04-01 (`meetings/2026-10-04-01/<Nom>.md`).
+- **Couloir ANTIGRAVITY-1** (Antigravity-1) :
+  - Tour 1 — Défaut 1 (Allergies sur QR Texte) : Résolu au commit `c6d0b36` sur `ag/0091-qr-allergy-order` (poussé sur `origin/ag/0091-qr-allergy-order`). 4/4 tests passés (`UC-QRT-020..023` verts sans toucher aux tests). Réutilisation de `PdfPillarLayout.sortByCriticality`.
+  - Tour 1 — Défaut 2 (Fiche Secouriste) : Squelette pur sans import Android `RescueAllergyFormat` poussé au commit `6e9c767` sur `ag/0091-rescue-allergy-line`.
+  - Rapport : `to-claude/0091-report-Antigravity-1.md`.
+  - Réunion : `meetings/2026-10-04-02/Antigravity-1.md`.
+- **Couloirs DOCS, iOS, UX** :
+  - iOS : Résolution groupe sanguin (LOINC 882-1) sur `ag/ios-main` @ `d05ebd5`, 10/10 vecteurs passés. Rapport `to-claude/ios-0001-report-Antigravity-iOS.md` et réunion 02 déposés.
+  - UX : Tranches 1 & 2 en cours, réunion 02 déposée.
+  - Docs : Réunion 02 en préparation.
