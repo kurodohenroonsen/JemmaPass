@@ -15,6 +15,7 @@ Une ligne par décision : date · qui demande · question · options · état.
 - 2026-10-04 07:42 · iOS-0002 : le Bundle FHIR R4 est le document maître persistant (`<sid>.fhir.json`) sur toutes les plateformes ; `_j` est une projection : **oui** (changement de périmètre).
 - 2026-10-04 07:42 · USB-0002 : conteneur chiffré au repos sur la clé : **oui, « faites au mieux »** (Web Crypto natif, tests d'abord).
 - 2026-10-04 07:42 · nettoyage de `0e79464` sur `ag/analyse-fonctionnelle` : **commit de revert**, pas de push forcé.
+- 2026-10-04 08:33 · KB servie publiquement sur `jemmapass.net/models` alors que l'audit KB (tour 3) dit UMLS §3.a/§11.a non respectés, WHOCC ambigu : **laisser en ligne, le temps de l'analyse**. L'analyse continue (table SAB → catégorie, source par source) ; rien n'est partagé en pair-à-pair.
 
 ## En attente
 
