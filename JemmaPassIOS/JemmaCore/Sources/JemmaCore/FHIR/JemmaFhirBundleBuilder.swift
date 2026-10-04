@@ -97,6 +97,82 @@ public enum JemmaFhirBundleBuilder: Sendable {
             ))
         }
 
+        // Blood Group (Results Observation LOINC 882-1)
+        if let bt = profile.p?.bt,
+           let snomedCode = IpsBloodGroup.snomedCode(bt),
+           let snomedDisplay = IpsBloodGroup.snomedDisplay(bt) {
+            let resultId = IpsBloodGroup.derivedId(profileId: sid)
+            let obsUrn = IpsFhirCodec.resultUrn(profileSid: sid, resultId: resultId)
+
+            let obs = FHIRObservation(
+                id: resultId,
+                meta: FHIRMeta(profile: [
+                    "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-results-laboratory-uv-ips"
+                ]),
+                status: "final",
+                category: [
+                    FHIRCodeableConcept(
+                        coding: [
+                            FHIRCoding(
+                                system: "http://terminology.hl7.org/CodeSystem/observation-category",
+                                code: "laboratory",
+                                display: "Laboratory"
+                            )
+                        ],
+                        text: "Laboratory"
+                    )
+                ],
+                code: FHIRCodeableConcept(
+                    coding: [
+                        FHIRCoding(
+                            system: sysLoinc,
+                            code: IpsBloodGroup.loincAboRh,
+                            display: "ABO and Rh group [Type] in Blood"
+                        )
+                    ],
+                    text: IpsBloodGroup.displayAboRh
+                ),
+                subject: FHIRReference(reference: patientUrn),
+                performer: [
+                    FHIRReference(reference: patientUrn, display: "Patient-reported")
+                ],
+                _effectiveDateTime: FHIRElementExtension(
+                    extension: [
+                        FHIRExtension(
+                            url: "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                            valueCode: "unknown"
+                        )
+                    ]
+                ),
+                valueCodeableConcept: FHIRCodeableConcept(
+                    coding: [
+                        FHIRCoding(
+                            system: sysSnomed,
+                            code: snomedCode,
+                            display: snomedDisplay
+                        )
+                    ],
+                    text: snomedDisplay
+                )
+            )
+
+            bundleEntries.append(FHIRBundleEntry(fullUrl: obsUrn, resource: .observation(obs)))
+
+            compositionSections.append(FHIRSection(
+                title: "Results",
+                code: FHIRCodeableConcept(
+                    coding: [
+                        FHIRCoding(
+                            system: sysLoinc,
+                            code: "30954-2",
+                            display: "Relevant diagnostic tests/laboratory data note"
+                        )
+                    ]
+                ),
+                entry: [FHIRReference(reference: obsUrn)]
+            ))
+        }
+
         // Composition
         let compDate = timestamp ?? ISO8601DateFormatter().string(from: Date())
         let composition = FHIRComposition(

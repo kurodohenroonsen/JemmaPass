@@ -66,4 +66,8 @@ public enum IpsBloodGroup: Sendable {
         }
         return snomed.first(where: { $0.value.display.caseInsensitiveCompare(display) == .orderedSame })?.key
     }
+
+    public static func derivedId(profileId: String) -> String {
+        return IpsFhirCodec.fhirId(derivedIdPrefix + profileId)
+    }
 }

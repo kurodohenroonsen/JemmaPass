@@ -386,6 +386,30 @@ public struct FHIRCondition: Codable, Sendable, Equatable {
     }
 }
 
+public struct FHIRExtension: Codable, Sendable, Equatable {
+    public var url: String
+    public var valueCode: String?
+    public var valueString: String?
+
+    public init(url: String, valueCode: String? = nil, valueString: String? = nil) {
+        self.url = url
+        self.valueCode = valueCode
+        self.valueString = valueString
+    }
+}
+
+public struct FHIRElementExtension: Codable, Sendable, Equatable {
+    public var `extension`: [FHIRExtension]
+
+    enum CodingKeys: String, CodingKey {
+        case `extension` = "extension"
+    }
+
+    public init(extension: [FHIRExtension]) {
+        self.extension = `extension`
+    }
+}
+
 public struct FHIRObservation: Codable, Sendable, Equatable {
     public var resourceType: String = "Observation"
     public var id: String?
@@ -394,11 +418,30 @@ public struct FHIRObservation: Codable, Sendable, Equatable {
     public var category: [FHIRCodeableConcept]?
     public var code: FHIRCodeableConcept
     public var subject: FHIRReference
+    public var performer: [FHIRReference]?
     public var effectiveDateTime: String?
+    public var _effectiveDateTime: FHIRElementExtension?
     public var valueQuantity: FHIRQuantity?
     public var valueCodeableConcept: FHIRCodeableConcept?
     public var valueString: String?
     public var interpretation: [FHIRCodeableConcept]?
+
+    enum CodingKeys: String, CodingKey {
+        case resourceType
+        case id
+        case meta
+        case status
+        case category
+        case code
+        case subject
+        case performer
+        case effectiveDateTime
+        case _effectiveDateTime = "_effectiveDateTime"
+        case valueQuantity
+        case valueCodeableConcept
+        case valueString
+        case interpretation
+    }
 
     public init(
         id: String? = nil,
@@ -407,7 +450,9 @@ public struct FHIRObservation: Codable, Sendable, Equatable {
         category: [FHIRCodeableConcept]? = nil,
         code: FHIRCodeableConcept,
         subject: FHIRReference,
+        performer: [FHIRReference]? = nil,
         effectiveDateTime: String? = nil,
+        _effectiveDateTime: FHIRElementExtension? = nil,
         valueQuantity: FHIRQuantity? = nil,
         valueCodeableConcept: FHIRCodeableConcept? = nil,
         valueString: String? = nil,
@@ -419,7 +464,9 @@ public struct FHIRObservation: Codable, Sendable, Equatable {
         self.category = category
         self.code = code
         self.subject = subject
+        self.performer = performer
         self.effectiveDateTime = effectiveDateTime
+        self._effectiveDateTime = _effectiveDateTime
         self.valueQuantity = valueQuantity
         self.valueCodeableConcept = valueCodeableConcept
         self.valueString = valueString

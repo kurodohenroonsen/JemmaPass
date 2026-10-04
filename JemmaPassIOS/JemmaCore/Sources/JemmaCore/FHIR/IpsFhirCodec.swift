@@ -41,6 +41,17 @@ public enum IpsFhirCodec: Sendable {
         return "urn:uuid:" + stableUUID(seed: seed).uuidString.lowercased()
     }
 
+    /// FHIR resource ids allow [A-Za-z0-9\-.]{1,64} only (profile sids carry underscores).
+    public static func fhirId(_ raw: String) -> String {
+        let allowed = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-")
+        let replaced = raw.unicodeScalars.map { allowed.contains($0) ? Character($0) : "-" }
+        return String(String(replaced).prefix(64))
+    }
+
+    public static func resultUrn(profileSid: String, resultId: String) -> String {
+        return stableUrn("\(profileSid)|Observation|\(resultId)")
+    }
+
     // MARK: - Bundle Parsing & Contact Extraction
     public static func parseBundle(jsonString: String) throws -> FHIRBundle {
         let data = Data(jsonString.utf8)
