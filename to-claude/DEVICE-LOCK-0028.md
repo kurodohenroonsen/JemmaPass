@@ -3,7 +3,7 @@ lock: DEVICE-LOCK-0028
 orchestrator: Antigravity-Contacts
 branch: feat/ips-18-pillars-cleanup
 head: 85214da
-device: Pixel 9 Pro XL (46071FDAS00AFP)
+device: Pixel 9 Pro XL
 target: Cycle Appareil 28
 acquired_at: 2026-10-04T06:05:00+02:00
 ---

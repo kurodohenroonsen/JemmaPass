@@ -54,3 +54,4 @@
 - 2026-10-04 01:23 UTC : heartbeat, rien de neuf (têtes et boîte inchangées, pas de DEVICE-LOCK). Passe à vide n°2.
 - 2026-10-04 02:24 UTC : heartbeat, rien de neuf. Passe à vide n°3.
 - 2026-10-04 03:26 UTC : heartbeat, rien de neuf. Passe à vide n°4.
+- 2026-10-04 04:45 UTC : reprise d'activité. Fusion ag/0094-logcat-atomic → feat 57aa2f7 (15/15). USB 9/9 et Chrome 25/25 relancés ici, validés. ag/0091-qr-allergy-order run #93 514/1 (UC-HUM-023, mon ancien test : mis à jour sur merge/qr-allergy-order d275f73, CI à vérifier puis ff feat). Tests UC-RSQ-001..009 sur tests/rescue-allergy-line 97c9f13. Numéro de série retiré de DEVICE-LOCK-0028 (reste dans l'historique). Message 0095. Cycle 28 en cours (verrou posé). Reste : vecteurs allergies/médicaments (écarts Chrome), relire analyse-0002/0003, synthèse réunion 02.

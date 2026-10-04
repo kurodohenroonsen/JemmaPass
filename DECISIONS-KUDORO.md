@@ -16,3 +16,4 @@ Une ligne par décision : date · qui demande · question · options · état.
 - Support GitHub : purge des commits déréférencés de `device-reports`.
 - USB (rapport usb-0001) : (1) zéro persistance automatique sur l'ordinateur hôte ; (2) format du conteneur chiffré par mot de passe ; (3) périmètre d'édition de la première version. En attendant : rien d'écrit sur l'hôte.
 - UX (rapport ux-0001) : DEC-UX-01 à DEC-UX-08 (couleurs d'alerte, statut décédé, masquage des codes, troncature des notes, tailles de texte et de cibles, libellés du lecteur d'écran, contenu encodé replié) — `docs/ux/00-audit.md`, branche `ag/ux-main`.
+- Numéro de série du téléphone présent dans l'historique de la boîte `agent-mailbox` (fichier `DEVICE-LOCK-0028.md`, retiré de la tête) : réécrire l'historique de la boîte (push forcé, tous les orchestrateurs doivent se resynchroniser) / laisser. Moins sensible qu'une donnée personnelle ; des fragments du numéro figurent déjà dans `qa/device/jp.sh`.
