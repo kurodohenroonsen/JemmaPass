@@ -8,11 +8,31 @@
 > - `[EXISTANT]` : Comportement vérifié dans le code source Kotlin avec citation exacte `fichier:ligne`.  
 > - `[PARTIEL]` : Une partie existe dans le code source ; citation exacte de l'existant et description précise du manque.  
 > **Règle spécifique Urgence (directive message Claude 0091)** : Pour chaque cas d'usage touchant les canaux d'intervention vitale (QR Texte, Fiche Secouriste, Widget Écran de Veille, Triage SALT), une ligne obligatoire explicite **« ⚠️ Ce qui est perdu quand la place manque »** détaille l'impact clinique exact d'une éviction ou d'un dépassement de budget.  
+> **Règle spécifique Inter-Plateformes (directive message Claude 0098)** : La section 0 documente la provenance exacte de chaque libellé médical (`fichier:ligne`) dans le code Android, distinguant les trois sources : Profil `_j`, Base de connaissances SQLite `knowledge_full.db`, ou Ressources d'interface (`res/values/strings.xml`, catalogues).
+
+---
+
+## 0. Cartographie Trans-Plateformes : Provenance des Libellés Médicaux dans Android (Message 0098)
+
+Les écarts de libellés observés entre plateformes (Android vs Chrome, iOS, USB) s'expliquent par le fait que sur Android, un profil hydraté par la **base de connaissances SQLite locale (`knowledge_full.db`)** substitue aux textes bruts saisis les libellés canoniques issus des nomenclatures officielles (ATC, SNOMED, UMLS). Une plateforme sans base de connaissances ne peut pas deviner ces libellés sans règle contractuelle commune (`DECISIONS-KUDORO.md`).
+
+Le tableau ci-dessous établit la carte exhaustive de l'origine de chaque libellé produit par Android :
+
+| Pilier Clinique | Champ FHIR R4 produit | Origine sur téléphone avec KB active (`fichier:ligne`) | Origine sur plateforme SANS base de connaissances | Ressource d'interface / Fallback |
+|---|---|---|---|---|
+| **Allergies** | `AllergyIntolerance.code.coding.display`<br>`AllergyIntolerance.code.text` | **Base de connaissances SQLite**<br>`JemmaProfileHydrator.kt:191-212`, `JemmaProfileHydrator.kt:700-735`, `KnowledgeBaseService.kt:320-360`<br>Requête sur `terminology_codes.primary_display` (libellé officiel SNOMED, ex: `"Allergy to peanut"`) et `ips_valuesets_translations` (FR/JA). Écrase le texte saisi. | **Profil JSON `_j`**<br>`_j.al[].d` (ex: `"Allergy to soy protein"`) ou `al[].d_display` (`JemmaProfileHydrator.kt:720-731`). | `JemmaFhirBundleBuilder.kt:207-243` utilise `displayStr = a.displayLocalized.ifBlank { codeStr }`. Sur QR texte : `RescueAllergyFormat.kt:38-70`. |
+| **Médicaments** | `Medication.code.coding.display`<br>`Medication.code.text` | **Base de connaissances SQLite**<br>`JemmaProfileHydrator.kt:219-259`, `KnowledgeBaseService.kt:200-264`<br>Requête ATC sur `atc_hierarchy.name_en` (nom générique international, ex: `"Fexofenadine"` pour ATC `R06AX26`). | **Profil JSON `_j`**<br>`_j.md[].t` ou `md[].displayLabel` (nom commercial saisi, ex: `"Allegra FX (fexofenadine 60mg)"`). | `JemmaFhirBundleBuilder.kt:253-292`. |
+| **Médications (Détail de posologie)** | `MedicationStatement.dosage[0].text` | **Profil JSON `_j`**<br>`JemmaFhirBundleBuilder.kt:340-346`<br>Concaténation de la posologie saisie `m.timing` (`_j.md[].t`), `m.doseValue` (`md[].v`) et `m.doseUnit` (`md[].u`). Le texte saisi dans le profil y est préservé. | **Profil JSON `_j`**<br>`md[].t`, `md[].v`, `md[].u`. | Fallback sur `displayStr` si aucun dosage n'est renseigné. |
+| **Voies d'administration** | `MedicationStatement.dosage[0].route` | **Ressources d'interface & Catalogue**<br>`pillars/IpsRouteCatalog.kt:15-40`<br>Mapping du code court (`md[].r`, ex: `"O"`) vers le code SNOMED `260548002` et le libellé traduit via `res/values/strings.xml` (`ips_route_*`). | **Ressource locale / Catalogue**<br>Mapping identique `r` → SNOMED sans besoin de la KB SQLite. | Fallback sur `md[].r` brut si inconnu. |
+| **Problèmes Actifs** | `Condition.code.coding[0].display`<br>`Condition.code.text` | **Conteneur FHIR-natif / Profil `_j.cn`**<br>`ips/IpsProblem.kt:1-50`, `ips/IpsFhirCodec.kt:300-350`<br>Intitulé saisi `pb.title` (ex: `"Heart failure"`). Localisation multilingue optionnelle via `ips_valuesets_translations` (`JemmaProfileHydrator.kt:166-178`). | **Conteneur FHIR-natif / `_j.cn`**<br>Intitulé saisi `pb.title`. | `ips/IpsProblemCatalog.kt`. |
+| **Antécédents Résolus** | `Condition.code.coding[0].display`<br>`Condition.code.text` | **Conteneur FHIR-natif / Profil `_j.ph`**<br>`ips/IpsPastProblem.kt:1-50`, `ips/IpsFhirCodec.kt:320-350`<br>Intitulé saisi `pp.title` (ex: `"Myocardial infarction"`). Localisation multilingue via `ips_valuesets_translations`. | **Conteneur FHIR-natif / `_j.ph`**<br>Intitulé saisi `pp.title`. | Fallback sur `pp.title` brut. |
+| **Vaccinations** | `Immunization.vaccineCode.coding[0].display`<br>`Immunization.vaccineCode.text`<br>`protocolApplied[0].targetDisease[0].display` | **Ressources d'interface / Catalogue FHIR-natif**<br>`ips/IpsImmunization.kt:1-60`, `pillars/IpsVaccineCatalog.kt:20-60`<br>Non hydraté par la KB SQLite. Le libellé du vaccin (`imm.vaccineLabel`) et de la maladie cible (`imm.targetDiseaseLabel`) proviennent du catalogue intégré et des chaînes `res/values/strings.xml`. | **Catalogue intégré équivalent**<br>Table statique code SNOMED ↔ libellé (indépendant de SQLite). | `pillars/IpsVaccineCatalog.kt:25`. |
 
 ---
 
 ## Sommaire de la Tranche 2
 
+0. [Cartographie Trans-Plateformes : Provenance des Libellés Médicaux dans Android](#0-cartographie-trans-plateformes--provenance-des-libellés-médicaux-dans-android-message-0098)
 1. [Domaine STO : Persistance, Intégrité Locale & Concurrence](#1-domaine-sto--persistance-intégrité-locale--concurrence)
 2. [Domaine PAT & CTC : Identité Patient, Démographie & Contacts d'Urgence](#2-domaine-pat--ctc--identité-patient-démographie--contacts-durgence)
 3. [Domaine ALG : Allergies, Intolérances & Criticités Vitales](#3-domaine-alg--allergies-intolérances--criticités-vitales)
@@ -154,6 +174,10 @@
 ### UC-ALG-001 : Déclaration d'allergie médicamenteuse avec criticité élevée
 - **Étiquette** : `[EXISTANT]`
 - **Citation** : `qr/JemmaProfileJ.kt:130-145`, `ui/profile/allergies/AllergyFormBottomSheet.kt:1-60`
+- **Origine du libellé (`fichier:ligne`)** :
+  - *Avec base de connaissances* : `KnowledgeBaseService.kt:320-360` et `JemmaProfileHydrator.kt:191-212`. Le code SNOMED (`c = "91936005"`) est résolu dans `terminology_codes.primary_display` (libellé officiel, ex: `"Allergy to penicillin"`) et `ips_valuesets_translations` (FR/JA). Ce libellé officiel écrase le texte saisi dans le profil lors de l'export FHIR (`JemmaFhirBundleBuilder.kt:209, 237, 241`).
+  - *Sans base de connaissances (Chrome, iOS, USB, tests JVM)* : Repli sur `_j.al[].d` (`"Penicillin"`) ou `al[].d_display` (`JemmaProfileHydrator.kt:720-731`).
+  - *Format secouriste & QR texte* : `RescueAllergyFormat.kt:38-70` (résolution du libellé de gravité par `CodeLabelResolver` dans `res/values/strings.xml`, nom d'allergène issu de `al[].d`).
 - **Acteur** : Titulaire du passeport (ex: `demo_kurodo`)
 - **Appareil** : Téléphone Android
 - **Précondition** : Le patient est allergique à la pénicilline suite à un choc anaphylactique.
@@ -192,6 +216,12 @@
 ### UC-MED-001 : Saisie de traitement chronique avec voie d'administration inhalée
 - **Étiquette** : `[EXISTANT]`
 - **Citation** : `pillars/IpsRouteCatalog.kt:1-40`, `qr/JemmaProfileJ.kt:150-170`
+- **Origine du libellé (`fichier:ligne`)** :
+  - *Nom du médicament dans le Bundle FHIR (`Medication.code.text` et `coding.display`)* :
+    - *Avec base de connaissances* : `KnowledgeBaseService.kt:200-264` et `JemmaProfileHydrator.kt:219-259`. La KB résout le code ATC via `atc_hierarchy.name_en` (nom générique international officiel, ex: `"Salbutamol"` ou `"Fexofenadine"` pour R06AX26). Ce nom officiel écrase le libellé commercial saisi (`JemmaFhirBundleBuilder.kt:254, 277, 289`).
+    - *Sans base de connaissances (Chrome, iOS, USB, tests JVM)* : Repli sur `_j.md[].t` / `md[].displayLabel` (nom commercial saisi dans le profil, ex: `"Ventoline 100ug"` ou `"Allegra FX (fexofenadine 60mg)"`).
+  - *Détail posologique (`MedicationStatement.dosage[0].text`)* : `JemmaFhirBundleBuilder.kt:340-346`. Préservation intégrale du texte saisi dans le profil (`m.timing` issu de `md[].t`, dose `md[].v`, unité `md[].u`).
+  - *Voie d'administration (`MedicationStatement.dosage[0].route`)* : `pillars/IpsRouteCatalog.kt:15-40` et chaînes `res/values/strings.xml` (`ips_route_*`). Résolution locale du code court (`md[].r = "H"`) vers SNOMED CT `447694001` (Inhalation), sans dépendance envers la base SQLite.
 - **Acteur** : Titulaire du passeport (patient asthmatique ou BPCO)
 - **Appareil** : Téléphone Android
 - **Précondition** : Le patient prend un traitement inhalé (ex: Salbutamol).
@@ -228,6 +258,10 @@
 ### UC-PRB-001 : Renseignement d'un problème actif avec niveau de sévérité
 - **Étiquette** : `[EXISTANT]`
 - **Citation** : `ips/IpsProblem.kt:1-50`, `ips/IpsConditionSeverity.kt:1-30`
+- **Origine du libellé (`fichier:ligne`)** :
+  - *Avec base de connaissances* : `IpsProblem.kt:15-35`, `JemmaProfileHydrator.kt:166-178` et `IpsFhirCodec.kt:300-350`. Le libellé saisi `pb.title` est projeté dans `Condition.code.text` et `coding.display`. Lorsque la KB SQLite est disponible, la table `ips_valuesets_translations` permet la traduction multilingue du code SNOMED CT (`c = "84114007"`).
+  - *Sans base de connaissances (Chrome, iOS, USB, tests JVM)* : Repli direct sur l'intitulé saisi dans le profil `_j.cn[].t` / `pb.title`.
+  - *Format secouriste & QR texte* : Affichage de l'intitulé `pb.title` avec indicateur de sévérité (`IpsConditionSeverity.kt`).
 - **Acteur** : Titulaire du passeport (ex: `demo_haru`)
 - **Appareil** : Téléphone Android
 - **Précondition** : La patiente souffre d'insuffisance cardiaque (`c = "84114007"`, SNOMED CT).
@@ -245,6 +279,10 @@
 ### UC-PST-001 : Renseignement d'un antécédent médical ou chirurgical résolu avec date d'abattement
 - **Étiquette** : `[EXISTANT]`
 - **Citation** : `ips/IpsPastProblem.kt:1-50`, `ips/IpsFhirCodec.kt:320-350`
+- **Origine du libellé (`fichier:ligne`)** :
+  - *Avec base de connaissances* : `IpsPastProblem.kt:15-35`, `JemmaProfileHydrator.kt:166-178` et `IpsFhirCodec.kt:320-350`. Le libellé `pp.title` est projeté dans `Condition.code.text` et `coding.display` sous la section IPS `11348-0`. La KB SQLite enrichit le code SNOMED via les traductions FR/JA de `ips_valuesets_translations`.
+  - *Sans base de connaissances (Chrome, iOS, USB, tests JVM)* : Repli direct sur l'intitulé saisi dans le profil `_j.ph[].t` / `pp.title`.
+  - *Format secouriste & QR texte* : Les antécédents résolus sont exclus du QR texte compact et réservés au Bundle FHIR complet et au QR fragmenté (`QRF`).
 - **Acteur** : Titulaire du passeport (ex: `demo_haru`)
 - **Appareil** : Téléphone Android
 - **Précondition** : La patiente a subi un infarctus du myocarde en août 2015, traité et résolu en septembre 2015.
@@ -264,6 +302,10 @@
 ### UC-IMM-001 : Historique vaccinal complet avec numéros de lots et rappel
 - **Étiquette** : `[EXISTANT]`
 - **Citation** : `ips/IpsImmunization.kt:1-60`, `pillars/IpsVaccineCatalog.kt:1-50`
+- **Origine du libellé (`fichier:ligne`)** :
+  - *Non hydraté par la base SQLite locale* : `pillars/IpsVaccineCatalog.kt:20-60` et `IpsImmunization.kt:25-45`. Le libellé du vaccin (`imm.vaccineLabel`) et de la maladie cible (`imm.targetDiseaseLabel`) proviennent du catalogue intégré et des ressources de chaînes Android (`res/values/strings.xml` : `ips_vaccine_*`), et non de requêtes SQL sur `knowledge_full.db`.
+  - *Sans base de connaissances (Chrome, iOS, USB, tests JVM)* : Catalogue équivalent statique (table de correspondance SNOMED ↔ libellé multilingue) ou libellé textuel direct `imm.vaccineLabel`.
+  - *Format secouriste & QR texte* : Code court ou libellé compact issu du catalogue.
 - **Acteur** : Titulaire du passeport (ex: `demo_kurodo`)
 - **Appareil** : Téléphone Android
 - **Précondition** : Le patient a reçu 4 vaccins (Tdap 2022, Hep A+B 2016, Encéphalite japonaise 2023, COVID-19 2021).
@@ -280,6 +322,10 @@
 ### UC-DEV-001 : Déclaration d'implant cardiaque avec contrainte IRM et identifiant UDI
 - **Étiquette** : `[EXISTANT]`
 - **Citation** : `ips/IpsDevice.kt:1-60`, `pillars/IpsDeviceCatalog.kt:1-50`
+- **Origine du libellé (`fichier:ligne`)** :
+  - *Ressources d'interface & Catalogue* : `pillars/IpsDeviceCatalog.kt:15-50` et `res/values/strings.xml` (`ips_device_*`). La résolution du nom du type de dispositif s'effectue via `CodeLabelResolver` dans la langue cible du document ou de l'interface (FR, JA, EN).
+  - *Sans base de connaissances (Chrome, iOS, USB, tests JVM)* : Catalogue statique ou libellé anglais par défaut stocké dans l'objet (`dv[].d` / `d_display`), jamais codé en dur dans le moteur.
+  - *Format secouriste & QR texte* : Intitulé compact issu du catalogue avec mention d'alerte IRM (`IpsDevice.kt:35-45`).
 - **Acteur** : Titulaire du passeport (ex: `demo_haru`)
 - **Appareil** : Téléphone Android
 - **Précondition** : La patiente porte un stimulateur cardiaque Medtronic (`c = "14106009"`).
