@@ -85,6 +85,8 @@ import be.heyman.android.jemmapassdemo.databinding.ViewMedscanPipelineBinding
 import be.heyman.android.jemmapassdemo.databinding.ViewVitalCellBinding
 import be.heyman.android.jemmapassdemo.kb.KnowledgeBaseService
 import be.heyman.android.jemmapassdemo.kb.ResolvedConcept
+import be.heyman.android.jemmapassdemo.pillars.RescueAllergyFormat
+import be.heyman.android.jemmapassdemo.qr.CodeLabelResolver
 import be.heyman.android.jemmapassdemo.qr.JAllergy
 import be.heyman.android.jemmapassdemo.qr.JCondition
 import be.heyman.android.jemmapassdemo.qr.JMedication
@@ -188,6 +190,11 @@ class PatientDetailFragment : Fragment() {
     private val peerSid: String by lazy { arguments?.getString("peerSid") ?: "" }
     private val uiLang: String by lazy {
         Locale.getDefault().language.take(2).ifBlank { "en" }
+    }
+    private val allergyLabelResolver = CodeLabelResolver { _, code, _ ->
+        if (code.equals("high", ignoreCase = true)) {
+            getString(R.string.rescue_allergy_severe)
+        } else null
     }
 
     /** Cached display name for confirm dialogs. */
@@ -379,17 +386,15 @@ class PatientDetailFragment : Fragment() {
         bindSaltRow()
 
         // Code sections — hydration is async because the KB is in SQLite.
-        renderRawFirst(binding.patientAllergiesList,    p.optJSONArray("allergies"))
+        renderAllergiesRawFirst(binding.patientAllergiesList, p.optJSONArray("allergies"))
         renderRawFirst(binding.patientMedicationsList,  p.optJSONArray("medications"))
         renderRawFirst(binding.patientConditionsList,   p.optJSONArray("conditions"))
         renderRawFirst(binding.patientImmunizationsList, p.optJSONArray("immunizations"))
 
         viewLifecycleOwner.lifecycleScope.launch {
-            renderCodeListHydrated(
+            renderAllergiesHydrated(
                 container = binding.patientAllergiesList,
                 arr = p.optJSONArray("allergies"),
-                primarySystem = KnowledgeBaseService.SYSTEM_SNOMED,
-                tryDrug = false,
             )
             renderCodeListHydrated(
                 container = binding.patientMedicationsList,
@@ -1204,6 +1209,55 @@ class PatientDetailFragment : Fragment() {
     //  Code list rendering — raw first, then hydrated async
     // ──────────────────────────────────────────────────────────────────
 
+    private fun renderAllergiesRawFirst(container: LinearLayout, arr: JSONArray?) {
+        container.removeAllViews()
+        if (arr == null || arr.length() == 0) {
+            container.addView(makeRow("—", isPlaceholder = true))
+            return
+        }
+        for (i in 0 until arr.length()) {
+            val entry = arr.optJSONObject(i) ?: continue
+            val allergyLine = RescueAllergyFormat.line(entry, allergyLabelResolver, uiLang)
+            val row = makeRow(allergyLine.text, isPlaceholder = false, isBullet = !allergyLine.severe)
+            if (allergyLine.severe) {
+                row.setTextColor(0xFFF87171.toInt())
+            }
+            row.contentDescription = allergyLine.spoken
+            container.addView(row)
+        }
+    }
+
+    private suspend fun renderAllergiesHydrated(
+        container: LinearLayout,
+        arr: JSONArray?,
+    ) {
+        if (arr == null || arr.length() == 0) return
+        val deferred = (0 until arr.length()).map { i ->
+            val entry = arr.optJSONObject(i)
+            val code = entry?.optString("code", "")?.ifBlank { entry.optString("c", "") } ?: ""
+            viewLifecycleOwner.lifecycleScope.async {
+                resolveCodeLocalized(code, KnowledgeBaseService.SYSTEM_SNOMED, false)
+            }
+        }
+        val hydrated = deferred.awaitAll()
+        for (i in 0 until container.childCount) {
+            val child = container.getChildAt(i) as? TextView ?: continue
+            val entry = arr.optJSONObject(i) ?: continue
+            val display = hydrated.getOrNull(i)
+            val entryWithDisplay = if (!display.isNullOrBlank() && display != "—") {
+                JSONObject(entry.toString()).put("display", display)
+            } else {
+                entry
+            }
+            val allergyLine = RescueAllergyFormat.line(entryWithDisplay, allergyLabelResolver, uiLang)
+            child.text = if (allergyLine.severe) allergyLine.text else "• ${allergyLine.text}"
+            if (allergyLine.severe) {
+                child.setTextColor(0xFFF87171.toInt())
+            }
+            child.contentDescription = allergyLine.spoken
+        }
+    }
+
     private fun renderRawFirst(container: LinearLayout, arr: JSONArray?) {
         container.removeAllViews()
         if (arr == null || arr.length() == 0) {
@@ -1264,9 +1318,9 @@ class PatientDetailFragment : Fragment() {
         return kb.pickLocalizedDisplay(concept, uiLang).ifBlank { code }
     }
 
-    private fun makeRow(text: String, isPlaceholder: Boolean): TextView =
+    private fun makeRow(text: String, isPlaceholder: Boolean, isBullet: Boolean = true): TextView =
         TextView(requireContext()).apply {
-            this.text = if (isPlaceholder) text else "• $text"
+            this.text = if (isPlaceholder || !isBullet) text else "• $text"
             textSize = 13f
             setTextColor(if (isPlaceholder) 0xFF94A3B8.toInt() else 0xFFE2E8F0.toInt())
             setPadding(0, dp(3), 0, dp(3))
