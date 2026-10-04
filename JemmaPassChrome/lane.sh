@@ -77,6 +77,9 @@ act() {
       echo "=== to-claude (Chrome) ==="
       find "$MB/to-claude" -type f -name "*Chrome*" 2>/dev/null
       ;;
+    find-reports)
+      find "$ROOT/../jemmapass-device-reports" -name "*demo_haru*" 2>/dev/null
+      ;;
     diff)
       git -C "$ROOT" diff JemmaPassChrome/
       ;;
