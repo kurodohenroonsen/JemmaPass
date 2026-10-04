@@ -52,6 +52,148 @@ public enum IpsFhirCodec: Sendable {
         return stableUrn("\(profileSid)|Observation|\(resultId)")
     }
 
+    public static func deviceUrn(profileSid: String, deviceEntryId: String) -> String {
+        return stableUrn("\(profileSid)|Device|\(deviceEntryId)")
+    }
+
+    public static func deviceUseStatementUrn(profileSid: String, entryId: String) -> String {
+        return stableUrn("\(profileSid)|DeviceUseStatement|\(entryId)")
+    }
+
+    // MARK: - Device Extraction & Export
+    public static func devicesOf(bundle: FHIRBundle) -> [IpsDevice] {
+        var devicesByUrl: [String: FHIRDevice] = [:]
+        var devicesById: [String: FHIRDevice] = [:]
+
+        for entry in bundle.entry {
+            if case .device(let d) = entry.resource {
+                devicesByUrl[entry.fullUrl] = d
+                if let id = d.id {
+                    devicesById[id] = d
+                }
+            }
+        }
+
+        var results: [IpsDevice] = []
+        for entry in bundle.entry {
+            if case .deviceUseStatement(let st) = entry.resource {
+                let ref = st.device.reference
+                var matchingDevice: FHIRDevice? = nil
+                if let ref = ref {
+                    matchingDevice = devicesByUrl[ref]
+                    if matchingDevice == nil {
+                        let id = ref.components(separatedBy: "/").last ?? ref
+                        matchingDevice = devicesById[id]
+                    }
+                }
+
+                let firstCoding = matchingDevice?.type?.coding?.first
+                let code = firstCoding?.code?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
+                let display = firstCoding?.display?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
+                let typeText = matchingDevice?.type?.text?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
+                let devName = matchingDevice?.deviceName?.first?.name.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
+                let text = (typeText ?? devName) != display ? (typeText ?? devName) : nil
+
+                let udi = matchingDevice?.udiCarrier?.first?.deviceIdentifier?.nonEmpty
+                    ?? matchingDevice?.udiCarrier?.first?.carrierHRF?.nonEmpty
+
+                let rawStatus = matchingDevice?.status ?? st.status
+                let status = IpsDeviceStatus.normalize(rawStatus)
+
+                let deviceId = st.id ?? UUID().uuidString.lowercased()
+
+                let ipsDev = IpsDevice(
+                    id: deviceId,
+                    code: code,
+                    system: firstCoding?.system?.nonEmpty ?? "http://snomed.info/sct",
+                    display: display,
+                    text: text,
+                    udi: udi,
+                    manufacturer: matchingDevice?.manufacturer?.nonEmpty,
+                    model: matchingDevice?.modelNumber?.nonEmpty,
+                    serial: matchingDevice?.serialNumber?.nonEmpty,
+                    date: st.timingDateTime?.nonEmpty,
+                    status: status,
+                    bodySite: st.bodySite?.text?.nonEmpty,
+                    note: st.note?.first?.text.nonEmpty
+                )
+                results.append(ipsDev)
+            }
+        }
+        return results
+    }
+
+    public static func toFhirDevice(dv: IpsDevice, patientUrn: String) -> FHIRDevice {
+        let coding: [FHIRCoding]?
+        if let code = dv.code?.nonEmpty {
+            coding = [FHIRCoding(
+                system: dv.system?.nonEmpty ?? "http://snomed.info/sct",
+                code: code,
+                display: dv.display?.nonEmpty
+            )]
+        } else {
+            coding = nil
+        }
+
+        let typeText = dv.text?.nonEmpty ?? dv.display?.nonEmpty
+        let typeConcept = (coding != nil || typeText != nil) ? FHIRCodeableConcept(coding: coding, text: typeText) : nil
+
+        let udiCarriers: [FHIRUdiCarrier]?
+        if let udi = dv.udi?.nonEmpty {
+            udiCarriers = [FHIRUdiCarrier(deviceIdentifier: udi, carrierHRF: udi)]
+        } else {
+            udiCarriers = nil
+        }
+
+        let devStatus: String
+        switch IpsDeviceStatus.normalize(dv.status) {
+        case IpsDeviceStatus.inactive: devStatus = "inactive"
+        case IpsDeviceStatus.enteredInError: devStatus = "entered-in-error"
+        default: devStatus = "active"
+        }
+
+        var deviceNames: [FHIRDeviceName]? = nil
+        if let t = dv.text?.nonEmpty, !dv.hasCode {
+            deviceNames = [FHIRDeviceName(name: t)]
+        }
+
+        return FHIRDevice(
+            id: "\(dv.id)-device",
+            meta: FHIRMeta(profile: [profileDeviceUvIps]),
+            udiCarrier: udiCarriers,
+            status: devStatus,
+            manufacturer: dv.manufacturer?.nonEmpty,
+            serialNumber: dv.serial?.nonEmpty,
+            modelNumber: dv.model?.nonEmpty,
+            type: typeConcept,
+            patient: FHIRReference(reference: patientUrn),
+            deviceName: deviceNames
+        )
+    }
+
+    public static func toFhirUseStatement(dv: IpsDevice, patientUrn: String, deviceUrn: String) -> FHIRDeviceUseStatement {
+        let statusCode: String
+        switch IpsDeviceStatus.normalize(dv.status) {
+        case IpsDeviceStatus.inactive: statusCode = "completed"
+        case IpsDeviceStatus.enteredInError: statusCode = "entered-in-error"
+        default: statusCode = "active"
+        }
+
+        let bodyConcept = dv.bodySite?.nonEmpty != nil ? FHIRCodeableConcept(text: dv.bodySite) : nil
+        let notes = dv.note?.nonEmpty != nil ? [FHIRAnnotation(text: dv.note!)] : nil
+
+        return FHIRDeviceUseStatement(
+            id: dv.id,
+            meta: FHIRMeta(profile: [profileDeviceUseStatementUvIps]),
+            status: statusCode,
+            subject: FHIRReference(reference: patientUrn),
+            device: FHIRReference(reference: deviceUrn),
+            timingDateTime: dv.date?.nonEmpty,
+            bodySite: bodyConcept,
+            note: notes
+        )
+    }
+
     // MARK: - Bundle Parsing & Contact Extraction
     public static func parseBundle(jsonString: String) throws -> FHIRBundle {
         let data = Data(jsonString.utf8)

@@ -322,9 +322,3 @@ public enum JemmaTextPayloadBuilder: Sendable {
         return String(text[..<endIndex])
     }
 }
-
-private extension String {
-    var nonEmpty: String? {
-        return isEmpty ? nil : self
-    }
-}

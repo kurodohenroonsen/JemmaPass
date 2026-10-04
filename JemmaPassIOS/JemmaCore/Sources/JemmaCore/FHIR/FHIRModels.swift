@@ -520,29 +520,101 @@ public struct FHIRProcedure: Codable, Sendable, Equatable {
     }
 }
 
-public struct FHIRDeviceUseStatement: Codable, Sendable, Equatable {
-    public var resourceType: String = "DeviceUseStatement"
-    public var id: String?
-    public var status: String
-    public var subject: FHIRReference
-    public var device: FHIRReference
+public struct FHIRUdiCarrier: Codable, Sendable, Equatable {
+    public var deviceIdentifier: String?
+    public var carrierHRF: String?
 
-    public init(id: String? = nil, status: String = "active", subject: FHIRReference, device: FHIRReference) {
-        self.id = id
-        self.status = status
-        self.subject = subject
-        self.device = device
+    public init(deviceIdentifier: String? = nil, carrierHRF: String? = nil) {
+        self.deviceIdentifier = deviceIdentifier
+        self.carrierHRF = carrierHRF
+    }
+}
+
+public struct FHIRDeviceName: Codable, Sendable, Equatable {
+    public var name: String
+    public var type: String
+
+    public init(name: String, type: String = "patient-reported-name") {
+        self.name = name
+        self.type = type
     }
 }
 
 public struct FHIRDevice: Codable, Sendable, Equatable {
     public var resourceType: String = "Device"
     public var id: String?
+    public var meta: FHIRMeta?
+    public var udiCarrier: [FHIRUdiCarrier]?
+    public var status: String?
+    public var manufacturer: String?
+    public var serialNumber: String?
+    public var modelNumber: String?
     public var type: FHIRCodeableConcept?
+    public var patient: FHIRReference?
+    public var deviceName: [FHIRDeviceName]?
 
-    public init(id: String? = nil, type: FHIRCodeableConcept? = nil) {
+    public init(
+        id: String? = nil,
+        meta: FHIRMeta? = nil,
+        udiCarrier: [FHIRUdiCarrier]? = nil,
+        status: String? = "active",
+        manufacturer: String? = nil,
+        serialNumber: String? = nil,
+        modelNumber: String? = nil,
+        type: FHIRCodeableConcept? = nil,
+        patient: FHIRReference? = nil,
+        deviceName: [FHIRDeviceName]? = nil
+    ) {
         self.id = id
+        self.meta = meta
+        self.udiCarrier = udiCarrier
+        self.status = status
+        self.manufacturer = manufacturer
+        self.serialNumber = serialNumber
+        self.modelNumber = modelNumber
         self.type = type
+        self.patient = patient
+        self.deviceName = deviceName
+    }
+}
+
+public struct FHIRAnnotation: Codable, Sendable, Equatable {
+    public var text: String
+
+    public init(text: String) {
+        self.text = text
+    }
+}
+
+public struct FHIRDeviceUseStatement: Codable, Sendable, Equatable {
+    public var resourceType: String = "DeviceUseStatement"
+    public var id: String?
+    public var meta: FHIRMeta?
+    public var status: String
+    public var subject: FHIRReference
+    public var device: FHIRReference
+    public var timingDateTime: String?
+    public var bodySite: FHIRCodeableConcept?
+    public var note: [FHIRAnnotation]?
+
+    public init(
+        id: String? = nil,
+        meta: FHIRMeta? = nil,
+        status: String = "active",
+        subject: FHIRReference,
+        device: FHIRReference,
+        timingDateTime: String? = nil,
+        bodySite: FHIRCodeableConcept? = nil,
+        note: [FHIRAnnotation]? = nil
+    ) {
+        self.id = id
+        self.meta = meta
+        self.status = status
+        self.subject = subject
+        self.device = device
+        self.timingDateTime = timingDateTime
+        self.bodySite = bodySite
+        self.note = note
     }
 }
 

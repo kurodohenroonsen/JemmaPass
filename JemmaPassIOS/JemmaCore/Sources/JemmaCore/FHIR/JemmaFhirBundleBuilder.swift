@@ -97,6 +97,38 @@ public enum JemmaFhirBundleBuilder: Sendable {
             ))
         }
 
+        // Medical Devices (LOINC 46264-8)
+        if !profile.dv.isEmpty {
+            var deviceStatementRefs: [FHIRReference] = []
+            for (i, dvEntry) in profile.dv.enumerated() {
+                let dv = IpsDevice.fromJEntry(dvEntry, index: i)
+                let devUrn = IpsFhirCodec.deviceUrn(profileSid: sid, deviceEntryId: dv.id)
+                let stmtUrn = IpsFhirCodec.deviceUseStatementUrn(profileSid: sid, entryId: dv.id)
+
+                let devResource = IpsFhirCodec.toFhirDevice(dv: dv, patientUrn: patientUrn)
+                let stmtResource = IpsFhirCodec.toFhirUseStatement(dv: dv, patientUrn: patientUrn, deviceUrn: devUrn)
+
+                bundleEntries.append(FHIRBundleEntry(fullUrl: devUrn, resource: .device(devResource)))
+                bundleEntries.append(FHIRBundleEntry(fullUrl: stmtUrn, resource: .deviceUseStatement(stmtResource)))
+
+                deviceStatementRefs.append(FHIRReference(reference: stmtUrn))
+            }
+
+            compositionSections.append(FHIRSection(
+                title: "Medical Devices",
+                code: FHIRCodeableConcept(
+                    coding: [
+                        FHIRCoding(
+                            system: sysLoinc,
+                            code: "46264-8",
+                            display: "History of medical device use"
+                        )
+                    ]
+                ),
+                entry: deviceStatementRefs
+            ))
+        }
+
         // Blood Group (Results Observation LOINC 882-1)
         if let bt = profile.p?.bt,
            let snomedCode = IpsBloodGroup.snomedCode(bt),
@@ -392,13 +424,13 @@ public enum JemmaFhirBundleBuilder: Sendable {
     }
 }
 
-private extension Array {
+extension Array {
     var nonEmpty: [Element]? {
         return isEmpty ? nil : self
     }
 }
 
-private extension String {
+extension String {
     var nonEmpty: String? {
         return isEmpty ? nil : self
     }
