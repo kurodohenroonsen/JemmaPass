@@ -98,6 +98,13 @@ export interface JEntryGeneric {
   ct?: string; // category
   ab?: string; // abatement date
   sv?: string; // severity
+  // Device extensions (préservés depuis FHIR R4 IPS)
+  bd?: string; // bodySite text (e.g. "Left pectoral", "Both ears")
+  mf?: string; // manufacturer (e.g. "Medtronic", "Phonak")
+  sn?: string; // serialNumber (e.g. "PJN1234567")
+  mn?: string; // modelNumber (e.g. "Azure XT DR MRI SureScan")
+  udi?: any[]; // udiCarrier
+  devStatus?: string; // status du Device (ex: "active")
 }
 
 export interface JPatient {

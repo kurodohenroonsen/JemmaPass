@@ -43,7 +43,11 @@ function loadVectorJson(id: string): any {
   }
 }
 
-const vectorIds = [
+import { parseFhirBundle } from "../core/fhir_codec.ts";
+
+// ── 1. Contrat qa/vectors/contacts/ ──────────────────────────────
+
+const contactVectorIds = [
   "ct-001-nominal",
   "ct-002-two-contacts-order",
   "ct-003-no-phone",
@@ -52,9 +56,10 @@ const vectorIds = [
   "ct-006-blank-fields",
 ];
 
-for (const vecId of vectorIds) {
+for (const vecId of contactVectorIds) {
   test(`qa/vectors/contacts/${vecId}`, () => {
-    const vec = loadVectorJson(vecId);
+    const localPath = path.resolve("qa/vectors/contacts", `${vecId}.json`);
+    const vec = JSON.parse(fs.readFileSync(localPath, "utf-8"));
     const uiLang = vec.ui_lang || "en";
     const inputJ = vec.input_j;
     const expect = vec.expect;
@@ -65,7 +70,6 @@ for (const vecId of vectorIds) {
     assert.ok(patientEntry, "Bundle must contain a Patient resource");
     const contacts = patientEntry.resource.contact || [];
 
-    // Nettoyer les contacts attendus et réels pour comparaison structurelle exacte
     assert.deepEqual(
       JSON.parse(JSON.stringify(contacts)),
       expect.patient_contact,
@@ -96,5 +100,146 @@ for (const vecId of vectorIds) {
         );
       }
     }
+  });
+}
+
+// ── 2. Contrat qa/vectors/bloodgroup/ ─────────────────────────────
+
+const bgVectorFiles = fs.readdirSync(path.resolve("qa/vectors/bloodgroup"))
+  .filter(f => f.startsWith("bg-") && f.endsWith(".json"))
+  .sort();
+
+for (const bgFile of bgVectorFiles) {
+  const vecId = bgFile.replace(".json", "");
+  test(`qa/vectors/bloodgroup/${vecId}`, () => {
+    const localPath = path.resolve("qa/vectors/bloodgroup", bgFile);
+    const vec = JSON.parse(fs.readFileSync(localPath, "utf-8"));
+    const inputJ = vec.input_j;
+    const expectObs = vec.expect.blood_group_observations;
+
+    const bundle = buildFhirBundle(inputJ, { uiLang: "en", labels: resolver });
+    const patientEntry = bundle.entry.find(e => e.resource?.resourceType === "Patient");
+    assert.ok(patientEntry, "Bundle must contain a Patient resource");
+    const patientUrl = patientEntry.fullUrl;
+
+    const actualBloodObs = bundle.entry
+      .filter(e => e.resource?.resourceType === "Observation" &&
+        e.resource?.code?.coding?.some((c: any) => c.code === "882-1"))
+      .map(e => {
+        const copy = JSON.parse(JSON.stringify(e.resource));
+        delete copy.id;
+        return copy;
+      });
+
+    // Remplacer @patient dans l'attendu par l'URL patient réelle
+    const expectedNormalized = JSON.parse(
+      JSON.stringify(expectObs).replaceAll("@patient", patientUrl)
+    );
+    for (const obs of expectedNormalized) {
+      delete obs.id;
+    }
+
+    assert.deepEqual(
+      actualBloodObs,
+      expectedNormalized,
+      `Blood group observations must match for ${vecId}`
+    );
+  });
+}
+
+// ── 3. Contrat qa/vectors/devices/ ────────────────────────────────
+
+const dvVectorFiles = fs.readdirSync(path.resolve("qa/vectors/devices"))
+  .filter(f => f.startsWith("dv-") && f.endsWith(".json"))
+  .sort();
+
+for (const dvFile of dvVectorFiles) {
+  const vecId = dvFile.replace(".json", "");
+  test(`qa/vectors/devices/${vecId}`, () => {
+    const localPath = path.resolve("qa/vectors/devices", dvFile);
+    const vec = JSON.parse(fs.readFileSync(localPath, "utf-8"));
+
+    const patientUrl = "urn:uuid:patient-01";
+    const devUrl = "urn:uuid:device-01";
+    const devUseUrl = "urn:uuid:device-use-01";
+
+    const devIn = JSON.parse(JSON.stringify(vec.input_fhir.device).replaceAll("@patient", patientUrl));
+    const devUseIn = JSON.parse(
+      JSON.stringify(vec.input_fhir.device_use_statement)
+        .replaceAll("@patient", patientUrl)
+        .replaceAll("@device", devUrl)
+    );
+
+    const inputBundle = {
+      resourceType: "Bundle",
+      id: "bundle-import-test",
+      type: "document",
+      entry: [
+        {
+          fullUrl: patientUrl,
+          resource: {
+            resourceType: "Patient",
+            id: "patient-01",
+            name: [{ family: "Haru" }]
+          }
+        },
+        {
+          fullUrl: devUrl,
+          resource: devIn
+        },
+        {
+          fullUrl: devUseUrl,
+          resource: devUseIn
+        }
+      ]
+    };
+
+    // 1. Test de l'import FHIR vers projection _j
+    const profile = parseFhirBundle(JSON.stringify(inputBundle));
+    assert.ok(profile.dv && profile.dv.length > 0, "Imported profile must have dv entry");
+    const actualJDv = profile.dv[0];
+
+    // Ne comparer que les champs définis dans le contrat expect.j_dv (c, d, d_display, dt)
+    const expectedJDv = vec.expect.j_dv;
+    const projectedActual: any = {};
+    if (actualJDv.c !== undefined) projectedActual.c = actualJDv.c;
+    if (actualJDv.d !== undefined) projectedActual.d = actualJDv.d;
+    if (actualJDv.d_display !== undefined) projectedActual.d_display = actualJDv.d_display;
+    if (actualJDv.dt !== undefined) projectedActual.dt = actualJDv.dt;
+
+    assert.deepEqual(
+      projectedActual,
+      expectedJDv,
+      `Imported _j.dv projection must match expected for ${vecId}`
+    );
+
+    // 2. Test du réexport FHIR (rien perdu, rien ajouté)
+    const reexportedBundle = buildFhirBundle(profile, { uiLang: "en", labels: resolver });
+    const reexportedDevEntry = reexportedBundle.entry.find(e => e.resource?.resourceType === "Device");
+    const reexportedDevUseEntry = reexportedBundle.entry.find(e => e.resource?.resourceType === "DeviceUseStatement");
+    const reexportedPatientEntry = reexportedBundle.entry.find(e => e.resource?.resourceType === "Patient");
+
+    assert.ok(reexportedDevEntry, "Reexported bundle must contain Device");
+    assert.ok(reexportedDevUseEntry, "Reexported bundle must contain DeviceUseStatement");
+    assert.ok(reexportedPatientEntry, "Reexported bundle must contain Patient");
+
+    const actualDev = JSON.parse(JSON.stringify(reexportedDevEntry.resource));
+    const actualDevUse = JSON.parse(JSON.stringify(reexportedDevUseEntry.resource));
+    delete actualDev.id;
+    delete actualDevUse.id;
+
+    const expectedDev = JSON.parse(
+      JSON.stringify(vec.expect.reexported.device).replaceAll("@patient", reexportedPatientEntry.fullUrl)
+    );
+    const expectedDevUse = JSON.parse(
+      JSON.stringify(vec.expect.reexported.device_use_statement)
+        .replaceAll("@patient", reexportedPatientEntry.fullUrl)
+        .replaceAll("@device", reexportedDevEntry.fullUrl)
+    );
+    delete expectedDev.id;
+    delete expectedDevUse.id;
+
+    assert.deepEqual(actualDev, expectedDev, `Reexported Device must match expected for ${vecId}`);
+    assert.deepEqual(actualDevUse, expectedDevUse, `Reexported DeviceUseStatement must match expected for ${vecId}`);
   });
 }

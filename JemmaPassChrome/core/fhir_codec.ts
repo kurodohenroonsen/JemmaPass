@@ -273,13 +273,35 @@ export function parseFhirBundle(rawText: string): JemmaProfileJ {
     const devRef = du.device?.reference;
     const devRes = (devRef && resByUrl.get(devRef)) || (devRef && resById.get(devRef.replace("Device/", "")));
     const coding = devRes?.type?.coding?.[0];
-    profile.dv!.push({
+    const devEntry: JEntryGeneric = {
       c: coding?.code,
       d_display: devRes?.type?.text || coding?.display,
       cs: coding?.system,
-      dt: du.recordedOn,
+      dt: du.timingDateTime || du.recordedOn,
       st: du.status,
-    });
+    };
+    if (du.note?.[0]?.text) {
+      devEntry.d = du.note[0].text;
+    }
+    if (du.bodySite?.text) {
+      devEntry.bd = du.bodySite.text;
+    }
+    if (devRes?.manufacturer) {
+      devEntry.mf = devRes.manufacturer;
+    }
+    if (devRes?.serialNumber) {
+      devEntry.sn = devRes.serialNumber;
+    }
+    if (devRes?.modelNumber) {
+      devEntry.mn = devRes.modelNumber;
+    }
+    if (devRes?.udiCarrier) {
+      devEntry.udi = devRes.udiCarrier;
+    }
+    if (devRes?.status) {
+      devEntry.devStatus = devRes.status;
+    }
+    profile.dv!.push(devEntry);
   }
 
   // 8. Results & Observations

@@ -725,12 +725,26 @@ export function buildFhirBundle(
       resourceType: "Device",
       id: `device-${i}`,
       meta: { profile: [PROFILE_DEVICE_UV_IPS] },
-      type: {
-        coding: rawCode ? [{ system: dv.cs || SYS_SNOMED, code: rawCode, display: displayStr }] : undefined,
-        text: displayStr || undefined,
-      },
-      patient: { reference: patientUrn },
     };
+    if (dv.udi) {
+      devResource.udiCarrier = dv.udi;
+    }
+    devResource.status = dv.devStatus || "active";
+    if (dv.mf) {
+      devResource.manufacturer = dv.mf;
+    }
+    if (dv.sn) {
+      devResource.serialNumber = dv.sn;
+    }
+    if (dv.mn) {
+      devResource.modelNumber = dv.mn;
+    }
+    devResource.type = {
+      coding: rawCode ? [{ system: dv.cs || SYS_SNOMED, code: rawCode, display: displayStr }] : undefined,
+      text: displayStr || undefined,
+    };
+    devResource.patient = { reference: patientUrn };
+
     entries.push({
       fullUrl: deviceUrns[i],
       resource: devResource,

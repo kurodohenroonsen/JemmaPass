@@ -5,21 +5,21 @@
     <status value="generated"/>
     <div xmlns="http://www.w3.org/1999/xhtml">
       <p class="res-header-id">
-        <b>RésultatOpération </b>
+        <b>OperationOutcome </b>
       </p>
       <table class="grid">
         <tr>
           <td>
-            <b>Sévérité</b>
+            <b>Severity</b>
           </td>
           <td>
-            <b>Localisation</b>
+            <b>Location</b>
           </td>
           <td>
             <b>Code</b>
           </td>
           <td>
-            <b>Détails</b>
+            <b>Details</b>
           </td>
           <td>
             <b>Diagnostics</b>
@@ -29,28 +29,12 @@
           </td>
         </tr>
         <tr>
-          <td>Information</td>
-          <td>Bundle.entry[0].resource/*Composition/composition-01*/.type.coding[0].display</td>
-          <td>Invalid Content</td>
-          <td>There are no valid display names found for the code http://loinc.org#60591-5 for language(s) 'fr'. The display is 'Patient summary Document' which is a valid display for the default language</td>
-          <td/>
-          <td>TerminologyEngine</td>
-        </tr>
-        <tr>
           <td>Warning</td>
           <td>Bundle.entry[0].resource/*Composition/composition-01*/</td>
           <td>Validation rule failed</td>
           <td>Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)</td>
           <td/>
           <td>InstanceValidator</td>
-        </tr>
-        <tr>
-          <td>Information</td>
-          <td>Bundle.entry[1].resource/*Patient/patient-01*/.contact[0].relationship[0].coding[0].display</td>
-          <td>Invalid Content</td>
-          <td>There are no valid display names found for the code http://terminology.hl7.org/CodeSystem/v3-RoleCode#FRND for language(s) 'fr'. The display is 'unrelated friend' which is a valid display for the default language</td>
-          <td/>
-          <td>TerminologyEngine</td>
         </tr>
         <tr>
           <td>Warning</td>
@@ -312,31 +296,8 @@
     </div>
   </text>
   <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-file">
-    <valueString value="tests/out/files/demo_kamekichi.fhir.json"/>
+    <valueString value="JemmaPassChrome/tests/out/files/demo_kamekichi.fhir.json"/>
   </extension>
-  <issue>
-    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
-      <valueInteger value="16"/>
-    </extension>
-    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
-      <valueInteger value="10"/>
-    </extension>
-    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
-      <valueString value="TerminologyEngine"/>
-    </extension>
-    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
-      <valueCode value="NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK"/>
-    </extension>
-    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
-      <valueString value="http://hl7.org/fhir/StructureDefinition/Composition|4.0.1"/>
-    </extension>
-    <severity value="information"/>
-    <code value="invalid"/>
-    <details>
-      <text value="There are no valid display names found for the code http://loinc.org#60591-5 for language(s) 'fr'. The display is 'Patient summary Document' which is a valid display for the default language"/>
-    </details>
-    <expression value="Bundle.entry[0].resource/*Composition/composition-01*/.type.coding[0].display"/>
-  </issue>
   <issue>
     <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
       <valueInteger value="12"/>
@@ -359,29 +320,6 @@
       <text value="Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"/>
     </details>
     <expression value="Bundle.entry[0].resource/*Composition/composition-01*/"/>
-  </issue>
-  <issue>
-    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">
-      <valueInteger value="170"/>
-    </extension>
-    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col">
-      <valueInteger value="16"/>
-    </extension>
-    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source">
-      <valueString value="TerminologyEngine"/>
-    </extension>
-    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
-      <valueCode value="NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK"/>
-    </extension>
-    <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
-      <valueString value="http://hl7.org/fhir/StructureDefinition/Patient|4.0.1"/>
-    </extension>
-    <severity value="information"/>
-    <code value="invalid"/>
-    <details>
-      <text value="There are no valid display names found for the code http://terminology.hl7.org/CodeSystem/v3-RoleCode#FRND for language(s) 'fr'. The display is 'unrelated friend' which is a valid display for the default language"/>
-    </details>
-    <expression value="Bundle.entry[1].resource/*Patient/patient-01*/.contact[0].relationship[0].coding[0].display"/>
   </issue>
   <issue>
     <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line">

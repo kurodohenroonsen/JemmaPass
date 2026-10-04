@@ -840,6 +840,7 @@
             "http://hl7.org/fhir/uv/ips/StructureDefinition/Device-uv-ips"
           ]
         },
+        "status": "active",
         "type": {
           "coding": [
             {
@@ -890,6 +891,7 @@
             "http://hl7.org/fhir/uv/ips/StructureDefinition/Device-uv-ips"
           ]
         },
+        "status": "active",
         "type": {
           "coding": [
             {
