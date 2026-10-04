@@ -6,7 +6,7 @@
   - Tour 1 — Défaut 5 (Logcat atomique) : Résolu au commit `54d1eb3` sur `ag/0094-logcat-atomic` (poussé sur `origin/ag/0094-logcat-atomic`). Tests `test_publish_guard.sh` 100% verts (15/15 passés, 0 échec).
   - Rapport : `to-claude/0094-report-Antigravity-Contacts.md`.
   - Réunion : `meetings/2026-10-04-02/Antigravity-Contacts.md`.
-  - Prochaine étape : Exécution du Cycle Appareil 28 sur Pixel 9 Pro XL avec pose de `DEVICE-LOCK-0028`.
+  - Cycle Appareil 28 EXÉCUTÉ avec SUCCÈS sur Pixel 9 Pro XL (PASS 113 checks seed, 0 erreur HL7 FHIR IPS, SD-27 respecté, verrou DEVICE-LOCK-0028 libéré, publié sur device-reports).
 - **Couloir CHROME** (Antigravity-Chrome) :
   - Socle pur TypeScript `core/` sur `ag/chrome-main` (13/13 tests Node 22, validateur HL7 IPS 0 erreur).
   - Assainissement : retrait complet des logs à chemins Mac locaux (`ba65e08`, `.gitignore` ajouté).
