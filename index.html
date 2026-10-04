@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JemmaPass — Salle de lecture</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+<script src="vendor/marked.min.js"></script>
+<script src="vendor/purify.min.js"></script>
+<style>
+:root{--bg:#f6f4ee;--panel:#fffdf8;--ink:#1d2a26;--muted:#5f6f69;--line:#ddd6c6;--accent:#0f6b57;--accent-ink:#fff;--warn:#9a3412;--code:#efeadc;--tag:#e6efe9}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#111917;--panel:#18221f;--ink:#e6ece8;--muted:#9aaba4;--line:#2a3833;--accent:#4fc3a1;--accent-ink:#06231b;--warn:#fdba74;--code:#1f2b27;--tag:#213630}}
+:root[data-theme=dark]{--bg:#111917;--panel:#18221f;--ink:#e6ece8;--muted:#9aaba4;--line:#2a3833;--accent:#4fc3a1;--accent-ink:#06231b;--warn:#fdba74;--code:#1f2b27;--tag:#213630}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{display:flex;gap:12px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5}
+header h1{font-size:17px;margin:0;font-weight:700;letter-spacing:.2px}
+header .sub{color:var(--muted);font-size:13px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:6px 10px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#menuBtn{display:none}
+.layout{display:grid;grid-template-columns:340px 1fr;min-height:calc(100% - 52px)}
+nav{border-right:1px solid var(--line);background:var(--panel);padding:12px;overflow:auto;max-height:calc(100vh - 52px);position:sticky;top:52px}
+nav input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;margin-bottom:10px}
+nav h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:16px 6px 6px}
+nav ul{list-style:none;margin:0;padding:0}
+nav li a{display:block;padding:7px 8px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:14.5px;line-height:1.35}
+nav li a small{display:block;color:var(--muted);font-size:12px}
+nav li a:hover{background:var(--tag)}
+nav li a.on{background:var(--accent);color:var(--accent-ink)}
+nav li a.on small{color:var(--accent-ink);opacity:.85}
+nav details summary{cursor:pointer;color:var(--muted);font-size:13px;padding:6px 8px}
+main{padding:24px clamp(16px,4vw,48px);max-width:980px;min-width:0}
+.meta{display:flex;flex-wrap:wrap;gap:6px 8px;margin:0 0 14px;font-size:13px;color:var(--muted)}
+.meta span,.meta a{background:var(--tag);border-radius:999px;padding:2px 10px;color:inherit;text-decoration:none}
+.meta a:hover{text-decoration:underline}
+.md h1{font-size:28px;line-height:1.25;margin:.2em 0 .6em}
+.md h2{font-size:21px;margin:1.6em 0 .5em;padding-top:.6em;border-top:1px solid var(--line)}
+.md h3{font-size:17px;margin:1.3em 0 .4em}
+.md a{color:var(--accent)}
+.md code{background:var(--code);padding:1px 5px;border-radius:5px;font-size:.9em;overflow-wrap:anywhere}
+.md pre{background:var(--code);padding:12px 14px;border-radius:10px;overflow:auto}
+.md pre code{background:none;padding:0;overflow-wrap:normal}
+.md blockquote{margin:1em 0;padding:.2em 1em;border-left:4px solid var(--accent);color:var(--muted)}
+.md .tw{overflow-x:auto;margin:1em 0}
+.md table{border-collapse:collapse;font-size:14.5px;min-width:100%}
+.md th,.md td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+.md th{background:var(--tag)}
+.md img{max-width:100%}
+.note{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel);margin:0 0 18px}
+.note.warn{border-color:var(--warn);color:var(--warn)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:14px 0 26px}
+.card{display:block;border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel);color:var(--ink);text-decoration:none}
+.card:hover{border-color:var(--accent)}
+.card b{display:block;margin-bottom:4px}
+.card span{color:var(--muted);font-size:14px}
+@media (max-width:860px){
+  #menuBtn{display:inline-block}
+  .layout{grid-template-columns:1fr}
+  nav{display:none;position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line)}
+  body.navopen nav{display:block}
+}
+</style>
+</head>
+<body>
+<header>
+  <button id="menuBtn" aria-controls="nav" aria-expanded="false">☰ Menu</button>
+  <h1>🐢 JemmaPass — Salle de lecture</h1>
+  <div class="sub" id="status">chargement…</div>
+  <button id="refresh" title="Recharger depuis GitHub">↻ Actualiser</button>
+</header>
+<div class="layout">
+  <nav id="nav" aria-label="Documents">
+    <input id="q" type="search" placeholder="Filtrer les titres…" aria-label="Filtrer les titres">
+    <div id="tree"></div>
+  </nav>
+  <main id="main"><p class="note">Chargement de la liste des documents…</p></main>
+</div>
+<script>
+"use strict";
+const OWNER="kurodohenroonsen", REPO="JemmaPass";
+const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
+const RAW=`https://raw.githubusercontent.com/${OWNER}/${REPO}`;
+const WEB=`https://github.com/${OWNER}/${REPO}`;
+const MAILBOX="agent-mailbox", FEAT="feat/ips-18-pillars-cleanup";
+/* Dossiers de documents hors boîte : [branche, dossier, titre de section] */
+const DOC_DIRS=[
+  [FEAT,"docs","Documentation (branche principale)"],
+  [FEAT,"docs/analysis","Analyses techniques"],
+  ["ag/analyse-fonctionnelle","docs/functional","Analyse fonctionnelle (en cours de relecture)"],
+  ["ag/ux-main","docs/ux","Interface pour tous (en cours de relecture)"],
+];
+const CACHE_MIN=5;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const enc=p=>p.split("/").map(encodeURIComponent).join("/");
+let ITEMS=[];   // {branch,path,title,sub,section}
+
+async function getJson(url){
+  const key="jp:"+url;
+  try{const c=JSON.parse(sessionStorage.getItem(key)||"null"); if(c&&Date.now()-c.t<CACHE_MIN*60000) return c.v;}catch(e){}
+  const r=await fetch(url,{headers:{Accept:"application/vnd.github+json"}});
+  if(!r.ok){const e=new Error(r.status===403?"GitHub limite le nombre de lectures anonymes (60 par heure). Réessaie dans quelques minutes.":`GitHub a répondu ${r.status} pour ${url}`); e.status=r.status; throw e;}
+  const v=await r.json();
+  try{sessionStorage.setItem(key,JSON.stringify({t:Date.now(),v}));}catch(e){}
+  return v;
+}
+async function getText(branch,path){
+  const r=await fetch(`${RAW}/${enc(branch)}/${enc(path)}`,{cache:"no-store"});
+  if(!r.ok) throw new Error(`Fichier introuvable (${r.status}) : ${path} sur ${branch}`);
+  return r.text();
+}
+function splitFront(text){
+  const m=/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(text);
+  if(!m) return {front:{},body:text};
+  const front={};
+  for(const line of m[1].split(/\r?\n/)){const i=line.indexOf(":"); if(i>0) front[line.slice(0,i).trim()]=line.slice(i+1).trim();}
+  return {front,body:text.slice(m[0].length)};
+}
+const nice=name=>name.replace(/\.md$/,"").replace(/^(\d{4})-/,"$1 · ").replace(/[-_]/g," ");
+
+function mailboxItems(tree){
+  const files=tree.filter(t=>t.type==="blob"&&t.path.endsWith(".md")).map(t=>t.path);
+  const out=[];
+  const add=(path,title,sub,section)=>out.push({branch:MAILBOX,path,title,sub,section});
+  if(files.includes("DECISIONS-KUDORO.md")) add("DECISIONS-KUDORO.md","Décisions de Kudoro","prises et en attente","À lire en premier");
+  const orders=files.filter(p=>p.startsWith("to-antigravity/")).sort().reverse();
+  const plans=orders.filter(p=>/bataille/i.test(p)).concat(orders.filter(p=>/plan/i.test(p)&&!/bataille/i.test(p)));
+  if(plans[0]) add(plans[0],"Dernier ordre de bataille",nice(plans[0].split("/")[1]),"À lire en premier");
+  if(orders[0]&&orders[0]!==plans[0]) add(orders[0],"Dernier message de Claude",nice(orders[0].split("/")[1]),"À lire en premier");
+  if(files.includes("PROTOCOL.md")) add("PROTOCOL.md","Protocole","les règles communes","À lire en premier");
+  if(files.includes("state/claude.md")) add("state/claude.md","Journal de Claude","ce qui a été fait, heure par heure","À lire en premier");
+  for(const p of orders) add(p,nice(p.split("/")[1]),"Claude → orchestrateurs","Messages de Claude (récents d'abord)");
+  for(const p of files.filter(p=>p.startsWith("to-claude/")).sort().reverse()) add(p,nice(p.split("/")[1]),"orchestrateur → Claude","Rapports en attente de relecture");
+  for(const p of files.filter(p=>p.startsWith("meetings/")).sort().reverse()){const s=p.split("/"); add(p,nice(s[s.length-1]),s[1],"Réunions");}
+  for(const p of files.filter(p=>p.startsWith("state/")&&p!=="state/claude.md")) add(p,nice(p.split("/")[1]),"état","État des orchestrateurs");
+  if(files.includes("BACKLOG.md")) add("BACKLOG.md","Backlog","","État des orchestrateurs");
+  return out;
+}
+
+async function loadIndex(){
+  $("status").textContent="lecture de GitHub…";
+  const items=[]; const problems=[];
+  try{
+    const t=await getJson(`${API}/git/trees/${enc(MAILBOX)}?recursive=1`);
+    items.push(...mailboxItems(t.tree||[]));
+  }catch(e){problems.push(e.message);}
+  await Promise.all(DOC_DIRS.map(async([branch,dir,section])=>{
+    try{
+      const list=await getJson(`${API}/contents/${enc(dir)}?ref=${encodeURIComponent(branch)}`);
+      for(const f of list) if(f.type==="file"&&f.name.endsWith(".md")) items.push({branch,path:f.path,title:nice(f.name),sub:branch,section});
+    }catch(e){ if(e.status!==404) problems.push(e.message); }
+  }));
+  items.push({branch:"ci-logs",path:"feat-ips-18-pillars-cleanup/latest.md",title:"Dernier résultat des tests (CI)",sub:"branche principale",section:"À lire en premier"});
+  ITEMS=items;
+  renderNav();
+  $("status").textContent=problems.length?"lecture partielle":`${items.length} documents · lu à ${new Date().toLocaleTimeString("fr-BE",{hour:"2-digit",minute:"2-digit"})}`;
+  return problems;
+}
+
+function hrefOf(it){return "#"+encodeURIComponent(it.branch)+"|"+encodeURIComponent(it.path);}
+function renderNav(){
+  const q=$("q").value.trim().toLowerCase();
+  const sections=[]; const by={};
+  for(const it of ITEMS){
+    if(q&&!(it.title+" "+it.sub+" "+it.path).toLowerCase().includes(q)) continue;
+    if(!by[it.section]){by[it.section]=[];sections.push(it.section);}
+    by[it.section].push(it);
+  }
+  const cur=location.hash;
+  let html="";
+  for(const s of sections){
+    const lis=by[s].map(it=>`<li><a href="${hrefOf(it)}" class="${hrefOf(it)===cur?"on":""}">${esc(it.title)}${it.sub?`<small>${esc(it.sub)}</small>`:""}</a></li>`);
+    const long=lis.length>12&&!q;
+    html+=`<h2>${esc(s)}</h2><ul>${(long?lis.slice(0,12):lis).join("")}</ul>`;
+    if(long) html+=`<details><summary>${lis.length-12} plus anciens</summary><ul>${lis.slice(12).join("")}</ul></details>`;
+  }
+  $("tree").innerHTML=html||`<p class="note">Aucun document ne correspond.</p>`;
+}
+
+function renderMarkdown(body){
+  const html=DOMPurify.sanitize(marked.parse(body,{gfm:true,breaks:false}),{FORBID_TAGS:["style","form","input","iframe"],FORBID_ATTR:["style","onerror","onclick"]});
+  const div=document.createElement("div"); div.className="md"; div.innerHTML=html;
+  div.querySelectorAll("table").forEach(t=>{const w=document.createElement("div");w.className="tw";t.replaceWith(w);w.appendChild(t);});
+  div.querySelectorAll("a[href]").forEach(a=>{const h=a.getAttribute("href")||""; if(/^https?:/i.test(h)){a.target="_blank";a.rel="noopener noreferrer";} else if(!h.startsWith("#")){a.removeAttribute("href");}});
+  return div;
+}
+
+async function showDoc(branch,path){
+  const main=$("main");
+  main.innerHTML=`<p class="note">Lecture de ${esc(path)}…</p>`;
+  try{
+    const text=await getText(branch,path);
+    const {front,body}=splitFront(text);
+    const meta=document.createElement("div"); meta.className="meta";
+    const chips=[`branche ${branch}`,path];
+    for(const k of ["type","from","to","priority","orchestrator","head","decided_by"]) if(front[k]) chips.push(`${k} : ${front[k]}`);
+    meta.innerHTML=chips.map(c=>`<span>${esc(c)}</span>`).join("")+`<a href="${WEB}/blob/${enc(branch)}/${enc(path)}" target="_blank" rel="noopener noreferrer">ouvrir sur GitHub ↗</a>`+`<a href="${WEB}/commits/${enc(branch)}/${enc(path)}" target="_blank" rel="noopener noreferrer">historique ↗</a>`;
+    main.innerHTML=""; main.appendChild(meta); main.appendChild(renderMarkdown(body));
+    document.title=(front.id?front.id+" — ":"")+path.split("/").pop()+" · JemmaPass";
+    window.scrollTo(0,0);
+  }catch(e){
+    main.innerHTML=`<p class="note warn">${esc(e.message)}</p>`;
+  }
+}
+
+function showHome(problems){
+  const first=ITEMS.filter(i=>i.section==="À lire en premier");
+  const cards=first.map(it=>`<a class="card" href="${hrefOf(it)}"><b>${esc(it.title)}</b><span>${esc(it.sub||"")}</span></a>`).join("");
+  $("main").innerHTML=
+    (problems&&problems.length?`<p class="note warn">${problems.map(esc).join("<br>")}</p>`:"")+
+    `<div class="md"><h1>Par où commencer</h1>
+     <p>Cette page lit en direct le dépôt GitHub du projet. Rien n'est stocké ici : chaque document vient de sa branche, tel qu'il est en ce moment.</p></div>
+     <div class="cards">${cards}</div>
+     <div class="md"><h2>Comment lire</h2>
+     <ul><li><b>Décisions de Kudoro</b> : ce qui est tranché et ce qui attend une réponse.</li>
+     <li><b>Dernier ordre de bataille</b> : qui fait quoi dans ce tour.</li>
+     <li><b>Messages de Claude</b> : verdicts sur le travail livré, du plus récent au plus ancien.</li>
+     <li><b>Rapports en attente</b> : ce que les orchestrateurs affirment, pas encore vérifié.</li>
+     <li><b>Analyse fonctionnelle</b> et <b>Interface pour tous</b> : documents en cours, sur leurs branches, pas encore validés.</li></ul></div>`;
+  document.title="JemmaPass — Salle de lecture";
+}
+
+let lastProblems=[];
+function route(){
+  document.body.classList.remove("navopen"); $("menuBtn").setAttribute("aria-expanded","false");
+  renderNav();
+  const h=location.hash.slice(1);
+  if(!h){showHome(lastProblems);return;}
+  const i=h.indexOf("|");
+  if(i<0){showHome(lastProblems);return;}
+  showDoc(decodeURIComponent(h.slice(0,i)),decodeURIComponent(h.slice(i+1)));
+}
+async function start(force){
+  if(force) try{Object.keys(sessionStorage).filter(k=>k.startsWith("jp:")).forEach(k=>sessionStorage.removeItem(k));}catch(e){}
+  lastProblems=await loadIndex();
+  route();
+}
+$("q").addEventListener("input",renderNav);
+$("refresh").addEventListener("click",()=>start(true));
+$("menuBtn").addEventListener("click",()=>{const o=document.body.classList.toggle("navopen");$("menuBtn").setAttribute("aria-expanded",o?"true":"false");});
+window.addEventListener("hashchange",route);
+start(false);
+</script>
+</body>
+</html>
