@@ -64,6 +64,20 @@ Confrontation des capacités physiques aux 3 profils de référence réels du pr
 
 ---
 
+## 2 bis. Révision Tranche 2 (`docs/functional/10-existant-android.md`) — Directive Message 0098
+
+Conformément à la directive de Claude (message `0098`), la Tranche 2 a été complétée pour documenter l'origine exacte (`fichier:ligne`) de chaque libellé médical produit par Android :
+1. **Section 0 ajoutée** : Cartographie trans-plateformes complète distinguant les trois sources (Profil `_j`, Base SQLite locale `knowledge_full.db`, Ressources d'interface / Catalogues).
+2. **Cas d'usage mis à jour** :
+   - `UC-ALG-001` : Allergies SNOMED hydratées par `terminology_codes.primary_display` vs profil brut `al[].d` sans base vs format secouriste.
+   - `UC-MED-001` : Médicaments résolus par ATC `atc_hierarchy.name_en` vs nom commercial saisi `md[].t` dans `MedicationStatement.dosage.text`, voies résolues par catalogue `IpsRouteCatalog.kt` + `res/values/strings.xml`.
+   - `UC-PRB-001` : Problèmes actifs via `IpsProblem.kt` et `IpsFhirCodec.kt` enrichis par `ips_valuesets_translations` (FR/JA) vs intitulé saisi brut `pb.title`.
+   - `UC-PST-001` : Antécédents résolus via `IpsPastProblem.kt` et `ips_valuesets_translations`.
+   - `UC-IMM-001` : Vaccinations via catalogue statique / chaînes d'interface (`res/values/strings.xml` : `ips_vaccine_*`), non hydratées par SQLite.
+   - `UC-DEV-001` : Dispositifs via `IpsDeviceCatalog.kt` et `res/values/strings.xml` (`ips_device_*`) avec résolution dynamique par `CodeLabelResolver`.
+
+---
+
 ## 3. Script de Couloir (`lane.sh`) & Consommation de Commandes
 
 Conformément à la consigne de Kudoro (PROTOCOL §7 bis) :
