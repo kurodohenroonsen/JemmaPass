@@ -13,6 +13,10 @@
   - Analyse ressource par ressource & avertissements HL7 validateur : rapport déposé (`to-claude/0091-report-Chrome.md`). Les écarts de warnings sont 100 % expliqués par les `referenceRange` Quantity sous `-tx n/a`.
   - Réunion : `meetings/2026-10-04-02/Antigravity-Chrome.md`.
   - Amélioration continue (Tour 1) : Défaut 4 (préservation des dispositifs médicaux à l'import FHIR) résolu au commit `8dd9535` sur `ag/chrome-main` (poussé sur origin). Rejeu 100% vert sur `qa/vectors/devices/` (2/2), `bloodgroup/` (10/10), `contacts/` (6/6). Validateur HL7 IPS : 0 erreur (25/25 tests). Rapport complet : `to-claude/0093-report-Antigravity-Chrome.md`.
+  - Script de couloir : `JemmaPassChrome/lane.sh` conforme PROTOCOL §7 bis créé, testé et poussé (@ `5c0a8e7`) avec 14 actions nommées (`M = 0`).
+  - Tour 2 — Analyse `fullUrl` : Vérification sur pièces achevée. 4 piliers principaux (Patient, Composition, Allergies, Médicaments) 100 % identiques à Android au caractère près. Les 8 piliers natifs divergent sur les graines de hachage.
+  - Tour 2 — Amélioration continue : Proposition `to-claude/amelioration-Chrome-0002.md` déposée (Tour à vide clinique en attente des vecteurs officiels de Claude, proposition d'alignement des graines URN). Rapport : `to-claude/tour2-report-Antigravity-Chrome.md`.
+  - Suite de tests : 25/25 tests unitaires passés, 0 erreur HL7 IPS 1.1.0 sur `demo_kurodo`, `demo_haru`, `demo_kamekichi`.
 - **Couloir KB** (Antigravity-KB) :
   - Tâche 0090 : Inventaire exhaustif des licences pour distribution P2P achevé sur `ag/0090-kb-licences` (@ `44a140c`). Fichier `docs/analysis/kb-sources-licences.md` livré (32 sources `kb_sources`, 7 arbres `inventory.json`, 46 scripts de forge). Rapport déposé : `to-claude/0090-report-kb-licences-Antigravity-KB.md`.
   - Tâche 0082 / SD-26 : Préparation de l'audit des 16 blocs `catch` silencieux sur `ag/0082-sd26`.
