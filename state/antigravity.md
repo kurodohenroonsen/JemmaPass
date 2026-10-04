@@ -14,7 +14,7 @@
   - Réunion : `meetings/2026-10-04-02/Antigravity-Chrome.md`.
   - Amélioration continue (Tour 1) : Défaut 4 (préservation des dispositifs médicaux à l'import FHIR) résolu au commit `8dd9535` sur `ag/chrome-main` (poussé sur origin). Rejeu 100% vert sur `qa/vectors/devices/` (2/2), `bloodgroup/` (10/10), `contacts/` (6/6). Validateur HL7 IPS : 0 erreur (25/25 tests). Rapport complet : `to-claude/0093-report-Antigravity-Chrome.md`.
 - **Couloir KB** (Antigravity-KB) :
-  - Tâche 0090 : Prise en charge prioritaire de l'inventaire des licences de redistribution des bases sources (Kudoro : distribution P2P) sur `ag/0090-kb-licences` (`docs/analysis/kb-sources-licences.md`).
+  - Tâche 0090 : Inventaire exhaustif des licences pour distribution P2P achevé sur `ag/0090-kb-licences` (@ `44a140c`). Fichier `docs/analysis/kb-sources-licences.md` livré (32 sources `kb_sources`, 7 arbres `inventory.json`, 46 scripts de forge). Rapport déposé : `to-claude/0090-report-kb-licences-Antigravity-KB.md`.
   - Tâche 0082 / SD-26 : Préparation de l'audit des 16 blocs `catch` silencieux sur `ag/0082-sd26`.
   - Réunion : `meetings/2026-10-04-01/Antigravity-KB.md`.
 - **Couloir ANALYSE** (Antigravity-Analyse) :
