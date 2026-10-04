@@ -25,13 +25,13 @@
   - Réunion : `meetings/2026-10-04-01/Antigravity-KB.md`.
 - **Couloir ANALYSE** (Antigravity-Analyse) :
   - Tranche 1 (`00-carte.md`) révisée et poussée (@ `d5bed62`). Tranche 2 (`10-existant-android.md`) enrichie avec la Section 0 (cartographie trans-plateformes exhaustive) et l'origine exacte code (`fichier:ligne`).
-  - Tour 3 (Gouvernance & Nettoyage) : Commit de revert `09e5f4f` annulant `0e79464` (sans aucun push forcé), puis recommit `32efd39` du seul `docs/functional/10-existant-android.md` pour purger les fichiers parasites de build iOS/Chrome.
-  - Tour 3 — Tranche NFC (`35-nfc.md`) : Refonte intégrale livrée (@ `2ab8520`) avec sources officielles vérifiées (URL + citations verbatim pour NFC Forum, ISO 7816-4, Java Card, Android NDEF Dispatch, Apple Background Tag Reading, Web NFC, HCE), alignement sur la signature matérielle universelle **ECDSA P-256 (`secp256r1`) avec SHA-256** (Android Keystore / Apple Secure Enclave) rejetant Ed25519, et mesures certifiées sur pièces des profils réels (`measure_bundles.py`).
+  - Tour 3 (Gouvernance & Nettoyage) : Commit de revert propre `6d5f0ee` annulant `0e79464` (sans aucun push forcé), puis recommit `f4781ee` du seul `docs/functional/10-existant-android.md` pour purger les fichiers parasites de build iOS/Chrome et restaurer une stricte étanchéité de branche.
+  - Tour 3 — Tranche NFC (`35-nfc.md`) : Refonte intégrale livrée (@ `2e9bc99`) avec sources officielles vérifiées (URL + citations verbatim pour NFC Forum Type 4, ISO/IEC 7816-4, Java Card, Android HCE `HostApduService`, dépréciation Android Beam, Apple Background Tag Reading, Web NFC), alignement sur la signature matérielle universelle **ECDSA P-256 (`secp256r1`) avec SHA-256** (Android Keystore / Apple Secure Enclave) rejetant Ed25519, et publication brute des mesures réelles sur pièces des profils (`files/demo_*.fhir.json` et `_j 1.2`).
   - Tour 2 (Amélioration continue) : Proposition `to-claude/amelioration-Antigravity-Analyse-0002.md` acceptée par Claude et Kudoro (priorité vitale a, tests `UC-QRT-030..` en cours d'écriture).
   - Tour 3 (Amélioration continue) : Tour à vide argumenté (priorité absolue donnée à la résolution du défaut n°2 `RANK_DEVICES` en cours chez Claude et Antigravity-1).
-  - Rapport Tour 3 : `to-claude/tour3-report-Antigravity-Analyse.md` (`id: 0099`, commit `2ab8520`) déposé.
+  - Rapport Tour 3 : `to-claude/tour3-report-Antigravity-Analyse.md` (`id: 0100`, commit `2e9bc99`) déposé.
   - Tranche 3 (`20-echanges.md`) en attente des directives du prochain tour.
-  - Script de couloir : `docs/functional/lane.sh` créé conformément à PROTOCOL §7 bis.
+  - Script de couloir : `docs/functional/lane.sh` conforme à PROTOCOL §7 bis.
   - Rapport Tour 2 : `to-claude/tour2-report-Antigravity-Analyse.md` déposé.
   - Réunion : `meetings/2026-10-04-02/Antigravity-Analyse.md` déposée.
 - **Couloir USB** (Antigravity-USB) :
