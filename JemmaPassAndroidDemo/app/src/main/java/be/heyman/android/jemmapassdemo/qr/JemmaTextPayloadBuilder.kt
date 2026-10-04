@@ -279,10 +279,17 @@ object JemmaTextPayloadBuilder {
     /** "Misako Kudoro (Spouse) +32 478 45 45 45" — null when the contact is entirely blank. */
     private fun formatContact(c: JContact, lang: Lang): String? {
         val name = c.n?.trim().orEmpty()
-        val relation = be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog
-            .getDisplay(c.r, lang.isoCode).trim()
+        val rawRel = c.r?.trim().orEmpty()
+        val relation = when {
+            rawRel.isEmpty() -> ""
+            be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog.isValidCode(rawRel) ->
+                be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog.getDisplay(rawRel, lang.isoCode).trim()
+            be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog.isRoleCode(rawRel) -> ""
+            else -> rawRel
+        }
         // Phone printed as typed (NOT through safePhone): the responder must be able to dial it.
         val reach = c.p?.trim()?.takeIf { it.isNotEmpty() } ?: c.e?.trim().orEmpty()
+        if (name.isEmpty() && reach.isEmpty()) return null
         val line = listOfNotNull(
             name.takeIf { it.isNotEmpty() },
             relation.takeIf { it.isNotEmpty() }?.let { "($it)" },

@@ -1,0 +1,74 @@
+{
+  "id": "bg-002-o-neg",
+  "title": "Blood group O- of the patient pillar gives one ABO/Rh result in the document",
+  "input_j": {
+    "_j": "1.2",
+    "sid": "vec_bg_002",
+    "p": {
+      "gn": "Haru",
+      "bt": "O-"
+    }
+  },
+  "expect": {
+    "blood_group_observations": [
+      {
+        "resourceType": "Observation",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Observation-results-laboratory-uv-ips"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ],
+            "text": "Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "882-1",
+              "display": "ABO and Rh group [Type] in Blood"
+            }
+          ],
+          "text": "ABO and Rh blood group"
+        },
+        "subject": {
+          "reference": "@patient"
+        },
+        "performer": [
+          {
+            "reference": "@patient",
+            "display": "Patient-reported"
+          }
+        ],
+        "_effectiveDateTime": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+              "valueCode": "unknown"
+            }
+          ]
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "278148006",
+              "display": "Blood group O Rh(D) negative"
+            }
+          ],
+          "text": "Blood group O Rh(D) negative"
+        }
+      }
+    ]
+  }
+}

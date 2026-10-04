@@ -42,7 +42,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import be.heyman.android.jemmapassdemo.R
 import be.heyman.android.jemmapassdemo.databinding.BottomSheetContactFormBinding
+import be.heyman.android.jemmapassdemo.pillars.ContactFormLogic
 import be.heyman.android.jemmapassdemo.pillars.IpsRelationshipCatalog
+import be.heyman.android.jemmapassdemo.qr.CodeLabelResolver
 import be.heyman.android.jemmapassdemo.qr.JContact
 import be.heyman.android.jemmapassdemo.ui.common.IpsCodePickerDialog
 import be.heyman.android.jemmapassdemo.ui.common.IpsPickerItem
@@ -68,15 +70,6 @@ class ContactFormBottomSheet : BottomSheetDialogFragment() {
         const val ARG_LANG = "lang"
         // 🆕 L_BLINDAGE — country hint pour normaliser le phone E.164
         const val ARG_COUNTRY_HINT = "country_hint"
-
-        // 🆕 L_BLINDAGE — Detection automatique "Dr X" / "Pr X" / "Prof X" → relation MEDIC
-        // V3-RoleCode "MEDPROVR" est code IPS pour Medical provider/Doctor.
-        // On commence par valider en regex insensible casse + accents.
-        private val DOCTOR_TITLE_REGEX = Regex(
-            "^(d[r]?\\.?|prof?\\.?|m[ée]decin)\\s+\\S+",
-            RegexOption.IGNORE_CASE,
-        )
-        private const val MEDIC_ROLE_CODE = "MEDPROVR"
 
         fun newInstance(
             mode: ContactFormMode,
@@ -153,7 +146,7 @@ class ContactFormBottomSheet : BottomSheetDialogFragment() {
         FormA11yHelpers.markAsPicker(
             view = binding.contactFormRelationCard,
             pickerHint = getString(R.string.contact_form_a11y_relation_picker,
-                pickedRelationCode?.let { IpsRelationshipCatalog.getDisplay(it, lang) }
+                ContactFormLogic.relationDisplay(pickedRelationCode, CodeLabelResolver.NONE, lang)
                     ?: getString(R.string.a11y_state_empty)),
             currentValue = pickedRelationCode,
         )
@@ -162,7 +155,7 @@ class ContactFormBottomSheet : BottomSheetDialogFragment() {
         binding.contactFormPhone.contentDescription =
             getString(R.string.contact_form_a11y_phone_hint)
 
-        // 🆕 L_BLINDAGE — "Dr X" / "Pr X" auto-detect → pre-pick MEDIC role
+        // Auto-detect suggested relation from name
         // Only triggers in CREATE mode and if no relation already set.
         binding.contactFormName.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -171,23 +164,22 @@ class ContactFormBottomSheet : BottomSheetDialogFragment() {
                 val name = s?.toString().orEmpty().trim()
                 if (mode != ContactFormMode.CREATE) return
                 if (name.isBlank()) return
-                if (DOCTOR_TITLE_REGEX.matches(name)) {
-                    // Only auto-set if user didn't already pick something OR we already auto-set
+                val suggested = ContactFormLogic.suggestedRelation(name)
+                if (suggested != null) {
                     if (pickedRelationCode.isNullOrBlank() || autoDetectedMedic) {
-                        pickedRelationCode = MEDIC_ROLE_CODE
+                        pickedRelationCode = suggested
                         autoDetectedMedic = true
                         renderRelationLabel()
-                        Log.i(TAG, "[t=${System.currentTimeMillis()}] 🩺 auto-detected MEDIC from name '$name'")
+                        Log.i(TAG, "[t=${System.currentTimeMillis()}] 🩺 suggested relation '$suggested' from name '$name'")
+                        val disp = ContactFormLogic.relationDisplay(suggested, CodeLabelResolver.NONE, lang) ?: suggested
                         FormA11yHelpers.announce(binding.contactFormRelationCard,
-                            getString(R.string.contact_form_a11y_relation_picker,
-                                IpsRelationshipCatalog.getDisplay(MEDIC_ROLE_CODE, lang)))
+                            getString(R.string.contact_form_a11y_relation_picker, disp))
                     }
                 } else if (autoDetectedMedic) {
-                    // User removed the Dr prefix → unset our auto-pick
                     pickedRelationCode = null
                     autoDetectedMedic = false
                     renderRelationLabel()
-                    Log.i(TAG, "[t=${System.currentTimeMillis()}] 🩺 auto-MEDIC cleared (name no longer matches)")
+                    Log.i(TAG, "[t=${System.currentTimeMillis()}] 🩺 auto-suggested relation cleared (name no longer matches)")
                 }
             }
         })
@@ -205,12 +197,13 @@ class ContactFormBottomSheet : BottomSheetDialogFragment() {
      */
     private fun renderRelationLabel() {
         val code = pickedRelationCode
-        if (code.isNullOrBlank()) {
+        val display = ContactFormLogic.relationDisplay(code, CodeLabelResolver.NONE, lang)
+        if (display == null) {
             binding.contactFormRelationCode.text = ""
             binding.contactFormRelationDisplay.setText(R.string.contact_form_relation_hint)
         } else {
-            binding.contactFormRelationCode.text = code
-            binding.contactFormRelationDisplay.text = IpsRelationshipCatalog.getDisplay(code, lang)
+            binding.contactFormRelationCode.text = if (IpsRelationshipCatalog.isValidCode(code)) code else ""
+            binding.contactFormRelationDisplay.text = display
         }
     }
 

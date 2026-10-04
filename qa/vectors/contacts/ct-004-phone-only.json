@@ -1,0 +1,32 @@
+{
+  "id": "ct-004-phone-only",
+  "title": "A contact known by its phone only has no name element",
+  "ui_lang": "en",
+  "input_j": {
+    "_j": "1.2",
+    "sid": "vec_ct_004",
+    "p": {
+      "gn": "Haru",
+      "ct": [
+        {
+          "p": "+32 2 000 00 03"
+        }
+      ]
+    }
+  },
+  "expect": {
+    "patient_contact": [
+      {
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+32 2 000 00 03"
+          }
+        ]
+      }
+    ],
+    "text_qr_contains": [
+      "+32 2 000 00 03"
+    ]
+  }
+}

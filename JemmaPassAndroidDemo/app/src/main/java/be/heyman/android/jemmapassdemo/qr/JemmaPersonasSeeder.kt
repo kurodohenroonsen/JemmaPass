@@ -416,7 +416,15 @@ object JemmaPersonasSeeder {
                 bt = "O+",
                 adr = "Aomori, Japan",
                 idn = "JP-12345678",
-                lang = "ja-JP"
+                lang = "ja-JP",
+                ct = listOf(
+                    JContact(
+                        n = "Sakura Tanaka",
+                        r = "DAUC",
+                        p = "+81 90 0000 0001",
+                        adr = "Aomori, Japan"
+                    )
+                )
             ),
             al = listOf(
                 JAllergy(
