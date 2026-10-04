@@ -53,3 +53,4 @@
 - 2026-10-04 00:30 UTC : heartbeat, rien de neuf des orchestrateurs (passe à vide n°1 côté couloirs). GUARD-13..15 sur tests/qa-guard-3 @ cb5eddf (13 passed, 2 failed voulus). Message 0094. run #91 feat 85214da vert.
 - 2026-10-04 01:23 UTC : heartbeat, rien de neuf (têtes et boîte inchangées, pas de DEVICE-LOCK). Passe à vide n°2.
 - 2026-10-04 02:24 UTC : heartbeat, rien de neuf. Passe à vide n°3.
+- 2026-10-04 03:26 UTC : heartbeat, rien de neuf. Passe à vide n°4.
