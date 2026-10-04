@@ -99,5 +99,46 @@ printf '%s\n%s\n' "$DEMO_LINE" "$SCRUB_MARK" > "$OUT/logs/logcat-ui.txt"
 before=$(remote_head); run_jp 'publish 12-2222222 "scrubbed logcat"'; rc=$?
 [ "$rc" -eq 0 ] && [ "$(remote_head)" != "$before" ] && ok "GUARD-12 a scrubbed logcat with demo personas only is published" || ko "GUARD-12 a scrubbed logcat with demo personas only is published (rc=$rc)"
 
+# --- logcat action: an interrupted dump leaves nothing unscrubbed behind (improvement Contacts-0001) ---
+mkdir -p "$T/bin"
+cat > "$T/bin/adb" <<'FAKE'
+#!/usr/bin/env bash
+case " $* " in
+  *" logcat "*)
+    echo "10-03 22:23:03.384 27712 27712 D JEMMA-PROFILES: [Adapter] bind pos=2 · id=demo_kurodo · name=Kurodo Henro"
+    echo "10-03 22:23:03.388 27712 27712 D JEMMA-PROFILES: [Adapter] bind pos=3 · id=p-0a1b2c3d-0000-4000-8000-000000000000 · name=Someone Real"
+    case "${FAKE_ADB_MODE:-ok}" in
+      fail) exit 1 ;;
+      hang) sleep 6 ;;
+    esac ;;
+esac
+exit 0
+FAKE
+chmod +x "$T/bin/adb"
+OLDPATH="$PATH"; export PATH="$T/bin:$PATH"
+raw_left() {  # prints every logcat file of the run that lacks the scrub end line or holds a non-demo profile id
+  find "$OUT" -type f -name '*logcat*' 2>/dev/null | while read -r f; do
+    if ! grep -q '^--------- scrub_logcat:' "$f" || grep -q -E 'p-[0-9a-f]{8}' "$f"; then echo "$f"; fi
+  done
+}
+
+new_run r13-adb-fails
+export FAKE_ADB_MODE=fail; run_jp 'logcat'; rc=$?
+left="$(raw_left)"
+[ "$rc" -ne 0 ] && [ -z "$left" ] && ok "GUARD-13 a logcat dump that fails leaves no unscrubbed file in the run folder" || ko "GUARD-13 a logcat dump that fails leaves no unscrubbed file in the run folder (rc=$rc, left: $left)"
+
+new_run r14-interrupted
+export FAKE_ADB_MODE=hang
+printf '%s\n' 'logcat' > "$JP_DIR/task.txt"
+timeout -s TERM 2 bash "$T/root/qa/device/jp.sh" > /dev/null 2>&1
+left="$(raw_left)"
+[ -z "$left" ] && ok "GUARD-14 a logcat action killed before the scrub leaves no unscrubbed file in the run folder" || ko "GUARD-14 a logcat action killed before the scrub leaves no unscrubbed file in the run folder (left: $left)"
+
+new_run r15-logcat-ok
+export FAKE_ADB_MODE=ok; run_jp 'logcat'; rc=$?
+f="$OUT/logs/logcat-ui.txt"
+[ "$rc" -eq 0 ] && [ -f "$f" ] && grep -q '^--------- scrub_logcat:' "$f" && grep -q 'demo_kurodo' "$f" && ! grep -q -E 'p-[0-9a-f]{8}' "$f" && ok "GUARD-15 a completed logcat action gives a scrubbed file: demo lines kept, non-demo profile removed, end line present" || ko "GUARD-15 a completed logcat action gives a scrubbed file: demo lines kept, non-demo profile removed, end line present (rc=$rc)"
+export PATH="$OLDPATH"; unset FAKE_ADB_MODE
+
 echo "---"; echo "$pass passed, $fail failed"
 [ "$fail" -eq 0 ]

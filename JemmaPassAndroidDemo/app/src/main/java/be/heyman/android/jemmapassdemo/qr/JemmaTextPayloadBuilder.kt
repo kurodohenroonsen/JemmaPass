@@ -180,9 +180,11 @@ object JemmaTextPayloadBuilder {
 
         val byDateDesc = compareByDescending<JEntryGeneric> { it.date != null }.thenByDescending { it.date ?: "" }
 
-        // Display order (unchanged, contacts inserted right after the clinical core).
         val sections: List<Part> = listOf(
-            part("⚠️", "allergies_title", RANK_ALLERGIES, hydrated.allergies) { a -> formatAllergy(a) },
+            part(
+                "⚠️", "allergies_title", RANK_ALLERGIES,
+                be.heyman.android.jemmapassdemo.pdf.PdfPillarLayout.sortByCriticality(hydrated.allergies) { it.criticality.name },
+            ) { a -> formatAllergy(a) },
             part("💊", "medications_title", RANK_MEDICATIONS, hydrated.medications) { m -> formatMedication(m) },
             part("🩺", "conditions_title", RANK_CONDITIONS, hydrated.conditions) { c ->
                 c.displayLocalized.ifBlank { c.raw.c.orEmpty() }

@@ -1,0 +1,99 @@
+{
+  "id": "dv-002-hearing-aid-partial-date",
+  "title": "A year-month date stays a year-month date; no note produces no note element",
+  "input_fhir": {
+    "device": {
+      "resourceType": "Device",
+      "meta": {
+        "profile": [
+          "http://hl7.org/fhir/uv/ips/StructureDefinition/Device-uv-ips"
+        ]
+      },
+      "status": "active",
+      "manufacturer": "Phonak",
+      "type": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "6012004",
+            "display": "Hearing aid"
+          }
+        ],
+        "text": "Hearing aid"
+      },
+      "patient": {
+        "reference": "@patient"
+      }
+    },
+    "device_use_statement": {
+      "resourceType": "DeviceUseStatement",
+      "meta": {
+        "profile": [
+          "http://hl7.org/fhir/uv/ips/StructureDefinition/DeviceUseStatement-uv-ips"
+        ]
+      },
+      "status": "active",
+      "subject": {
+        "reference": "@patient"
+      },
+      "device": {
+        "reference": "@device"
+      },
+      "bodySite": {
+        "text": "Both ears"
+      },
+      "timingDateTime": "2019-06"
+    }
+  },
+  "expect": {
+    "reexported": {
+      "device": {
+        "resourceType": "Device",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/Device-uv-ips"
+          ]
+        },
+        "status": "active",
+        "manufacturer": "Phonak",
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "6012004",
+              "display": "Hearing aid"
+            }
+          ],
+          "text": "Hearing aid"
+        },
+        "patient": {
+          "reference": "@patient"
+        }
+      },
+      "device_use_statement": {
+        "resourceType": "DeviceUseStatement",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/uv/ips/StructureDefinition/DeviceUseStatement-uv-ips"
+          ]
+        },
+        "status": "active",
+        "subject": {
+          "reference": "@patient"
+        },
+        "device": {
+          "reference": "@device"
+        },
+        "bodySite": {
+          "text": "Both ears"
+        },
+        "timingDateTime": "2019-06"
+      }
+    },
+    "j_dv": {
+      "c": "6012004",
+      "d_display": "Hearing aid",
+      "dt": "2019-06"
+    }
+  }
+}
