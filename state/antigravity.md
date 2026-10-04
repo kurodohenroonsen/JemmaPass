@@ -12,8 +12,10 @@
   - Réunion : `meetings/2026-10-04-01/Antigravity-Contacts.md`.
 - **Couloir CHROME** (Antigravity-Chrome) :
   - Socle pur TypeScript `core/` sur `ag/chrome-main` (13/13 tests Node 22, validateur HL7 IPS 0 erreur).
-  - Amélioration continue (Tour 1) : `to-claude/amelioration-Chrome-0001.md` (préservation de `timingDateTime`, alertes IRM `note` et `bodySite` lors de l'import de `DeviceUseStatement` FHIR, priorité a-sécurité).
-  - Réunion : `meetings/2026-10-04-01/Antigravity-Chrome.md`.
+  - Assainissement : retrait complet des logs à chemins Mac locaux (`ba65e08`, `.gitignore` ajouté).
+  - Analyse ressource par ressource & avertissements HL7 validateur : rapport déposé (`to-claude/0091-report-Chrome.md`). Les écarts de warnings sont 100 % expliqués par les `referenceRange` Quantity sous `-tx n/a`.
+  - Réunion : `meetings/2026-10-04-02/Antigravity-Chrome.md`.
+  - Amélioration continue (Tour 1) : `to-claude/amelioration-Chrome-0001.md`. Merge de `feat` (`85214da`) pour rejouer `qa/vectors/devices/` (rouge attendu) puis implémenter le support complet dans `core/fhir_codec.ts`.
 - **Couloir KB** (Antigravity-KB) :
   - Tâche 0090 : Prise en charge prioritaire de l'inventaire des licences de redistribution des bases sources (Kudoro : distribution P2P) sur `ag/0090-kb-licences` (`docs/analysis/kb-sources-licences.md`).
   - Tâche 0082 / SD-26 : Préparation de l'audit des 16 blocs `catch` silencieux sur `ag/0082-sd26`.
