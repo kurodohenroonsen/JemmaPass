@@ -25,10 +25,10 @@ Daemon will be stopped at the end of the build
 > Task :app:packageDebugResources
 > Task :app:processDebugNavigationResources
 > Task :app:generateDebugBuildConfig
-> Task :app:checkDebugAarMetadata
 > Task :app:parseDebugLocalResources
-> Task :app:compileDebugNavigationResources
+> Task :app:checkDebugAarMetadata
 > Task :app:dataBindingGenBaseClassesDebug
+> Task :app:compileDebugNavigationResources
 > Task :app:mapDebugSourceSetPaths
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
@@ -39,9 +39,9 @@ Daemon will be stopped at the end of the build
 
 > Task :app:processDebugManifest
 > Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:processDebugManifestForPackage
-> Task :app:javaPreCompileDebugUnitTest
 > Task :app:javaPreCompileDebug
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:processDebugManifestForPackage
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
@@ -53,8 +53,8 @@ Daemon will be stopped at the end of the build
 > Task :app:desugarDebugFileDependencies
 > Task :app:kspDebugKotlin
 > Task :app:mergeExtDexDebug
-> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeLibDexDebug
+> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -783,16 +783,19 @@ warning: Kapt support in Moshi Kotlin Code Gen is deprecated and will be removed
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
+
 > Task :app:compileDebugUnitTestKotlin
+w: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/app/src/test/java/be/heyman/android/jemmapassdemo/pillars/RescueAllergyLabelsInResourcesTest.kt:44:17 Unnecessary non-null assertion (!!) on a non-null receiver of type 'File'.
+
 > Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
 > Task :app:hiltAggregateDepsDebugUnitTest
 > Task :app:hiltJavaCompileDebugUnitTest NO-SOURCE
 > Task :app:processDebugUnitTestJavaRes
 > Task :app:transformDebugUnitTestClassesWithAsm
 > Task :app:testDebugUnitTest
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1791090448123.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/gradle-1791097300696.json
 
 [Incubating] Problems report is available at: file:///home/runner/work/JemmaPass/JemmaPass/JemmaPassAndroidDemo/build/reports/problems/problems-report.html
 
-BUILD SUCCESSFUL in 8m 42s
+BUILD SUCCESSFUL in 9m 13s
 55 actionable tasks: 55 executed
