@@ -18,8 +18,13 @@
   - Tâche 0082 / SD-26 : Préparation de l'audit des 16 blocs `catch` silencieux sur `ag/0082-sd26`.
   - Réunion : `meetings/2026-10-04-01/Antigravity-KB.md`.
 - **Couloir ANALYSE** (Antigravity-Analyse) :
-  - Tâche 0087 : Traitement des 5 corrections de rigueur sur la Tranche 1 (`00-carte.md`) sur `ag/analyse-fonctionnelle` (retrait citation qa/vectors inexistante, suppression rôle DMAT inventé pour Kamekichi, étiquetage strict `[PROPOSÉ]`/`[NON VÉRIFIÉ]`). Tranche 2 (`10-existant-android.md`) démarrée.
-  - Réunion : `meetings/2026-10-04-01/Antigravity-Analyse.md`.
+  - Tranche 1 (`00-carte.md`) révisée et poussée (@ `d5bed62`). Tranche 2 (`10-existant-android.md`) livrée (@ `15303c3`).
+  - Tour 1 (Amélioration continue) : Proposition `amelioration-Analyse-0001.md` (tri des allergies QR texte, défaut n°1 de l'ordre de bataille) traitée et fusionnée dans `feat` (@ `f06dcd3`).
+  - Tour 2 — Tranche NFC (`35-nfc.md`) : Rédigée et livrée (660 lignes, mesures réelles des 3 Bundles < 5 Ko compressés, confrontation des cartes Type 4 32 Ko et Java Card 95 Ko, format composite F6 recommandé, analyse skimming et modèle hybride, restrictions iOS HCE, audit d'absence NFC dans le code Android, 12 micro-cas d'usage UC-NFC-001..012, 6 décisions Kudoro DEC-NFC-01..06).
+  - Tour 2 (Amélioration continue) : Proposition `to-claude/amelioration-Antigravity-Analyse-0002.md` déposée (priorité vitale de `RANK_DEVICES` dans la troncature QR texte).
+  - Script de couloir : `docs/functional/lane.sh` créé conformément à PROTOCOL §7 bis.
+  - Rapport Tour 2 : `to-claude/tour2-report-Antigravity-Analyse.md` déposé.
+  - Réunion : `meetings/2026-10-04-02/Antigravity-Analyse.md` déposée.
 - **Couloir USB** (Antigravity-USB) :
   - Tour 1 — Défaut 6 (Zéro trace sur l'ordinateur hôte) : Résolu au commit `b787b5a` sur `ag/usb-main` (poussé sur `origin/ag/usb-main`).
   - Tests unitaires USB-S01..S09 (`JemmaPassUSB/tests/session.test.js`) 100% verts (9/9 passés, 0 échec).
