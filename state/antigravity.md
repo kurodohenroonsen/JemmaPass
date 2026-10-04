@@ -31,11 +31,12 @@
   - Rapport Tour 2 : `to-claude/tour2-report-Antigravity-Analyse.md` déposé.
   - Réunion : `meetings/2026-10-04-02/Antigravity-Analyse.md` déposée.
 - **Couloir USB** (Antigravity-USB) :
-  - Tour 1 — Défaut 6 (Zéro trace sur l'ordinateur hôte) : Résolu au commit `b787b5a` sur `ag/usb-main` (poussé sur `origin/ag/usb-main`).
-  - Tests unitaires USB-S01..S09 (`JemmaPassUSB/tests/session.test.js`) 100% verts (9/9 passés, 0 échec).
-  - Gestionnaire de session en mémoire vive implémenté dans `core/session.js` sans accès aux stockages globaux du navigateur.
-  - Rapport : `to-claude/0093-report-Antigravity-USB.md`.
-  - Réunion : `meetings/2026-10-04-02/Antigravity-USB.md`.
+  - Tour 1 — Défaut 6 (Zéro trace sur l'ordinateur hôte) : Résolu au commit `b787b5a` sur `ag/usb-main`. Tests `USB-S01..S09` 100% verts (9/9).
+  - Tour 2 — Socle FHIR R4 IPS & Rejeu des vecteurs : Résolu au commit `638521d` sur `ag/usb-main` (poussé sur `origin/ag/usb-main`).
+  - Modules JS pur créés dans `core/` : `blood_group.js` (LOINC 882-1), `contacts.js` (`p.ct` <-> `Patient.contact`), `devices.js` (`DeviceUseStatement` + `Device`), `fhir_codec.js` (`parseBundle` / `buildBundle`).
+  - Suite complète 100% verte : **30 tests passés · 0 échec** (`vectors.test.js` : 6 contacts, 10 groupe sanguin, 2 dispositifs ; `session.test.js` : 9 session).
+  - Script de couloir : `JemmaPassUSB/lane.sh` conforme PROTOCOL §7 bis créé et fonctionnel (`M = 0` nouvelles commandes).
+  - Rapports : `to-claude/tour2-report-Antigravity-USB.md` et proposition `to-claude/amelioration-USB-0002.md` déposés.
 - **Couloir ANTIGRAVITY-1** (Antigravity-1) :
   - Tour 1 — Défaut 1 (Allergies sur QR Texte) : Résolu au commit `c6d0b36` sur `ag/0091-qr-allergy-order` (fusionné dans `feat` @ `f06dcd3`).
   - Tour 2 — Défaut 2 (Fiche Secouriste) : Résolu au commit `9238644` sur `ag/0091-rescue-allergy-line` (poussé sur `origin/ag/0091-rescue-allergy-line`). Tests `UC-RSQ-001..009` 100% verts (9/9). Suite complète JVM Android verte : **525 run · 0 failed · 0 ignored** (100% success). `RescueAllergyFormat.line` branché sur `PatientDetailFragment`.
