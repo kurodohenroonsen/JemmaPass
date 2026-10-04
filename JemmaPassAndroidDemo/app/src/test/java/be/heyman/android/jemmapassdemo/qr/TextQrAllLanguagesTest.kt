@@ -143,10 +143,14 @@ class TextQrAllLanguagesTest {
             for (icon in TextQrProbe.LIFE_CRITICAL) assertTrue("$ctx $icon is not whole", TextQrProbe.isWhole(text, h, icon))
             val sections = TextQrProbe.sections(text)
             assertEquals("$ctx allergies title", JemmaTranslations.getLabel(lang, "allergies_title"), sections.getValue(TextQrProbe.ALLERGIES).title)
-            // one line per allergy, in order, starting with the allergen (the criticality wording is free to change)
+            // one line per allergy, most critical first then in typed order (UC-QRT-020), starting with the
+            // allergen (the criticality wording is free to change)
             val allergyLines = sections.getValue(TextQrProbe.ALLERGIES).lines
             assertEquals("$ctx allergies", h.allergies.size, allergyLines.size)
-            h.allergies.forEachIndexed { i, a ->
+            val byCriticality = h.allergies.sortedBy {
+                when (it.criticality.name) { "HIGH" -> 0; "LOW" -> 2; else -> 1 }
+            }
+            byCriticality.forEachIndexed { i, a ->
                 assertTrue("$ctx allergy $i : ${allergyLines[i]}", allergyLines[i].startsWith(a.displayLocalized))
                 assertTrue("$ctx allergy $i says how critical it is", allergyLines[i].length > a.displayLocalized.length)
             }
