@@ -127,10 +127,12 @@ flowchart TD
 ### 3.1 Carte NFC Type 4 (32 Ko)
 - **Spécification normative** : NFC Forum Type 4 Tag Operation Specification.  
   - *Source officielle* : NFC Forum Specifications (`https://nfc-forum.org/build/specifications`).  
-  - *Citation verbatim* : « Type 4 Tag platforms are based on ISO/IEC 14443 Type A or Type B specifications, and support ISO/IEC 7816-4 APDUs. »
+  - *Statut* : `[NON VÉRIFIÉ - Spécification normative sous adhésion/licence NFC Forum, texte intégral non public]`.  
+  - *Principe* : Plateforme basée sur les spécifications radio ISO/IEC 14443 Type A ou B et le jeu de commandes APDU ISO/IEC 7816-4.  
 - **Commandes APDU normalisées ISO/IEC 7816-4** :  
   - *Source officielle* : ISO/IEC 7816-4:2020 (`https://www.iso.org/standard/77180.html`).  
-  - *Commandes requises* :
+  - *Statut* : `[NON VÉRIFIÉ - Norme payante sous copyright ISO]`.  
+  - *Commandes APDU requises pour le conteneur NDEF* :
     1. `SELECT FILE` par AID (`CLA=0x00, INS=0xA4, P1=0x04, P2=0x00, Lc=0x07, Data=D2 76 00 00 85 01 01`).
     2. `SELECT FILE` CC (`CLA=0x00, INS=0xA4, P1=0x00, P2=0x0C, Lc=0x02, Data=E1 03`).
     3. `READ BINARY` (`CLA=0x00, INS=0xB0, P1=offset_high, P2=offset_low, Le=length`).
@@ -205,12 +207,15 @@ L'exigence fondamentale de survie impose qu'un soignant ou un passant n'ayant **
   - Si le premier enregistrement est de type Text (`T`) ou si l'utilisateur utilise un outil de lecture système, le texte de la fiche secouriste est affiché directement sans requérir de logiciel dédié.
 
 ### 5.2 Comportement sous iOS / iPhone (Sans Application JemmaPass)
-- **Source officielle** : Apple Developer Documentation — Core NFC / Building an NFC Tag-Reader App (`https://developer.apple.com/documentation/corenfc/building_an_nfc_tag-reader_app`).  
-- *Citation verbatim* : « On supported iPhone models running iOS 12 or later, background tag reading supports NFC Data Exchange Format (NDEF) tags that contain an NDEF URI record. »
+- **Sources officielles Apple** :  
+  1. Apple Developer Documentation — *Adding Support for Background Tag Reading* (`https://developer.apple.com/documentation/corenfc/adding_support_for_background_tag_reading`).  
+     *Citation verbatim* : « iPhone XS and later support background tag reading »  
+     *Citation verbatim* : « the system inspects the tag's NDEF message for a URI record »  
+  2. Apple Developer Documentation — *Building an NFC Tag-Reader App* (`https://developer.apple.com/documentation/corenfc/building_an_nfc_tag-reader_app`).
 - **Contrainte absolue Apple** :
-  - Sur iPhone XS, XR, 11, 12, 13, 14, 15, 16, la lecture d'étiquettes en arrière-plan (*Background Tag Reading*) ne déclenche **QUE** si le premier enregistrement NDEF est de type URI (`U`).
-  - Un tag contenant exclusivement du texte brut (`T`) ou un type MIME sans URI **ne réagit absolument pas en arrière-plan** sur un iPhone verrouillé ou sur l'écran d'accueil sans application ouverte.
-  - **Règle d'Architecture JemmaPass** : Le Record 0 d'une carte physique JemmaPass **DOIT OBLIGATOIREMENT** être un enregistrement NDEF URI (`https://jemmapass.net/...`), assurant la détection immédiate par tous les iPhones du monde sans application installée.
+  - Sur iPhone XS, XR et modèles ultérieurs, la lecture d'étiquettes en arrière-plan (*Background Tag Reading*) ne déclenche **QUE** si le message NDEF contient un enregistrement URI.
+  - Un tag contenant exclusivement du texte brut (`T`) ou un type MIME sans enregistrement URI **ne réagit absolument pas en arrière-plan** sur un iPhone verrouillé ou sur l'écran d'accueil sans application ouverte.
+  - **Règle d'Architecture JemmaPass** : Le Record 0 d'une carte physique JemmaPass **DOIT OBLIGATOIREMENT** être un enregistrement NDEF URI (`https://jemmapass.net/...`), assurant la détection immédiate par tous les iPhones compatibles sans application installée.
 
 ### 5.3 Poste Fixe Hospitalier & Ordinateur de Secours
 - **Source officielle** : W3C Web NFC API Specification (`https://w3c.github.io/web-nfc/`).  
@@ -295,7 +300,9 @@ Dans une situation d'urgence vitale, une donnée médicale altérée ou falsifi�
 - **Fonctionnement dans JemmaPass** :
   - Un smartphone Android exécutant JemmaPass peut émuler un tag NFC Forum Type 4 sous l'AID `D2 76 00 00 85 01 01`.
   - Lorsqu'un terminal secouriste ou une tablette hospitalière s'approche à 2 cm, il dialogue avec le service Android via APDUs ISO 7816-4 comme s'il s'agissait d'une carte physique passive.
-  - **Vitesse de transfert mesurée** : À un débit ISO 14443-4 de 424 kbit/s, le transfert du Bundle FHIR compressé de Haru (4 627 octets) s'exécute en **87 millisecondes**, assurant un échange instantané lors du contact.
+  - **Vitesse de transfert [CALCULÉ]** : À un débit ISO 14443-4 maximal de 424 kbit/s (spécification radio Type 4), la durée théorique de transfert pour le Bundle FHIR compressé de Haru (4 531 octets) est de [CALCULÉ] :
+    $$\text{Durée [CALCULÉ]} \approx \frac{4531 \times 8}{424\,000} \approx 0{,}085\text{ s} \approx 85\text{ ms}$$
+    *(Ce chiffre est une borne calculée théorique de couche protocolaire, à ne pas confondre avec une mesure physique de benchmark).*
 
 ### 9.3 Verrouillage Strict d'iOS : Aucune Émulation de Carte Tierce
 - **Source officielle** : Apple Developer Documentation — Core NFC (`https://developer.apple.com/documentation/corenfc`).  
@@ -346,7 +353,7 @@ Audit exhaustif du dépôt au commit `f06dcd3` :
 
 ### UC-NFC-002 : Lecture d'urgence de la carte physique sur iPhone sans application JemmaPass
 - **Déclencheur** : Soignant ou secouriste intervenant avec un iPhone non équipé de l'application JemmaPass.
-- **Préconditions** : iPhone XS ou plus récent (iOS 12+), fonction NFC active.
+- **Préconditions** : iPhone XS ou modèle ultérieur (supportant le Background Tag Reading, source Apple), fonction NFC active.
 - **Acteurs** : Soignant urgentiste, Patient.
 - **Données en entrée** : Carte physique encodée avec Record 0 = NDEF URI (`https://jemmapass.net/view#nfc`).
 - **Séquence nominale** :
@@ -409,7 +416,7 @@ Audit exhaustif du dépôt au commit `f06dcd3` :
   1. Le patient appuie sur « Partager par contact NFC ».
   2. L'application active le service `HostApduService` HCE.
   3. Le médecin approche son terminal dos contre dos.
-  4. Le terminal du médecin lit le transpondeur virtuel émulé par le premier appareil en moins de 100 ms.
+  4. Le terminal du médecin lit le transpondeur virtuel émulé par le premier appareil en moins de 100 ms [CALCULÉ].
   5. Confirmation haptique bilatérale signalant la réception du dossier complet.
 
 ### UC-NFC-008 : Handover d'amorçage NFC vers liaison haut débit (Android ➔ iPhone)
