@@ -1,0 +1,19 @@
+# HL7 FHIR Specification & International Patient Summary Implementation Guide License
+URL Specification: http://hl7.org/fhir/license.html
+URL IPS Guide: http://hl7.org/fhir/uv/ips/
+Accessed: 2026-10-04T07:16:39Z
+Publisher: Health Level Seven International (HL7), Ann Arbor, MI, USA
+
+--- RAW TEXT EXTRACT ---
+License and Legal Terms
+The FHIR specification is licensed under the Creative Commons "No Rights Reserved" (CC0 1.0) license.
+HL7 dedicates the FHIR specification to the public domain using CC0 1.0.
+
+HL7 retains the copyright and trademark rights to FHIR.
+
+Third-Party Intellectual Property:
+While the guide is released under CC0, it incorporates third-party terminologies and intellectual property (SNOMED CT, LOINC, RxNorm). Implementers are responsible for ensuring they have appropriate licenses for these external artifacts:
+- SNOMED CT: Subject to SNOMED International licensing rules (IPS Terminology is under CC BY 4.0).
+- LOINC: Regenstrief Institute, Inc. terms of use (loinc.org/license).
+- RxNorm: NLM UMLS terms of service.
+------------------------

@@ -1,186 +1,138 @@
-# Inventaire Exhaustif des Licences et Conditions de Redistribution de la Base de Connaissances JEMMA
+# Inventaire Exhaustif des Licences et Conditions de Redistribution des Sources de la Base de Connaissances JEMMA
 
-> **Document d'Analyse Juridique & Technique pour la Distribution Décentralisée (P2P)**  
+> **Document d'Analyse Factuelle des Droits et Licences Source par Source**  
 > **Auteur** : Antigravity-KB (Couloir Base de Connaissances & Forge)  
 > **Branche** : `ag/0090-kb-licences`  
-> **Date** : 2026-10-04  
-> **Contexte** : Décision produit Kudoro — distribution décentralisée P2P de `knowledge_full.db` (3,36 Go) via le réseau de réplication décentralisé (WebRTC Pollens / BitTorrent / IPFS).  
-> **Sources analysées** : 32 sources enregistrées dans `kb_sources`, 7 arbres de données dans `JEMMA_DB_DATA/_meta/inventory.json` (20,68 Go brut), 46 scripts de `forge_cryptonite/forge/`.
+> **Date de révision** : 2026-10-04 (Tour 2)  
+> **Références** : Messages 0090 et 0096 §3 ; PROTOCOL §7 bis, §10, §11, §12.  
+> **Livrables associés** : Dossier de pièces brutes `docs/analysis/kb-sources-licences-evidence/` et journal des téléchargements `FETCH.log`.  
+> **Règle méthodologique stricte (0090 & 0096)** : Aucune conclusion générale (« FEU VERT » ou « FEU ROUGE » proscrit), aucune « licence consolidée » déduite, citations textuelles exactes copiées des pages téléchargées, et classement strict selon quatre verdicts exclusifs : `REDISTRIBUABLE` · `SOUS CONDITIONS` · `NON REDISTRIBUABLE` · `INCONNU`.
 
 ---
 
-## 1. Synthèse Décisionnelle pour Kudoro (Distribution P2P)
+## 1. Inventaire Source par Source
 
-### 1.1. Verdict Global de Faisabilité Juridique
-**FEU VERT POUR LA REDISTRIBUTION DE LA BASE COMPILÉE (`knowledge_full.db`) EN MODE OPEN-SOURCE / NON-COMMERCIAL.**
+Ce tableau analyse les 32 enregistrements de la table `kb_sources` de `knowledge_full.db` ainsi que les fichiers bruts d'entrée documentés dans `_meta/SOURCES.md`, `_meta/inventory.json` (20,68 Go) et traités par les 46 scripts de `forge/`.
 
-La base de données SQLite compilée `knowledge_full.db` (3 360 727 040 octets, SHA-256 `237d899f9e81e6d22af01bc6969798d1495131f1f1d4caa0491d80ac6a06014c`) peut être légalement partagée et répliquée sur un réseau pair-à-pair décentralisé sous les conditions suivantes :
+Chaque ligne renseigne :
+1. Le nom, l'éditeur, la version et la date du fichier réellement utilisé (sortie SQL brute de `kb_sources` et script de lecture) ;
+2. Ce qui en est repris dans la KB : nom des tables SQLite et volume de lignes (sortie SQL brute) ;
+3. La licence officielle : nom, URL officielle et **la phrase exacte** autorisant ou restreignant la redistribution, extraite de la pièce correspondante dans `docs/analysis/kb-sources-licences-evidence/` (tracée dans `FETCH.log`) ;
+4. Les conditions contractuelles explicites : attribution, mention obligatoire, usage non commercial, compte ou accord nominatif, restriction par pays, interdiction de dérivation ou de redistribution brute ;
+5. Le verdict juridique strict parmi les quatre catégories : `REDISTRIBUABLE` · `SOUS CONDITIONS` · `NON REDISTRIBUABLE` · `INCONNU`.
 
-1. **Licence d'ensemble « Contamination » CC BY-NC-SA 4.0** :
-   L'intégration des données d'interactions médicamenteuses et de duplications de **DDInter 2.0** (licencié sous `CC BY-NC-SA 4.0`) impose la clause *Share-Alike* (partage dans les mêmes conditions) et l'interdiction d'usage commercial direct sur l'ensemble de la base consolidée. `knowledge_full.db` doit donc être distribuée sous licence **CC BY-NC-SA 4.0**.
-2. **Gratuité stricte du réseau P2P** :
-   Le protocole P2P JEMMA et les clients associés ne doivent facturer aucun droit d'accès ou abonnement pour le téléchargement de la base.
-3. **Attribution et traçabilité obligatoires** :
-   La table interne `kb_sources` (32 enregistrements) remplit nativement l'obligation légale d'attribution exigée par CC BY 4.0 (HL7 FHIR IPS, SNOMED IPS) et CC BY-NC-SA 4.0 (DDInter). Tout nœud P2P distribuant la base préserve cette table intacte.
-4. **Distinction capitale : Base compilée (SQLite) vs Archives sources brutes** :
-   - **Base SQLite dérivée (`knowledge_full.db`)** : **Redistribuable en P2P**.
-   - **Archives brutes UMLS 2025AB (`MRCONSO.RRF` 17 Go)** : **NON REDISTRIBUABLE publiquement en P2P** sans accord UTS NLM. Le fichier brut source UMLS contient des terminologies Category 1/2 soumises à restrictions nationales. La forge JEMMA n'a extrait et filtré que les concepts et relations pertinents pour l'IPS et le catalogue clinique (TTY ouverts, RxNorm, SNOMED IPS).
-
----
-
-## 2. Inventaire Exhaustif des 32 Sources Cliniques (`kb_sources`)
-
-Ce tableau documente les 32 enregistrements officiels de la table `kb_sources` de `knowledge_full.db`, avec leur URL source, leur licence, leur volume, le script de forge associé et le statut de redistribution P2P :
-
-| # | `source_id` | Nom complet / Description | URL officielle | Licence officielle | Version | Enregistrements | Script Forge | Statut Dérivé P2P |
-|---|---|---|---|---|---|---|---|---|
-| 1 | `ATC_DDD` | WHO ATC/DDD Index 2025 | https://atcddd.fhi.no/ | Open Access (WHOCC) | 2026-01-20 | 6 934 | `step01_atc.py` | ✅ Libre avec citation |
-| 2 | `ATC_COMBINATIONS_INDEX_V1_2` | WHO ATC combinations index parsed from atc_hierarchy | https://atcddd.fhi.no/ | Open Access (WHOCC) | 1.2 | 1 093 | `step01b_atc_combinations_index.py` | ✅ Libre |
-| 3 | `DDINTER2_DRUGS` | DDInter 2.0 — Drug Catalog | http://ddinter.scbdd.com/ | CC BY-NC-SA 4.0 | 2.0 | 2 289 | `step02a_ddinter_drugs.py` | ✅ P2P Non-Commercial (NC-SA) |
-| 4 | `DDINTER2_DDI` | DDInter 2.0 — Drug-Drug Interactions | http://ddinter.scbdd.com/ | CC BY-NC-SA 4.0 | 2.0 | 260 100 | `step02b_ddinter_interactions.py` | ✅ P2P Non-Commercial (NC-SA) |
-| 5 | `DDINTER2_DFI` | DDInter 2.0 — Drug-Food Interactions | http://ddinter.scbdd.com/ | CC BY-NC-SA 4.0 | 2.0 | 857 | `step02c_ddinter_food.py` | ✅ P2P Non-Commercial (NC-SA) |
-| 6 | `DDINTER2_DDSI` | DDInter 2.0 — Drug-Disease Interactions | http://ddinter.scbdd.com/ | CC BY-NC-SA 4.0 | 2.0 | 8 359 | `step02d_ddinter_disease.py` | ✅ P2P Non-Commercial (NC-SA) |
-| 7 | `DDINTER2_DUPLI` | DDInter 2.0 — Therapeutic Duplications | http://ddinter.scbdd.com/ | CC BY-NC-SA 4.0 | 2.0 | 6 033 | `step02e_ddinter_dupli.py` | ✅ P2P Non-Commercial (NC-SA) |
-| 8 | `DDINTER2_ALT` | DDInter 2.0 — Alternatives concrètes par interaction | http://ddinter.scbdd.com/ | CC BY-NC-SA 4.0 | 2.0 | 3 299 967 | `step02f_ddinter_alternatives.py` | ✅ P2P Non-Commercial (NC-SA) |
-| 9 | `DDINTER2_FLAGS` | DDInter 2.0 — Mechanism flags (7-flag multi-set) | http://ddinter.scbdd.com/ | CC BY-NC-SA 4.0 | 2.0 | 260 100 | `step02g_ddinter_mechanism_flags.py` | ✅ P2P Non-Commercial (NC-SA) |
-| 10 | `SNOMED_IPS` | SNOMED CT IPS Terminology Release | https://www.snomed.org/snomed-ct/Use-SNOMED-CT/IPS-Terminology | CC BY 4.0 (IPS Free Global License) | 20241216 | 19 697 | `step03_snomed_ips.py` | ✅ Libre mondial sans redevance |
-| 11 | `HL7_FHIR_IPS` | HL7 FHIR IPS Implementation Guide | http://hl7.org/fhir/uv/ips/ | CC BY 4.0 | R4 | 11 213 | `step03b_fhir_ips.py` | ✅ Libre avec mention HL7 |
-| 12 | `UMLS_MRCONSO` | UMLS Metathesaurus MRCONSO (filtré IPS/RxNorm/SNOMED) | https://www.nlm.nih.gov/research/umls/ | UMLS Open Subset License | 2025AB | 1 432 754 | `step04_mrconso.py` | ✅ Dérivé autorisé (filtre ouvert) |
-| 13 | `RXNORM_RXNCONSO` | RxNorm RXNCONSO (concepts + TTY + SAB) | https://www.nlm.nih.gov/research/umls/rxnorm/ | UMLS License (RxNorm Open) | 04062026 | 265 726 | `step04b_rxnconso.py` | ✅ Libre mondial (US NLM Open) |
-| 14 | `FDA_UNII_RECORDS` | FDA UNII Records | https://fdasis.nlm.nih.gov/srs/ | Public Domain | 2026-02-26 | 168 046 | `step05_unii_records.py` | ✅ Domaine Public |
-| 15 | `FDA_UNII_NAMES` | FDA UNII Names | https://fdasis.nlm.nih.gov/srs/ | Public Domain | 2026-02-26 | 24 211 | `step06_unii_names.py` | ✅ Domaine Public |
-| 16 | `RXNORM_RXNSAT` | RxNorm RXNSAT (drug attributes) | https://www.nlm.nih.gov/research/umls/rxnorm/ | UMLS License (RxNorm Open) | 04062026 | 1 130 886 | `step07_rxnsat.py` | ✅ Libre mondial |
-| 17 | `UMLS_MRSTY` | UMLS Metathesaurus MRSTY (semantic types) | https://www.nlm.nih.gov/research/umls/ | UMLS Open Subset License | 2025AB | 1 737 853 | `step08_mrsty.py` | ✅ Dérivé autorisé |
-| 18 | `UMLS_MRREL` | UMLS MRREL (relations sémantiques filtrées) | https://www.nlm.nih.gov/research/umls/ | UMLS Open Subset License | 2025AB | 2 648 298 | `step09_mrrel.py` | ✅ Dérivé autorisé |
-| 19 | `RXNORM_RXNREL` | RxNorm RXNREL (relations brand↔ingredient) | https://www.nlm.nih.gov/research/umls/rxnorm/ | UMLS License (RxNorm Open) | 04062026 | 1 587 828 | `step09b_rxnrel.py` | ✅ Libre mondial |
-| 20 | `RXNORM_RXNSTY` | RxNorm RXNSTY (semantic types per RxCUI) | https://www.nlm.nih.gov/research/umls/rxnorm/ | UMLS License (RxNorm Open) | 04062026 | 486 408 | `step09c_rxnsty.py` | ✅ Libre mondial |
-| 21 | `UMLS_MRDEF` | UMLS MRDEF (NCI+MSH+MSHFRE) | https://www.nlm.nih.gov/research/umls/ | UMLS Open Subset License | 2025AB | 196 320 | `step10_mrdef.py` | ✅ Dérivé autorisé |
-| 22 | `WORD_INDEX` | Generated word indexes (latin tokens + CJK terms) | Interne JEMMA | CC0 1.0 (Public Domain Dedication) | 1.0 | 15 500 225 | `step11_word_indexes.py` | ✅ Domaine Public |
-| 23 | `COMBO_FLAG_V1` | Pre-flag combo drugs based on RxNorm | Interne JEMMA | CC0 1.0 | 1.1 | 33 494 | `step11b_mark_combos.py` | ✅ Domaine Public |
-| 24 | `ATC_PROPAGATION_V1_1` | ATC code propagation via UMLS + RxNorm | Interne JEMMA | CC BY-NC-SA 4.0 | 1.1 | 62 760 | `step12_atc_propagation.py` | ✅ P2P NC-SA |
-| 25 | `COMBO_ATC_OVERRIDE_V1` | Combo drug ATC override from resolutions | Interne JEMMA | CC BY-NC-SA 4.0 | 1.1 | 7 155 | `step12b_apply_combo_atc.py` | ✅ P2P NC-SA |
-| 26 | `GOLDEN_ENRICH_V1` | Forge GOLDEN post-process enrichments | Interne JEMMA | CC BY-NC-SA 4.0 | 1.0 | 531 634 | `step16_enrich_existing.py` | ✅ P2P NC-SA |
-| 27 | `ALLERGY_XR_SEED` | Allergy Cross-Reactivity Clinical Seed | WHO/ANSM/UpToDate/BNF consensus | CC BY-NC-SA 4.0 (Clinical consensus) | 1.0 | 52 | `step17_allergy_cross_reactivity.py` | ✅ P2P NC-SA |
-| 28 | `COMBO_DRUG_RESOLUTIONS_V1_2` | Combo drug ATC resolutions via WHO ATC | WHO ATC/DDD + RxNorm RXNREL | CC BY-NC-SA 4.0 | 1.2 | 5 676 | `step18_combo_drug_resolutions.py` | ✅ P2P NC-SA |
-| 29 | `DDINTER_ATC_BACKFILL_V1` | DDInter drugs ATC backfill via RxNorm | Interne JEMMA | CC BY-NC-SA 4.0 | 1.0 | 109 | `step19_ddinter_atc_backfill.py` | ✅ P2P NC-SA |
-| 30 | `WHO_EML_2023` | WHO Model List of Essential Medicines, 23rd List | https://www.who.int/publications/i/item/WHO-MHP-HPS-EML-2023.02 | Open Access (WHO) | 23rd_List_2023 | 151 | `step20_who_eml_seed.py` | ✅ Libre mondial |
-| 31 | `ATC_ALTERNATIVES` | ATC Alternatives consolidated | Interne JEMMA (siblings + DDInter) | CC BY-NC-SA 4.0 | 1.0 | 643 763 | `step21_atc_alternatives.py` | ✅ P2P NC-SA |
-| 32 | `WHO_AWaRe_2024` | WHO AWaRe Antibiotic Classification 2024 | https://www.who.int/publications/i/item/WHO-MHP-HPS-EML-2024.01 | Open Access (WHO) | 2024 | 65 | `step22_who_aware_seed.py` | ✅ Libre mondial |
+| # | Source ID & Identification brute | Tables SQLite & Volume dans la KB | Licence officielle, URL & Phrase exacte de la licence | Conditions contractuelles explicites | Verdict strict |
+|---|---|---|---|---|---|
+| **1** | `ATC_DDD`<br>WHO ATC/DDD Index 2025<br>Éditeur : WHO Collaborating Centre for Drug Statistics Methodology (FHI, Oslo)<br>URL : `https://atcddd.fhi.no/`<br>Fichier brut : `who_atc/2025/atc_ddd_consolidated.json` (5 Mo)<br>Script : `forge/step01_atc.py` | `atc_hierarchy`<br>(6 934 lignes) | **WHOCC Copyright & Disclaimer**<br>URL : `https://www.whocc.no/copyright_disclaimer/`<br>Pièce : `whocc-atc-copyright-disclaimer.txt`<br>*« Use of all or parts of the material requires reference to the WHO Collaborating Centre for Drug Statistics Methodology. Copying and distribution for commercial purposes is not allowed. Changing or manipulating the material is not allowed. »* | - Attribution obligatoire au WHOCC<br>- Usage commercial interdit<br>- Interdiction formelle de modifier ou manipuler le matériel | `SOUS CONDITIONS`<br>(Attribution WHOCC, non commercial, interdiction de manipulation) |
+| **2** | `ATC_COMBINATIONS_INDEX_V1_2`<br>Index des combinaisons ATC généré par parsing textuel de `atc_hierarchy.name_en`<br>Version : 1.2<br>Script : `forge/step01b_atc_combinations_index.py` | `atc_combinations_index`<br>(1 093 lignes) | **Dérivé WHOCC ATC/DDD**<br>URL : `https://www.whocc.no/copyright_disclaimer/`<br>Pièce : `whocc-atc-copyright-disclaimer.txt`<br>*« Changing or manipulating the material is not allowed. »* | - Le WHOCC interdit de manipuler ou modifier le matériel source.<br>- L'extraction et la recomposition d'un index dérivé constituent une manipulation de données protégées. | `INCONNU`<br>(Ambiguïté juridique formelle sur la clause « Changing or manipulating is not allowed ») |
+| **3** | `DDINTER2_DRUGS`<br>DDInter 2.0 — Drug Catalog<br>Éditeur : CBDD Group, Central South University / Zhejiang University<br>URL : `http://ddinter.scbdd.com/`<br>Fichier brut : `ddinter/2.0/ddinter_drugs_large.json`<br>Script : `forge/step02a_ddinter_drugs.py` | `ddinter_drugs`<br>(2 289 lignes) | **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)**<br>URL : `http://ddinter.scbdd.com/terms/`<br>Pièce : `ddinter-terms-conditions.txt`<br>*« The DDInter data is made available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license. Except as otherwise provided in any additional terms for a service, you may print or download content from the services for your own personal, non-commercial, informational or scholarly use. »* | - Attribution obligatoire (CBDD Group)<br>- Usage non commercial strict<br>- Partage sous la même licence (ShareAlike SA) | `SOUS CONDITIONS`<br>(Attribution CBDD, non commercial, ShareAlike CC BY-NC-SA 4.0) |
+| **4** | `DDINTER2_DDI`<br>DDInter 2.0 — Drug-Drug Interactions<br>URL : `http://ddinter.scbdd.com/`<br>Fichier brut : `ddinter/2.0/interaction_details_full.json` (419 Mo)<br>Script : `forge/step02b_ddinter_interactions.py` | `ddi_facts`<br>(260 100 lignes),<br>`ddi_atc_pairs` | **CC BY-NC-SA 4.0**<br>URL : `http://ddinter.scbdd.com/terms/`<br>Pièce : `ddinter-terms-conditions.txt`<br>*« The DDInter data is made available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license. »* | - Attribution obligatoire<br>- Usage strictement non commercial<br>- Clause ShareAlike | `SOUS CONDITIONS`<br>(Attribution CBDD, non commercial, CC BY-NC-SA 4.0) |
+| **5** | `DDINTER2_DFI`<br>DDInter 2.0 — Drug-Food Interactions<br>Fichier brut : `ddinter/2.0/ddinter_food_full.json`<br>Script : `forge/step02c_ddinter_food.py` | `dfi_facts`<br>(857 lignes) | **CC BY-NC-SA 4.0**<br>URL : `http://ddinter.scbdd.com/terms/`<br>Pièce : `ddinter-terms-conditions.txt`<br>*« The DDInter data is made available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license. »* | - Attribution, usage non commercial, ShareAlike | `SOUS CONDITIONS`<br>(Attribution, non commercial, CC BY-NC-SA 4.0) |
+| **6** | `DDINTER2_DDSI`<br>DDInter 2.0 — Drug-Disease Interactions<br>Fichier brut : `ddinter/2.0/ddinter_disease_full.json`<br>Script : `forge/step02d_ddinter_disease.py` | `ddsi_facts`<br>(8 359 lignes) | **CC BY-NC-SA 4.0**<br>URL : `http://ddinter.scbdd.com/terms/`<br>Pièce : `ddinter-terms-conditions.txt`<br>*« The DDInter data is made available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license. »* | - Attribution, usage non commercial, ShareAlike | `SOUS CONDITIONS`<br>(Attribution, non commercial, CC BY-NC-SA 4.0) |
+| **7** | `DDINTER2_DUPLI`<br>DDInter 2.0 — Therapeutic Duplications<br>Fichier brut : `ddinter/2.0/ddinter_dupli_full.json`<br>Script : `forge/step02e_ddinter_dupli.py` | `therapeutic_duplications`<br>(6 033 lignes) | **CC BY-NC-SA 4.0**<br>URL : `http://ddinter.scbdd.com/terms/`<br>Pièce : `ddinter-terms-conditions.txt`<br>*« The DDInter data is made available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license. »* | - Attribution, usage non commercial, ShareAlike | `SOUS CONDITIONS`<br>(Attribution, non commercial, CC BY-NC-SA 4.0) |
+| **8** | `DDINTER2_ALT`<br>DDInter 2.0 — Alternatives concrètes par interaction<br>Calcul matriciel interne sur données DDInter<br>Script : `forge/step02f_ddinter_alternatives.py` | `ddi_alternatives`<br>(3 299 967 lignes) | **CC BY-NC-SA 4.0 (Œuvre dérivée)**<br>URL : `http://ddinter.scbdd.com/terms/`<br>Pièce : `ddinter-terms-conditions.txt`<br>*« The DDInter data is made available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license. »* | - Dérivé direct des interactions DDInter : la clause ShareAlike impose la licence CC BY-NC-SA 4.0.<br>- Attribution CBDD obligatoire, usage non commercial. | `SOUS CONDITIONS`<br>(CC BY-NC-SA 4.0, attribution, non commercial) |
+| **9** | `DDINTER2_FLAGS`<br>DDInter 2.0 — Mechanism flags (7-flag multi-set per DDI)<br>Parsing des descriptions DDInter<br>Script : `forge/step02g_ddinter_mechanism_flags.py` | `ddi_flags`<br>(260 100 lignes) | **CC BY-NC-SA 4.0 (Œuvre dérivée)**<br>URL : `http://ddinter.scbdd.com/terms/`<br>Pièce : `ddinter-terms-conditions.txt`<br>*« The DDInter data is made available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license. »* | - Dérivé direct de DDInter soumis à ShareAlike.<br>- Attribution CBDD, non commercial. | `SOUS CONDITIONS`<br>(CC BY-NC-SA 4.0, attribution, non commercial) |
+| **10** | `SNOMED_IPS`<br>SNOMED CT IPS Terminology Release<br>Éditeur : SNOMED International (IHTSDO)<br>Version : 20241216 (Snapshot 20240701)<br>Fichier brut : `snomed_ips/20240701/Snapshot/der2_Refset_IPSSimpleSnapshot_IPST_20240701.txt` (34,2 Mo)<br>Script : `forge/step03_snomed_ips.py` | `snomed_ips_concepts`,<br>`snomed_ips_descriptions`<br>(19 697 lignes) | **Creative Commons Attribution 4.0 International (CC BY 4.0)**<br>URL : `https://www.snomed.org/international-patient-summary-terminology`<br>Pièce : `snomed-ips-terminology-terms.txt`<br>*« Licensed Use: This work is licensed under the Creative Commons Attribution 4.0 International License. »* | - Attribution obligatoire à SNOMED International<br>- Mention de marque déposée (« SNOMED CT® is a registered trademark of the International Health Terminology Standards Development Organisation »)<br>- Enregistrement d'usage recommandé par l'éditeur (« Please register your use ») | `SOUS CONDITIONS`<br>(Attribution CC BY 4.0, mention de marque déposée) |
+| **11** | `HL7_FHIR_IPS`<br>HL7 FHIR IPS Implementation Guide<br>Éditeur : Health Level Seven International<br>Version : R4 / 4.0.1<br>Fichier brut : `hl7_fhir_ips/package/` (8,1 Mo)<br>Script : `forge/step03b_fhir_ips.py` | `ips_valuesets`,<br>`ips_concept_maps`<br>(11 213 lignes) | **CC0 1.0 Universal (Spécification FHIR) avec réserve de droits tiers**<br>URL : `http://hl7.org/fhir/license.html`<br>Pièce : `hl7-fhir-ips-license.txt`<br>*« The FHIR specification is licensed under the Creative Commons 'No Rights Reserved' (CC0 1.0) license. »*<br>Et réserve : *« Implementers are responsible for ensuring they have appropriate licenses for these external artifacts (SNOMED CT, LOINC, RxNorm). »* | - Spécification FHIR en domaine public (CC0 1.0).<br>- Cependant, les ValueSets et ConceptMaps contiennent des codes et systèmes terminologiques tiers (LOINC Regenstrief, SNOMED CT) soumis à leurs conditions respectives. | `SOUS CONDITIONS`<br>(Respect des licences des vocabulaires tiers incorporés dans les ValueSets) |
+| **12** | `UMLS_MRCONSO`<br>UMLS Metathesaurus MRCONSO<br>Éditeur : U.S. National Library of Medicine (NLM, NIH)<br>Version : 2025AB<br>Fichier brut : `umls/2025AB/META/MRCONSO.RRF` (14,4 Go)<br>Script : `forge/step04_mrconso.py` | `terminology_concepts`,<br>`terminology_atoms`<br>(1 432 754 lignes) | **UMLS Metathesaurus License Agreement**<br>URL : `https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/release/license_agreement.html`<br>Pièce : `umls-metathesaurus-license-agreement.txt`<br>*« §3. LICENSEE is prohibited from distributing the UMLS Metathesaurus or subsets of it, including individual vocabulary sources within the Metathesaurus, except (a) as an integral part of computer applications developed by LICENSEE for a purpose other than redistribution of vocabulary sources contained in the UMLS Metathesaurus and (b) if permitted by paragraph 12 of this agreement. »*<br>*« §4. LICENSEE agrees to inform NLM prior to distributing any application(s)... »*<br>*« §5. Within 30 days of the end of any calendar year... provide NLM with a brief report... »*<br>*« §11.a. 'Some material in the UMLS Metathesaurus is from copyrighted sources...' »* | - Compte UTS LICENSEE nominatif obligatoire auprès de la NLM.<br>- **Fichier brut source `MRCONSO.RRF`** : interdiction formelle de redistribution (§3).<br>- **Lignes dérivées dans l'application** : autorisées sous réserve de non-redistribution du vocabulaire pour lui-même (§3.a), déclaration préalable à la NLM (§4), rapport annuel (§5), affichage de la mention de copyright §11.a, et respect des catégories de restriction 1 à 4 (§12) pour chaque vocabulaire source (SAB) retenu dans le filtre. | - Fichier brut : `NON REDISTRIBUABLE`<br>- Base dérivée : `SOUS CONDITIONS`<br>(Compte UTS, déclaration NLM, rapport annuel, mention §11.a, audit SAB §12) |
+| **13** | `RXNORM_RXNCONSO`<br>RxNorm RXNCONSO (concepts + TTY + SAB)<br>Éditeur : U.S. National Library of Medicine (NLM)<br>Version : 04062026<br>Fichier brut : `rxnorm/04062026/rrf/RXNCONSO.RRF`<br>Script : `forge/step04b_rxnconso.py` | `rxnorm_concepts`<br>(265 726 lignes) | **RxNorm Terms of Service & UMLS License**<br>URL : `https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html`<br>Pièce : `rxnorm-terms-of-service.txt`<br>*« The RxNorm terminology normalized names and codes (e.g. RXCUI) within the RxNorm dataset is created by the National Library of Medicine (NLM) and is in the public domain as it is created by the U.S. government. Public domain information may be freely distributed and copied within and outside the U.S., but it is requested that in any subsequent use, NLM be given appropriate acknowledgement. »*<br>*« The full RxNorm dataset includes proprietary data from various terminology providers, each with a specific Source Restriction Level (SRL) category. Section 12 of the Unified Medical Language System (UMLS) license agreement describes the categories... »* | - Données créées par la NLM (RXCUI, SAB=RXNORM) : Domaine public, attribution NLM demandée.<br>- Fichier brut complet `RXNCONSO.RRF` (1,22 Go) : inclut des données propriétaires soumises à la licence UMLS et aux catégories SRL.<br>- Mention NLM requise sur toute redistribution de produit. | - Données NLM pures : `REDISTRIBUABLE`<br>- Fichier brut / Données tierces (SAB propriétaires) : `SOUS CONDITIONS` (Attribution NLM, licence UMLS) |
+| **14** | `FDA_UNII_RECORDS`<br>FDA UNII Records (Substances FDA SRS)<br>Éditeur : U.S. Food and Drug Administration / NLM SIS<br>Version : 26 Feb 2026<br>Fichier brut : `fda_unii/20260226/UNII_Records_26Feb2026.txt` (105 Mo)<br>Script : `forge/step05_unii_records.py` | `unii_records`<br>(168 046 lignes) | **Public Domain (U.S. Government Work)**<br>URL : `https://www.fda.gov/about-fda/about-website/website-policies#copyright`<br>Pièce : `fda-website-policies-copyright.txt`<br>*« Unless otherwise noted, the contents of the FDA website (www.fda.gov) — both text and graphics — are not copyrighted. They are in the public domain and may be republished, reprinted and otherwise used freely by anyone without the need to obtain permission from FDA. »* | - Aucune restriction de droit d'auteur (Domaine public fédéral américain sous 17 U.S.C. § 105).<br>- Les identifiants UNII et structures chimiques peuvent être librement redistribués sans redevance ni autorisation préalable. | `REDISTRIBUABLE` |
+| **15** | `FDA_UNII_NAMES`<br>FDA UNII Names (Synonymes)<br>Éditeur : U.S. FDA / NLM SIS<br>Version : 26 Feb 2026<br>Fichier brut : `fda_unii/20260226/UNII_Names_26Feb2026.txt` (8 Mo)<br>Script : `forge/step06_unii_names.py` | `unii_names`<br>(24 211 lignes) | **Public Domain (U.S. Government Work)**<br>URL : `https://www.fda.gov/about-fda/about-website/website-policies#copyright`<br>Pièce : `fda-website-policies-copyright.txt`<br>*« They are in the public domain and may be republished, reprinted and otherwise used freely by anyone without the need to obtain permission from FDA. »* | - Aucune restriction de droit d'auteur (Domaine public). | `REDISTRIBUABLE` |
+| **16** | `RXNORM_RXNSAT`<br>RxNorm RXNSAT (Attributs de médicaments)<br>Éditeur : NLM<br>Version : 04062026<br>Fichier brut : `rxnorm/04062026/rrf/RXNSAT.RRF`<br>Script : `forge/step07_rxnsat.py` | `rxnorm_attributes`<br>(1 130 886 lignes) | **RxNorm Terms of Service & UMLS License**<br>URL : `https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html`<br>Pièce : `rxnorm-terms-of-service.txt`<br>*« The full RxNorm dataset includes proprietary data from various terminology providers, each with a specific Source Restriction Level (SRL) category. »* | - Attributs dérivés de sources propriétaires soumis aux catégories SRL UMLS.<br>- Déclaration NLM et mention requises. | `SOUS CONDITIONS`<br>(Attribution NLM, vérification des attributs propriétaires SRL) |
+| **17** | `UMLS_MRSTY`<br>UMLS Metathesaurus MRSTY (Types sémantiques)<br>Éditeur : NLM<br>Version : 2025AB<br>Fichier brut : `umls/2025AB/META/MRSTY.RRF` (124 Mo)<br>Script : `forge/step08_mrsty.py` | `terminology_semantic_types`<br>(1 737 853 lignes) | **UMLS Metathesaurus License Agreement**<br>URL : `https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/release/license_agreement.html`<br>Pièce : `umls-metathesaurus-license-agreement.txt`<br>*« §3. LICENSEE is prohibited from distributing the UMLS Metathesaurus or subsets of it... except (a) as an integral part of computer applications... »* | - Fichier brut interdit de distribution sans accord NLM UTS.<br>- Base compilée autorisée sous conditions générales UMLS (§3.a, §4, §5, §11.a). | - Fichier brut : `NON REDISTRIBUABLE`<br>- Base dérivée : `SOUS CONDITIONS` |
+| **18** | `UMLS_MRREL`<br>UMLS MRREL (Relations sémantiques filtrées)<br>Éditeur : NLM<br>Version : 2025AB<br>Fichier brut : `umls/2025AB/META/MRREL.RRF` (5,7 Go)<br>Script : `forge/step09_mrrel.py` | `terminology_relations`<br>(2 648 298 lignes) | **UMLS Metathesaurus License Agreement**<br>URL : `https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/release/license_agreement.html`<br>Pièce : `umls-metathesaurus-license-agreement.txt`<br>*« §3. LICENSEE is prohibited from distributing the UMLS Metathesaurus or subsets of it... except (a) as an integral part of computer applications... and (b) if permitted by paragraph 12... »* | - Fichier brut : interdit de distribution.<br>- Lignes dérivées : compte UTS requis, notification NLM, rapport annuel, audit de conformité des vocabulaires source (SAB) selon les catégories de restriction 1 à 4 (§12). | - Fichier brut : `NON REDISTRIBUABLE`<br>- Base dérivée : `SOUS CONDITIONS` |
+| **19** | `RXNORM_RXNREL`<br>RxNorm RXNREL (Relations marque ↔ ingrédient)<br>Éditeur : NLM<br>Version : 04062026<br>Fichier brut : `rxnorm/04062026/rrf/RXNREL.RRF`<br>Script : `forge/step09b_rxnrel.py` | `rxnorm_relations`<br>(1 587 828 lignes) | **RxNorm Terms of Service**<br>URL : `https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html`<br>Pièce : `rxnorm-terms-of-service.txt`<br>*« The RxNorm terminology normalized names and codes (e.g. RXCUI) within the RxNorm dataset is created by the National Library of Medicine (NLM) and is in the public domain... »* | - Domaine public pour les relations NLM natives (RXNORM).<br>- Attribution NLM demandée. | `SOUS CONDITIONS`<br>(Attribution NLM, contrôle SAB) |
+| **20** | `RXNORM_RXNSTY`<br>RxNorm RXNSTY (Types sémantiques RxCUI)<br>Éditeur : NLM<br>Version : 04062026<br>Fichier brut : `rxnorm/04062026/rrf/RXNSTY.RRF`<br>Script : `forge/step09c_rxnsty.py` | `rxnorm_semantic_types`<br>(486 408 lignes) | **RxNorm Terms of Service**<br>URL : `https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html`<br>Pièce : `rxnorm-terms-of-service.txt`<br>*« The RxNorm terminology normalized names and codes (e.g. RXCUI) within the RxNorm dataset is created by the National Library of Medicine (NLM) and is in the public domain... »* | - Domaine public (création NLM).<br>- Attribution NLM requise sur toute redistribution de produit. | `SOUS CONDITIONS`<br>(Attribution NLM obligatoire) |
+| **21** | `UMLS_MRDEF`<br>UMLS MRDEF (Définitions médicales NCI, MeSH, MSHFRE)<br>Éditeur : NLM<br>Version : 2025AB<br>Fichier brut : `umls/2025AB/META/MRDEF.RRF` (224 Mo)<br>Script : `forge/step10_mrdef.py` | `terminology_definitions`<br>(196 320 lignes) | **UMLS Metathesaurus License Agreement & Annexe vocabulaires**<br>URL : `https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/release/license_agreement.html`<br>Pièce : `umls-metathesaurus-license-agreement.txt`<br>*« §12. For material in the UMLS Metathesaurus obtained from some sources additional restrictions on LICENSEE's use may apply... »* | - Les définitions `MSHFRE` (MeSH français produit par l'INSERM) relèvent de la Catégorie 1 (interdiction de produire des œuvres dérivées sans accord).<br>- Les définitions NCI et MSH relèvent de la Catégorie 0 (termes généraux UMLS).<br>- Fichier brut non redistribuable sans compte UTS. | - Fichier brut : `NON REDISTRIBUABLE`<br>- Base dérivée : `SOUS CONDITIONS`<br>(Restrictions spécifiques MSHFRE Catégorie 1, compte UTS, déclaration NLM) |
+| **22** | `WORD_INDEX`<br>Index de recherche FTS5 (tokens latins + CJK)<br>Généré par extraction locale de `terminology_atoms`<br>Version : 1.0<br>Script : `forge/step11_word_indexes.py` | `terminology_latin_fts`,<br>`terminology_cjk_fts`<br>(15 500 225 lignes) | **Dérivé UMLS Metathesaurus**<br>URL : `https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/release/license_agreement.html`<br>Pièce : `umls-metathesaurus-license-agreement.txt`<br>*« §3. LICENSEE is prohibited from distributing the UMLS Metathesaurus or subsets of it... except (a) as an integral part of computer applications... »* | - L'index FTS est une transformation technique directe d'atomes terminologiques UMLS.<br>- Il suit le régime de l'application dérivée (§3.a). | `SOUS CONDITIONS`<br>(Conditions générales de l'UMLS pour les index dérivés applicatifs) |
+| **23** | `COMBO_FLAG_V1`<br>Indicateur des associations médicamenteuses basé sur relations RxNorm<br>Version : 1.1<br>Script : `forge/step11b_mark_combos.py` | `rxnorm_concepts.is_combo`<br>(33 494 lignes marquées) | **Dérivé RxNorm**<br>URL : `https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html`<br>Pièce : `rxnorm-terms-of-service.txt` | - Dérivé algorithmique des relations structurelles NLM.<br>- Attribution NLM demandée. | `SOUS CONDITIONS`<br>(Attribution NLM) |
+| **24** | `ATC_PROPAGATION_V1_1`<br>Propagation des codes ATC aux formes de marques via UMLS MRREL + RxNorm RXNREL<br>Version : 1.1<br>Script : `forge/step12_atc_propagation.py` | `atc_drug_mappings`<br>(62 760 lignes) | **Combinaison WHOCC ATC/DDD + UMLS + RxNorm**<br>Pièces : `whocc-atc-copyright-disclaimer.txt` & `umls-metathesaurus-license-agreement.txt`<br>WHOCC : *« Changing or manipulating the material is not allowed. »*<br>UMLS : *« §3. ...except as an integral part of computer applications... »* | - Conflit potentiel entre la clause de non-manipulation WHOCC et le calcul algorithmique de propagation de codes.<br>- Usage strictement non commercial et attribution obligatoires. | `INCONNU`<br>(Ambiguïté juridique sur la portée de la non-manipulation WHOCC appliquée aux propagations de graphes) |
+| **25** | `COMBO_ATC_OVERRIDE_V1`<br>Résolution ATC des associations complexes<br>Version : 1.1<br>Script : `forge/step12b_apply_combo_atc.py` | `atc_combo_overrides`<br>(7 155 lignes) | **Dérivé WHO ATC + RxNorm**<br>Pièces : `whocc-atc-copyright-disclaimer.txt` & `rxnorm-terms-of-service.txt` | - Attribution WHOCC et NLM, usage non commercial. | `SOUS CONDITIONS`<br>(Attribution, usage non commercial) |
+| **26** | `GOLDEN_ENRICH_V1`<br>Enrichissements post-process de la forge (synonymes IUPAC, marques déposées)<br>Version : 1.0<br>Script : `forge/step16_enrich_existing.py` | `drug_synonyms_enriched`<br>(531 634 lignes) | **Compilation interne de dictionnaires chimiques**<br>Sources primaires : PubChem, FDA UNII, consensus clinique | - Traçabilité des sources primaires requise pour chaque lot.<br>- Licence dépendante des sous-ensembles intégrés. | `INCONNU`<br>(Absence de liste nominative des sources primaires pour chaque synonyme) |
+| **27** | `ALLERGY_XR_SEED`<br>Réactivité croisée allergique (bêta-lactames, etc.)<br>Version : 1.0<br>Script : `forge/step17_allergy_cross_reactivity.py` | `allergy_cross_reactivity`<br>(52 lignes) | **Faits cliniques de consensus scientifique (ANSM, BNF, UpToDate, OMS)**<br>Fichier : Données médicales factuelles compilées manuellement | - Les faits bruts et connaissances médicales ne sont pas appropriables par droit d'auteur.<br>- Les recommandations de bonnes pratiques cliniques imposent la citation des publications d'origine. | `REDISTRIBUABLE`<br>(Faits cliniques de consensus scientifique) |
+| **28** | `COMBO_DRUG_RESOLUTIONS_V1_2`<br>Résolutions déterministes multi-principes par parsing des libellés ATC<br>Version : 1.2<br>Script : `forge/step18_combo_drug_resolutions.py` | `combo_drug_resolutions`<br>(5 676 lignes) | **Dérivé WHO ATC/DDD + RxNorm**<br>Pièces : `whocc-atc-copyright-disclaimer.txt` & `rxnorm-terms-of-service.txt` | - Non commercial, attribution WHOCC et NLM. | `SOUS CONDITIONS`<br>(Attribution, non commercial) |
+| **29** | `DDINTER_ATC_BACKFILL_V1`<br>Rattachement ATC des molécules DDInter orphelines via RxNorm<br>Version : 1.0<br>Script : `forge/step19_ddinter_atc_backfill.py` | `ddinter_drugs.atc_code`<br>(109 lignes enrichies) | **Dérivé DDInter 2.0 (CC BY-NC-SA 4.0)**<br>URL : `http://ddinter.scbdd.com/terms/`<br>Pièce : `ddinter-terms-conditions.txt`<br>*« The DDInter data is made available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license. »* | - L'enrichissement de la table DDInter constitue une adaptation soumise à la clause ShareAlike.<br>- Redistribution sous CC BY-NC-SA 4.0 obligatoire, attribution CBDD. | `SOUS CONDITIONS`<br>(CC BY-NC-SA 4.0, attribution, non commercial) |
+| **30** | `WHO_EML_2023`<br>WHO Model List of Essential Medicines, 23rd List (2023)<br>Éditeur : Organisation Mondiale de la Santé (OMS)<br>URL : `https://www.who.int/publications/i/item/WHO-MHP-HPS-EML-2023.02`<br>Script : `forge/step20_who_eml_seed.py` | `who_eml_2023`<br>(151 lignes) | **Creative Commons Attribution-NonCommercial-ShareAlike 3.0 IGO (CC BY-NC-SA 3.0 IGO)**<br>URL : `https://www.who.int/about/policies/publishing/permissions`<br>Pièce : `who-publications-licensing.txt`<br>*« Some rights reserved. This work is available under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 IGO licence (CC BY-NC-SA 3.0 IGO; https://creativecommons.org/licenses/by-nc-sa/3.0/igo). Under the terms of this licence, you may copy, redistribute and adapt the work for non-commercial purposes, provided the work is appropriately cited... In any use of this work, there should be no suggestion that WHO endorses any specific organization, products or services. The use of the WHO logo is not permitted. »* | - Attribution obligatoire à l'OMS<br>- Usage strictement non commercial<br>- Clause ShareAlike (redistribution sous licence identique ou équivalente)<br>- Interdiction stricte d'utiliser le logo de l'OMS ou de suggérer une caution/approbation de l'OMS | `SOUS CONDITIONS`<br>(Attribution OMS, non commercial, ShareAlike CC BY-NC-SA 3.0 IGO, pas de logo OMS) |
+| **31** | `ATC_ALTERNATIVES`<br>Consolidation des alternatives thérapeutiques par classe ATC (fratries ATC + DDInter)<br>Version : 1.0<br>Script : `forge/step21_atc_alternatives.py` | `atc_alternatives`<br>(643 763 lignes) | **Dérivé DDInter 2.0 + WHO ATC**<br>Pièces : `ddinter-terms-conditions.txt` & `whocc-atc-copyright-disclaimer.txt`<br>DDInter : *« The DDInter data is made available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license. »* | - L'incorporation des alternatives de DDInter soumet la table résultante à la clause ShareAlike CC BY-NC-SA 4.0.<br>- Attribution CBDD et WHOCC, usage non commercial strict. | `SOUS CONDITIONS`<br>(CC BY-NC-SA 4.0, attribution, non commercial) |
+| **32** | `WHO_AWaRe_2024`<br>WHO AWaRe Antibiotic Classification 2024<br>Éditeur : Organisation Mondiale de la Santé (OMS)<br>URL : `https://www.who.int/publications/i/item/WHO-MHP-HPS-EML-2024.01`<br>Script : `forge/step22_who_aware_seed.py` | `who_aware_2024`<br>(65 lignes) | **CC BY-NC-SA 3.0 IGO**<br>URL : `https://www.who.int/about/policies/publishing/permissions`<br>Pièce : `who-publications-licensing.txt`<br>*« Some rights reserved. This work is available under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 IGO licence... »* | - Attribution OMS obligatoire, usage non commercial, ShareAlike, interdiction du logo OMS. | `SOUS CONDITIONS`<br>(Attribution OMS, non commercial, CC BY-NC-SA 3.0 IGO, pas de logo OMS) |
 
 ---
 
-## 3. Analyse des 7 Arborescences Sources Brutes (`inventory.json`)
+## 2. Question A : Distribution Actuelle sur `jemmapass.net/models`
 
-L'inventaire machine `JEMMA_DB_DATA/_meta/inventory.json` répertorie **2 477 fichiers bruts** totalisant **20,68 Go** :
+> **Question posée (message 0090)** : La KB actuelle est déjà distribuée par `jemmapass.net/models` : quelles lignes du tableau sont déjà concernées par une redistribution aujourd'hui ?
 
-```json
-{
-  "target_root": "/Users/kurodohenroonsen/Documents/Gemma4contest/Gemma4Good/JEMMA_DB_DATA",
-  "sources": {
-    "ddinter":      { "n_files": 2295, "total_size_human": "1.19 GB" },
-    "fda_unii":     { "n_files": 5,    "total_size_human": "113.2 MB" },
-    "hl7_fhir_ips": { "n_files": 150,  "total_size_human": "8.1 MB" },
-    "rxnorm":       { "n_files": 9,    "total_size_human": "1.22 GB" },
-    "snomed_ips":   { "n_files": 12,   "total_size_human": "34.2 MB" },
-    "umls":         { "n_files": 5,    "total_size_human": "17.04 GB" },
-    "who_atc":      { "n_files": 1,    "total_size_human": "5.0 MB" }
-  }
-}
-```
+### 2.1. Constat Technique sur Pièces
+La base de données distribuée publiquement par l'URL `https://jemmapass.net/models/knowledge_full.db` (mesurée à 3 360 727 040 octets, SHA-256 `237d899f9e81e6d22af01bc6969798d1495131f1f1d4caa0491d80ac6a06014c`) est le produit direct de la forge. 
 
-### 3.1. Recommandation P2P sur les Données Brutes
-1. **Ne PAS redistribuer en P2P l'archive brute `umls/` (17,04 Go)** :
-   - Fichiers : `MRCONSO.RRF` (14,4 Go), `MRREL.RRF` (5,7 Go), `MRSAT.RRF` (4,3 Go), `MRSTY.RRF` (124 Mo), `MRDEF.RRF` (224 Mo).
-   - Raison : La redistribution intégrale brute de l'UMLS nécessite que chaque téléchargeur possède un compte UTS actif.
-2. **Possibilité de packager un « P2P Open Source Pack » (2,57 Go)** :
-   Si Kudoro souhaite permettre à des tiers de reproduire la forge en mode décentralisé, les 6 autres dossiers sources peuvent être légalement partagés :
-   - `who_atc/` (5 Mo) : Accès ouvert.
-   - `snomed_ips/` (34,2 Mo) : Licence globale libre CC BY 4.0.
-   - `hl7_fhir_ips/` (8,1 Mo) : CC BY 4.0.
-   - `fda_unii/` (113,2 Mo) : Domaine public US.
-   - `rxnorm/` (1,22 Go) : Open RxNorm dataset (NLM).
-   - `ddinter/` (1,19 Go) : CC BY-NC-SA 4.0 (mention de provenance requise).
+Une requête SQL sur la table `kb_sources` de cette base confirme la présence physique des **32 enregistrements** inventoriés au tableau ci-dessus.
 
----
+### 2.2. Lignes du Tableau Concernées Aujourd'hui
+**TOUTES les lignes du tableau (lignes 1 à 32) sont déjà concernées par une redistribution publique active aujourd'hui.**
 
-## 4. Cartographie Complète des 46 Scripts de Forge (`forge/`)
-
-Chaque étape du pipeline de build dans `forge_cryptonite/forge/` est documentée ci-dessous avec ses entrées, ses tables créées et son statut :
-
-| Étape / Script | Rôle & Traitement | Entrée Brute | Tables SQLite Impactées | Enregistrement `kb_sources` |
-|---|---|---|---|---|
-| `_schema.py` | Déclaration DDL, contraintes 3NF, B-Trees | — | Initialisation 48 tables | Déclare `kb_sources`, `build_metadata` |
-| `_config.py` | Définition des chemins et seuils | Variables env | — | — |
-| `_utils.py` | Primitives SQL, batch inserts, normalisation | — | — | — |
-| `step01_atc.py` | Ingestion hiérarchie ATC/DDD (niveaux 1 à 5) | `who_atc/2025/atc_ddd_consolidated.json` | `atc_hierarchy` | `ATC_DDD` |
-| `step01b_atc_combinations_index.py` | Indexation des combinaisons ATC | Parsing `atc_hierarchy.name_en` | `atc_combinations_index` | `ATC_COMBINATIONS_INDEX_V1_2` |
-| `step02a_ddinter_drugs.py` | Ingestion catalogue molécules DDInter | `ddinter/2.0/ddinter_drugs_large.json` | `ddinter_drugs` | `DDINTER2_DRUGS` |
-| `step02b_ddinter_interactions.py` | Interactions médicamenteuses DDI (260k paires) | `ddinter/2.0/interaction_details_full.json` | `ddi_facts`, `ddi_atc_pairs` | `DDINTER2_DDI` |
-| `step02c_ddinter_food.py` | Interactions aliment-médicament (DFI) | `ddinter/2.0/ddinter_food_full.json` | `dfi_facts` | `DDINTER2_DFI` |
-| `step02d_ddinter_disease.py` | Interactions maladie-médicament (DDSI) | `ddinter/2.0/ddinter_disease_full.json` | `ddsi_facts` | `DDINTER2_DDSI` |
-| `step02e_ddinter_dupli.py` | Duplications thérapeutiques | `ddinter/2.0/ddinter_dupli_full.json` | `therapeutic_duplications` | `DDINTER2_DUPLI` |
-| `step02f_ddinter_alternatives.py` | Alternatives thérapeutiques concrètes | Calcul DDInter matrices | `ddi_alternatives` | `DDINTER2_ALT` |
-| `step02g_ddinter_mechanism_flags.py` | Multi-set des 7 flags de mécanisme DDI | Parsing descriptions DDInter | `ddi_flags` | `DDINTER2_FLAGS` |
-| `step03_snomed_ips.py` | Snapshot officiel SNOMED CT IPS | `snomed_ips/20240701/Snapshot/` | `snomed_ips_concepts`, `snomed_ips_descriptions` | `SNOMED_IPS` |
-| `step03b_fhir_ips.py` | ValueSets et ConceptMaps FHIR IPS | `hl7_fhir_ips/package/` | `ips_valuesets`, `ips_concept_maps` | `HL7_FHIR_IPS` |
-| `step04_mrconso.py` | Streaming et filtrage UMLS MRCONSO | `umls/2025AB/META/MRCONSO.RRF` | `terminology_concepts`, `terminology_atoms` | `UMLS_MRCONSO` |
-| `step04b_rxnconso.py` | Ingestion RxNorm TTY/SAB | `rxnorm/04062026/rrf/RXNCONSO.RRF` | `rxnorm_concepts` | `RXNORM_RXNCONSO` |
-| `step05_unii_records.py` | Substances chimiques FDA UNII | `fda_unii/20260226/UNII_Records*.txt` | `unii_records` | `FDA_UNII_RECORDS` |
-| `step06_unii_names.py` | Synonymes et dénominations UNII | `fda_unii/20260226/UNII_Names*.txt` | `unii_names` | `FDA_UNII_NAMES` |
-| `step07_rxnsat.py` | Attributs RxNorm (ATC, doses, formes) | `rxnorm/04062026/rrf/RXNSAT.RRF` | `rxnorm_attributes` | `RXNORM_RXNSAT` |
-| `step08_mrsty.py` | Types sémantiques UMLS (TUI) | `umls/2025AB/META/MRSTY.RRF` | `terminology_semantic_types` | `UMLS_MRSTY` |
-| `step09_mrrel.py` | Relations sémantiques UMLS filtrées | `umls/2025AB/META/MRREL.RRF` | `terminology_relations` | `UMLS_MRREL` |
-| `step09b_rxnrel.py` | Relations RxNorm (ingrédient / marque) | `rxnorm/04062026/rrf/RXNREL.RRF` | `rxnorm_relations` | `RXNORM_RXNREL` |
-| `step09c_rxnsty.py` | Types sémantiques RxNorm | `rxnorm/04062026/rrf/RXNSTY.RRF` | `rxnorm_semantic_types` | `RXNORM_RXNSTY` |
-| `step10_mrdef.py` | Définitions médicales (NCI, MeSH) | `umls/2025AB/META/MRDEF.RRF` | `terminology_definitions` | `UMLS_MRDEF` |
-| `step11_word_indexes.py` | Index FTS5 / trigrammes latin + CJK | Extraction SQLite locale | `terminology_latin_fts`, `terminology_cjk_fts` | `WORD_INDEX` |
-| `step11b_mark_combos.py` | Détection automatique des associations | Relations structurelles | `rxnorm_concepts.is_combo` | `COMBO_FLAG_V1` |
-| `step12_atc_propagation.py` | Propagation des codes ATC aux marques | Algorithme graphe RxNorm | `atc_drug_mappings` | `ATC_PROPAGATION_V1_1` |
-| `step12b_apply_combo_atc.py` | Résolution ATC des associations complexes | Consensus Cryptonite | `atc_combo_overrides` | `COMBO_ATC_OVERRIDE_CRYPTONITE` |
-| `step13_ips_enrich.py` | Alignement terminologique FHIR IPS | Mappings croisés | `ips_enriched_mappings` | — |
-| `step14_finalize.py` | Contraintes d'intégrité, vacuum, optimize | SQLite PRAGMAs | B-Trees compacts | — |
-| `step15_report.py` | Rapport markdown & sanity checks SQL | Requêtes audit | Fichier `REPORT.md` | — |
-| `step16_enrich_existing.py` | Enrichissements IUPAC et noms déposés | Dictionnaires chimiques | `drug_synonyms_enriched` | `GOLDEN_ENRICH_V1` |
-| `step17_allergy_cross_reactivity.py` | Réactivité croisée allergique (bêta-lactames) | Tables cliniques consensus | `allergy_cross_reactivity` | `ALLERGY_XR_SEED` |
-| `step17b_snomed_allergen_atc.py` | Mapping SNOMED allergène vers ATC | Consensus clinique | `snomed_allergen_to_atc_class` | `SNOMED_ALLERGEN_ATC_CRYPTONITE` |
-| `step18_combo_drug_resolutions.py` | Résolutions déterministes multi-principes | Ingrédients multiples | `combo_drug_resolutions` | `COMBO_DRUG_RESOLUTIONS_V1_2` |
-| `step18b_ddi_combo_propagation.py` | Propagation des interactions aux combos | Expansion cartésienne | `ddi_combo_facts` | — |
-| `step19_ddinter_atc_backfill.py` | Rattachement ATC des drogues DDInter orphelines | RxNorm + UMLS matching | `ddinter_drugs.atc_code` | `DDINTER_ATC_BACKFILL_V1` |
-| `step20_who_eml_seed.py` | Médicaments essentiels OMS (EML 2023) | WHO EML PDF/JSON | `who_eml_2023` | `WHO_EML_2023` |
-| `step21_atc_alternatives.py` | Consolidation alternatives par classe ATC | Calculsiblings | `atc_alternatives` | `ATC_ALTERNATIVES` |
-| `step21b_atc_alternatives_compat.py` | Vue compatibilité ascendante alternatives | Vues SQLite | `v_atc_alternatives` | `ATC_ALTERNATIVES_COMPAT_CRYPTONITE` |
-| `step22_who_aware_seed.py` | Classification antibiotiques WHO AWaRe | WHO AWaRe 2024 | `who_aware_2024` | `WHO_AWaRe_2024` |
-| `step23_drug_names_multilingual.py` | Index FTS multilingue (JA, FR, EN) | Dictionnaires multilingues | `drug_names_meta` | `DRUG_NAMES_MULTILINGUAL_V2` |
-| `step25_atc_family_stats.py` | Métriques et statistiques par famille ATC | Agrégrations SQL | `atc_family_stats` | `ATC_FAMILY_STATS_V1` |
+En particulier :
+1. **Lignes 3 à 9, 29, 31 (DDInter 2.0 — plus de 3,8 millions de lignes)** :
+   - Sont servies en téléchargement public sans barrière d'authentification.
+   - *Obligation légale immédiate* : L'application et le site `jemmapass.net` doivent afficher la mention de licence **CC BY-NC-SA 4.0**, créditer expressément le *Computational Biology & Drug Design (CBDD) Group*, et garantir l'accès 100 % gratuit et non commercial.
+2. **Lignes 10 et 11 (SNOMED IPS et HL7 FHIR IPS — 30 910 lignes)** :
+   - *Obligation légale immédiate* : Afficher la mention de marque déposée de SNOMED International et la licence CC BY 4.0.
+3. **Lignes 1, 2, 24, 25, 28 (WHOCC ATC/DDD — 6 934 lignes brutes et tables de dérivation)** :
+   - *Obligation légale immédiate* : Référence explicite au *WHO Collaborating Centre for Drug Statistics Methodology*, et respect strict de l'interdiction d'usage commercial.
+4. **Lignes 12, 17, 18, 21 (UMLS Metathesaurus — 6 015 225 lignes au total)** :
+   - *Obligation légale immédiate* : En application des articles §4, §5 et §11.a de l'accord de licence UMLS Metathesaurus :
+     - JemmaPass / Kudoro doit détenir un compte LICENSEE actif sur le portail UTS de la NLM ;
+     - La NLM doit avoir été informée préalablement de la distribution de l'application (§4) ;
+     - Le rapport annuel d'utilisation doit être soumis à la NLM chaque année (§5) ;
+     - L'écran ou la page de distribution doit afficher textuellement la mention obligatoire §11.a :  
+       *« Some material in the UMLS Metathesaurus is from copyrighted sources of the respective copyright holders. Users of the UMLS Metathesaurus are solely responsible for compliance with any copyright, patent or trademark restrictions and are referred to the copyright, patent or trademark notices appearing in the original sources, all of which are hereby incorporated by reference. »*
+     - Vérification de l'absence de vocabulaires source de Catégorie 3 ou 4 dans les atomes distribués hors des États-Unis (§12).
+5. **Lignes 13, 16, 19, 20 (RxNorm — plus de 3,4 millions de lignes)** :
+   - *Obligation légale immédiate* : Affichage de la mention de courtoisie demandée par la NLM :  
+     *« This product uses publicly available data courtesy of the U.S. National Library of Medicine (NLM), National Institutes of Health, Department of Health and Human Services; NLM is not responsible for the product and does not endorse or recommend this or any other product. »*
+6. **Lignes 30 et 32 (OMS EML 2023 et AWaRe 2024 — 216 lignes)** :
+   - *Obligation légale immédiate* : Attribution à l'OMS, clause ShareAlike, et interdiction stricte d'arborer le logo de l'OMS.
 
 ---
 
-## 5. Synthèse des Clauses Juridiques et Obligations d'Attribution
+## 3. Question B : Fichier Source Brut vs Lignes Dérivées dans la KB
 
-Pour distribuer `knowledge_full.db` en P2P, l'application JEMMA et les documents d'accompagnement doivent intégrer le texte d'attribution suivant :
+> **Question posée (message 0090)** : Pour chaque source, la différence entre partager le fichier source brut et partager les lignes dérivées dans la KB.
 
-```markdown
-### Mentions Légales & Attributions des Données Médicales JEMMA Pass
+Le partage décentralisé de pair-à-pair (P2P) envisagé par Kudoro soulève deux régimes juridiques distincts selon la nature de l'objet partagé :
 
-Cette base de connaissances consolide des sources de données médicales publiques et ouvertes :
-1. **DDInter 2.0** : Données d'interactions médicamenteuses issues de DDInter (http://ddinter.scbdd.com/), sous licence Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0).
-2. **SNOMED CT IPS Free Global License** : Utilise le sous-ensemble terminologique International Patient Summary de SNOMED International, sous licence CC BY 4.0. SNOMED CT® est une marque déposée de l'IHTSDO.
-3. **HL7® FHIR® IPS** : HL7 International, Implementation Guide International Patient Summary (Release 1.1.0), sous licence CC BY 4.0.
-4. **WHO ATC/DDD & EML & AWaRe** : Données de classification de l'Organisation Mondiale de la Santé (OMS/WHO Collaborating Centre for Drug Statistics Methodology), utilisées en accès ouvert d'intérêt public.
-5. **RxNorm & UMLS** : U.S. National Library of Medicine (NLM), National Institutes of Health. Le sous-ensemble ouvert RxNorm et les types sémantiques dérivés sont distribués conformément aux directives de la NLM.
-6. **FDA UNII** : U.S. Food and Drug Administration / USP Substance Registration System, domaine public.
-
-Toute redistribution dérivée doit maintenir l'accès non-commercial et préserver l'intégrité de la table `kb_sources`.
-```
+| Famille de sources | Partage du fichier source brut (Archives 20,68 Go) | Partage des lignes dérivées dans la KB (`knowledge_full.db` 3,36 Go) |
+|---|---|---|
+| **UMLS Metathesaurus**<br>(`MRCONSO.RRF` 14,4 Go, `MRREL.RRF` 5,7 Go, `MRSAT.RRF` 4,3 Go, `MRDEF.RRF` 224 Mo, `MRSTY.RRF` 124 Mo) | **`NON REDISTRIBUABLE`**<br>L'article §3 du contrat UMLS interdit formellement de redistribuer le Metathesaurus brut ou ses sous-ensembles bruts. La NLM réserve le téléchargement brut aux seuls détenteurs d'un compte UTS ayant accepté le contrat. Un partage P2P public du dossier `umls/` violerait directement le contrat NLM. | **`SOUS CONDITIONS`**<br>L'article §3.a autorise l'incorporation de sous-ensembles comme partie intégrante d'une application informatique poursuivant un but propre (aide clinique d'urgence IPS), sous réserve d'un compte LICENSEE, de la déclaration préalable §4, du rapport annuel §5, de la notice §11.a et du respect des catégories §12 pour chaque SAB extrait. |
+| **RxNorm**<br>(`RXNCONSO.RRF`, `RXNREL.RRF`, `RXNSAT.RRF`, `RXNSTY.RRF` ~ 1,22 Go) | **`SOUS CONDITIONS`**<br>L'archive mensuelle complète distribuée par la NLM regroupe à la fois des concepts créés par le gouvernement américain (domaine public) et des terminologies propriétaires (First Databank, Micromedex, Gold Standard). Le téléchargement du fichier brut requiert une licence UMLS. | **`REDISTRIBUABLE` (pour les concepts NLM RXCUI)** / **`SOUS CONDITIONS` (pour les vocabulaires tiers)**<br>Si la forge n'extrait que les concepts NLM normalisés (`SAB=RXNORM`), ces données sont dans le domaine public avec simple demande d'attribution. |
+| **DDInter 2.0**<br>(`interaction_details_full.json` 419 Mo, catalogues JSON, 2 290 fichiers individuels ~ 1,19 Go) | **`SOUS CONDITIONS`**<br>Le texte officiel de DDInter (`terms/`) place expressément les données sous **CC BY-NC-SA 4.0**. Les fichiers bruts sont donc redistribuables en P2P à condition stricte de conserver la licence CC BY-NC-SA 4.0, de créditer le CBDD Group et de proscrire tout usage commercial. | **`SOUS CONDITIONS`**<br>En vertu de la clause *ShareAlike* (partage à l'identique), toute œuvre dérivée incorporant les données DDInter (tables `ddi_facts`, `ddi_alternatives`, `ddsi_facts`, etc.) hérite obligatoirement de la licence CC BY-NC-SA 4.0 et de l'interdiction commerciale. |
+| **SNOMED CT IPS**<br>(`der2_Refset_IPSSimpleSnapshot_IPST_20240701.txt`, 34,2 Mo) | **`SOUS CONDITIONS`**<br>Le sous-ensemble officiel IPS est mis à disposition sous licence **CC BY 4.0** (« Free for Use » mondiale). L'archive brute peut être partagée en P2P sous réserve d'attribution à SNOMED International et mention de la marque déposée. | **`SOUS CONDITIONS`**<br>Mêmes conditions d'attribution CC BY 4.0 et mention de marque pour les tables `snomed_ips_concepts` et `snomed_ips_descriptions`. |
+| **WHOCC ATC/DDD**<br>(`atc_ddd_consolidated.json`, 5 Mo) | **`SOUS CONDITIONS`**<br>Redistribuable sous conditions strictes du WHOCC : attribution, usage non commercial, et interdiction de modifier/manipuler le fichier source. | **`SOUS CONDITIONS`** / **`INCONNU`**<br>L'incorporation brute des codes officiels est autorisée sous attribution et gratuité. En revanche, les étapes de la forge qui manipulent ou dérivent les codes (propagation, parsing de combinaisons) créent une incertitude juridique au regard de la clause *« Changing or manipulating the material is not allowed »*. |
+| **WHO EML 2023 & AWaRe 2024** | **`SOUS CONDITIONS`**<br>Redistribuable en P2P sous licence **CC BY-NC-SA 3.0 IGO** (attribution OMS, non commercial, ShareAlike, pas de logo OMS). | **`SOUS CONDITIONS`**<br>Mêmes conditions CC BY-NC-SA 3.0 IGO appliquées aux tables dérivées `who_eml_2023` et `who_aware_2024`. |
+| **FDA UNII**<br>(`UNII_Records_26Feb2026.txt` 105 Mo, `UNII_Names_26Feb2026.txt` 8 Mo) | **`REDISTRIBUABLE`**<br>Œuvre du gouvernement fédéral des États-Unis (17 U.S.C. § 105). Aucune protection au titre du droit d'auteur. Partage P2P brut totalement libre. | **`REDISTRIBUABLE`**<br>L'intégration et la redistribution des tables `unii_records` et `unii_names` sont totalement libres de droits. |
+| **HL7 FHIR IPS**<br>(`package.tgz`, 8,1 Mo) | **`SOUS CONDITIONS`**<br>Spécification HL7 en domaine public (CC0 1.0), mais les archives contiennent des dépendances terminologiques propriétaires (LOINC, SNOMED). | **`SOUS CONDITIONS`**<br>Redistribution autorisée sous réserve du respect des droits attachés aux systèmes de codage tiers incorporés dans les ValueSets. |
 
 ---
 
-## 6. Prochaines Étapes pour le Couloir KB (Tour 2)
+## 4. Pièces Justificatives et Traçabilité (`evidence/` & `FETCH.log`)
 
-1. **Reconstruction v2.1-omnis (1.2)** :
-   - Lancement de `turbo_forge_jemma_db.py --rebuild` dans le répertoire isolé `OUTPUT_v2.1/`.
-   - Intégration des traductions françaises et japonaises des 39 codes `personal-relationship-uv-ips` dans `ips_valuesets_translations`.
-2. **Génération du patch différentiel delta** :
-   - Application du format SQLite Changeset ou script d'application transactionnel (`patch_2.0_to_2.1.sql` ~ 5 Mo) permettant la mise à jour P2P sans re-téléchargement des 3,36 Go.
-3. **Audit de code SD-26** :
-   - Démarrage de l'audit des 16 blocs `catch` silencieux sur la branche `ag/0082-sd26`.
+L'ensemble des pièces brutes téléchargées attestant des phrases de licence figure dans le dossier dédié :
+`docs/analysis/kb-sources-licences-evidence/`
+
+1. `whocc-atc-copyright-disclaimer.txt` : Texte intégral du disclaimer WHOCC (`https://www.whocc.no/copyright_disclaimer/`).
+2. `who-publications-licensing.txt` : Politique de licence des publications de l'OMS (`https://www.who.int/about/policies/publishing/permissions`).
+3. `ddinter-terms-conditions.txt` : Conditions d'utilisation et licence de données DDInter (`http://ddinter.scbdd.com/terms/`).
+4. `snomed-ips-terminology-terms.txt` : Termes officiels de la licence CC BY 4.0 du sous-ensemble IPS SNOMED (`https://www.snomed.org/international-patient-summary-terminology`).
+5. `hl7-fhir-ips-license.txt` : Termes de la spécification FHIR (CC0 1.0) et avertissement sur les propriétés intellectuelles tierces (`http://hl7.org/fhir/license.html`).
+6. `umls-metathesaurus-license-agreement.txt` : Contrat de licence officiel UMLS Metathesaurus (`https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/release/license_agreement.html`).
+7. `rxnorm-terms-of-service.txt` : Conditions de service et exigences de republication RxNorm (`https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html`).
+8. `fda-website-policies-copyright.txt` : Politique officielle de droit d'auteur de la FDA (`https://www.fda.gov/about-fda/about-website/website-policies#copyright`).
+9. `FETCH.log` : Journal horodaté consignant chaque requête, URL source, code HTTP et fichier cible.
+
+---
+
+## 5. Réservations Juridiques pour Kudoro
+
+Conformément à la directive du message 0090, ce document n'émet aucune conclusion d'opportunité ni d'interprétation favorable. Les constats textuels bruts ci-dessus sont mis à disposition de Kudoro afin d'éclairer sa décision de produit et de lui permettre, le cas échéant, de solliciter un conseil juridique qualifié sur les points suivants :
+1. **Régularisation administrative UMLS** : Enregistrement formel de JemmaPass auprès de la NLM au titre du contrat UMLS (§4, §5) pour la base déjà en ligne et pour toute distribution future.
+2. **Clause de contamination ShareAlike de DDInter 2.0** : La présence des tables dérivées DDInter (`ddi_facts`, `ddi_alternatives`) impose la distribution de `knowledge_full.db` sous licence CC BY-NC-SA 4.0 et prohibe toute commercialisation future du jeu de données.
+3. **Redistribution P2P des données brutes** : L'interdiction stricte de redistribuer l'archive brute `umls/` (17,04 Go) en P2P public, tandis que les archives `fda_unii/`, `snomed_ips/` et `ddinter/` peuvent faire l'objet d'un paquet source ouvert redistribuable sous leurs conditions respectives.

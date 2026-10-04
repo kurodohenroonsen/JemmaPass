@@ -1,0 +1,17 @@
+# DDInter Terms and Conditions (Data Licensing)
+URL: http://ddinter.scbdd.com/terms/
+Accessed: 2026-10-04T07:18:49Z
+Publisher: Computational Biology & Drug Design (CBDD) Group, Central South University / Zhejiang University
+
+--- RAW TEXT EXTRACT ---
+Terms
+
+Disclaimer
+We endeavor to provide a reasonable level of service based on the scientific literatures and reports, but DDInter has never made any specific commitments to the contents of the database. DDInter team cannot guarantee the accuracy or completeness of the information in the current release. Be aware that DDInter is still incomplete and undoubtedly contains errors, and the absence of an interaction does not necessarily mean no interactions exist. DDInter assumes no liability for any direct or indirect damage arising out of the use of DDInter.
+
+Data licensing
+The DDInter data is made available under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license. Except as otherwise provided in any additional terms for a service, you may print or download content from the services for your own personal, non-commercial, informational or scholarly use.
+
+Copyright (Footer)
+© Copyright Computational Biology & Drug DesignGroup. All Rights Reserved
+------------------------

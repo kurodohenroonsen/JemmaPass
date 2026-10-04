@@ -1,0 +1,31 @@
+# UMLS Metathesaurus License Agreement
+URL: https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/release/license_agreement.html
+Accessed: 2026-10-04T07:18:58Z
+Publisher: U.S. National Library of Medicine (NLM), National Institutes of Health, Department of Health and Human Services, Bethesda, MD, USA
+
+--- RAW TEXT EXTRACT ---
+License Agreement for Use of the UMLS® Metathesaurus®
+
+1. The NLM hereby grants a nonexclusive, non-transferable right to LICENSEE to use the UMLS Metathesaurus and incorporate its content in any computer applications or systems designed to improve access to biomedical information of any type subject to the restrictions in other provisions of this Agreement. The names and addresses of licensees authorized to use the UMLS products are public information.
+
+2. No charges, usage fees, or royalties will be paid to NLM.
+
+3. LICENSEE is prohibited from distributing the UMLS Metathesaurus or subsets of it, including individual vocabulary sources within the Metathesaurus, except (a) as an integral part of computer applications developed by LICENSEE for a purpose other than redistribution of vocabulary sources contained in the UMLS Metathesaurus and (b) if permitted by paragraph 12 of this agreement.
+
+4. LICENSEE agrees to inform NLM prior to distributing any application(s) in which it is using the UMLS Metathesaurus and is encouraged to inform NLM of any difficulties encountered in using the UMLS Metathesaurus, and changes or enhancements to the UMLS Metathesaurus that would make it more useful to LICENSEE and its user groups.
+
+5. Within 30 days of the end of any calendar year in which LICENSEE makes use of the UMLS Metathesaurus, LICENSEE agrees to provide NLM with a brief report on the usefulness of the UMLS Metathesaurus in general and, if applicable, on the usefulness of CPT in the UMLS format in particular.
+
+11. Some of the Material in the UMLS Metathesaurus is from copyrighted sources. If LICENSEE uses any material from copyrighted sources from the UMLS Metathesaurus:
+a) the LICENSEE is required to display in full, prior to providing user access to the Metathesaurus or any of the vocabulary sources within the UMLS, the following wording in order that its users be made aware of these copyright constraints:
+"Some material in the UMLS Metathesaurus is from copyrighted sources of the respective copyright holders. Users of the UMLS Metathesaurus are solely responsible for compliance with any copyright, patent or trademark restrictions and are referred to the copyright, patent or trademark notices appearing in the original sources, all of which are hereby incorporated by reference.";
+to display a list of all of the vocabularies contained within the UMLS Metathesaurus that are used in the LICENSEE's application; and to indicate for each vocabulary any appropriate copyright notice and whether the entire contents are present or only a portion of it.
+b) the LICENSEE is prohibited from altering UMLS and other vocabulary source content contained within the UMLS Metathesaurus, but may include content from other sources in applications that also contain content from the UMLS Metathesaurus. The LICENSEE may not imply in any way that data from other sources is part of the UMLS Metathesaurus or of any of its vocabulary sources.
+c) the LICENSEE is required to include in its applications identifiers from the UMLS Metathesaurus such that the original source vocabularies for any data obtained from the UMLS Metathesaurus can be determined by reference to a complete version of the UMLS Metathesaurus.
+
+12. For material in the UMLS Metathesaurus obtained from some sources additional restrictions on LICENSEE's use may apply.
+12.1. Category 1: LICENSEE is prohibited from translating the vocabulary source into another language or from producing other derivative works based on this single vocabulary source.
+12.2. Category 2: All category 1 restrictions AND LICENSEE is prohibited from using the vocabulary source in operational applications that create records or information containing data from the vocabulary source. Use for data creation research or product development is allowed.
+12.3. Category 3: LICENSEE's right to use material from the source vocabulary is restricted to internal use at the LICENSEE's site(s) for research, product development, and statistical analysis only... expressly excludes: use of material from these copyrighted sources in routine patient data creation; incorporation of material from these copyrighted sources in any publicly accessible computer-based information system or public electronic bulletin board including the Internet; publishing or translating or creating derivative works... selling, leasing, licensing, or otherwise making available material from these copyrighted works to any unauthorized party...
+12.4. Category 4: 12.4.1. LICENSEE is prohibited from translating the vocabulary source into another language or from altering the vocabulary source content. 12.4.2. LICENSEE's right to use the vocabulary source is restricted to use in the U.S. by LICENSEE's employees, contractors, faculty, students, clients, patients, or constituents... 12.4.3. LICENSEE has the right to distribute the vocabulary source in the U.S., but only in combination with other UMLS Metathesaurus content. Further, LICENSEE's right to distribute is restricted to: a) Electronic distribution to LICENSEE's direct U.S. affiliates, or to other U.S. entities that have signed the UMLS license... LICENSEE must take reasonable precautions to prevent distribution of the vocabulary source to non-US entities.
+------------------------

@@ -1,0 +1,13 @@
+# FETCH.log — Journal des Téléchargements des Textes Officiels de Licence
+# Projet : JemmaPass Knowledge Base (KB)
+# Orchestrateur : Antigravity-KB
+# Date de collecte : 2026-10-04
+
+2026-10-04T07:14:54Z | HTTP 200 | https://www.snomed.org/international-patient-summary-terminology | read_url_content | docs/analysis/kb-sources-licences-evidence/snomed-ips-terminology-terms.txt | SNOMED International IPS Terminology Licensed Use (CC BY 4.0)
+2026-10-04T07:16:39Z | HTTP 200 | http://hl7.org/fhir/license.html & http://hl7.org/fhir/uv/ips/ | read_url_content | docs/analysis/kb-sources-licences-evidence/hl7-fhir-ips-license.txt | HL7 FHIR Specification (CC0 1.0) & IPS IG Third-Party IP Notice
+2026-10-04T07:17:33Z | HTTP 200 | https://www.whocc.no/copyright_disclaimer/ | read_url_content | docs/analysis/kb-sources-licences-evidence/whocc-atc-copyright-disclaimer.txt | WHOCC ATC/DDD Copyright & Disclaimer (Citation required, No Commercial, No Changing/Manipulating)
+2026-10-04T07:18:03Z | HTTP 200 | https://www.who.int/about/policies/publishing/permissions | search_web / read_url_content | docs/analysis/kb-sources-licences-evidence/who-publications-licensing.txt | WHO EML 2023 & AWaRe 2024 Licensing Policy (CC BY-NC-SA 3.0 IGO)
+2026-10-04T07:18:49Z | HTTP 200 | http://ddinter.scbdd.com/terms/ | read_url_content | docs/analysis/kb-sources-licences-evidence/ddinter-terms-conditions.txt | DDInter 2.0 Data Licensing (CC BY-NC-SA 4.0 International)
+2026-10-04T07:18:58Z | HTTP 200 | https://www.nlm.nih.gov/research/umls/knowledge_sources/metathesaurus/release/license_agreement.html | read_url_content | docs/analysis/kb-sources-licences-evidence/umls-metathesaurus-license-agreement.txt | UMLS Metathesaurus License Agreement (§3, §4, §5, §11, §12 Category 1-4)
+2026-10-04T07:19:18Z | HTTP 200 | https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html | read_url_content | docs/analysis/kb-sources-licences-evidence/rxnorm-terms-of-service.txt | RxNorm Terms of Service (Public Domain for NLM core normalized names/RXCUI, UMLS license & SRL categories for full release)
+2026-10-04T07:19:32Z | HTTP 200 | https://www.fda.gov/about-fda/about-website/website-policies#copyright | read_url_content | docs/analysis/kb-sources-licences-evidence/fda-website-policies-copyright.txt | FDA Website Policies Copyright (Public domain under 17 U.S.C. § 105 for UNII Records & Names)

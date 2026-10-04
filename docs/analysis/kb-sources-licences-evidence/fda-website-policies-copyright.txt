@@ -1,0 +1,15 @@
+# FDA Website Policies — Copyright
+URL: https://www.fda.gov/about-fda/about-website/website-policies#copyright
+URL UNII: https://precision.fda.gov/uniisearch/archive
+Accessed: 2026-10-04T07:19:32Z
+Publisher: U.S. Food and Drug Administration (FDA), Silver Spring, MD, USA
+
+--- RAW TEXT EXTRACT ---
+Website Policies
+
+Copyright
+Unless otherwise noted, the contents of the FDA website (www.fda.gov) — both text and graphics — are not copyrighted. They are in the public domain and may be republished, reprinted and otherwise used freely by anyone without the need to obtain permission from FDA.
+
+UNII (Unique Ingredient Identifier) / Global Substance Registration System (GSRS):
+Data generated and published by the FDA SRS / PrecisionFDA in the UNII data files (UNII_Records, UNII_Names) are government-generated scientific data in the public domain under 17 U.S.C. § 105.
+------------------------

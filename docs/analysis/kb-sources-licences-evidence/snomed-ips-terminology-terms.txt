@@ -1,0 +1,18 @@
+# SNOMED International — International Patient Summary Terminology
+URL: https://www.snomed.org/international-patient-summary-terminology
+Accessed: 2026-10-04T07:14:54Z
+Publisher: SNOMED International (IHTSDO), London, UK
+
+--- RAW TEXT EXTRACT ---
+What is the IPS Terminology?
+Unlike SNOMED International’s Global Patient Set which is a flat list of SNOMED CT codes and terms, the IPS Terminology will provide implementers with an open product that can be used in healthcare solutions using the power of SNOMED CT through its query language and hierarchies for the specified scope. Use of the IPS Terminology will allow for more effective use of clinical data analytics and decision support, and for Artificial Intelligence applications.
+
+Licensed Use
+This work is licensed under the Creative Commons Attribution 4.0 International License.
+
+Download the IPS Terminology
+Please register your use of SNOMED International’s International Patient Summary Terminology.
+
+Copyright notice:
+© 2026 SNOMED International. SNOMED CT® is a registered trademark of the International Health Terminology Standards Development Organisation.
+------------------------
