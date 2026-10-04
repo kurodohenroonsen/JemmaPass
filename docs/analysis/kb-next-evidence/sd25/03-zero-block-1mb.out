@@ -1,0 +1,69 @@
+=== Database: /tmp/sd25_test_zero.db ===
+File size: 3360727040 bytes
+
+--- Query: PRAGMA quick_check(5) ---
+SQL: PRAGMA quick_check(5);
+Outcome: SUCCESS in 5.4072s (1 rows)
+  ('*** in database main ***\nTree 31 page 409843: btreeInitPage() returns error code 11\nTree 31 page 413682 cell 42: Child page depth differs\nTree 31 page 409750: btreeInitPage() returns error code 11\nTree 31 page 409659: btreeInitPage() returns error code 11\nTree 31 page 409657: btreeInitPage() returns error code 11',)
+
+--- Query: build_metadata ---
+SQL: SELECT * FROM build_metadata;
+Outcome: SUCCESS in 0.0005s (5 rows)
+  ('build_version', '2.0-omnis')
+  ('build_variant', 'omnis')
+  ('build_languages', 'ARA,CHI,CZE,DUT,ENG,EST,FIN,FRE,GER,GRE,HUN,ISL,ITA,JPN,KOR,LAV,LIT,NOR,POL,POR,RUS,SCR,SPA,SWE,TUR')
+  ('build_timestamp', '2026-05-13 01:20:52')
+  ('build_schema', '3NF (ddi_facts/ddi_atc_pairs · terminology_codes/latin/cjk)')
+
+--- Query: count_atc_hierarchy ---
+SQL: SELECT count(*) FROM atc_hierarchy;
+Outcome: SUCCESS in 0.0019s (1 rows)
+  (6934,)
+
+--- Query: count_ips_valuesets ---
+SQL: SELECT count(*) FROM ips_valuesets;
+Outcome: SUCCESS in 0.0100s (1 rows)
+  (8554,)
+
+--- Query: count_ips_valuesets_translations ---
+SQL: SELECT count(*) FROM ips_valuesets_translations;
+Outcome: SUCCESS in 0.0554s (1 rows)
+  (85736,)
+
+--- Query: count_ddi_facts ---
+SQL: SELECT count(*) FROM ddi_facts;
+Outcome: SUCCESS in 0.0128s (1 rows)
+  (260100,)
+
+--- Query: count_terminology_codes ---
+SQL: SELECT count(*) FROM terminology_codes;
+Outcome: SUCCESS in 1.1664s (1 rows)
+  (1452451,)
+
+--- Query: clinical_edoxaban_aspirin ---
+SQL: SELECT d.severity, d.drug_a_atc, d.drug_b_atc, substr(d.description_en, 1, 80)
+                FROM v_ddi_emergency d
+                WHERE (d.drug_a_atc = 'B01AF03' AND d.drug_b_atc = 'B01AC06')
+                   OR (d.drug_a_atc = 'B01AC06' AND d.drug_b_atc = 'B01AF03');
+Outcome: SUCCESS in 0.0056s (1 rows)
+  ('Major', 'B01AC06', 'B01AF03', 'Concomitant use of edoxaban with other agents that alter hemostasis such as aspi')
+
+--- Query: clinical_penicillin_code ---
+SQL: SELECT code, atc_code, primary_display FROM terminology_codes WHERE code = '91936005';
+Outcome: SUCCESS in 0.0001s (1 rows)
+  ('91936005', None, 'Allergy to penicillin')
+
+--- Query: clinical_penicillin_cross ---
+SQL: SELECT allergen_class, cross_reactive_class, risk_level FROM allergy_cross_reactivity WHERE allergen_class = 'J01C';
+Outcome: SUCCESS in 0.0007s (13 rows)
+  ('J01C', 'J01AA', 'NONE')
+  ('J01C', 'J01C', 'HIGH')
+  ('J01C', 'J01D', 'MODERATE')
+  ('J01C', 'J01DB', 'MODERATE')
+  ('J01C', 'J01DC', 'MODERATE')
+  ('J01C', 'J01DD', 'LOW')
+  ('J01C', 'J01DF', 'LOW')
+  ('J01C', 'J01DH', 'LOW')
+  ('J01C', 'J01F', 'NONE')
+  ('J01C', 'J01FA', 'NONE')
+

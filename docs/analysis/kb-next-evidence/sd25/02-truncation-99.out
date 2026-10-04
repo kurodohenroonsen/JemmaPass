@@ -1,0 +1,46 @@
+=== Database: /tmp/sd25_test/kb_99.db ===
+File size: 3327119769 bytes
+
+--- Query: PRAGMA quick_check(5) ---
+SQL: PRAGMA quick_check(5);
+Outcome: ERROR in 0.0018s: DatabaseError: database disk image is malformed
+
+--- Query: build_metadata ---
+SQL: SELECT * FROM build_metadata;
+Outcome: ERROR in 0.0001s: DatabaseError: database disk image is malformed
+
+--- Query: count_atc_hierarchy ---
+SQL: SELECT count(*) FROM atc_hierarchy;
+Outcome: ERROR in 0.0000s: DatabaseError: database disk image is malformed
+
+--- Query: count_ips_valuesets ---
+SQL: SELECT count(*) FROM ips_valuesets;
+Outcome: ERROR in 0.0000s: DatabaseError: database disk image is malformed
+
+--- Query: count_ips_valuesets_translations ---
+SQL: SELECT count(*) FROM ips_valuesets_translations;
+Outcome: ERROR in 0.0000s: DatabaseError: database disk image is malformed
+
+--- Query: count_ddi_facts ---
+SQL: SELECT count(*) FROM ddi_facts;
+Outcome: ERROR in 0.0000s: DatabaseError: database disk image is malformed
+
+--- Query: count_terminology_codes ---
+SQL: SELECT count(*) FROM terminology_codes;
+Outcome: ERROR in 0.0000s: DatabaseError: database disk image is malformed
+
+--- Query: clinical_edoxaban_aspirin ---
+SQL: SELECT d.severity, d.drug_a_atc, d.drug_b_atc, substr(d.description_en, 1, 80)
+                FROM v_ddi_emergency d
+                WHERE (d.drug_a_atc = B01AF03 AND d.drug_b_atc = B01AC06)
+                   OR (d.drug_a_atc = B01AC06 AND d.drug_b_atc = B01AF03);
+Outcome: ERROR in 0.0000s: DatabaseError: database disk image is malformed
+
+--- Query: clinical_penicillin_code ---
+SQL: SELECT code, atc_code, primary_display FROM terminology_codes WHERE code = 91936005;
+Outcome: ERROR in 0.0000s: DatabaseError: database disk image is malformed
+
+--- Query: clinical_penicillin_cross ---
+SQL: SELECT allergen_class, cross_reactive_class, risk_level FROM allergy_cross_reactivity WHERE allergen_class = J01C;
+Outcome: ERROR in 0.0000s: DatabaseError: database disk image is malformed
+
