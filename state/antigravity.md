@@ -17,6 +17,7 @@
   - Script de couloir : `JemmaPassChrome/lane.sh` conforme PROTOCOL §7 bis créé, testé et poussé (@ `5c0a8e7`) avec 14 actions nommées (`M = 0`).
   - Tour 2 — Analyse `fullUrl` : Vérification sur pièces achevée. 4 piliers principaux (Patient, Composition, Allergies, Médicaments) 100 % identiques à Android au caractère près. Les 8 piliers natifs divergent sur les graines de hachage.
   - Tour 2 — Amélioration continue : Proposition `to-claude/amelioration-Chrome-0002.md` déposée (Tour à vide clinique en attente des vecteurs officiels de Claude, proposition d'alignement des graines URN). Rapport : `to-claude/tour2-report-Antigravity-Chrome.md`.
+  - Tour 3 : Rectification formelle de la valeur `Composition.fullUrl` sur pièces (`urn:uuid:cc4566d1-4052-3189-a1fd-c30ce0aac947`, `demo_haru.fhir.json:11`) dans `tour2-report-Antigravity-Chrome.md`. Spécification textuelle du stockage du Bundle maître (`MasterBundleStore` via `chrome.storage.local`) selon la décision Kudoro iOS-0002. Proposition `to-claude/amelioration-Chrome-0003.md` et rapport `to-claude/tour3-report-Antigravity-Chrome.md` déposés.
   - Suite de tests : 25/25 tests unitaires passés, 0 erreur HL7 IPS 1.1.0 sur `demo_kurodo`, `demo_haru`, `demo_kamekichi`.
 - **Couloir KB** (Antigravity-KB) :
   - Tâche 0090 : Refonte intégrale de l'inventaire des licences sur `ag/0090-kb-licences` (@ `3f81af4`) selon les directives strictes 0090 et 0096 §3. Dossier de preuves `docs/analysis/kb-sources-licences-evidence/` créé avec 8 textes officiels téléchargés et `FETCH.log`. `docs/analysis/kb-sources-licences.md` réécrit avec citations textuelles verbatim pour les 32 sources `kb_sources`, classification sous les 4 seuls statuts contractuels (`REDISTRIBUABLE`, `SOUS CONDITIONS`, `NON REDISTRIBUABLE`, `INCONNU`), retrait de tout « FEU VERT » ou subjectivité. Réponses sur pièces à la Question A (32/32 sources présentes dans `knowledge_full.db` sur `jemmapass.net/models`, obligations légales immédiates explicitées) et à la Question B (distinction nette entre fichiers bruts de forge 20.68 Go `NON REDISTRIBUABLE` et base dérivée 3.36 Go `SOUS CONDITIONS`). Rapports `to-claude/tour2-report-Antigravity-KB.md` et proposition `to-claude/amelioration-Antigravity-KB-0002.md` (garde d'audit automatique des SABs) déposés.
@@ -32,11 +33,11 @@
   - Réunion : `meetings/2026-10-04-02/Antigravity-Analyse.md` déposée.
 - **Couloir USB** (Antigravity-USB) :
   - Tour 1 — Défaut 6 (Zéro trace sur l'ordinateur hôte) : Résolu au commit `b787b5a` sur `ag/usb-main`. Tests `USB-S01..S09` 100% verts (9/9).
-  - Tour 2 — Socle FHIR R4 IPS & Rejeu des vecteurs : Résolu au commit `638521d` sur `ag/usb-main` (poussé sur `origin/ag/usb-main`).
-  - Modules JS pur créés dans `core/` : `blood_group.js` (LOINC 882-1), `contacts.js` (`p.ct` <-> `Patient.contact`), `devices.js` (`DeviceUseStatement` + `Device`), `fhir_codec.js` (`parseBundle` / `buildBundle`).
+  - Tour 2 — Socle FHIR R4 IPS & Rejeu des vecteurs : Validé par Claude (ordre de bataille Tour 3). 30/30 tests passés.
+  - Tour 3 — Bundle Maître & Retrait des chemins Mac : Commit `f0f3d70` sur `ag/usb-main`. Retrait de tout chemin `/Users/...` dans `lane.sh` et les rapports de boîte. Spécification textuelle du passage au Bundle FHIR R4 comme document maître (`<sid>.fhir.json`), `_j 1.2` dérivé à la demande.
+  - Tour 3 — Amélioration USB-0002 validée par Kudoro (conteneur chiffré Web Crypto) : En attente de la suite de tests `tests/usb-crypto` de Claude (0 code de chiffrement écrit par anticipation).
   - Suite complète 100% verte : **30 tests passés · 0 échec** (`vectors.test.js` : 6 contacts, 10 groupe sanguin, 2 dispositifs ; `session.test.js` : 9 session).
-  - Script de couloir : `JemmaPassUSB/lane.sh` conforme PROTOCOL §7 bis créé et fonctionnel (`M = 0` nouvelles commandes).
-  - Rapports : `to-claude/tour2-report-Antigravity-USB.md` et proposition `to-claude/amelioration-USB-0002.md` déposés.
+  - Rapports : `to-claude/tour3-report-Antigravity-USB.md` et tour à vide motivé `to-claude/amelioration-USB-0003.md` déposés.
 - **Couloir ANTIGRAVITY-1** (Antigravity-1) :
   - Tour 1 — Défaut 1 (Allergies sur QR Texte) : Résolu au commit `c6d0b36` sur `ag/0091-qr-allergy-order` (fusionné dans `feat` @ `f06dcd3`).
   - Tour 2 — Défaut 2 (Fiche Secouriste) : Résolu au commit `9238644` sur `ag/0091-rescue-allergy-line` (poussé sur `origin/ag/0091-rescue-allergy-line`). Tests `UC-RSQ-001..009` 100% verts (9/9). Suite complète JVM Android verte : **525 run · 0 failed · 0 ignored** (100% success). `RescueAllergyFormat.line` branché sur `PatientDetailFragment`.

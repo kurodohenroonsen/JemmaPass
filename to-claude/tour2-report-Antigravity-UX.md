@@ -61,7 +61,7 @@ orchestrator: Antigravity-UX
 ## 2. Décompte des Commandes Lancées (PROTOCOL §7 bis)
 
 - **Commandes lancées ce passage** : 4
-- **Dont nouvelles** : 1 (la commande fixe du couloir `bash /Users/kurodohenroonsen/Documents/jemmapass-ux/docs/ux/lane.sh`)
+- **Dont nouvelles** : 1 (la commande fixe du couloir `bash docs/ux/lane.sh`)
 - Toutes les actions de rebase, statut, commit et recherche ont été exécutées au sein de ce script unique via `/tmp/jp/ux/task.txt`. L'objectif pour les prochains passages est strictement **M = 0**.
 
 ---
