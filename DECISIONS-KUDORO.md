@@ -10,6 +10,9 @@ Une ligne par décision : date · qui demande · question · options · état.
 - 2026-10-04 · iOS : **Swift natif**.
 - 2026-10-04 · relation saisie tout en majuscules (« MAMAN ») absente du QR texte : **accepté** tel quel. Limite documentée dans `isRoleCode`, rien à coder.
 
+- 2026-10-04 · dossier sur carte NFC (cartes Type 4 32 K et cartes Java 95 K déjà en main) et profil d'appareil à appareil par NFC : à étudier → recherche confiée à Antigravity-Analyse (0096, `docs/functional/35-nfc.md`).
+- 2026-10-04 · commandes : regrouper un maximum d'actions par commande autorisée et réutiliser les commandes déjà autorisées (PROTOCOL §7 bis).
+
 ## En attente
 
 - DEC-01 à DEC-12 de l'analyse fonctionnelle (`docs/functional/00-carte.md` §6, branche `ag/analyse-fonctionnelle`).

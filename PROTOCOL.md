@@ -107,6 +107,16 @@ Il écrit ses actions dans `/tmp/jp/<couloir>/task.txt` avec l'outil d'édition 
 commande, lit `/tmp/jp/<couloir>/out.txt` avec l'outil de lecture. Liste des actions :
 `qa/device/README.md` §3 ter. Action manquante → la demander dans le rapport, ne pas contourner.
 
+### 7 bis. Regrouper les commandes (demande de Kudoro, 2026-10-04)
+
+Kudoro a dû valider plus de 200 commandes en une session pour six couloirs. Chaque ligne de commande nouvelle lui coûte un clic ; une commande déjà autorisée, relancée au caractère près, ne lui coûte rien. Donc :
+1. **Avant de lancer une commande, demande-toi si une commande déjà autorisée fait l'affaire.** Réutilise-la telle quelle. La moindre variation (un chemin, une option, un `&&` en plus) est une commande nouvelle.
+2. **Une commande par couloir** : le script du couloir (`bash qa/device/lane-<x>.sh`, ou `bash <ton dossier>/lane.sh` pour iOS, Chrome, USB, Analyse, UX), toujours écrit de la même façon. Il lit une liste d'actions **nommées** dans `/tmp/jp/<couloir>/task.txt` et écrit sa sortie dans `/tmp/jp/<couloir>/out.txt`. Tu écris `task.txt` et tu lis `out.txt` avec l'outil de fichiers, pas avec le terminal.
+3. **Regroupe** : un passage = une seule exécution du script avec toutes les actions du passage dans `task.txt` (relever la boîte, se mettre à jour, lancer les tests, committer, pousser, déposer le rapport), au lieu de dix commandes.
+4. Les actions du script sont une **liste fermée et lisible** dans le script (comme `act()` dans `qa/device/jp.sh`) : pas d'action « exécute cette ligne de shell ». Kudoro doit pouvoir lire en une fois ce que la commande qu'il autorise sait faire. Une action qui manque s'ajoute au script par une modification de fichier, visible dans le diff de ta branche, et tu la signales dans ton rapport.
+5. Ne se lancent jamais hors script : `python3 -c`, `cat << EOF`, `bash -c`, `git -C <chemin> …` tapé à la main, `ls`/`find`/`grep` sur le disque. Lire un fichier ou en chercher un se fait avec l'outil de fichiers.
+6. Ce qui demande l'accord de Kudoro (§10) le demande toujours : regrouper les commandes ne change rien à ce qu'il autorise, seulement au nombre de fois où il doit cliquer pour la même chose.
+
 ## 8. Rôles (depuis le 2026-10-02, décision de Kudoro)
 
 | Qui | Fait | Ne fait pas |
