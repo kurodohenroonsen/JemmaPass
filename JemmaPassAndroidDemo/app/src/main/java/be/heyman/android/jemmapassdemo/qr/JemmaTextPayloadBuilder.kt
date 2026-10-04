@@ -83,9 +83,9 @@ object JemmaTextPayloadBuilder {
     private const val RANK_MEDICATIONS = 2
     private const val RANK_CONDITIONS = 3
     private const val RANK_PREGNANCY = 4
-    private const val RANK_FUNCTIONAL = 5
-    private const val RANK_CONTACTS = 6
-    private const val RANK_DEVICES = 7
+    private const val RANK_DEVICES = 5
+    private const val RANK_FUNCTIONAL = 6
+    private const val RANK_CONTACTS = 7
     private const val RANK_PATIENT_EXTRA = 8   // address, phone, e-mail, national id
     private const val RANK_PAST_PROBLEMS = 9
     private const val RANK_PROCEDURES = 10
