@@ -1,0 +1,242 @@
+{
+  "ext_name": {
+    "message": "JemmaPass IPS"
+  },
+  "ext_description": {
+    "message": "HL7 FHIR R4 国際患者サマリー (IPS) パスポート オフライン閲覧・編集"
+  },
+  "pillar_patient": {
+    "message": "患者情報"
+  },
+  "pillar_allergies": {
+    "message": "アレルギー・不耐性"
+  },
+  "pillar_medications": {
+    "message": "現在服用中の薬剤"
+  },
+  "pillar_conditions": {
+    "message": "現病歴・活動性の問題"
+  },
+  "pillar_past_problems": {
+    "message": "既往歴"
+  },
+  "pillar_immunizations": {
+    "message": "予防接種歴"
+  },
+  "pillar_procedures": {
+    "message": "手術・処置歴"
+  },
+  "pillar_devices": {
+    "message": "医療機器・インプラント"
+  },
+  "pillar_results": {
+    "message": "検査結果・血液型"
+  },
+  "pillar_pregnancy": {
+    "message": "妊娠歴・出産歴"
+  },
+  "pillar_functional": {
+    "message": "生活機能・ADL"
+  },
+  "pillar_advance_directives": {
+    "message": "事前指示書"
+  },
+  "pillar_consents": {
+    "message": "同意・意思表示"
+  },
+  "pillar_care_goals": {
+    "message": "ケアの目標"
+  },
+  "pillar_encounters": {
+    "message": "受診歴・入院歴"
+  },
+  "pillar_occupations": {
+    "message": "職業・労働歴"
+  },
+  "pillar_healthcare_providers": {
+    "message": "主治医・医療提供者"
+  },
+  "pillar_provenance": {
+    "message": "作成・署名履歴"
+  },
+  "action_import": {
+    "message": "インポート"
+  },
+  "action_export": {
+    "message": "エクスポート"
+  },
+  "action_clear_all": {
+    "message": "すべて消去"
+  },
+  "action_edit": {
+    "message": "編集"
+  },
+  "action_save": {
+    "message": "保存"
+  },
+  "action_cancel": {
+    "message": "キャンセル"
+  },
+  "status_unverified": {
+    "message": "未検証 (KBなしオフライン)"
+  },
+  "text_qr_title": {
+    "message": "テキストQR (1800バイト)"
+  },
+  "fhir_bundle_title": {
+    "message": "FHIR R4 バンドル"
+  },
+  "confirm_clear_all": {
+    "message": "ローカルのパスポートデータをすべて消去してもよろしいですか？"
+  },
+  "code_label_v3_AUNT": {
+    "message": "おば"
+  },
+  "code_label_v3_CHILD": {
+    "message": "子"
+  },
+  "code_label_v3_CHLDADOPT": {
+    "message": "養子"
+  },
+  "code_label_v3_CHLDFOST": {
+    "message": "里子"
+  },
+  "code_label_v3_CHLDINLAW": {
+    "message": "義理の子"
+  },
+  "code_label_v3_COUSN": {
+    "message": "いとこ"
+  },
+  "code_label_v3_DAU": {
+    "message": "実の娘"
+  },
+  "code_label_v3_DAUADOPT": {
+    "message": "養女"
+  },
+  "code_label_v3_DAUC": {
+    "message": "娘"
+  },
+  "code_label_v3_DAUFOST": {
+    "message": "里娘"
+  },
+  "code_label_v3_DAUINLAW": {
+    "message": "義理の娘"
+  },
+  "code_label_v3_DOMPART": {
+    "message": "パートナー"
+  },
+  "code_label_v3_FAMMEMB": {
+    "message": "家族"
+  },
+  "code_label_v3_FRND": {
+    "message": "友人"
+  },
+  "code_label_v3_FTH": {
+    "message": "父"
+  },
+  "code_label_v3_FTHINLAW": {
+    "message": "義父"
+  },
+  "code_label_v3_GGRPRN": {
+    "message": "曾祖父母"
+  },
+  "code_label_v3_GRNDCHILD": {
+    "message": "孫"
+  },
+  "code_label_v3_GRPRN": {
+    "message": "祖父母"
+  },
+  "code_label_v3_MTH": {
+    "message": "母"
+  },
+  "code_label_v3_MTHINLAW": {
+    "message": "義母"
+  },
+  "code_label_v3_NBOR": {
+    "message": "隣人"
+  },
+  "code_label_v3_NCHILD": {
+    "message": "実の子"
+  },
+  "code_label_v3_NIENEPH": {
+    "message": "姪・甥"
+  },
+  "code_label_v3_PRN": {
+    "message": "親"
+  },
+  "code_label_v3_PRNINLAW": {
+    "message": "義理の親"
+  },
+  "code_label_v3_ROOM": {
+    "message": "ルームメイト"
+  },
+  "code_label_v3_SIB": {
+    "message": "兄弟姉妹"
+  },
+  "code_label_v3_SIGOTHR": {
+    "message": "重要な相手"
+  },
+  "code_label_v3_SON": {
+    "message": "実の息子"
+  },
+  "code_label_v3_SONADOPT": {
+    "message": "養子"
+  },
+  "code_label_v3_SONC": {
+    "message": "息子"
+  },
+  "code_label_v3_SONFOST": {
+    "message": "里息子"
+  },
+  "code_label_v3_SONINLAW": {
+    "message": "義理の息子"
+  },
+  "code_label_v3_SPS": {
+    "message": "配偶者"
+  },
+  "code_label_v3_STPCHLD": {
+    "message": "継子"
+  },
+  "code_label_v3_STPDAU": {
+    "message": "継娘"
+  },
+  "code_label_v3_STPSON": {
+    "message": "継息子"
+  },
+  "code_label_v3_UNCLE": {
+    "message": "おじ"
+  },
+  "code_label_sct_26643006": {
+    "message": "経口"
+  },
+  "code_label_sct_47625008": {
+    "message": "注射"
+  },
+  "code_label_sct_6064005": {
+    "message": "外用"
+  },
+  "code_label_sct_34206005": {
+    "message": "皮下"
+  },
+  "code_label_sct_447694001": {
+    "message": "吸入"
+  },
+  "code_label_sct_14106009": {
+    "message": "心臓ペースメーカー"
+  },
+  "code_label_sct_72506001": {
+    "message": "植込み型除細動器"
+  },
+  "code_label_sct_102303004": {
+    "message": "冠動脈ステント"
+  },
+  "code_label_sct_304120007": {
+    "message": "人工股関節"
+  },
+  "code_label_sct_69805005": {
+    "message": "インスリンポンプ"
+  },
+  "code_label_sct_6012004": {
+    "message": "補聴器"
+  }
+}

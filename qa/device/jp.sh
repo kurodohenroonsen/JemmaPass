@@ -74,6 +74,8 @@ act() {
     mailbox-pull)   git -C "$MB" pull --rebase origin agent-mailbox && ls "$MB/to-antigravity" ;;
     mailbox-push)   git -C "$MB" add -A && git -C "$MB" commit -m "$*" && git -C "$MB" pull --rebase origin agent-mailbox && git -C "$MB" push origin agent-mailbox ;;
     checkout)       git -C "$ROOT" fetch origin && git -C "$ROOT" checkout "$1" && git -C "$ROOT" rev-parse --short HEAD ;;
+    set-root)       ROOT="$1" && echo "ROOT=$ROOT" ;;
+    merge)          git -C "$ROOT" merge --no-edit "$@" && git -C "$ROOT" rev-parse --short HEAD ;;
     qa-run)         "$ROOT/qa/device/run_device_qa.sh"; OUT="$(latest_out)"; echo "OUT=$OUT" ;;
     out)            echo "OUT=$OUT"; ls "$OUT" ;;
     ui)             python3 "$ROOT/qa/device/ui.py" "$@" ;;

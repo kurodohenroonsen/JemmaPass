@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/JemmaPassIOS/JemmaCore/.build/x86_64-apple-macosx/debug/JemmaCorePackageTests.build/master.swiftdeps"
+  },
+  "/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/JemmaPassIOS/JemmaCore/.build/x86_64-apple-macosx/debug/JemmaCorePackageTests.derived/runner.swift": {
+    "dependencies": "/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/JemmaPassIOS/JemmaCore/.build/x86_64-apple-macosx/debug/JemmaCorePackageTests.build/runner.d",
+    "object": "/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/JemmaPassIOS/JemmaCore/.build/x86_64-apple-macosx/debug/JemmaCorePackageTests.build/runner.swift.o",
+    "swiftmodule": "/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/JemmaPassIOS/JemmaCore/.build/x86_64-apple-macosx/debug/JemmaCorePackageTests.build/runner~partial.swiftmodule",
+    "swift-dependencies": "/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/JemmaPassIOS/JemmaCore/.build/x86_64-apple-macosx/debug/JemmaCorePackageTests.build/runner.swiftdeps",
+    "diagnostics": "/Users/kurodohenroonsen/Documents/JemmaPass_IPS_FULL/JemmaPassIOS/JemmaCore/.build/x86_64-apple-macosx/debug/JemmaCorePackageTests.build/runner.dia"
+  }
+}
