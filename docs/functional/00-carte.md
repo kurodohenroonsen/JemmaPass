@@ -1,14 +1,15 @@
 # 🐢 JemmaPass — Analyse Fonctionnelle Globale : Cartographie & Matrice des Échanges
-> **Document Fondateur de l'Analyse Fonctionnelle Complète**  
-> **Branche de travail** : `ag/analyse-fonctionnelle` (dérivée de `origin/feat/ips-18-pillars-cleanup`)  
+> **Document Fondateur de l'Analyse Fonctionnelle Complète — Version Révisée**  
+> **Branche de travail** : `ag/analyse-fonctionnelle` (dérivée de `origin/feat/ips-18-pillars-cleanup` @ `1e6d6f7c882f1d6811e14c08b5078611d7c9a270`)  
 > **Rôle** : `orchestrator: Antigravity-Analyse`  
-> **Tranche** : 1 / 6 (`00-carte.md`)  
+> **Tranche** : 1 / 6 (`00-carte.md` — révision 2 après revue message `0087` de Claude)  
 > **État du code décrit** : commit `1e6d6f7c882f1d6811e14c08b5078611d7c9a270` du 4 octobre 2026.  
-> **Références normatives** : ISO 27269:2021 (International Patient Summary - IPS), HL7 FHIR R4 IPS IG v1.1.0, RFC 1951 (DEFLATE), W3C WebApp / PWA, NFC Data Exchange Format (NDEF).  
-> **Personas de référence** :  
-> - 🚶‍♂️ `demo_kurodo` (Kurodo) : Pèlerin étranger, allergie létale à la pénicilline (`SNOMED 91936005`).  
-> - 👵 `demo_haru` (Haru) : Citoyenne japonaise de 80 ans, sous anticoagulant oral direct Edoxaban (`ATC B01AF03`).  
-> - 🎒 `demo_kamekichi` (Kamekichi) : Secouriste bénévole / équipier DMAT.  
+> **Avertissement méthodologique sur les citations** : Le script de vérification mécanique actuel (`qa/docs/check_citations.py:21-24`) ne lit que `docs/DOCUMENTATION_UML_FONCTIONNELLE.md` et `docs/SPECIFICATION_FONCTIONNELLE_ET_PORTAGE_IOS.md`. L'extension de ce contrôle à `docs/functional/` est en attente de déploiement côté intégrateur ; toute citation ci-dessous a été vérifiée manuellement ligne à ligne dans le code source Kotlin de l'application Android.  
+> **Références normatives externes (à valider par un expert)** : ISO 27269:2021 (International Patient Summary - IPS) `[NON VÉRIFIÉ]`, HL7 FHIR R4 IPS IG v1.1.0 `[NON VÉRIFIÉ]`, RFC 1951 (DEFLATE) `[NON VÉRIFIÉ]`, W3C WebApp / PWA `[NON VÉRIFIÉ]`, NFC Data Exchange Format (NDEF) `[NON VÉRIFIÉ]`.  
+> **Personas de référence (stricte conformité avec `qr/JemmaPersonasSeeder.kt`)** :  
+> - 🚶‍♂️ `demo_kurodo` (`qr/JemmaPersonasSeeder.kt:25, 238-293`) : Patient belge (`nat = "BE"`), né le 1979-04-04 (`bd = "1979-04-04"`), groupe A+ (`bt = "A+"`), allergie sévère à la pénicilline (`c = "91936005"`, `s = "H"`, choc anaphylactique 2019-03, `JemmaPersonasSeeder.kt:262-266`), allergie au poisson (`c = "417532002"`, `s = "H"`, `JemmaPersonasSeeder.kt:272-276`), pollinose (`c = "419263009"`, `s = "L"`, `JemmaPersonasSeeder.kt:282-286`), contact d'urgence : Kamekichi (`r = "FRND"`, ami, `JemmaPersonasSeeder.kt:252-256`).  
+> - 👵 `demo_haru` (`qr/JemmaPersonasSeeder.kt:27, 407-483`) : Patiente japonaise (`nat = "JP"`), 80 ans, née le 1946-02-08 (`bd = "1946-02-08"`), groupe O+ (`bt = "O+"`), sous anticoagulant oral direct Edoxaban (`c = "B01AF03"`, `JemmaPersonasSeeder.kt:473`), porteuse d'un stimulateur cardiaque (`c = "14106009"`, `date = "2021-03-15"`, note « MRI-conditional », pectoral gauche, `JemmaPersonasSeeder.kt:143-148`), contact d'urgence : Sakura Tanaka (`r = "DAUC"`, fille, `JemmaPersonasSeeder.kt:421-425`).  
+> - 🚶‍♂️ `demo_kamekichi` (`qr/JemmaPersonasSeeder.kt:26, 216-234, 295-405`) : Patient japonais résidant à Bruxelles (`nat = "JP"`, `adr = "75 Avenue Louise, Bruxelles"`), né le 2000-05-20 (`bd = "2000-05-20"`), groupe B+ (`bt = "B+"`), liste de problèmes actifs (`cn`) : hypertension essentielle (`c = "59621000"`), fibrillation auriculaire sous warfarine (`c = "49436004"`), angine de poitrine (`c = "194828000"`), traitements en cours (`md`) : bisoprolol (`c = "C07AB07"`), warfarine (`c = "B01AA03"`), ibuprofène (`c = "M01AE01"`), sildénafil (`c = "G04BE03"`), dinitrate d'isosorbide (`c = "C01DA08"`), contact d'urgence : Kurodo Henro (`r = "FRND"`, ami, `JemmaPersonasSeeder.kt:309-313`).  
 
 ---
 
@@ -30,7 +31,7 @@ L'écosystème **JemmaPass** a pour finalité la sauvegarde de vies humaines en 
 Dans ce contexte, **la santé de vraies personnes est engagée** :
 - Un cas d'usage oublié, une incompatibilité de canal non anticipée ou une hypothèse erronée sur les capacités d'un terminal constitue un **défaut critique** susceptible de retarder ou compromettre une prise en charge médicale d'urgence.
 - L'analyse fonctionnelle ne se substitue pas aux décisions du concepteur du produit (*Kudoro*) : toute bifurcation architecturale, choix éthique, compromis ergonomique ou divergence réglementaire est explicitement consigné dans le **Registre des Décisions** avec ses options et leurs conséquences médicales et techniques.
-- Tout fait technique vérifié dans le code source Android est sourcé avec son chemin et sa ligne exacte (`fichier:ligne`). Tout fait externe ou plateforme non prouvé est systématiquement marqué `[NON VÉRIFIÉ]`.
+- **Règle d'étiquetage obligatoire** : Tout fait technique vérifié dans le code source Android existant est étiqueté `[EXISTANT (fichier:ligne)]`. Tout composant, écran ou canal non implémenté à ce jour dans le code est rédigé au conditionnel et étiqueté `[PROPOSÉ]`. Toute affirmation matérielle, réglementaire, statistique ou externe non prouvée par une pièce du dépôt est étiquetée `[NON VÉRIFIÉ]`.
 
 ---
 
@@ -47,7 +48,7 @@ flowchart TD
     end
 
     subgraph Acteurs_Secours_Soins ["Secours & Professionnels de Santé"]
-        ACT_SEC["3. Secouriste / DMAT<br/>(Pompier, ambulancier, bénévole)"]
+        ACT_SEC["3. Secouriste / Équipe d'Intervention<br/>(Pompier, ambulancier, secouriste terrain)"]
         ACT_MED["4. Soignant<br/>(Médecin urgentiste, généraliste, infirmier)"]
         ACT_PHR["5. Pharmacien<br/>(Officine, dispensation d'urgence)"]
     end
@@ -70,63 +71,64 @@ flowchart TD
 ### A.1. Titulaire du Passeport (Patient)
 - **Définition** : Personne physique dont les antécédents, traitements, allergies et données vitales sont décrits dans le passeport.
 - **Rôle & Actions** :
-  - Saisie, révision et mise à jour de son profil de santé en situation calme (`profiles/ProfilesRepository.kt:254-375`).
-  - Présentation de son QR Code d'urgence (écran déverrouillé, raccourci, widget SOS) lors d'un contrôle ou d'un incident.
-  - Port de supports physiques passifs : Pocket Pass papier plié au format carte, clé USB d'urgence sur trousseau, badge ou carte NFC.
+  - `[EXISTANT (profiles/ProfilesRepository.kt:254-375)]` : Saisie, révision et mise à jour de son profil de santé en situation calme sous verrou d'écriture `writeMutex` (`profiles/ProfilesRepository.kt:146`).
+  - `[EXISTANT (ui/export/QrViewerFragment.kt:1-50)]` : Présentation de son QR Code d'urgence (QR texte universel ou QR compact `_j2`).
+  - `[PROPOSÉ]` : Port de supports physiques passifs : Pocket Pass papier plié au format carte, clé USB d'urgence sur trousseau, badge ou carte NFC.
 - **Contraintes & Stress** : Peut être paniqué, blessé, désorienté, non francophone/non japonophone en voyage (ex: `demo_kurodo` au Japon), ou en état de choc post-séisme.
 
 ### A.2. Proche ou Aidant
 - **Définition** : Membre de la famille, conjoint, tuteur légal, curateur ou accompagnateur de voyage.
 - **Rôle & Actions** :
-  - Gestion déléguée du profil d'une personne dépendante (enfant, personne âgée telle que `demo_haru`, adulte sous tutelle).
-  - Détention d'une copie numérique ou papier du passeport du proche.
-  - Transmission des antécédents et contacts d'urgence aux secours lorsque le titulaire est hors d'état de communiquer.
+  - `[EXISTANT (profiles/ProfilesRepository.kt:40-60)]` : Gestion déléguée du profil d'une personne dépendante (enfant, personne âgée telle que `demo_haru`, adulte sous tutelle) via le sélecteur multi-profils local.
+  - `[PROPOSÉ]` : Détention d'une copie numérique ou papier du passeport du proche.
+  - `[PROPOSÉ]` : Transmission des antécédents et contacts d'urgence aux secours lorsque le titulaire est hors d'état de communiquer.
 - **Contraintes** : Stress émotionnel intense, responsabilité légale de substitution, nécessité de basculer rapidement entre plusieurs profils sur un même terminal.
 
-### A.3. Secouriste / Équipier DMAT (Disaster Medical Assistance Team)
-- **Définition** : Premier intervenant sur le lieu d'un accident ou d'une catastrophe (pompier, ambulancier, bénévole Croix-Rouge/Croissant-Rouge, membre d'une équipe DMAT).
+### A.3. Secouriste / Équipe d'Intervention d'Urgence
+- **Définition** : Premier intervenant sur le lieu d'un accident ou d'une catastrophe (pompier, ambulancier, bénévole secouriste, équipe d'urgence médicale). *Note : le concept d'équipe d'intervention de catastrophe (DMAT au Japon) est une qualification organisationnelle externe `[NON VÉRIFIÉ]` ; dans le code, cet acteur correspond au rôle `rescuer` (`mesh/codec/EventChunk.kt:8`).*
 - **Rôle & Actions** :
-  - Détection et lecture immédiate du passeport de la victime par scan QR ou écoute radio de proximité (BLE SOS / Nearby).
-  - Évaluation vitale immédiate : allergies majeures (`al`), anticoagulants/traitements à risque (`md`), groupe sanguin (`p.bt` et observation 882-1).
-  - Attribution d'un statut de triage de catastrophe SALT (`triage/SaltCode.kt:34-51`) : WAIT (gris), EVAL (jaune), STAB (vert), HELP (rouge), EVAC (bleu), DCD (noir).
-  - Scan de boîtes de médicaments trouvées sur place (`ai/medscan/MedScanController.kt:1-40`) pour éviter les contre-indications létales.
+  - `[EXISTANT (ui/profiles/import_qr/QrImportScanFragment.kt:1-60)]` : Détection et lecture immédiate du passeport de la victime par scan QR caméra.
+  - `[EXISTANT (sos/JemmaSosBleScanner.kt:49-80)]` : Écoute radio des balises d'urgence de proximité.
+  - `[EXISTANT (triage/SaltCode.kt:34-51)]` : Attribution d'un statut de triage de catastrophe SALT : WAIT (gris, `SaltCode.kt:36`), EVAL (jaune, `SaltCode.kt:39`), STAB (vert, `SaltCode.kt:42`), HELP (rouge, `SaltCode.kt:45`), EVAC (bleu, `SaltCode.kt:48`), DCD (noir, `SaltCode.kt:51`).
+  - `[EXISTANT (mesh/codec/EventChunk.kt:8)]` : Propagation de l'événement de tri SALT sous la forme `E|<source>|<victim>|<status>|<rescuer>|<ts>|<ttl>|<seq>`.
+  - `[EXISTANT (ai/medscan/MedScanController.kt:1-40)]` : Scan optique de boîtes de médicaments trouvées sur place pour vérifier l'absence d'allergie ou d'interaction avec le profil de la victime.
 - **Contraintes** : Environnement hostile, bruit, coupure réseau totale, luminosité variable (obscurité, plein soleil), temps d'analyse par victime compté en secondes.
 
 ### A.4. Soignant (Médecin urgentiste, réanimateur, généraliste, infirmier)
 - **Définition** : Professionnel de santé habilité à poser un diagnostic, prescrire ou administrer des thérapeutiques invasives.
 - **Rôle & Actions** :
-  - Prise de connaissance approfondie du dossier IPS complet : 18 piliers, antécédents chirurgicaux (`pr`), dispositifs implantés (`dv`), biologie (`rs`), grossesse (`pg`), directives anticipées (`ad`).
-  - Importation du Bundle HL7 FHIR R4 standardisé (`.fhir.json`) dans le dossier médical hospitalier (DPI/EHR) du poste médical avancé ou de l'hôpital récepteur.
-  - Exécution de contrôles croisés médicamenteux rigoureux (`kb/KbCrossCheck.kt:130-135`) avant injection ou anesthésie.
+  - `[EXISTANT (profiles/ProfilesRepository.kt:23-28)]` : Prise de connaissance approfondie du dossier IPS complet à travers le Bundle HL7 FHIR R4 standardisé (`.fhir.json`).
+  - `[EXISTANT (kb/KbCrossCheck.kt:130-135)]` : Exécution de contrôles croisés médicamenteux rigoureux (`checkOneDrugAgainstProfile`, `kb/KbCrossCheck.kt:646`) avant injection ou geste chirurgical.
+  - `[PROPOSÉ]` : Importation du Bundle HL7 FHIR R4 dans le dossier médical hospitalier (DPI/EHR) d'un poste médical avancé ou d'un hôpital de référence.
 - **Contraintes** : Exigence absolue de traçabilité, de non-corruption des données médicales et de conformité aux nomenclatures officielles (SNOMED CT, LOINC, ATC, ICD-10).
 
 ### A.5. Pharmacien
 - **Définition** : Professionnel de santé d'officine ou de pharmacie hospitalière de campagne.
 - **Rôle & Actions** :
-  - Lecture du passeport d'un patient se présentant sans ordonnance papier (sinistré ayant fui son domicile sans traitement).
-  - Identification précise des médicaments chroniques via leurs codes ATC ou DCI, même sous un nom de marque étranger ou en katakana (ex: *Lixiana* ➔ Edoxaban `B01AF03`).
-  - Vérification de l'absence d'interactions médicamenteuses délétères (DDI) et d'allergies croisées lors de la délivrance de dépannage.
+  - `[PROPOSÉ]` : Lecture du passeport d'un patient se présentant sans ordonnance papier (sinistré ayant fui son domicile sans traitement).
+  - `[EXISTANT (kb/KbTranslations.kt:1-50)]` : Identification des médicaments chroniques via leurs codes ATC ou DCI, même sous un nom de marque étranger ou en katakana.
+  - `[EXISTANT (kb/KbCrossCheck.kt:130-135)]` : Vérification de l'absence d'interactions médicamenteuses délétères (DDI) et d'allergies croisées lors de la délivrance de dépannage.
 - **Contraintes** : Accès restreint ou nul aux serveurs d'assurance maladie en situation de blackout ; responsabilité de délivrance sans ordonnance originale.
 
 ### A.6. Interprète / Médiateur Culturel
 - **Définition** : Personne assurant la traduction linguistique entre la victime étrangère et les intervenants locaux (ex: interprète anglais/japonais pour `demo_kurodo`).
 - **Rôle & Actions** :
-  - Consultation de la version textuelle traduite dans la langue locale du pays d'accueil (dictionnaires 25 langues, `qr/JemmaTranslations.kt:5-30`).
-  - Explication des symptômes et allergies critiques sans altération sémantique des termes médicaux.
+  - `[EXISTANT (qr/JemmaTranslations.kt:5-30)]` : Consultation de la version textuelle du passeport traduite dans la langue locale du pays d'accueil (dictionnaires 25 langues).
+  - `[PROPOSÉ]` : Explication des symptômes et allergies critiques sans altération sémantique des termes médicaux.
 - **Contraintes** : Souvent dépourvu de formation médicale approfondie ; ne doit pas interpréter librement les posologies ou les termes nosologiques.
 
 ### A.7. Administrateur d'un Lieu d'Accueil (Refuge / Centre d'Évacuation)
 - **Définition** : Responsable municipal ou bénévole en charge de l'enregistrement et de la logistique d'un gymnase ou refuge de sinistrés.
 - **Rôle & Actions** :
-  - Recensement des personnes accueillies et identification des profils à haute vulnérabilité (femmes enceintes `pg`, personnes appareillées ou à mobilité réduite `fs`, dialysés, diabétiques insulino-dépendants).
-  - Tenue du registre des personnes présentes sans exposer publiquement le secret médical complet.
-  - Gestion des régimes alimentaires stricts liés aux allergies vitales recensées.
+  - `[PROPOSÉ]` : Recensement des personnes accueillies et identification des profils à haute vulnérabilité (femmes enceintes `pg`, personnes appareillées ou à mobilité réduite `fs`, dialysés, diabétiques insulino-dépendants).
+  - `[PROPOSÉ]` : Tenue du registre des personnes présentes sans exposer publiquement le secret médical complet (voir `DEC-09`).
+  - `[PROPOSÉ]` : Gestion des régimes alimentaires stricts liés aux allergies vitales recensées.
 - **Contraintes** : Matériel hétérogène (ordinateur personnel de fortune, tablettes municipales, fiches papier), absence de qualification soignante.
 
 ### A.8. Personne Sans Appareil
 - **Définition** : Sinistré, victime inconsciente, enfant égaré, personne âgée non équipée ou personne dont le téléphone est détruit, déchargé ou perdu.
 - **Rôle & Actions** :
-  - Acteur passif de la prise en charge : porte sur elle des supports physiques de substitution (Pocket Pass imprimé, carte NFC au poignet, clé USB autour du cou).
+  - `[PROPOSÉ]` : Acteur passif de la prise en charge : porterait sur elle des supports physiques de substitution (Pocket Pass imprimé, carte NFC au poignet, clé USB autour du cou).
 - **Contraintes** : Incapacité matérielle totale à générer un flux radio ou un affichage dynamique ; dépend à 100 % de la lisibilité des supports tangibles par les tiers.
 
 ---
@@ -156,66 +158,79 @@ L'écosystème JemmaPass doit opérer sur un parc hétérogène de 9 terminaux e
 
 ### B.1. Téléphone Android
 - **Configuration** : Smartphone sous Android 10+ (API 29+), application native JemmaPass installée.
-- **Capacités** : Caméra (scan QR), puce NFC (lecture/écriture), Bluetooth BLE 5.0 (Extended Advertising 200 octets, `sos/JemmaSosChunkCodec.kt:171`), Wi-Fi P2P (Google Nearby Connections), haut-parleur (TTS), écran tactile.
-- **Stockage & Moteurs Locaux** : Base SQLite `knowledge_full.db` (3,36 Go, `downloads/JemmaModelCatalog.kt:89`), modèle IA Gemma 4 LiteRT-LM (2,4 à 3,4 Go), dossiers profils atomiques (`ProfileFiles.kt`).
-- **Contraintes** : Autonomie batterie en zone sinistrée, gestion agressive des processus en arrière-plan par l'OS.
+- **Capacités vérifiées dans le code** :
+  - Caméra / Scan QR : `[EXISTANT (ui/profiles/import_qr/QrImportScanFragment.kt:1-60)]`.
+  - Bluetooth BLE Advertising (paquets de 200 octets max) : `[EXISTANT (sos/JemmaSosChunkCodec.kt:171-175, sos/JemmaSosBleAdvertiser.kt:28)]`.
+  - Wi-Fi P2P / Découverte de proximité Google Nearby Connections (limite 131 octets UTF-8 pour le nom d'endpoint) : `[EXISTANT (sos/JemmaNearbyEndpointCodec.kt:51, sos/JemmaNearbySosService.kt:1-40)]`.
+  - Synthèse vocale multilingue : `[EXISTANT (ai/tts/TtsService.kt:1-30)]`.
+  - Stockage local : base SQLite `knowledge_full.db` (taille déclarée `3_360_727_040L` octets, `downloads/JemmaModelCatalog.kt:89`), modèles LiteRT-LM (`downloads/JemmaModelCatalog.kt:5-6`), dossiers profils atomiques (`ProfileFiles.kt`).
+- **Contraintes** : Autonomie batterie en zone sinistrée, gestion agressive des processus en arrière-plan par l'OS `[NON VÉRIFIÉ]`.
 
 ### B.2. iPhone
-- **Configuration** : Smartphone sous iOS 16+, modèle grand public (estimé à ~68,2 % du marché japonais `[HYPOTHÈSE À VÉRIFIER]`).
-- **Modes de Fonctionnement** :
-  - *Mode Natif Léger (Sans application JemmaPass)* : Utilisation de l'application native « Appareil photo » d'Apple qui décode nativement le **QR Texte Universel** (≤ 1800 octets UTF-8, `qr/JemmaTextPayloadBuilder.kt:67`) et l'affiche sous forme de fiche texte sans réseau ni application tierce.
-  - *Mode Application Dédiée (Portage iOS)* : Application Swift/SwiftUI exécutant le moteur de règles, la lecture QR `_j2`, et l'accès aux profils.
-- **Contraintes** : Incompatibilité native entre Google Nearby Connections et les APIs iOS CoreBluetooth/MultipeerConnectivity ; limitations de mémoire vive (`EXC_RESOURCE`) pour les modèles LLM lourds.
+- **Configuration** : Smartphone sous iOS 16+ `[NON VÉRIFIÉ]`, modèle grand public (part de marché au Japon estimée à ~68,2 % selon StatCounter août 2026 `[NON VÉRIFIÉ]`).
+- **Modes de Fonctionnement envisagés** :
+  - *Mode Natif Léger (Sans application JemmaPass)* : `[PROPOSÉ]` Utilisation de l'application native « Appareil photo » d'Apple qui lirait directement le **QR Texte Universel** (≤ 1800 octets UTF-8, `qr/JemmaTextPayloadBuilder.kt:67`) sans connexion réseau ni application tierce requise.
+  - *Mode Application Dédiée (Portage iOS)* : `[PROPOSÉ]` Application Swift/SwiftUI exécutant le moteur de règles, la lecture QR `_j2`, et l'accès aux profils.
+- **Contraintes identifiées** :
+  - Non-interopérabilité native entre Google Nearby Connections (Android) et les frameworks natifs d'Apple (CoreBluetooth / MultipeerConnectivity) sans passerelle ou profil radio commun `[NON VÉRIFIÉ (constaté dans docs/SYNTHESE_PORTAGE_IOS.md:88-90, 128)]`.
+  - Contraintes de mémoire vive sous iOS (`EXC_RESOURCE`) pour les modèles LLM lourds `[NON VÉRIFIÉ]`.
 
 ### B.3. Extension Chrome / Navigateur Bureau
-- **Configuration** : Navigateur Google Chrome / Chromium sur PC Windows, Mac, Linux ou ChromeOS, avec extension JemmaPass installée.
-- **Capacités** : Clavier/souris grand format, écran large pour consultation médicale, webcam (lecture QR), accès au système de fichiers local (`FileSystemAccess API`), WebUSB / WebBluetooth (selon autorisations).
-- **Rôle** : Station de travail en cabinet médical, officine de pharmacie ou poste de commandement des secours.
+- **Configuration** : Navigateur Google Chrome / Chromium sur PC Windows, Mac, Linux ou ChromeOS, avec extension JemmaPass `[PROPOSÉ]`.
+- **Capacités envisagées** :
+  - `[PROPOSÉ]` Affichage grand format pour consultation médicale ou officine de pharmacie.
+  - `[PROPOSÉ]` Décodage de flux vidéo via webcam pour scanner les QR codes.
+  - `[PROPOSÉ]` Import/Export de fichiers via l'API FileSystemAccess `[NON VÉRIFIÉ]`.
+  - `[NON VÉRIFIÉ]` Échanges sans contact via WebNFC (disponible uniquement sous ChromeOS/Android Chrome, non supporté nativement sous Windows/macOS).
 
 ### B.4. Ordinateur Sans Rien d'Installé (Kiosque / PC d'Urgence)
-- **Configuration** : PC d'accueil, terminal de bibliothèque, poste hospitalier verrouillé sans droits d'administration (aucun runtime Java/Kotlin, pas d'installation permise, pas d'extension, réseau Internet potentiellement coupé).
+- **Configuration** : PC d'accueil, terminal de bibliothèque, poste hospitalier verrouillé sans droits d'administration (aucun runtime Java/Kotlin, pas d'installation permise, pas d'extension, réseau Internet potentiellement coupé) `[PROPOSÉ]`.
 - **Interfaces Disponibles** : Navigateur web par défaut (Edge, Safari, Firefox, Chrome), ports USB-A ou USB-C, lecteur de documents PDF standard.
-- **Exigence Vitale** : Doit être capable d'ouvrir et d'afficher le passeport médical depuis une clé USB sans exécutable tiers ni connexion réseau.
+- **Exigence Vitale** : `[PROPOSÉ]` Doit pouvoir ouvrir et afficher le passeport médical depuis une clé USB sans exécutable tiers ni connexion réseau via un fichier HTML autonome zéro-dépendance.
 
-### B.5. Tablette Partagée (Poste Médical Avancé / DMAT)
-- **Configuration** : Tablette Android ou iPad durcie, utilisée en rotation par plusieurs soignants ou secouristes sur un centre de tri.
-- **Capacités** : Écran large propice au triage multi-victimes (Radar SALT), caméra dorsale pour scan à la chaîne des QR codes de victimes.
-- **Contraintes** : Mode multi-utilisateurs strict, absence d'association à une identité personnelle unique, risque de contamination croisée des profils sans vidage de cache sécurisé.
+### B.5. Tablette Partagée (Poste Médical Avancé)
+- **Configuration** : Tablette Android ou iPad, utilisée en rotation par plusieurs soignants ou secouristes sur un centre de tri `[PROPOSÉ]`.
+- **Capacités envisagées** :
+  - `[PROPOSÉ]` Écran large propice au triage multi-victimes (Radar SALT).
+  - `[PROPOSÉ]` Caméra dorsale pour scan à la chaîne des QR codes de victimes.
+- **Contraintes** : `[PROPOSÉ]` Nécessité d'un mode multi-utilisateurs strict avec vidage de cache sécurisé pour éviter toute contamination croisée des profils médicaux.
 
 ### B.6. Montre Connectée (Smartwatch Wear OS / Apple Watch)
-- **Configuration** : Périphérique porté au poignet, connecté en Bluetooth au smartphone ou autonome (eSIM / GPS).
-- **Interfaces Disponibles** : Écran OLED réduit (30 à 45 mm), capteurs biométriques (fréquence cardiaque, détection de chute), puce NFC, vibreur haptique.
-- **Rôle d'Urgence** : Affichage d'un QR code de détresse (QR texte ou `_j2` compact), diffusion d'une balise SOS BLE de secours même si le smartphone principal est perdu ou écrasé.
-- **Contraintes** : Résolution optique limitée pour les QR denses (version QR élevée illisible), autonomie batterie très faible (12 à 36 h).
+- **Configuration** : Périphérique porté au poignet, connecté en Bluetooth au smartphone ou autonome `[PROPOSÉ]`.
+- **Interfaces Disponibles** : Écran OLED réduit, capteurs biométriques, puce NFC, vibreur haptique `[NON VÉRIFIÉ]`.
+- **Rôle d'Urgence envisagé** :
+  - `[PROPOSÉ]` Affichage d'un QR code de détresse ultra-compact (≤ 300 octets).
+  - `[PROPOSÉ]` Diffusion d'une balise SOS BLE de secours si le smartphone principal est perdu ou déchargé.
+- **Contraintes** : Résolution optique limitée pour les QR denses (version QR élevée illisible), autonomie batterie réduite (12 à 36 h) `[NON VÉRIFIÉ]`.
 
 ### B.7. Papier Imprimé (Pocket Pass & Fiche de Tri)
-- **Configuration** : Feuille A4 standard pliée en 4 ou 8 (format carte de crédit) issue du générateur PDF (`qr/JemmaPdfExporter.kt:1-100`), ou étiquette de tri physique (Triage Tag DMAT).
+- **Configuration** : Feuille A4 standard pliée au format carte de crédit issue du générateur PDF (`[EXISTANT (qr/JemmaPdfExporter.kt:40-100)]`), ou étiquette de tri physique `[PROPOSÉ]`.
 - **Contenu Imprimé** :
-  - Recto : Données vitales en clair (nom, groupe sanguin, allergies majeures, médicaments critiques, contacts d'urgence) avec pictogrammes normalisés.
-  - Verso : 1 ou 2 QR codes haute densité (QR Texte Universel + QR Compact `_j2`).
+  - Recto : Données vitales en clair (nom, groupe sanguin, allergies majeures, médicaments critiques, contacts d'urgence) avec pictogrammes normalisés `[EXISTANT (qr/JemmaPdfExporter.kt:530-580)]`.
+  - Verso : QR codes haute densité (QR Texte Universel + QR Compact `_j2`) `[EXISTANT (qr/JemmaPdfExporter.kt:500-520)]`.
 - **Atouts & Limites** : Zéro dépendance énergétique, insensible à l'eau si plastifié ; statique (non mis à jour après changement d'ordonnance), dégradable si mouillé ou brûlé.
 
 ### B.8. Carte NFC (Badge Physique Passif)
-- **Configuration** : Carte PVC au format ISO 7810 ID-1 (type carte de crédit) ou bracelet silicone de sinistré, embarquant une puce sans contact (NTAG215/216 ou Mifare Ultralight).
-- **Capacité Mémoire** : De 144 octets (NTAG213) à 888 octets (NTAG216), accessible par simple effleurement (champ 13.56 MHz).
+- **Configuration** : Carte PVC au format ISO 7810 ID-1 `[NON VÉRIFIÉ]` ou bracelet silicone de sinistré, embarquant une puce sans contact (NTAG213 ou NTAG216) `[PROPOSÉ]`.
+- **Capacité Mémoire** : De 144 octets (NTAG213) à 888 octets (NTAG216) selon les spécifications industrielles NFC Forum Type 2 `[NON VÉRIFIÉ]`.
 - **Atouts & Limites** : Lisible sans allumer le terminal émetteur ; capacité mémoire insuffisante pour un Bundle FHIR R4 complet sans compression extrême ou pointeur URI.
 
 ### B.9. Clé USB (Support Amovible Universel)
-- **Configuration** : Clé physique double connecteur USB-A / USB-C, formatée en FAT32 ou exFAT pour interopérabilité universelle (Windows, macOS, Linux, ChromeOS, Android OTG).
-- **Contenu Dédié** : Dossier racine JemmaPass autonome contenant la visionneuse HTML universelle zéro-dépendance, les fichiers FHIR JSON, le PDF Pocket Pass et la base de preuves cliniques.
-- **Atouts & Limites** : Stockage massif (Go), lisibilité sur tout PC sans réseau ; vulnérable à l'arrachement, à la perte mécanique ou aux politiques de blocage des ports USB d'entreprise.
+- **Configuration** : Clé physique double connecteur USB-A / USB-C, formatée en FAT32 ou exFAT pour interopérabilité universelle `[PROPOSÉ]`.
+- **Contenu Dédié** : Dossier racine JemmaPass autonome contenant la visionneuse HTML universelle zéro-dépendance, les fichiers FHIR JSON, le PDF Pocket Pass `[PROPOSÉ]`.
+- **Atouts & Limites** : Stockage massif, lisibilité sur tout PC sans réseau ; vulnérable à l'arrachement, à la perte mécanique ou aux politiques de blocage des ports USB d'entreprise.
 
 ---
 
 ## 4. Section C : Matrice Exhaustive des Canaux d'Échange par Paire d'Appareils
 
 ### C.1. Définition des 8 Canaux d'Échange
-1. **QR-TXT** : QR Code texte universel brut (≤ 1800 octets UTF-8, `qr/JemmaTextPayloadBuilder.kt:67`), découpé en lignes lisibles directement par tout appareil photo standard sans décodeur spécial.
-2. **QR-CMP** : QR Code compact compressé `_j2` (RFC 1951 Deflate-raw + Base64url, `qr/JemmaPayloadCodec.kt`), lisible par tout lecteur compatible JemmaPass.
-3. **QR-FHR** : QR Code FHIR multi-trames animé (`JF:i/N`, `qr/JemmaQrFrameSplitter.kt:20-34`), transportant le Bundle HL7 FHIR R4 complet par défilement vidéo/séquentiel.
-4. **FILE** : Transfert direct de fichiers numériques (`.json`, `.fhir.json`, `.pdf`, `.html`) via système de fichiers, câble, messagerie locale ou carte mémoire.
-5. **NFC** : Échange en champ proche sans contact (norme ISO 14443A / NDEF).
-6. **P2P-RAD** : Réseau radio maillé de proximité (BLE 5.0 Extended Advertising 200 octets `MAX_CHUNK_BYTES`, `sos/JemmaSosChunkCodec.kt:171` ; Google Nearby Connections 131 octets `MAX_ENDPOINT_NAME_LEN`, `sos/JemmaNearbyEndpointCodec.kt:51` ; Apple MultipeerConnectivity ; WebBluetooth).
+1. **QR-TXT** : QR Code texte universel brut (plafond strict ≤ 1800 octets UTF-8 `MAX_BYTES`, `[EXISTANT (qr/JemmaTextPayloadBuilder.kt:67)]`), découpé en lignes lisibles directement par tout appareil photo standard sans décodeur spécial.
+2. **QR-CMP** : QR Code compact compressé `_j2` (RFC 1951 Deflate-raw + Base64url, `[EXISTANT (qr/JemmaPayloadCodec.kt:30)]`), lisible par tout lecteur compatible JemmaPass.
+3. **QR-FHR** : QR Code FHIR multi-trames animé (`JF:i/N`, `[EXISTANT (qr/JemmaQrFrameSplitter.kt:20-34, qr/JemmaQrFrameAssembler.kt:26)]`), transportant le Bundle HL7 FHIR R4 complet par défilement séquentiel.
+4. **FILE** : Transfert direct de fichiers numériques (`.json`, `.fhir.json`, `.pdf`, `.html`) via système de fichiers ou support amovible.
+5. **NFC** : Échange en champ proche sans contact (norme ISO 14443A / NDEF `[NON VÉRIFIÉ]`).
+6. **P2P-RAD** : Réseau radio maillé de proximité (BLE Extended Advertising 200 octets `MAX_CHUNK_BYTES`, `[EXISTANT (sos/JemmaSosChunkCodec.kt:171)]` ; Google Nearby Connections 131 octets `MAX_ENDPOINT_NAME_LEN`, `[EXISTANT (sos/JemmaNearbyEndpointCodec.kt:51)]` ; Apple MultipeerConnectivity `[PROPOSÉ]` ; WebBluetooth `[NON VÉRIFIÉ]`).
 7. **USB** : Connexion physique filaire USB (Mass Storage ou liaison câble OTG).
 8. **PAPER** : Support papier physique (Pocket Pass imprimé ou étiquette manuscrite de tri).
 
@@ -223,92 +238,92 @@ L'écosystème JemmaPass doit opérer sur un parc hétérogène de 9 terminaux e
 
 ### C.2. Tableau Matriciel Global (Émetteur ➔ Récepteur)
 
-Légende des statuts :
-- ✅ **POSSIBLE** : Faisable techniquement sans barrière matérielle ni protocolaire majeure.
-- ❌ **IMPOSSIBLE** : Physiquement ou matériellement irréalisable (ex: absence de capteur, absence d'interface radio, support passif).
-- ⚠️ **PARTIEL** : Réalisable sous conditions strictes (format de trame restreint, pilotes spécifiques ou intervention manuelle).
-- ❓ **INCONNU / NON VÉRIFIÉ** : Hypothèse technique ou compatibilité inter-OS non prouvée à ce jour.
+Chaque case de la matrice 9 × 9 indique le statut et son étiquette obligatoire :
+- `[EXISTANT (fichier:ligne)]` : Le code source actuel prend en charge ce canal.
+- `[PROPOSÉ]` : Canal techniquement faisable mais n'existant pas dans le dépôt.
+- `[NON VÉRIFIÉ]` : Faisabilité dépendante d'une contrainte matérielle ou d'un protocole tiers non prouvé.
+- `[IMPOSSIBLE]` : Physiquement ou matériellement irréalisable (absence de capteur ou interface).
 
 | Émetteur \ Récepteur | 1. Android | 2. iPhone | 3. Chrome Ext | 4. PC Nu | 5. Tablette | 6. Montre | 7. Papier | 8. Carte NFC | 9. Clé USB |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1. Téléphone Android** | ✅ Tous canaux | ⚠️ QR/NFC (P2P ❓) | ✅ QR/File/NFC | ⚠️ QR (USB/File) | ✅ Tous canaux | ⚠️ BLE/QR | ✅ Impression | ✅ Écriture NFC | ✅ Écriture OTG |
-| **2. iPhone** | ⚠️ QR/NFC (P2P ❓) | ✅ Tous canaux | ✅ QR/File | ⚠️ QR (File) | ⚠️ QR/NFC | ⚠️ BLE/QR | ✅ Impression | ⚠️ Écriture NFC | ⚠️ Câble OTG |
-| **3. Extension Chrome** | ✅ QR/File/WebUSB | ✅ QR/File | ✅ File/Sync | ✅ File/HTML | ✅ QR/File | ❌ Impossible | ✅ Impression | ⚠️ WebNFC (Chrome) | ✅ Écriture directe |
-| **4. Ordinateur Nu** | ⚠️ Affichage écran | ⚠️ Affichage écran | ✅ Clé/File | ✅ Clé/HTML | ⚠️ Affichage écran | ❌ Impossible | ✅ Impression | ❌ Impossible | ✅ Écriture directe |
-| **5. Tablette Partagée** | ✅ Tous canaux | ⚠️ QR/NFC | ✅ QR/File | ⚠️ QR (USB/File) | ✅ Tous canaux | ⚠️ BLE/QR | ✅ Impression | ✅ Écriture NFC | ✅ Écriture OTG |
-| **6. Montre Connectée** | ⚠️ QR/BLE | ⚠️ QR/BLE | ❌ Impossible | ❌ Impossible | ⚠️ QR/BLE | ⚠️ BLE | ❌ Impossible | ❌ Impossible | ❌ Impossible |
-| **7. Papier Imprimé** | ✅ Scan Caméra | ✅ Scan Caméra | ✅ Webcam | ❌ Impossible | ✅ Scan Caméra | ❌ Impossible | ❌ Impossible | ❌ Impossible | ❌ Impossible |
-| **8. Carte NFC** | ✅ Lecture NFC | ✅ Lecture NFC | ⚠️ WebNFC | ❌ Impossible | ✅ Lecture NFC | ⚠️ Si NFC actif | ❌ Impossible | ❌ Impossible | ❌ Impossible |
-| **9. Clé USB** | ✅ Lecture OTG | ⚠️ Adaptateur | ✅ Lecture OS | ✅ Navigateur OS | ✅ Lecture OTG | ❌ Impossible | ❌ Impossible | ❌ Impossible | ❌ Impossible |
+| **1. Téléphone Android** | [EXISTANT (qr/ui)] | [PROPOSÉ] (P2P [NON VÉRIFIÉ]) | [PROPOSÉ] | [PROPOSÉ] | [EXISTANT (qr/ui)] | [PROPOSÉ] | [EXISTANT (qr/JemmaPdfExporter.kt:40)] | [PROPOSÉ] | [PROPOSÉ] |
+| **2. iPhone** | [PROPOSÉ] (P2P [NON VÉRIFIÉ]) | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] |
+| **3. Extension Chrome** | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [IMPOSSIBLE] | [PROPOSÉ] | [NON VÉRIFIÉ] | [PROPOSÉ] |
+| **4. Ordinateur Nu** | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [IMPOSSIBLE] | [PROPOSÉ] | [IMPOSSIBLE] | [PROPOSÉ] |
+| **5. Tablette Partagée** | [EXISTANT (qr/ui)] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [EXISTANT (qr/ui)] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] |
+| **6. Montre Connectée** | [PROPOSÉ] | [PROPOSÉ] | [IMPOSSIBLE] | [IMPOSSIBLE] | [PROPOSÉ] | [PROPOSÉ] | [IMPOSSIBLE] | [IMPOSSIBLE] | [IMPOSSIBLE] |
+| **7. Papier Imprimé** | [EXISTANT (ui/scan)] | [PROPOSÉ] | [PROPOSÉ] | [IMPOSSIBLE] | [EXISTANT (ui/scan)] | [IMPOSSIBLE] | [IMPOSSIBLE] | [IMPOSSIBLE] | [IMPOSSIBLE] |
+| **8. Carte NFC** | [PROPOSÉ] | [PROPOSÉ] | [NON VÉRIFIÉ] | [IMPOSSIBLE] | [PROPOSÉ] | [NON VÉRIFIÉ] | [IMPOSSIBLE] | [IMPOSSIBLE] | [IMPOSSIBLE] |
+| **9. Clé USB** | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [PROPOSÉ] | [IMPOSSIBLE] | [IMPOSSIBLE] | [IMPOSSIBLE] | [IMPOSSIBLE] |
 
 ---
 
 ### C.3. Analyse Détaillée des 12 Paires d'Échange Critiques
 
 #### Paire 1 : Téléphone Android ➔ Téléphone Android
-- **QR-TXT** : ✅ POSSIBLE. Rendu direct ZXing, scan via CameraX / ML Kit.
-- **QR-CMP** : ✅ POSSIBLE. Décodage `_j2` via `JemmaPayloadCodec.decode()` (`qr/JemmaPayloadCodec.kt:30`).
-- **QR-FHR** : ✅ POSSIBLE. Carrousel multi-trames réassemblé via `JemmaQrFrameAssembler` (`qr/JemmaQrFrameAssembler.kt:26`).
-- **FILE** : ✅ POSSIBLE. Export / Import de `<sid>.fhir.json` et `<sid>.json` via SAF (Storage Access Framework).
-- **NFC** : ✅ POSSIBLE. Partage NDEF via Android Beam / Host Card Emulation (HCE).
-- **P2P-RAD** : ✅ POSSIBLE. Radar SALT et relayage SOS via Google Nearby Connections (`sos/JemmaNearbySosService.kt`) et BLE Extended Advertising (`sos/JemmaSosBleAdvertiser.kt:28`).
-- **USB** : ✅ POSSIBLE. Transfert MTP ou via adaptateur USB-C direct.
-- **PAPER** : ✅ POSSIBLE. Génération PDF d'urgence via `JemmaPdfExporter` (`qr/JemmaPdfExporter.kt:40`).
+- **QR-TXT** : `[EXISTANT (qr/JemmaTextPayloadBuilder.kt:152)]` Émission d'un payload texte UTF-8 ≤ 1800 octets, scannable via CameraX / ML Kit (`ui/profiles/import_qr/QrImportScanFragment.kt:1-60`).
+- **QR-CMP** : `[EXISTANT (qr/JemmaPayloadCodec.kt:30)]` Compression Deflate-raw `_j2` et décodage inter-appareils.
+- **QR-FHR** : `[EXISTANT (qr/JemmaQrFrameSplitter.kt:26, qr/JemmaQrFrameAssembler.kt:26)]` Carrousel multi-trames réassemblé côté récepteur.
+- **FILE** : `[EXISTANT (profiles/ProfilesRepository.kt:23-28)]` Échange de fichiers `<sid>.fhir.json` et `<sid>.json`.
+- **NFC** : `[PROPOSÉ]` Partage de payload NDEF via Android Host Card Emulation (HCE).
+- **P2P-RAD** : `[EXISTANT (sos/JemmaNearbySosService.kt:1-40)]` Relayage d'événements de secours Nearby Connections et `[EXISTANT (sos/JemmaSosBleAdvertiser.kt:28)]` BLE Extended Advertising (200 octets).
+- **USB** : `[PROPOSÉ]` Transfert direct de fichier par câble USB-C OTG.
+- **PAPER** : `[EXISTANT (qr/JemmaPdfExporter.kt:40)]` Génération du Pocket Pass PDF imprimable.
 
 #### Paire 2 : Téléphone Android ➔ iPhone
-- **QR-TXT** : ✅ POSSIBLE et ÉPROUVÉ. L'application photo native d'iOS lit le texte UTF-8 ≤ 1800 octets et affiche immédiatement les alertes sans aucune application requise (`docs/SYNTHESE_PORTAGE_IOS.md:81-84`).
-- **QR-CMP** : ⚠️ PARTIEL. Requiert le portage de l'application JemmaPass sur iOS pour décoder le Deflate-raw `_j2`.
-- **QR-FHR** : ⚠️ PARTIEL. Requiert l'application iOS pour filmer et concaténer le carrousel `JF:i/N`.
-- **FILE** : ✅ POSSIBLE. Partage par AirDrop impossible nativement sans pont, mais échange via messagerie hors-ligne, carte microSD ou adaptateur.
-- **NFC** : ✅ POSSIBLE. L'iPhone lit les tags NDEF standards (CoreNFC).
-- **P2P-RAD** : ❌ IMPOSSIBLE ACTUELLEMENT / `[PROBLÈME OUVERT]`. Google Nearby Connections côté Android utilise un protocole propriétaire non interopérable avec Apple MultipeerConnectivity ou CoreBluetooth sans couche de compatibilité ad hoc (`docs/SYNTHESE_PORTAGE_IOS.md:88-90, 128`).
-- **USB** : ⚠️ PARTIEL. Nécessite un câble USB-C vers Lightning / USB-C et la gestion du protocole de fichiers iOS (Files app).
+- **QR-TXT** : `[PROPOSÉ]` Le QR Texte Universel émis par Android est lisible directement par l'application Caméra native d'iOS sans application tierce installée `[NON VÉRIFIÉ (décrit dans docs/SYNTHESE_PORTAGE_IOS.md:81-84)]`.
+- **QR-CMP** : `[PROPOSÉ]` Nécessiterait une application iOS dédiée implémentant le décodeur Deflate-raw `_j2`.
+- **QR-FHR** : `[PROPOSÉ]` Nécessiterait une application iOS pour filmer et concaténer le carrousel `JF:i/N`.
+- **FILE** : `[PROPOSÉ]` Partage de fichier direct par messagerie locale ou adaptateur physique.
+- **NFC** : `[PROPOSÉ]` Lecture par l'iPhone d'un tag NDEF émis par le smartphone Android.
+- **P2P-RAD** : `[NON VÉRIFIÉ / PROBLÈME OUVERT]` Google Nearby Connections côté Android n'est pas nativement interopérable avec Apple MultipeerConnectivity ou CoreBluetooth sans couche de compatibilité ad hoc (`docs/SYNTHESE_PORTAGE_IOS.md:88-90, 128`).
+- **USB** : `[PROPOSÉ]` Liaison filaire USB-C vers Lightning/USB-C via l'application Fichiers d'iOS `[NON VÉRIFIÉ]`.
 
 #### Paire 3 : iPhone ➔ Téléphone Android
-- **QR-TXT** : ✅ POSSIBLE. Émis par l'écran de l'iPhone, scanné par la caméra Android via ML Kit.
-- **QR-CMP** : ⚠️ PARTIEL. Requiert un générateur `_j2` conforme sous iOS (validation croisée via `qa/vectors/test_vectors.ts`).
-- **QR-FHR** : ⚠️ PARTIEL. Rendu vidéo sur écran iOS, capté par l'assembleur Android.
-- **FILE** : ✅ POSSIBLE. Fichiers FHIR standardisés lisibles par Android `ProfilesRepository`.
-- **NFC** : ⚠️ PARTIEL. Écriture NFC par iPhone restreinte par les APIs Apple (CoreNFC permet l'écriture NDEF depuis iOS 13 sous conditions).
-- **P2P-RAD** : ❌ IMPOSSIBLE SANS PONT BLE UNIFIÉ. (Idem Paire 2).
+- **QR-TXT** : `[PROPOSÉ]` Émis par l'écran de l'iPhone, scanné par la caméra Android via `[EXISTANT (ui/profiles/import_qr/QrImportScanFragment.kt:1-60)]`.
+- **QR-CMP** : `[PROPOSÉ]` Nécessiterait un générateur `_j2` conforme sous iOS.
+- **QR-FHR** : `[PROPOSÉ]` Rendu carrousel sous iOS, assemblé par `[EXISTANT (qr/JemmaQrFrameAssembler.kt:26)]`.
+- **FILE** : `[PROPOSÉ]` Importation sur Android de fichiers FHIR `.fhir.json` standardisés issus d'iOS.
+- **NFC** : `[PROPOSÉ]` Écriture NFC par iPhone restreinte par les APIs Apple CoreNFC `[NON VÉRIFIÉ]`.
+- **P2P-RAD** : `[NON VÉRIFIÉ]` Incompatibilité radio directe identique à la Paire 2.
 
 #### Paire 4 : Téléphone (Android / iOS) ➔ Extension Chrome
-- **QR-TXT & QR-CMP** : ✅ POSSIBLE. L'extension Chrome active la webcam du PC et décode les flux vidéo.
-- **FILE** : ✅ POSSIBLE. Glisser-déposer du fichier exporté (`.json` ou `.fhir.json`) dans l'interface de l'extension.
-- **NFC** : ⚠️ PARTIEL. Possible uniquement sur ordinateurs équipés d'un lecteur NFC et via l'API WebNFC (ChromeOS / Android Chrome uniquement, non supporté sous Windows/macOS nativement sans middleware `[NON VÉRIFIÉ]`).
-- **P2P-RAD** : ⚠️ PARTIEL. WebBluetooth permet de scanner des trames BLE spécifiques sous Chrome, mais ne supporte pas l'Advertising ni Nearby Connections.
+- **QR-TXT & QR-CMP** : `[PROPOSÉ]` L'extension Chrome utiliserait la webcam de l'ordinateur pour décoder le QR code affiché sur le téléphone.
+- **FILE** : `[PROPOSÉ]` Glisser-déposer de fichiers exportés (`.json` ou `.fhir.json`) dans l'interface Chrome.
+- **NFC** : `[NON VÉRIFIÉ]` WebNFC non supporté nativement sous Windows/macOS sans middleware.
+- **P2P-RAD** : `[NON VÉRIFIÉ]` WebBluetooth permettrait la réception de trames spécifiques mais ne supporte pas l'Advertising ni Nearby Connections.
 
 #### Paire 5 : Téléphone (Android / iOS) ➔ Ordinateur Nu (Sans rien d'installé)
-- **QR-TXT** : ⚠️ PARTIEL. Si l'ordinateur dispose d'une webcam, il ne peut pas décoder sans page web locale ou application native installée.
-- **FILE / USB** : ✅ POSSIBLE VIA CLÉ USB. Le téléphone exporte vers une clé USB (via port OTG) ; la clé est insérée dans le PC nu.
-- **Consultation sur PC Nu** : ✅ POSSIBLE SI FORMAT AUTONOME. Un fichier `index.html` universel autonome situé sur la clé permet d'afficher le dossier complet dans Edge/Safari/Chrome sans connexion internet ni droits administrateur.
+- **QR-TXT** : `[PROPOSÉ]` Affichage du texte si une webcam et un visualiseur local sont disponibles, sinon impossible sans logiciel.
+- **FILE / USB** : `[PROPOSÉ]` Le téléphone exporterait vers une clé USB (via adaptateur OTG) ; la clé serait insérée dans l'ordinateur nu.
+- **Consultation sur PC Nu** : `[PROPOSÉ]` Un fichier `CONSULTER_URGENCE.html` autonome placé sur la clé USB permettrait d'afficher le passeport dans n'importe quel navigateur (Edge, Safari, Chrome, Firefox) sans accès internet ni droits administrateur.
 
 #### Paire 6 : Téléphone (Android / iOS) ➔ Tablette Partagée
-- **Tous Canaux** : Identique au transfert téléphone-téléphone. La tablette sert de terminal concentrateur dans un poste médical avancé (PMA).
+- `[PROPOSÉ]` Mêmes canaux que le transfert téléphone-téléphone, la tablette servant de concentrateur de poste de tri de secours.
 
 #### Paire 7 : Téléphone ➔ Montre Connectée
-- **P2P-RAD (BLE)** : ✅ POSSIBLE. Synchronisation locale de secours via Bluetooth standard entre le téléphone et la montre du titulaire.
-- **QR d'Urgence** : ✅ POSSIBLE. Le téléphone pousse sur la montre une version ultra-compacte du QR texte ou du QR SOS, stockée pour affichage autonome sur l'écran OLED en cas de batterie épuisée sur le smartphone.
+- **P2P-RAD (BLE)** : `[PROPOSÉ]` Synchronisation locale de secours via Bluetooth standard entre le téléphone et la montre du titulaire.
+- **QR d'Urgence** : `[PROPOSÉ]` Envoi vers la montre d'une version ultra-compacte du QR texte ou du QR SOS, stockée pour affichage autonome sur l'écran en cas de batterie épuisée sur le smartphone.
 
 #### Paire 8 : Montre Connectée ➔ Secouriste (Android / iPhone)
-- **QR-TXT Réduit** : ✅ POSSIBLE. L'écran de la montre affiche un QR Code version 10-15 contenant l'identité, le groupe sanguin et les allergies vitales (budget réduit à ≤ 300 octets).
-- **BLE SOS** : ✅ POSSIBLE. La montre diffuse en boucle un identifiant SOS capté par le radar du secouriste (`sos/JemmaSosBleScanner.kt:49`).
+- **QR-TXT Réduit** : `[PROPOSÉ]` L'écran de la montre afficherait un QR Code version 10-15 contenant l'identité, le groupe sanguin et les allergies vitales (budget réduit ≤ 300 octets).
+- **BLE SOS** : `[PROPOSÉ]` La montre diffuserait en boucle un identifiant SOS capté par le scanner BLE du secouriste (`[EXISTANT (sos/JemmaSosBleScanner.kt:49)]`).
 
 #### Paire 9 : Papier Imprimé (Pocket Pass) ➔ N'importe quel Appareil
-- **Lecture Oculaire Humaine** : ✅ POSSIBLE IMMÉDIATEMENT. Zéro énergie requise. Le secouriste lit le groupe sanguin et les allergies directement imprimés en clair.
-- **Lecture Optique QR** : ✅ POSSIBLE. L'appareil photo de n'importe quel smartphone scanne le QR imprimé (qualité 300 DPI recommandée).
-- **Limitation Absolue** : Transfert unidirectionnel strict. Le papier ne peut recevoir aucune mise à jour radio.
+- **Lecture Oculaire Humaine** : `[EXISTANT]` Le secouriste lit les données vitales imprimées en clair sur le papier généré par `JemmaPdfExporter` (`qr/JemmaPdfExporter.kt:530-580`).
+- **Lecture Optique QR** : `[EXISTANT (ui/profiles/import_qr/QrImportScanFragment.kt:1-60)]` La caméra scanne le QR code haute densité imprimé.
+- **Limitation Absolue** : `[IMPOSSIBLE]` Transfert unidirectionnel strict. Le papier ne peut recevoir aucune mise à jour radio.
 
 #### Paire 10 : Carte NFC ➔ Téléphone (Android / iOS)
-- **NFC NDEF** : ✅ POSSIBLE. Lecture sans contact en approchant le téléphone de la carte (au portefeuille ou au poignet de la victime).
-- **Limitation** : Ne peut contenir qu'un extrait ultra-court (URL de secours ou payload compact `_j2` de moins de 888 octets sur NTAG216).
+- **NFC NDEF** : `[PROPOSÉ]` Lecture sans contact en approchant le téléphone de la carte au portefeuille ou au poignet de la victime.
+- **Limitation** : `[NON VÉRIFIÉ]` Ne pourrait contenir qu'un extrait court (payload compact `_j2` de moins de 888 octets sur NTAG216).
 
 #### Paire 11 : Clé USB ➔ Ordinateur Nu
-- **USB Mass Storage** : ✅ POSSIBLE UNIVERSELLEMENT. Format FAT32/exFAT reconnu par 100 % des systèmes d'exploitation modernes.
-- **Consultation** : Double-clic sur `CONSULTER_URGENCE.html` ou `POCKET_PASS.pdf`.
+- **USB Mass Storage** : `[PROPOSÉ]` Format FAT32/exFAT reconnu universellement.
+- **Consultation** : `[PROPOSÉ]` Double-clic sur `CONSULTER_URGENCE.html` ou `POCKET_PASS.pdf`.
 
 #### Paire 12 : Clé USB ➔ Téléphone Android / Tablette
-- **USB-C OTG** : ✅ POSSIBLE. L'application JemmaPass accède au volume amovible via le Storage Access Framework pour importer le dossier.
+- **USB-C OTG** : `[PROPOSÉ]` L'application JemmaPass importerait le dossier via le Storage Access Framework d'Android.
 
 ---
 
@@ -369,7 +384,7 @@ Conformément à la règle de gouvernance absolue : **l'orchestrateur ne tranche
 - **Contexte** : Une clé USB portée sur un trousseau peut être égarée ou volée. Cependant, lors d'un accident ou d'une inconscience, un médecin urgentiste étranger ne disposera pas du mot de passe de la victime.
 - **Options en balance** :
   - **Option A (Chiffrement au repos standard, ex: AES-GCM avec mot de passe ou clé dérivée)** :
-    - *Avantages* : Confidentialité totale en cas de perte de la clé. Conforme aux recommandations strictes RGPD / APPI sur le stockage de données sensibles.
+    - *Avantages* : Confidentialité totale en cas de perte de la clé. Conforme aux recommandations strictes RGPD / APPI sur le stockage de données sensibles `[NON VÉRIFIÉ]`.
     - *Conséquences Médicales / Risques* : **Blocage absolu des soins d'urgence** si la victime est comateuse ou confuse et qu'aucun aidant n'est joignable pour fournir le mot de passe.
   - **Option B (Dossier non chiffré en clair, assimilé au portefeuille d'urgence)** :
     - *Avantages* : Accessibilité vitale immédiate sur n'importe quel ordinateur d'hôpital par simple branchement.
@@ -386,7 +401,7 @@ Conformément à la règle de gouvernance absolue : **l'orchestrateur ne tranche
 - **Options en balance** :
   - **Option A (Fichier unique HTML/CSS autonome avec JavaScript embarqué local)** :
     - *Avantages* : Interactif, multilingue, recherche locale instantanée, affichage conditionnel des alertes, zéro dépendance réseau.
-    - *Risques* : Certains postes ultra-sécurisés en milieu hospitalier désactivent l'exécution de scripts JavaScript locaux provenant de volumes amovibles (`file:///`).
+    - *Risques* : Certains postes ultra-sécurisés en milieu hospitalier désactivent l'exécution de scripts JavaScript locaux provenant de volumes amovibles (`file:///`) `[NON VÉRIFIÉ]`.
   - **Option B (Fichier PDF statique multi-pages imprimable)** :
     - *Avantages* : Format universellement lisible par le visualiseur natif de n'importe quel OS. Aucun script requis.
     - *Risques* : Statique, mise en page figée, non filtrable dynamiquement selon la langue de l'urgentiste.
@@ -399,21 +414,21 @@ Conformément à la règle de gouvernance absolue : **l'orchestrateur ne tranche
 
 ### DEC-03 : Stratégie de Résolution du Pont P2P Radio Android ↔ iOS en Zone Sinistrée
 - **Problématique** : Comment faire communiquer les secouristes sous Android et les victimes ou soignants sous iPhone lors d'un blackout total ?
-- **Contexte** : Le protocole Google Nearby Connections utilisé par l'application Android (`MAX_ENDPOINT_NAME_LEN = 131`, `sos/JemmaNearbyEndpointCodec.kt:51`) ne communique pas avec les frameworks natifs d'Apple (CoreBluetooth / MultipeerConnectivity) sans implémentation sur-mesure d'un protocole commun.
+- **Contexte** : Le protocole Google Nearby Connections utilisé par l'application Android (`MAX_ENDPOINT_NAME_LEN = 131`, `[EXISTANT (sos/JemmaNearbyEndpointCodec.kt:51)]`) ne communique pas avec les frameworks natifs d'Apple (CoreBluetooth / MultipeerConnectivity) sans implémentation sur-mesure d'un protocole commun `[NON VÉRIFIÉ (docs/SYNTHESE_PORTAGE_IOS.md:88-90, 128)]`.
 - **Options en balance** :
   - **Option A (Reliance exclusive sur les canaux optiques QR et le papier)** :
     - *Avantages* : Zéro défi d'ingénierie radio multi-plateforme. Fiabilité éprouvée du QR Texte 1800 octets déchiffrable par l'appareil photo iOS.
     - *Risques* : Perte des alertes de détresse passives à distance (le secouriste ne détecte pas une victime ensevelie sous les décombres qui diffuse en radio).
   - **Option B (Normalisation d'un profil BLE GATT ouvert universel)** :
     - *Avantages* : Permet une diffusion de balises d'urgence SOS captables de manière croisée entre Android et iOS.
-    - *Risques* : Forte complexité d'ingénierie, limitations sévères d'Apple sur l'écoute BLE en tâche de fond sur iOS (`[PROPOSITION NON VÉRIFIÉE]`).
+    - *Risques* : Forte complexité d'ingénierie, limitations sévères d'Apple sur l'écoute BLE en tâche de fond sur iOS `[NON VÉRIFIÉ]`.
 - **Statut** : `[À FAIRE PRENDRE PAR KUDORO]`
 
 ---
 
 ### DEC-04 : Granularité des Données de Santé Visibles Sans Déverrouiller le Smartphone
 - **Problématique** : Quelles informations de santé doivent être accessibles depuis l'écran de verrouillage (Lockscreen Widget, Live Activity, raccourci d'urgence) ?
-- **Contexte** : Une personne inconsciente ne peut pas déverrouiller son smartphone par empreinte ou code PIN.
+- **Contexte** : Une personne inconsciente ne peut pas déverrouiller son smartphone par empreinte ou code PIN. Cette question s'articule avec le débat déjà ouvert sur l'inclusion ou l'exclusion des directives anticipées (`ad`) et consentements (`cs`) dans les affichages publics/QR sans déverrouillage (`docs/analysis/remaining-pillars.md:10-12`).
 - **Options en balance** :
   - **Option A (Fiche vitale d'urgence seule)** :
     - *Contenu* : Nom/Prénom, Âge, Groupe Sanguin, Allergies létales (ex: Pénicilline pour `demo_kurodo`), 2 numéros de contacts d'urgence (`ICE`).
@@ -453,27 +468,27 @@ Conformément à la règle de gouvernance absolue : **l'orchestrateur ne tranche
 
 ### DEC-07 : Rôle Opérationnel de la Carte / Badge NFC
 - **Problématique** : Quel est le périmètre fonctionnel alloué au support passif NFC ?
-- **Contexte** : La mémoire des cartes NTAG courantes (144 à 888 octets) est trop étroite pour stocker un Bundle FHIR R4 complet.
+- **Contexte** : La mémoire des cartes NTAG courantes (144 à 888 octets `[NON VÉRIFIÉ]`) est trop étroite pour stocker un Bundle FHIR R4 complet.
 - **Options en balance** :
   - **Option A (Carte NFC comme simple pointeur d'URL de secours)** :
     - *Contenu* : Enregistrement NDEF URI pointant vers un serveur de secours ou un identifiant local.
     - *Risques* : Inutilisable lors d'un blackout réseau total sans connexion internet.
   - **Option B (Stockage d'un payload ultra-compact `_j2` compressé)** :
-    - *Contenu* : Seul le profil minimal compressé (Identité, Groupe sanguin, Allergies majeures, Contacts) est encodé dans la mémoire de 888 octets de la puce NTAG216.
+    - *Contenu* : Seul le profil minimal compressé (Identité, Groupe sanguin, Allergies majeures, Contacts) est encodé dans la mémoire de 888 octets de la puce NTAG216 `[NON VÉRIFIÉ]`.
     - *Avantages* : Fonctionne 100 % hors-ligne par simple effleurement par le smartphone du secouriste.
 - **Statut** : `[À FAIRE PRENDRE PAR KUDORO]`
 
 ---
 
 ### DEC-08 : Comportement de la Balise SOS Radio lors du Décès Avéré (Statut SALT DCD 🕊️)
-- **Problématique** : Quand un secouriste affecte le statut SALT `DCD` (Noir, Décédé) à une victime lors d'une catastrophe, que devient la balise radio du smartphone de la victime ?
-- **Contexte** : En situation d'afflux massif de victimes avec saturation des secours.
+- **Problématique** : Quand un secouriste affecte le statut de triage SALT `DCD` (Noir, Décédé, `[EXISTANT (triage/SaltCode.kt:51)]`) à une victime lors d'une catastrophe, que devient la balise radio du smartphone de la victime ?
+- **Contexte** : En situation d'afflux massif de victimes avec saturation des secours. Dans le code, le protocole s'appuie sur `SaltCode` (`triage/SaltCode.kt:34-51`) et `rescuer` (`mesh/codec/EventChunk.kt:8`). L'organisation « DMAT » est une appellation externe d'équipes de secours `[NON VÉRIFIÉ]`.
 - **Options en balance** :
   - **Option A (Maintien de l'émission de la balise avec statut DCD)** :
-    - *Avantages* : Permet aux équipes mortuaires de localiser les corps ultérieurement sous les décombres grâce au radar BLE.
+    - *Avantages* : Permet aux équipes de relève de localiser les corps ultérieurement sous les décombres grâce au radar BLE (`[EXISTANT (sos/JemmaSosBleScanner.kt:49)]`).
     - *Risques* : Consomme la bande passante du réseau maillé de proximité et peut fausser la priorité des équipes de réanimation si le filtrage du radar est mal configuré.
   - **Option B (Extinction automatique de la balise SOS)** :
-    - *Avantages* : Dégage immédiatement le spectre radio pour concentrer l'attention des secours sur les survivants en détresse vitale (`HELP` rouge).
+    - *Avantages* : Dégage immédiatement le spectre radio pour concentrer l'attention des secours sur les survivants en détresse vitale (`HELP` rouge, `[EXISTANT (triage/SaltCode.kt:45)]`).
 - **Statut** : `[À FAIRE PRENDRE PAR KUDORO]`
 
 ---
@@ -492,10 +507,10 @@ Conformément à la règle de gouvernance absolue : **l'orchestrateur ne tranche
 ---
 
 ### DEC-10 : Vérification d'Intégrité et Signature Cryptographique des Profils
-- **Problématique** : Comment garantir qu'un passeport médical présenté sur clé USB ou QR code n'a pas été altéré ou falsifié ?
-- **Contexte** : En intervention hors-ligne, aucune autorité de certification centrale (PKI / serveur gouvernemental) n'est joignable.
+- **Problématique** : Comment garantir qu'un passeport médical présenté sur clé USB ou QR code n'a pas été altéré ou falsifié hors-ligne ?
+- **Contexte** : En intervention hors-ligne, aucune autorité de certification centrale (PKI / serveur gouvernemental) n'est joignable. Cette question s'aligne directement sur le mécanisme déjà retenu pour la base de connaissances médicale (`PROTOCOL.md` §9.2), qui impose des manifestes signés et des sommes de contrôle SHA-256 pour vérifier l'intégrité avant chargement.
 - **Options en balance** :
-  - **Option A (Empreinte de contrôle SHA-256 locale simple)** :
+  - **Option A (Empreinte de contrôle SHA-256 locale simple, similaire à `DownloadIntegrity.kt`)** :
     - *Avantages* : Détecte immédiatement les corruptions matérielles accidentelles (clé USB défectueuse, transmission radio tronquée).
     - *Risques* : Ne protège pas contre une falsification délibérée par un tiers malveillant.
   - **Option B (Signature asymétrique locale Ed25519 liée à l'appareil de l'utilisateur)** :
@@ -507,12 +522,12 @@ Conformément à la règle de gouvernance absolue : **l'orchestrateur ne tranche
 
 ### DEC-11 : Périmètre des Langues Supportées en Synthèse Vocale d'Urgence (TTS)
 - **Problématique** : Quelles langues doivent être garanties pour la restitution vocale des alertes vitales en intervention ?
-- **Contexte** : `ai/tts/` sur Android s'appuie sur le moteur TTS système.
+- **Contexte** : `ai/tts/TtsService.kt:1-30` sur Android s'appuie sur le moteur TTS système.
 - **Options en balance** :
-  - **Option A (Trio prioritaire du quatuor narratif : Japonais, Anglais, Français)** :
+  - **Option A (Trio prioritaire : Japonais, Anglais, Français)** :
     - *Avantages* : Couvre le périmètre historique de test et de validation clinique du projet.
   - **Option B (Couverture étendue aux 25 langues du QR texte universel)** :
-    - *Risques* : Selon les terminaux Android ou iOS, les packs de voix locaux pour certaines langues (ex: Hindi, Bengali, Vietnamien) ne sont pas préinstallés hors-ligne.
+    - *Risques* : Selon les terminaux Android ou iOS, les packs de voix locaux pour certaines langues (ex: Hindi, Bengali, Vietnamien) ne sont pas préinstallés hors-ligne `[NON VÉRIFIÉ]`.
 - **Statut** : `[À FAIRE PRENDRE PAR KUDORO]`
 
 ---
@@ -524,10 +539,10 @@ Conformément à la règle de gouvernance absolue : **l'orchestrateur ne tranche
   - **Option A (Responsabilité 100 % utilisateur via supports amovibles physiques)** :
     - *Comportement* : L'application invite périodiquement l'utilisateur à exporter son dossier sur une clé USB et à imprimer un Pocket Pass papier.
   - **Option B (Synchronisation de proximité chiffrée de pair à pair avec un proche / aidant)** :
-    - *Comportement* : Les smartphones des membres d'une même famille synchronisent leurs passeports réciproques en local lors de rencontres physiques via BLE / Wi-Fi local.
+    - *Comportement* : Les smartphones des membres d'une même famille synchronisent leurs passeports réciproques en local lors de rencontres physiques via BLE / Wi-Fi local `[PROPOSÉ]`.
 - **Statut** : `[À FAIRE PRENDRE PAR KUDORO]`
 
 ---
 
-*Fin du document `docs/functional/00-carte.md` — Tranche 1.*  
+*Fin du document `docs/functional/00-carte.md` — Tranche 1 (Révision 2).*  
 *Livré par l'orchestrateur : `orchestrator: Antigravity-Analyse`*
