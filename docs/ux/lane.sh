@@ -43,6 +43,9 @@ act() {
     ux-pull)
       git -C "$UX" pull --rebase origin ag/ux-main
       ;;
+    ux-merge-remote)
+      git -C "$UX" fetch origin ag/ux-main && git -C "$UX" merge origin/ag/ux-main -m "Merge remote-tracking branch origin/ag/ux-main"
+      ;;
     feat-fetch)
       git -C "$ROOT" fetch origin feat/ips-18-pillars-cleanup
       ;;
